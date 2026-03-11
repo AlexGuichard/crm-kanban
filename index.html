@@ -982,7 +982,7 @@ function renderCol(col) {
       ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
     </div>
     ${bodyHtml}
-    <div class="col-add"><button onclick="openAddVehicle('${col.key}')">+ Véhicule</button></div>
+    ${['sourcing','a_payer'].includes(col.key) ? `<div class="col-add"><button onclick="openAddVehicle('${col.key}')">+ Véhicule</button></div>` : ''}
   </div>`;
 }
 
