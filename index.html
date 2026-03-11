@@ -2060,6 +2060,18 @@ async function init() {
   S.settings.github_token = token;
   const ok = await loadFromGH();
   if (ok) { render(); renderSidebarBriefing(); await loadBriefing(); }
+  // Auto-sync toutes les 30s
+  setInterval(async () => {
+    if (!S.settings.github_token) return;
+    const ok = await loadFromGH();
+    if (ok) { render(); renderSidebarBriefing(); }
+  }, 30000);
+  // Refresh briefing toutes les 5min
+  setInterval(async () => {
+    if (!S.settings.github_token) return;
+    await loadBriefing();
+    renderSidebarBriefing();
+  }, 5 * 60 * 1000);
 }
 
 function startApp() {
