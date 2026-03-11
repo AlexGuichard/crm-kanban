@@ -157,9 +157,10 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 .search-hl { background: #fde68a; color: #78350f; border-radius: 3px; padding: 0 2px; font-weight: 700; }
 
 /* TACHES BOARD */
-.tasks-view-layout { display: flex; gap: 14px; align-items: flex-start; }
-.tasks-board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; min-height: calc(100vh - 160px); }
-.tasks-board .column { min-width: 220px; max-width: 240px; }
+.tasks-view-layout { display: flex; gap: 14px; align-items: flex-start; width: 100%; min-height: calc(100vh - 140px); }
+.tasks-layout-main { flex: 1; min-width: 0; overflow: hidden; }
+.tasks-board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; min-height: calc(100vh - 160px); width: 100%; }
+.tasks-board .column { min-width: 220px; max-width: 240px; flex-shrink: 0; }
 
 /* TASKS VIEW TOGGLE */
 .tasks-view-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 2px; gap: 2px; }
@@ -401,7 +402,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
     <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Tâche</button>
   </div>
   <div class="tasks-view-layout">
-    <div style="flex:1;min-width:0">
+    <div class="tasks-layout-main">
       <div class="tasks-board" id="tasksBoard"></div>
       <div class="tasks-list" id="tasksList" style="display:none"></div>
     </div>
@@ -846,44 +847,6 @@ function loadLocal() {
   } catch(e) {}
 }
 
-function seedDemoData() {
-  S.vehicles = [
-    { id: 'demo-v1', marque: 'Peugeot',   modele: '308 SW',        annee: 2022, km: 28000, prix_achat: 16500, prix_lld: 380, carburant: 'diesel',  boite: 'auto',     couleur: 'Gris Platinium', vendeur: 'AutoCar Lyon',       contact: '06 12 34 56 78', lien_annonce: 'https://www.leboncoin.fr', notes: 'Très bon état, 2 propriétaires', column: 'sourcing', sub_stage: 'a_contacter', created_at: '2026-03-01', documents: {}, history: [] },
-    { id: 'demo-v2', marque: 'Renault',   modele: 'Clio 5',         annee: 2023, km: 15000, prix_achat: 14200, prix_lld: 320, carburant: 'essence', boite: 'manuelle', couleur: 'Blanc Nacré',    vendeur: 'Renault Pro Lyon',   contact: '04 78 12 34 56', lien_annonce: '',                        notes: 'Révision faite',               column: 'sourcing', sub_stage: 'a_contacter', created_at: '2026-03-03', documents: {}, history: [] },
-    { id: 'demo-v3', marque: 'Toyota',    modele: 'Yaris Cross',    annee: 2023, km: 22000, prix_achat: 19800, prix_lld: 420, carburant: 'hybride', boite: 'auto',     couleur: 'Rouge Barcelone',vendeur: 'Toyota Sud',         contact: '06 98 76 54 32', lien_annonce: '',                        notes: 'Hybride, très demandé',        column: 'sourcing', sub_stage: 'contacte',    created_at: '2026-03-05', documents: {}, history: [] },
-    { id: 'demo-v4', marque: 'Volkswagen',modele: 'Golf 8',         annee: 2022, km: 31000, prix_achat: 22000, prix_lld: 490, carburant: 'diesel',  boite: 'auto',     couleur: 'Noir Profond',   vendeur: 'VW Occasion Grenoble',contact: '06 55 44 33 22',lien_annonce: 'https://www.leboncoin.fr', notes: 'RDV visite samedi 14h',        column: 'sourcing', sub_stage: 'negociation',  created_at: '2026-03-06', documents: {}, history: [] },
-    { id: 'demo-v5', marque: 'Citroën',   modele: 'C5 Aircross',    annee: 2021, km: 42000, prix_achat: 18900, prix_lld: 410, carburant: 'diesel',  boite: 'auto',     couleur: 'Bleu Cobalt',    vendeur: 'Citroën Pro',        contact: '04 72 00 11 22', lien_annonce: '',                        notes: 'Bon de commande signé hier',   column: 'sourcing', sub_stage: 'bc_signe',    created_at: '2026-02-28', documents: {}, history: [] },
-    { id: 'demo-v6', marque: 'BMW',       modele: '118d',           annee: 2022, km: 35000, prix_achat: 24500, prix_lld: 560, carburant: 'diesel',  boite: 'auto',     couleur: 'Blanc Alpin',    vendeur: 'BMW Occasion Paris', contact: '01 23 45 67 89', lien_annonce: '',                        notes: 'Transporteur Bordeaux→Lyon',   column: 'en_transport', sub_stage: null, transport_company: 'Trans Auto 69', transport_eta: '2026-03-14', created_at: '2026-02-25', documents: { carte_grise: false, facture_achat: true, certificat_cession: true  }, history: [{ date: '2026-02-25', msg: 'Passé en transport' }] },
-    { id: 'demo-v7', marque: 'Ford',      modele: 'Puma ST-Line',   annee: 2023, km: 18000, prix_achat: 21000, prix_lld: 450, carburant: 'essence', boite: 'auto',     couleur: 'Bleu Magnetic',  vendeur: 'Ford Direct',        contact: '06 11 22 33 44', lien_annonce: '',                        notes: 'Livraison mercredi matin',     column: 'en_transport', sub_stage: null, transport_company: 'RouleVite SAS',  transport_eta: '2026-03-12', created_at: '2026-03-01', documents: { carte_grise: true,  facture_achat: true, certificat_cession: true  }, history: [] },
-    { id: 'demo-v8', marque: 'Mercedes',  modele: 'Classe A 180',   annee: 2022, km: 27000, prix_achat: 26800, prix_lld: 590, carburant: 'essence', boite: 'auto',     couleur: 'Gris Montagne',  vendeur: 'MB Select Lyon',     contact: '04 72 33 44 55', lien_annonce: '',                        notes: 'Virement à faire avant vendredi', column: 'a_payer', sub_stage: null, created_at: '2026-03-02', documents: { carte_grise: false, facture_achat: true, certificat_cession: false }, history: [{ date: '2026-03-02', msg: 'Passé en À Payer' }] },
-    { id: 'demo-v9', marque: 'Audi',      modele: 'A3 Sportback',   annee: 2022, km: 29000, prix_achat: 28500, prix_lld: 620, carburant: 'diesel',  boite: 'auto',     couleur: 'Rouge Misano',   vendeur: 'Audi Occasion',      contact: '06 77 88 99 00', lien_annonce: '',                        notes: 'Client : Martin SARL',         column: 'livre', sub_stage: null, created_at: '2026-02-20', documents: { carte_grise: true,  facture_achat: true, certificat_cession: true  }, history: [{ date: '2026-02-20', msg: 'Livré chez Martin SARL' }] },
-    { id: 'demo-v10',marque: 'Peugeot',   modele: '3008 GT',        annee: 2021, km: 48000, prix_achat: 23500, prix_lld: 510, carburant: 'diesel',  boite: 'auto',     couleur: 'Gris Artense',   vendeur: 'Peugeot Pro',        contact: '04 74 22 33 44', lien_annonce: '',                        notes: 'Client : Dupont Logistics',    column: 'livre', sub_stage: null, created_at: '2026-03-01', documents: { carte_grise: true,  facture_achat: true, certificat_cession: false }, history: [] },
-  ];
-  S.tasks = [
-    { id: 'demo-t1', column: 'a_faire',   title: 'Virement Mercedes Classe A180 — 26 800 €', description: 'Virement à effectuer avant vendredi 14h — MB Select Lyon', priority: 1, due_date: '2026-03-07', due_time: '14:00', linked_vehicle_id: 'demo-v8', auto_generated: false, created_at: '2026-03-05' },
-    { id: 'demo-t2', column: 'a_faire',   title: 'Rappeler Dupont Logistics pour livraison',  description: 'Confirmer la date et l\'heure de livraison 3008 GT',       priority: 1, due_date: '2026-03-11', due_time: '09:00', linked_vehicle_id: 'demo-v10',auto_generated: false, created_at: '2026-03-08' },
-    { id: 'demo-t3', column: 'a_faire',   title: '🤖 Demander les papiers — BMW 118d',         description: 'Documents manquants : Carte grise',                         priority: 1, due_date: '2026-03-10', due_time: '',      linked_vehicle_id: 'demo-v6', auto_generated: true,  created_at: '2026-02-25' },
-    { id: 'demo-t4', column: 'a_faire',   title: '🤖 Demander les papiers — Mercedes A180',    description: 'Documents manquants : Carte grise, Certificat de cession',  priority: 1, due_date: '2026-03-10', due_time: '',      linked_vehicle_id: 'demo-v8', auto_generated: true,  created_at: '2026-03-02' },
-    { id: 'demo-t5', column: 'en_cours',  title: 'Préparer contrat LLD — Toyota Yaris Cross', description: 'Contrat 36 mois / 15 000 km/an — client PME Rhône',          priority: 2, due_date: '2026-03-18', due_time: '',      linked_vehicle_id: 'demo-v3', auto_generated: false, created_at: '2026-03-07' },
-    { id: 'demo-t6', column: 'en_cours',  title: 'Relance assurance — Audi A3 Sportback',     description: 'Récupérer attestation assurance pour dossier client',        priority: 2, due_date: '2026-03-20', due_time: '',      linked_vehicle_id: 'demo-v9', auto_generated: false, created_at: '2026-03-05' },
-    { id: 'demo-t7', column: 'en_attente',title: 'Attendre 3 devis transporteurs — Ford Puma', description: 'Comparatif Trans Auto / RouleVite / ConvoyExpress',          priority: 3, due_date: null,         due_time: '',      linked_vehicle_id: 'demo-v7', auto_generated: false, created_at: '2026-03-04' },
-    { id: 'demo-t8', column: 'termine',   title: 'Envoyer facture LLD — Martin SARL',          description: 'Facture Audi A3 envoyée par email le 05/03',                 priority: 3, due_date: '2026-03-05', due_time: '',      linked_vehicle_id: 'demo-v9', auto_generated: false, created_at: '2026-03-03' },
-    { id: 'demo-t9', column: 'termine',   title: 'Immatriculation Peugeot 3008 GT',            description: 'Certificat d\'immatriculation reçu et archivé',             priority: 3, due_date: '2026-03-04', due_time: '',      linked_vehicle_id: 'demo-v10',auto_generated: false, created_at: '2026-03-01' },
-  ];
-  S.morning_briefing = {
-    date: '2026-03-10',
-    generated_at: '2026-03-10T06:05:12',
-    emails: [
-      { from: 'fournisseur@bmw-select.fr',   subject: 'Re: Devis BMW 118d — confirmation prix',       priority: 'urgent', summary: 'Confirme 24 500 €, disponible avant vendredi' },
-      { from: 'transport@routevite.fr',       subject: 'Livraison Ford Puma ST-Line — semaine 12',     priority: 'normal', summary: 'Livraison prévue mercredi 13/03 entre 8h-12h' },
-      { from: 'client@martinsarl.fr',         subject: 'Contrat LLD Audi A3 — prêt à signer',         priority: 'normal', summary: 'Besoin du contrat en PDF pour signature ce soir' },
-      { from: 'newsletter@largus.fr',         subject: 'Cotes Auto Mars 2026 — Votre résumé mensuel', priority: 'info',   summary: 'Cotes Peugeot, VW, BMW mises à jour' },
-      { from: 'assurance@maif.fr',            subject: 'Attestation assurance BMW 118d',               priority: 'normal', summary: 'Attestation jointe en pièce jointe PDF' }
-    ],
-    crm_alerts: '📄 3 véhicule(s) avec documents manquants | 💳 1 véhicule(s) en attente de paiement',
-    summary: '5 email(s) • alertes CRM actives'
-  };
-}
 
 function setSyncBadge(status) {
   const el = document.getElementById('syncBadge');
@@ -2035,18 +1998,6 @@ function overlayClick(e, id) { if (e.target.id === id) closeModal(id); }
 // ============================================================
 // INIT
 // ============================================================
-// Chargement synchrone immédiat — visible dès le premier rendu
-(function() {
-  loadLocal();
-  applyColors();
-  // Si pas de données locales → charger les démo
-  if (!S.vehicles.length && !S.tasks.length) seedDemoData();
-  render();
-  initTasksViewMode();
-  renderSidebarBriefing();
-})();
-
-// Sync GitHub en arrière-plan si token présent
 async function init() {
   const token = S.settings.github_token || localStorage.getItem('gh_token');
   if (!token) {
@@ -2059,7 +2010,14 @@ async function init() {
   if (ok) { render(); renderSidebarBriefing(); await loadBriefing(); }
 }
 
-init();
+document.addEventListener('DOMContentLoaded', () => {
+  loadLocal();
+  applyColors();
+  render();
+  initTasksViewMode();
+  renderSidebarBriefing();
+  init();
+});
 </script>
 </body>
 </html>
