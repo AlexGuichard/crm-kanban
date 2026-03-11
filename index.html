@@ -1244,7 +1244,7 @@ let cardSizeIdx = (() => {
   return i >= 0 ? i : 0;
 })();
 function applyCardSize() {
-  CARD_SIZES.forEach(s => document.body.classList.remove(s.cls));
+  CARD_SIZES.forEach(s => s.cls && document.body.classList.remove(s.cls));
   const s = CARD_SIZES[cardSizeIdx];
   if (s.cls) document.body.classList.add(s.cls);
   const lbl = document.getElementById('cardSizeLbl');
