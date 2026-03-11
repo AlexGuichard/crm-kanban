@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#4d65ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Flease CRM">
+<link rel="manifest" href="manifest.json">
+<title>Flease CRM</title>
+<style>
+:root {
+  --bg: #f0f2f8;
+  --surface: #ffffff;
+  --border: #dde2f0;
+  --text: #1a1d2e;
+  --text-muted: #6b7280;
+  --primary: #4d65ff;
+  --lime: #7ec800;
+  --urg-1: #e8294a;
+  --urg-2: #e87a00;
+  --urg-3: #4d65ff;
+  --urg-done: #16a34a;
+  --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --radius: 10px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* HEADER */
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 20px; display: flex; align-items: center; gap: 16px; height: 56px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 0 var(--border); }
+.logo { font-weight: 800; font-size: 18px; color: var(--primary); letter-spacing: -0.5px; white-space: nowrap; }
+.logo span { color: var(--lime); }
+.tabs { display: flex; gap: 4px; }
+.tab-btn { padding: 6px 14px; border: none; background: none; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+.tab-btn.active { background: var(--primary); color: white; }
+.tab-btn:hover:not(.active) { background: var(--bg); }
+.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.btn { padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; font-family: inherit; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: #3a4fd6; }
+.btn-ghost { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--border); }
+.btn-danger { background: var(--urg-1); color: white; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-icon { width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; border-radius: 8px; position: relative; }
+.sync-badge { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap; }
+.sync-badge.synced { color: var(--urg-done); border-color: var(--urg-done); background: rgba(22,163,74,0.06); }
+.sync-badge.error { color: var(--urg-2); border-color: var(--urg-2); }
+.notif-dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: var(--urg-1); border-radius: 50%; display: none; }
+.search-wrap { position: relative; }
+.search-input { padding: 7px 12px 7px 30px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--bg); color: var(--text); width: 180px; font-family: inherit; }
+.search-input:focus { outline: none; border-color: var(--primary); background: var(--surface); }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 13px; pointer-events: none; }
+
+/* BRIEFING PANEL */
+.briefing-panel { background: var(--surface); border-bottom: 2px solid var(--primary); padding: 12px 20px; display: none; }
+.briefing-panel.open { display: block; }
+.briefing-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.briefing-title { font-weight: 700; font-size: 14px; color: var(--primary); }
+.briefing-emails { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.email-card { min-width: 200px; max-width: 240px; padding: 8px 12px; border-radius: 8px; border-left: 3px solid var(--border); background: var(--bg); font-size: 12px; flex-shrink: 0; }
+.email-card.urgent { border-color: var(--urg-1); }
+.email-card.warning { border-color: var(--urg-2); }
+.email-card.normal { border-color: var(--primary); }
+.email-from { font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.email-subj { color: var(--text-muted); line-height: 1.3; }
+
+/* VIEWS */
+.view { display: none; padding: 16px 20px; }
+.view.active { display: block; }
+
+/* BOARD */
+.board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; min-height: calc(100vh - 130px); }
+.column { min-width: 256px; max-width: 272px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; max-height: calc(100vh - 140px); flex-shrink: 0; }
+.column-header { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; border-radius: var(--radius) var(--radius) 0 0; background: var(--surface); }
+.col-title { font-weight: 700; font-size: 13px; flex: 1; }
+.col-count { background: var(--bg); color: var(--text-muted); padding: 2px 7px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.col-price { font-size: 11px; color: var(--primary); font-weight: 600; }
+.column-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex: 1; }
+.column-body.drag-over { background: rgba(77,101,255,0.04); }
+.col-add { padding: 6px; border-top: 1px solid var(--border); }
+.col-add button { width: 100%; padding: 6px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.col-add button:hover { border-color: var(--primary); color: var(--primary); background: rgba(77,101,255,0.04); }
+
+/* SOURCING SUB-TABS */
+.sourcing-subtabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
+.ss-tab { flex: 1; padding: 5px 2px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.12s; line-height: 1.3; }
+.ss-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--surface); }
+.ss-tab-count { display: block; font-size: 11px; font-weight: 700; color: inherit; }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; position: relative; border-left: 3px solid var(--border); user-select: none; }
+.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.card.urg-1 { border-left-color: var(--urg-1); }
+.card.urg-2 { border-left-color: var(--urg-2); }
+.card.urg-3 { border-left-color: var(--urg-3); }
+.card.urg-done { border-left-color: var(--urg-done); }
+.card-title { font-weight: 700; font-size: 13px; line-height: 1.3; margin-bottom: 4px; }
+.card-sub { font-size: 11px; color: var(--text-muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
+.tag { padding: 2px 6px; border-radius: 5px; font-size: 10px; font-weight: 600; background: var(--bg); color: var(--text-muted); }
+.tag-blue { background: rgba(77,101,255,0.1); color: var(--primary); }
+.tag-green { background: rgba(22,163,74,0.1); color: #16a34a; }
+.tag-red { background: rgba(232,41,74,0.1); color: var(--urg-1); }
+.tag-orange { background: rgba(232,122,0,0.1); color: var(--urg-2); }
+
+/* SUB-STAGE BAR */
+.ss-bar { display: flex; gap: 2px; margin-top: 6px; }
+.ss-step { flex: 1; height: 3px; border-radius: 2px; background: var(--border); }
+.ss-step.done { background: var(--lime); }
+.ss-step.active { background: var(--primary); }
+.ss-label { font-size: 10px; color: var(--primary); font-weight: 600; margin-top: 3px; }
+
+/* DOCS BADGES */
+.doc-badges { display: flex; gap: 3px; margin-top: 6px; }
+.doc-badge { width: 22px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+.doc-badge.ok { background: rgba(22,163,74,0.12); color: #16a34a; border-color: rgba(22,163,74,0.3); }
+.doc-badge.ko { background: rgba(232,41,74,0.08); color: var(--urg-1); border-color: rgba(232,41,74,0.3); }
+.doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 600; margin-top: 3px; }
+
+/* CARD SIZE VARIANTS */
+body.card-compact .card { padding: 5px 8px; }
+body.card-compact .card-title { font-size: 12px; margin-bottom: 2px; }
+body.card-compact .card-sub { font-size: 10px; }
+body.card-compact .tags { margin-top: 3px; }
+body.card-compact .ss-bar { margin-top: 3px; }
+body.card-compact .doc-badges { margin-top: 3px; }
+body.card-compact .card-actions { display: none; }
+body.card-large .card { padding: 13px 15px; }
+body.card-large .card-title { font-size: 14px; margin-bottom: 6px; }
+body.card-large .card-sub { font-size: 12px; }
+body.card-large .tags { margin-top: 7px; gap: 4px; }
+
+/* CARD SIZE BUTTON */
+.card-size-btn { position: fixed; bottom: 18px; right: 20px; z-index: 200; background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 12px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow); transition: all 0.15s; }
+.card-size-btn:hover { border-color: var(--primary); color: var(--primary); }
+.card-size-pip { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.15s; }
+.card-size-pip.active { background: var(--primary); }
+
+/* CARD ACTIONS */
+.card-actions { margin-top: 7px; display: flex; gap: 4px; }
+
+/* LOT CARD */
+.lot-card { background: linear-gradient(135deg, rgba(77,101,255,0.05) 0%, rgba(77,101,255,0.02) 100%); }
+.lot-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--primary); color: white; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-bottom: 5px; }
+
+/* TASK CARD */
+.task-card { border-left-color: var(--lime) !important; }
+
+/* SEARCH HIGHLIGHT */
+.card.search-match { background: #fffbeb !important; border-color: #f59e0b !important; box-shadow: 0 0 0 2px rgba(245,158,11,0.25) !important; }
+.search-hl { background: #fde68a; color: #78350f; border-radius: 3px; padding: 0 2px; font-weight: 700; }
+
+/* TACHES BOARD */
+.tasks-view-layout { display: flex; gap: 14px; align-items: flex-start; }
+.tasks-board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; min-height: calc(100vh - 160px); }
+.tasks-board .column { min-width: 220px; max-width: 240px; }
+
+/* TASKS VIEW TOGGLE */
+.tasks-view-toggle { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 2px; gap: 2px; }
+.tvt-btn { padding: 4px 10px; border: none; background: none; border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap; }
+.tvt-btn.active { background: var(--surface); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* TASKS LIST VIEW */
+.tasks-list { display: flex; flex-direction: column; gap: 0; min-height: calc(100vh - 160px); }
+.tl-group { margin-bottom: 16px; }
+.tl-group-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); padding: 0 4px 7px; display: flex; align-items: center; gap: 6px; }
+.tl-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 8px; margin-bottom: 5px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; }
+.tl-row:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.tl-row.urg-1 { border-left-color: var(--urg-1); }
+.tl-row.urg-2 { border-left-color: var(--urg-2); }
+.tl-row.urg-3 { border-left-color: var(--urg-3); }
+.tl-row.search-match { background: #fffbeb; border-color: #f59e0b; }
+.tl-col-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.tl-col-a_faire   { background: #f0f4ff; color: #4d65ff; }
+.tl-col-en_cours  { background: #fff7ed; color: #ea580c; }
+.tl-col-en_attente{ background: #fefce8; color: #b45309; }
+.tl-content { flex: 1; min-width: 0; }
+.tl-title { font-size: 13px; font-weight: 700; line-height: 1.4; }
+.tl-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.tl-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+.tl-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
+
+/* BRIEFING PANEL */
+.briefing-panel-sidebar { width: 280px; min-width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; }
+.bp-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 14px; }
+.bp-card-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.bp-item { display: flex; gap: 8px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.bp-item:last-child { border-bottom: none; padding-bottom: 0; }
+.bp-item:first-child { padding-top: 0; }
+.bp-item-text { flex: 1; min-width: 0; }
+.bp-item-title { font-size: 12px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bp-item-sub { font-size: 11px; color: var(--muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bp-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 20px; flex-shrink: 0; margin-top: 1px; }
+.bp-badge-red { background: #fee2e2; color: #dc2626; }
+.bp-badge-orange { background: #ffedd5; color: #ea580c; }
+.bp-badge-blue { background: #eff6ff; color: #2563eb; }
+.bp-badge-gray { background: var(--bg); color: var(--muted); }
+.bp-empty { text-align: center; color: var(--muted); font-size: 12px; padding: 12px 0; }
+.bp-alert-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.bp-alert-row:last-child { border-bottom: none; }
+.bp-refresh { font-size: 10px; color: var(--muted); text-align: right; margin-top: 4px; }
+.bp-load-btn { width: 100%; font-size: 11px; padding: 6px; border-radius: 6px; border: 1px dashed var(--border); background: none; color: var(--muted); cursor: pointer; margin-top: 4px; }
+.bp-load-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* DASHBOARD */
+.dash-row { display: grid; gap: 12px; margin-bottom: 12px; }
+.kpi-grid { grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
+.dash-2col { grid-template-columns: 1fr 1fr; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.kpi-value { font-size: 26px; font-weight: 800; color: var(--primary); line-height: 1; }
+.kpi-value.warn { color: var(--urg-1); }
+.kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.dash-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.dash-card-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+
+/* PIPELINE */
+.pipe-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pipe-label { width: 110px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pipe-bar-wrap { flex: 1; background: var(--bg); border-radius: 4px; height: 14px; overflow: hidden; }
+.pipe-bar { height: 100%; border-radius: 4px; background: var(--primary); transition: width 0.4s ease; }
+.pipe-num { width: 28px; text-align: right; font-weight: 700; font-size: 12px; color: var(--text); }
+
+/* COLOR PICKER */
+.color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.color-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.color-swatch { width: 26px; height: 26px; border-radius: 6px; border: 2px solid rgba(0,0,0,0.1); position: relative; cursor: pointer; flex-shrink: 0; }
+.color-swatch input[type=color] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; border: none; padding: 0; }
+
+/* MODALS */
+.overlay { position: fixed; inset: 0; background: rgba(26,29,46,0.45); z-index: 200; display: none; align-items: flex-start; justify-content: center; padding: 20px; overflow-y: auto; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: 16px; width: 100%; max-width: 560px; padding: 22px 24px; margin: auto; }
+.modal-sm { max-width: 420px; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.modal-title { font-size: 17px; font-weight: 800; }
+.close-btn { background: var(--bg); border: 1px solid var(--border); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 17px; display: flex; align-items: center; justify-content: center; line-height: 1; color: var(--text-muted); }
+.close-btn:hover { background: var(--border); }
+
+/* FORM */
+.form-group { margin-bottom: 12px; }
+.form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.form-input, .form-select, .form-textarea { width: 100%; padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); transition: border-color 0.15s; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); }
+.form-textarea { min-height: 72px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-section { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px; }
+.form-section-title { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; }
+
+/* URGENCY SELECTOR */
+.urg-options { display: flex; gap: 6px; }
+.urg-opt { flex: 1; padding: 7px 6px; border-radius: 8px; border: 2px solid var(--border); text-align: center; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.12s; background: var(--bg); }
+.urg-opt[data-urg="1"].sel { border-color: var(--urg-1); color: var(--urg-1); background: rgba(232,41,74,0.07); }
+.urg-opt[data-urg="2"].sel { border-color: var(--urg-2); color: var(--urg-2); background: rgba(232,122,0,0.07); }
+.urg-opt[data-urg="3"].sel { border-color: var(--urg-3); color: var(--urg-3); background: rgba(77,101,255,0.07); }
+
+/* STAGE SELECT */
+.stage-opts { display: flex; gap: 5px; flex-wrap: wrap; }
+.stage-opt { padding: 5px 10px; border-radius: 6px; border: 1.5px solid var(--border); font-size: 12px; font-weight: 600; cursor: pointer; background: var(--bg); transition: all 0.12s; }
+.stage-opt.sel { border-color: var(--primary); color: var(--primary); background: rgba(77,101,255,0.07); }
+
+/* RADIO GROUP */
+.radio-group { display: flex; gap: 8px; }
+.radio-opt { flex: 1; padding: 10px; border: 2px solid var(--border); border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.12s; background: var(--bg); }
+.radio-opt.sel { border-color: var(--primary); color: var(--primary); background: rgba(77,101,255,0.06); }
+
+/* DOC CHECKLIST */
+.doc-checklist { display: flex; flex-direction: column; gap: 7px; }
+.doc-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--bg); border-radius: 8px; cursor: pointer; border: 1.5px solid var(--border); transition: all 0.12s; }
+.doc-item.checked { border-color: var(--urg-done); background: rgba(22,163,74,0.05); }
+.doc-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: white; flex-shrink: 0; }
+.doc-item.checked .doc-checkbox { background: var(--urg-done); border-color: var(--urg-done); }
+.doc-label { font-size: 13px; font-weight: 500; }
+
+/* DETAIL */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.detail-field label { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+.detail-field value { display: block; font-size: 13px; font-weight: 600; }
+.timeline { display: flex; flex-direction: column; gap: 7px; }
+.tl-item { display: flex; gap: 8px; font-size: 12px; align-items: flex-start; }
+.tl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); margin-top: 4px; flex-shrink: 0; }
+.tl-txt { color: var(--text-muted); }
+.tl-txt strong { color: var(--text); }
+
+/* ALERTS */
+.alert-item { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 28px 10px; color: var(--text-muted); font-size: 12px; }
+.empty-icon { font-size: 24px; margin-bottom: 6px; }
+
+/* CONTEXT MENU */
+.ctx-menu { position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 4px; box-shadow: 0 6px 24px rgba(0,0,0,0.12); z-index: 400; min-width: 160px; display: none; }
+.ctx-item { padding: 8px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+.ctx-item:hover { background: var(--bg); }
+.ctx-item.danger { color: var(--urg-1); }
+.ctx-sep { height: 1px; background: var(--border); margin: 3px 0; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* DRAG STATES */
+.card { cursor: grab; }
+.card:active { cursor: grabbing; }
+.card.dragging { opacity: 0.45; transform: scale(0.97); }
+.column-body.drag-over { background: rgba(77,101,255,0.07); outline: 2px dashed var(--primary); border-radius: 0 0 var(--radius) var(--radius); }
+
+/* CARD ACTION BUTTONS (move + share) — visible on hover / always on mobile */
+.card-btn-group { display: none; position: absolute; top: 5px; right: 5px; gap: 3px; z-index: 2; }
+.card:hover .card-btn-group { display: flex; }
+@media (hover: none) { .card-btn-group { display: flex !important; } }
+/* Keep legacy selector working */
+.card-move-btn { display: none; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 5px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; align-items: center; justify-content: center; font-size: 12px; z-index: 2; }
+.card:hover .card-move-btn { display: flex; }
+@media (hover: none) { .card-move-btn { display: flex !important; } }
+.card-icon-btn { width: 24px; height: 24px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.12s; flex-shrink: 0; }
+.card-icon-btn:hover { background: var(--primary); border-color: var(--primary); color: white; }
+
+/* MOVE SHEET */
+.move-sheet-cols { display: flex; flex-direction: column; gap: 7px; }
+.move-col-btn { padding: 11px 14px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); text-align: left; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.12s; }
+.move-col-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(77,101,255,0.06); }
+.move-col-btn.current { opacity: 0.4; cursor: default; border-style: dashed; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .header { padding: 0 12px; gap: 10px; }
+  .view { padding: 12px; }
+  .search-input { width: 120px; }
+  .form-row { grid-template-columns: 1fr; }
+  .dash-2col { grid-template-columns: 1fr; }
+  .tab-btn { padding: 5px 10px; font-size: 12px; }
+  .btn-sm-hide { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">Flease<span>CRM</span></div>
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showView('achats',this)">🚗 Achats</button>
+    <button class="tab-btn" onclick="showView('taches',this)">✅ Tâches</button>
+    <button class="tab-btn" onclick="showView('dashboard',this)">📊 Dashboard</button>
+  </nav>
+  <div class="header-actions">
+    <span class="sync-badge" id="syncBadge" style="cursor:pointer" onclick="openSettings()">⏳ Config…</span>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="searchInput" placeholder="Rechercher…" oninput="onSearch()">
+    </div>
+    <button class="btn btn-icon btn-ghost" onclick="toggleBriefing()" title="Briefing du matin">
+      📬<span class="notif-dot" id="notifDot"></span>
+    </button>
+    <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
+    <button class="btn btn-primary" onclick="openAddVehicle()">+ Véhicule</button>
+    <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openAddLot()">+ Lot</button>
+  </div>
+</header>
+
+<!-- BRIEFING PANEL -->
+<div class="briefing-panel" id="briefingPanel">
+  <div class="briefing-header">
+    <span class="briefing-title" id="briefingTitle">📬 Briefing du matin</span>
+    <button class="close-btn" onclick="toggleBriefing()">×</button>
+  </div>
+  <div class="briefing-emails" id="briefingEmails">
+    <span style="font-size:13px;color:var(--text-muted)">Chargement…</span>
+  </div>
+  <div id="briefingAlerts" style="margin-top:8px;font-size:13px;color:var(--text-muted)"></div>
+</div>
+
+<!-- VIEW: ACHATS -->
+<div class="view active" id="view-achats">
+  <div class="tasks-view-layout">
+    <div class="board" id="board" style="flex:1;min-width:0;"></div>
+    <div class="briefing-panel-sidebar" id="sidebarBriefingAchats"></div>
+  </div>
+</div>
+
+<!-- VIEW: TACHES -->
+<div class="view" id="view-taches">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h2 style="font-size:15px;font-weight:800">Mes Tâches</h2>
+      <div class="tasks-view-toggle">
+        <button class="tvt-btn active" id="tvt-kanban" onclick="setTasksView('kanban')" title="Vue Kanban">⬛ Kanban</button>
+        <button class="tvt-btn" id="tvt-list" onclick="setTasksView('list')" title="Vue Liste">≡ Liste</button>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Tâche</button>
+  </div>
+  <div class="tasks-view-layout">
+    <div style="flex:1;min-width:0">
+      <div class="tasks-board" id="tasksBoard"></div>
+      <div class="tasks-list" id="tasksList" style="display:none"></div>
+    </div>
+    <div class="briefing-panel-sidebar" id="sidebarBriefing"></div>
+  </div>
+</div>
+
+<!-- VIEW: DASHBOARD -->
+<div class="view" id="view-dashboard">
+  <div class="dash-row kpi-grid" id="kpiGrid"></div>
+  <div class="dash-row dash-2col">
+    <div class="dash-card">
+      <div class="dash-card-title">📊 Pipeline achats</div>
+      <div id="pipeline"></div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">🎨 Couleurs urgences</div>
+      <div class="color-grid" id="colorGrid"></div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-muted)">Cliquez sur une couleur pour la modifier</div>
+    </div>
+  </div>
+  <div class="dash-card" style="margin-bottom:12px">
+    <div class="dash-card-title">⚠️ Alertes documents</div>
+    <div id="docAlerts"><span style="color:var(--text-muted);font-size:13px">Aucune alerte</span></div>
+  </div>
+  <div class="dash-card">
+    <div class="dash-card-title">📋 Tâches auto-générées ouvertes</div>
+    <div id="autoTasks"><span style="color:var(--text-muted);font-size:13px">Aucune tâche auto</span></div>
+  </div>
+</div>
+
+<!-- CARD SIZE BUTTON -->
+<button class="card-size-btn" id="cardSizeBtn" onclick="cycleCardSize()" title="Taille des cartes">
+  <span id="cardSizeLbl">Normal</span>
+  <span class="card-size-pip active" id="pip0"></span>
+  <span class="card-size-pip" id="pip1"></span>
+  <span class="card-size-pip" id="pip2"></span>
+</button>
+
+<!-- ===== MODALS ===== -->
+
+<!-- ADD/EDIT VEHICLE -->
+<div class="overlay" id="ovVehicle" onclick="overlayClick(event,'ovVehicle')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="vModalTitle">Nouveau véhicule</div>
+      <button class="close-btn" onclick="closeModal('ovVehicle')">×</button>
+    </div>
+
+    <div class="form-section" style="border:none;padding:0;margin:0">
+      <div class="form-section-title">🚗 Véhicule</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Marque *</label><input class="form-input" id="vMarque" placeholder="Renault"></div>
+        <div class="form-group"><label class="form-label">Modèle *</label><input class="form-input" id="vModele" placeholder="Clio"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Millésime</label><input class="form-input" id="vAnnee" type="number" placeholder="2022" min="2000" max="2030"></div>
+        <div class="form-group"><label class="form-label">Kilométrage</label><input class="form-input" id="vKm" type="number" placeholder="45000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Carburant</label>
+          <select class="form-select" id="vCarburant"><option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option><option>GPL</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Boîte</label>
+          <select class="form-select" id="vBoite"><option>Automatique</option><option>Manuelle</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">VIN (optionnel)</label><input class="form-input" id="vVin" placeholder="VF1…"></div>
+        <div class="form-group"><label class="form-label">Immatriculation (optionnel)</label><input class="form-input" id="vImmat" placeholder="AB-123-CD"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">💰 Prix</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Prix demandé (€)</label><input class="form-input" id="vPrixD" type="number" placeholder="12000"></div>
+        <div class="form-group"><label class="form-label">Prix négocié (€)</label><input class="form-input" id="vPrixN" type="number" placeholder="11500"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">🔗 Source</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Plateforme</label>
+          <select class="form-select" id="vSource"><option>LeBonCoin</option><option>Autoscout24</option><option>Automobile.fr</option><option>Direct fournisseur</option><option>Autre</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">URL annonce</label><input class="form-input" id="vUrl" placeholder="https://…"></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">🏢 Fournisseur</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nom</label><input class="form-input" id="vFNom" placeholder="Dupont Auto"></div>
+        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" id="vFTel" placeholder="06…" type="tel"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="vFEmail" placeholder="contact@…" type="email"></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">📋 Étape sourcing</div>
+      <div class="stage-opts" id="vSubStage">
+        <div class="stage-opt sel" data-ss="a_contacter" onclick="pickSS(this)">À contacter</div>
+        <div class="stage-opt" data-ss="contacte" onclick="pickSS(this)">Contacté</div>
+        <div class="stage-opt" data-ss="negociation" onclick="pickSS(this)">Négociation</div>
+        <div class="stage-opt" data-ss="bc_signe" onclick="pickSS(this)">BC Signé ✓</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:6px">⚡ BC Signé → passage automatique en "À Payer"</div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">🚨 Urgence</div>
+      <div class="urg-options" id="vUrg">
+        <div class="urg-opt" data-urg="1" onclick="pickUrg(this,'vUrg')">🔴 Très urgent</div>
+        <div class="urg-opt sel" data-urg="3" onclick="pickUrg(this,'vUrg')">⚪ Normal</div>
+        <div class="urg-opt" data-urg="2" onclick="pickUrg(this,'vUrg')">🟠 Urgent</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">💬 Commentaire</div>
+      <textarea class="form-textarea" id="vComment" placeholder="Notes, conditions, observations…"></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveVehicle()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD LOT -->
+<div class="overlay" id="ovLot" onclick="overlayClick(event,'ovLot')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">📦 Nouveau lot</div>
+      <button class="close-btn" onclick="closeModal('ovLot')">×</button>
+    </div>
+    <div class="form-group"><label class="form-label">Nom du lot *</label><input class="form-input" id="lNom" placeholder="Lot Renault Déc 2024"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Fournisseur</label><input class="form-input" id="lFourn" placeholder="Dupont Auto"></div>
+      <div class="form-group"><label class="form-label">Nb véhicules</label><input class="form-input" id="lNb" type="number" placeholder="20"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Prix total (€)</label><input class="form-input" id="lPrix" type="number" placeholder="200000"></div>
+      <div class="form-group"><label class="form-label">Urgence</label>
+        <div class="urg-options" id="lUrg" style="margin-top:0">
+          <div class="urg-opt" data-urg="1" onclick="pickUrg(this,'lUrg')">🔴</div>
+          <div class="urg-opt sel" data-urg="3" onclick="pickUrg(this,'lUrg')">⚪</div>
+          <div class="urg-opt" data-urg="2" onclick="pickUrg(this,'lUrg')">🟠</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Description / véhicules inclus</label>
+      <textarea class="form-textarea" id="lDesc" placeholder="20x Renault Clio 2022 diesel, 45 000 km…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovLot')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveLot()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- VEHICLE DETAIL -->
+<div class="overlay" id="ovDetail" onclick="overlayClick(event,'ovDetail')">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="detailTitle">Détail</div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button class="btn btn-ghost btn-sm" onclick="editVehicle()">✏️ Modifier</button>
+        <button class="close-btn" onclick="closeModal('ovDetail')">×</button>
+      </div>
+    </div>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<!-- TRANSPORT -->
+<div class="overlay" id="ovTransport" onclick="overlayClick(event,'ovTransport')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">🚛 Mise en transport</div>
+      <button class="close-btn" onclick="closeModal('ovTransport')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mode de transport</label>
+      <div class="radio-group" id="transportMode">
+        <div class="radio-opt sel" data-val="camion" onclick="pickRadio(this,'transportMode')">🚛 Camion</div>
+        <div class="radio-opt" data-val="convoyage" onclick="pickRadio(this,'transportMode')">🚗 Convoyage</div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Date de départ</label><input class="form-input" id="tDate" type="date"></div>
+    <div class="form-group"><label class="form-label">Notes (transporteur, contact…)</label><textarea class="form-textarea" id="tNotes" placeholder="Transporteur X — 06 12 34 56 78"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovTransport')">Annuler</button>
+      <button class="btn btn-primary" onclick="confirmTransport()">Confirmer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TASK -->
+<div class="overlay" id="ovTask" onclick="overlayClick(event,'ovTask')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="taskModalTitle">Nouvelle tâche</div>
+      <button class="close-btn" onclick="closeModal('ovTask')">×</button>
+    </div>
+    <div class="form-group"><label class="form-label">Titre *</label><input class="form-input" id="tTitle" placeholder="Ex: Répondre à dupont@…"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="tDesc" placeholder="Détails…"></textarea></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Priorité</label>
+        <div class="urg-options" id="tUrg">
+          <div class="urg-opt" data-urg="1" onclick="pickUrg(this,'tUrg')">🔴</div>
+          <div class="urg-opt sel" data-urg="3" onclick="pickUrg(this,'tUrg')">⚪</div>
+          <div class="urg-opt" data-urg="2" onclick="pickUrg(this,'tUrg')">🟠</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Échéance</label>
+        <div style="display:flex;gap:8px">
+          <input class="form-input" id="tDue" type="date" style="flex:1.4">
+          <input class="form-input" id="tDueTime" type="time" placeholder="--:--" style="flex:1">
+        </div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Colonne</label>
+      <select class="form-select" id="tCol">
+        <option value="a_faire">À faire</option>
+        <option value="en_cours">En cours</option>
+        <option value="en_attente">En attente</option>
+        <option value="termine">Terminé</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" id="btnShareTask" onclick="shareTask(editingTaskId)" style="margin-right:auto;display:none" title="Envoyer vers l'app Rappels iPhone">📲 Rappels</button>
+      <button class="btn btn-ghost" onclick="closeModal('ovTask')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveTask()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="ovSettings" onclick="overlayClick(event,'ovSettings')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ Paramètres</div>
+      <button class="close-btn" onclick="closeModal('ovSettings')">×</button>
+    </div>
+    <div class="form-group"><label class="form-label">Token GitHub (ghp_…)</label><input class="form-input" id="sToken" type="password" placeholder="ghp_…"></div>
+    <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/flease-crm"></div>
+    <div class="form-group"><label class="form-label">Email alertes</label><input class="form-input" id="sEmail" placeholder="alex@flease.fr" type="email"></div>
+    <div class="form-group"><label class="form-label">Rappel après (jours sans mouvement)</label><input class="form-input" id="sReminder" type="number" value="3" min="1" max="30"></div>
+    <div class="form-group" style="display:flex;align-items:center;gap:10px">
+      <input type="checkbox" id="sArchive" style="width:16px;height:16px">
+      <label for="sArchive" style="font-size:13px;cursor:pointer">Afficher colonne Archive</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovSettings')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOVE SHEET (déplacer vers une colonne) -->
+<div class="overlay" id="ovMoveSheet" onclick="overlayClick(event,'ovMoveSheet')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title" id="moveSheetTitle">↔ Déplacer vers…</div>
+      <button class="close-btn" onclick="closeModal('ovMoveSheet')">×</button>
+    </div>
+    <div class="move-sheet-cols" id="moveSheetCols"></div>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div class="ctx-menu" id="ctxMenu">
+  <div class="ctx-item" id="ctxEdit">✏️ Modifier</div>
+  <div class="ctx-item" id="ctxMove">➡️ Changer de colonne</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" id="ctxDelete">🗑️ Supprimer</div>
+</div>
+
+<script>
+// ============================================================
+// CONSTANTS
+// ============================================================
+const SUB_STAGES = [
+  { key:'a_contacter', label:'À contacter' },
+  { key:'contacte', label:'Contacté' },
+  { key:'negociation', label:'Négociation' },
+  { key:'bc_signe', label:'BC Signé' }
+];
+const COLUMNS = [
+  { key:'sourcing', label:'📋 Sourcing' },
+  { key:'a_payer', label:'💳 À Payer' },
+  { key:'en_transport', label:'🚛 En Transport' },
+  { key:'livre', label:'✅ Livré' },
+  { key:'archive', label:'🗄️ Archive' }
+];
+const TASK_COLS = [
+  { key:'a_faire', label:'📝 À faire' },
+  { key:'en_cours', label:'⚡ En cours' },
+  { key:'en_attente', label:'⏳ En attente' },
+  { key:'termine', label:'✅ Terminé' }
+];
+const DOCS = [
+  { key:'carte_grise', label:'CG', full:'Carte Grise' },
+  { key:'facture_achat', label:'FA', full:"Facture d'achat" },
+  { key:'certificat_cession', label:'CC', full:'Certificat de cession' }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const S = {
+  vehicles: [],
+  lots: [],
+  tasks: [],
+  settings: {
+    github_token: '',
+    github_repo: 'AlexGuichard/crm-kanban',
+    email: '',
+    reminder_days: 3,
+    show_archive: false,
+    urgency_colors: { urg_1:'#e8294a', urg_2:'#e87a00', urg_3:'#4d65ff', urg_done:'#16a34a' }
+  },
+  briefing: null
+};
+
+let editingVehicleId = null;
+let editingLotId = null;
+let editingTaskId = null;
+let currentDetailId = null;
+let pendingTransportId = null;
+let activeSS = 'a_contacter'; // active sourcing sub-stage tab
+let searchQ = '';
+let ghSha = null;
+
+// ============================================================
+// UTILS
+// ============================================================
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const today = () => new Date().toISOString().slice(0, 10);
+const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
+const fmtN = n => n ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
+const fmtD = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; } catch(e){return s||'—';} };
+const fmtDs = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}) : '—'; } catch(e){return s||'—';} };
+
+const hasMissingDocs = v => !v.documents || DOCS.some(d => !v.documents[d.key]);
+const docsVisible = v => v.column !== 'sourcing' || v.sub_stage === 'bc_signe';
+const getSS = key => SUB_STAGES.find(s => s.key === key) || SUB_STAGES[0];
+const getSSIdx = key => SUB_STAGES.findIndex(s => s.key === key);
+const urgClass = p => ({1:'urg-1',2:'urg-2',3:'urg-3',done:'urg-done'}[p]||'urg-3');
+
+function addHist(v, action) {
+  if (!v.historique) v.historique = [];
+  v.historique.push({ date: today(), action });
+}
+
+// ============================================================
+// GITHUB API
+// ============================================================
+const GH = 'https://api.github.com';
+
+function ghHeaders() {
+  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+}
+
+async function ghGet(path) {
+  try {
+    const r = await fetch(GH + path, { headers: ghHeaders() });
+    return r.ok ? r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function ghPut(path, body) {
+  try {
+    const r = await fetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    return r.ok ? r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function loadFromGH() {
+  const repo = S.settings.github_repo;
+  if (!repo || !S.settings.github_token) return false;
+  setSyncBadge('loading');
+  const data = await ghGet(`/repos/${repo}/contents/data/crm.json`);
+  if (!data) { setSyncBadge('error'); return false; }
+  try {
+    ghSha = data.sha;
+    const content = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    if (Array.isArray(content.vehicles)) S.vehicles = content.vehicles;
+    if (Array.isArray(content.lots)) S.lots = content.lots;
+    if (Array.isArray(content.tasks)) S.tasks = content.tasks;
+    if (content.settings) S.settings = { ...S.settings, ...content.settings };
+    setSyncBadge('ok');
+    applyColors();
+    return true;
+  } catch(e) { setSyncBadge('error'); return false; }
+}
+
+async function saveToGH() {
+  const repo = S.settings.github_repo;
+  saveLocal(); // always local backup
+  if (!repo || !S.settings.github_token) return;
+  setSyncBadge('loading');
+  const payload = { vehicles: S.vehicles, lots: S.lots, tasks: S.tasks, settings: S.settings };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+  const body = { message: `CRM update ${today()}`, content: b64, ...(ghSha ? { sha: ghSha } : {}) };
+  const res = await ghPut(`/repos/${repo}/contents/data/crm.json`, body);
+  if (res && res.content) { ghSha = res.content.sha; setSyncBadge('ok'); }
+  else setSyncBadge('error');
+}
+
+async function loadBriefing() {
+  const repo = S.settings.github_repo;
+  if (!repo || !S.settings.github_token) return;
+  const data = await ghGet(`/repos/${repo}/contents/data/morning_briefing.json`);
+  if (!data || !data.content) return;
+  try {
+    S.briefing = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    renderBriefing();
+  } catch(e) {}
+}
+
+function saveLocal() {
+  localStorage.setItem('flease_crm', JSON.stringify({ vehicles:S.vehicles, lots:S.lots, tasks:S.tasks, settings:S.settings }));
+}
+function loadLocal() {
+  const raw = localStorage.getItem('flease_crm');
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    if (Array.isArray(d.vehicles)) S.vehicles = d.vehicles;
+    if (Array.isArray(d.lots)) S.lots = d.lots;
+    if (Array.isArray(d.tasks)) S.tasks = d.tasks;
+    if (d.settings) S.settings = { ...S.settings, ...d.settings };
+    if (d.morning_briefing) S.morning_briefing = d.morning_briefing;
+  } catch(e) {}
+}
+
+function seedDemoData() {
+  S.vehicles = [
+    { id: 'demo-v1', marque: 'Peugeot',   modele: '308 SW',        annee: 2022, km: 28000, prix_achat: 16500, prix_lld: 380, carburant: 'diesel',  boite: 'auto',     couleur: 'Gris Platinium', vendeur: 'AutoCar Lyon',       contact: '06 12 34 56 78', lien_annonce: 'https://www.leboncoin.fr', notes: 'Très bon état, 2 propriétaires', column: 'sourcing', sub_stage: 'a_contacter', created_at: '2026-03-01', documents: {}, history: [] },
+    { id: 'demo-v2', marque: 'Renault',   modele: 'Clio 5',         annee: 2023, km: 15000, prix_achat: 14200, prix_lld: 320, carburant: 'essence', boite: 'manuelle', couleur: 'Blanc Nacré',    vendeur: 'Renault Pro Lyon',   contact: '04 78 12 34 56', lien_annonce: '',                        notes: 'Révision faite',               column: 'sourcing', sub_stage: 'a_contacter', created_at: '2026-03-03', documents: {}, history: [] },
+    { id: 'demo-v3', marque: 'Toyota',    modele: 'Yaris Cross',    annee: 2023, km: 22000, prix_achat: 19800, prix_lld: 420, carburant: 'hybride', boite: 'auto',     couleur: 'Rouge Barcelone',vendeur: 'Toyota Sud',         contact: '06 98 76 54 32', lien_annonce: '',                        notes: 'Hybride, très demandé',        column: 'sourcing', sub_stage: 'contacte',    created_at: '2026-03-05', documents: {}, history: [] },
+    { id: 'demo-v4', marque: 'Volkswagen',modele: 'Golf 8',         annee: 2022, km: 31000, prix_achat: 22000, prix_lld: 490, carburant: 'diesel',  boite: 'auto',     couleur: 'Noir Profond',   vendeur: 'VW Occasion Grenoble',contact: '06 55 44 33 22',lien_annonce: 'https://www.leboncoin.fr', notes: 'RDV visite samedi 14h',        column: 'sourcing', sub_stage: 'negociation',  created_at: '2026-03-06', documents: {}, history: [] },
+    { id: 'demo-v5', marque: 'Citroën',   modele: 'C5 Aircross',    annee: 2021, km: 42000, prix_achat: 18900, prix_lld: 410, carburant: 'diesel',  boite: 'auto',     couleur: 'Bleu Cobalt',    vendeur: 'Citroën Pro',        contact: '04 72 00 11 22', lien_annonce: '',                        notes: 'Bon de commande signé hier',   column: 'sourcing', sub_stage: 'bc_signe',    created_at: '2026-02-28', documents: {}, history: [] },
+    { id: 'demo-v6', marque: 'BMW',       modele: '118d',           annee: 2022, km: 35000, prix_achat: 24500, prix_lld: 560, carburant: 'diesel',  boite: 'auto',     couleur: 'Blanc Alpin',    vendeur: 'BMW Occasion Paris', contact: '01 23 45 67 89', lien_annonce: '',                        notes: 'Transporteur Bordeaux→Lyon',   column: 'en_transport', sub_stage: null, transport_company: 'Trans Auto 69', transport_eta: '2026-03-14', created_at: '2026-02-25', documents: { carte_grise: false, facture_achat: true, certificat_cession: true  }, history: [{ date: '2026-02-25', msg: 'Passé en transport' }] },
+    { id: 'demo-v7', marque: 'Ford',      modele: 'Puma ST-Line',   annee: 2023, km: 18000, prix_achat: 21000, prix_lld: 450, carburant: 'essence', boite: 'auto',     couleur: 'Bleu Magnetic',  vendeur: 'Ford Direct',        contact: '06 11 22 33 44', lien_annonce: '',                        notes: 'Livraison mercredi matin',     column: 'en_transport', sub_stage: null, transport_company: 'RouleVite SAS',  transport_eta: '2026-03-12', created_at: '2026-03-01', documents: { carte_grise: true,  facture_achat: true, certificat_cession: true  }, history: [] },
+    { id: 'demo-v8', marque: 'Mercedes',  modele: 'Classe A 180',   annee: 2022, km: 27000, prix_achat: 26800, prix_lld: 590, carburant: 'essence', boite: 'auto',     couleur: 'Gris Montagne',  vendeur: 'MB Select Lyon',     contact: '04 72 33 44 55', lien_annonce: '',                        notes: 'Virement à faire avant vendredi', column: 'a_payer', sub_stage: null, created_at: '2026-03-02', documents: { carte_grise: false, facture_achat: true, certificat_cession: false }, history: [{ date: '2026-03-02', msg: 'Passé en À Payer' }] },
+    { id: 'demo-v9', marque: 'Audi',      modele: 'A3 Sportback',   annee: 2022, km: 29000, prix_achat: 28500, prix_lld: 620, carburant: 'diesel',  boite: 'auto',     couleur: 'Rouge Misano',   vendeur: 'Audi Occasion',      contact: '06 77 88 99 00', lien_annonce: '',                        notes: 'Client : Martin SARL',         column: 'livre', sub_stage: null, created_at: '2026-02-20', documents: { carte_grise: true,  facture_achat: true, certificat_cession: true  }, history: [{ date: '2026-02-20', msg: 'Livré chez Martin SARL' }] },
+    { id: 'demo-v10',marque: 'Peugeot',   modele: '3008 GT',        annee: 2021, km: 48000, prix_achat: 23500, prix_lld: 510, carburant: 'diesel',  boite: 'auto',     couleur: 'Gris Artense',   vendeur: 'Peugeot Pro',        contact: '04 74 22 33 44', lien_annonce: '',                        notes: 'Client : Dupont Logistics',    column: 'livre', sub_stage: null, created_at: '2026-03-01', documents: { carte_grise: true,  facture_achat: true, certificat_cession: false }, history: [] },
+  ];
+  S.tasks = [
+    { id: 'demo-t1', column: 'a_faire',   title: 'Virement Mercedes Classe A180 — 26 800 €', description: 'Virement à effectuer avant vendredi 14h — MB Select Lyon', priority: 1, due_date: '2026-03-07', due_time: '14:00', linked_vehicle_id: 'demo-v8', auto_generated: false, created_at: '2026-03-05' },
+    { id: 'demo-t2', column: 'a_faire',   title: 'Rappeler Dupont Logistics pour livraison',  description: 'Confirmer la date et l\'heure de livraison 3008 GT',       priority: 1, due_date: '2026-03-11', due_time: '09:00', linked_vehicle_id: 'demo-v10',auto_generated: false, created_at: '2026-03-08' },
+    { id: 'demo-t3', column: 'a_faire',   title: '🤖 Demander les papiers — BMW 118d',         description: 'Documents manquants : Carte grise',                         priority: 1, due_date: '2026-03-10', due_time: '',      linked_vehicle_id: 'demo-v6', auto_generated: true,  created_at: '2026-02-25' },
+    { id: 'demo-t4', column: 'a_faire',   title: '🤖 Demander les papiers — Mercedes A180',    description: 'Documents manquants : Carte grise, Certificat de cession',  priority: 1, due_date: '2026-03-10', due_time: '',      linked_vehicle_id: 'demo-v8', auto_generated: true,  created_at: '2026-03-02' },
+    { id: 'demo-t5', column: 'en_cours',  title: 'Préparer contrat LLD — Toyota Yaris Cross', description: 'Contrat 36 mois / 15 000 km/an — client PME Rhône',          priority: 2, due_date: '2026-03-18', due_time: '',      linked_vehicle_id: 'demo-v3', auto_generated: false, created_at: '2026-03-07' },
+    { id: 'demo-t6', column: 'en_cours',  title: 'Relance assurance — Audi A3 Sportback',     description: 'Récupérer attestation assurance pour dossier client',        priority: 2, due_date: '2026-03-20', due_time: '',      linked_vehicle_id: 'demo-v9', auto_generated: false, created_at: '2026-03-05' },
+    { id: 'demo-t7', column: 'en_attente',title: 'Attendre 3 devis transporteurs — Ford Puma', description: 'Comparatif Trans Auto / RouleVite / ConvoyExpress',          priority: 3, due_date: null,         due_time: '',      linked_vehicle_id: 'demo-v7', auto_generated: false, created_at: '2026-03-04' },
+    { id: 'demo-t8', column: 'termine',   title: 'Envoyer facture LLD — Martin SARL',          description: 'Facture Audi A3 envoyée par email le 05/03',                 priority: 3, due_date: '2026-03-05', due_time: '',      linked_vehicle_id: 'demo-v9', auto_generated: false, created_at: '2026-03-03' },
+    { id: 'demo-t9', column: 'termine',   title: 'Immatriculation Peugeot 3008 GT',            description: 'Certificat d\'immatriculation reçu et archivé',             priority: 3, due_date: '2026-03-04', due_time: '',      linked_vehicle_id: 'demo-v10',auto_generated: false, created_at: '2026-03-01' },
+  ];
+  S.morning_briefing = {
+    date: '2026-03-10',
+    generated_at: '2026-03-10T06:05:12',
+    emails: [
+      { from: 'fournisseur@bmw-select.fr',   subject: 'Re: Devis BMW 118d — confirmation prix',       priority: 'urgent', summary: 'Confirme 24 500 €, disponible avant vendredi' },
+      { from: 'transport@routevite.fr',       subject: 'Livraison Ford Puma ST-Line — semaine 12',     priority: 'normal', summary: 'Livraison prévue mercredi 13/03 entre 8h-12h' },
+      { from: 'client@martinsarl.fr',         subject: 'Contrat LLD Audi A3 — prêt à signer',         priority: 'normal', summary: 'Besoin du contrat en PDF pour signature ce soir' },
+      { from: 'newsletter@largus.fr',         subject: 'Cotes Auto Mars 2026 — Votre résumé mensuel', priority: 'info',   summary: 'Cotes Peugeot, VW, BMW mises à jour' },
+      { from: 'assurance@maif.fr',            subject: 'Attestation assurance BMW 118d',               priority: 'normal', summary: 'Attestation jointe en pièce jointe PDF' }
+    ],
+    crm_alerts: '📄 3 véhicule(s) avec documents manquants | 💳 1 véhicule(s) en attente de paiement',
+    summary: '5 email(s) • alertes CRM actives'
+  };
+}
+
+function setSyncBadge(status) {
+  const el = document.getElementById('syncBadge');
+  el.className = 'sync-badge';
+  if (status === 'ok') { el.textContent = '✓ Synchronisé'; el.classList.add('synced'); }
+  else if (status === 'error') { el.textContent = '⚠ Non synchronisé'; el.classList.add('error'); }
+  else { el.textContent = '⏳ Sync…'; }
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function onSearch() {
+  searchQ = document.getElementById('searchInput').value.toLowerCase();
+  render();
+}
+const matchV = v => !searchQ || [v.marque,v.modele,v.fournisseur_nom,v.vendeur,v.vin,v.immatriculation,v.source,v.carburant,v.couleur,v.notes].some(s=>s&&s.toLowerCase().includes(searchQ));
+const matchL = l => !searchQ || [l.nom,l.fournisseur,l.description].some(s=>s&&s.toLowerCase().includes(searchQ));
+const matchT = t => !searchQ || [t.title,t.description].some(s=>s&&s.toLowerCase().includes(searchQ));
+
+// Highlight matching text — applique <mark> sur les occurrences du terme cherché
+function hl(raw, q) {
+  if (!q || !raw) return esc(raw || '');
+  const escaped = esc(raw);
+  const escapedQ = esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escaped.replace(new RegExp(`(${escapedQ})`, 'gi'), '<mark class="search-hl">$1</mark>');
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  renderBoard();
+  renderTasksBoard();
+  renderTasksList();
+  renderSidebarBriefing();
+  renderBriefing();
+}
+
+// -------- BOARD --------
+function renderBoard() {
+  const cols = COLUMNS.filter(c => c.key !== 'archive' || S.settings.show_archive);
+  document.getElementById('board').innerHTML = cols.map(col => renderCol(col)).join('');
+}
+
+function renderCol(col) {
+  const vehicles = S.vehicles.filter(v => v.column === col.key && matchV(v));
+  const lots = S.lots.filter(l => l.column === col.key && matchL(l));
+
+  let bodyHtml;
+
+  if (col.key === 'sourcing') {
+    // Sub-tabs
+    const bySS = {};
+    SUB_STAGES.forEach(ss => { bySS[ss.key] = vehicles.filter(v => v.sub_stage === ss.key); });
+    const curVehicles = bySS[activeSS] || [];
+    const subTabsHtml = SUB_STAGES.map(ss => `
+      <div class="ss-tab ${activeSS === ss.key ? 'active' : ''}" onclick="setActiveSS('${ss.key}')">
+        ${ss.label}<span class="ss-tab-count">${bySS[ss.key].length}</span>
+      </div>`).join('');
+    const cards = curVehicles.map(v => vehicleCard(v)).join('') +
+      lots.map(l => lotCard(l)).join('') +
+      (curVehicles.length === 0 && lots.length === 0 ? emptyState('🔍', 'Aucun véhicule') : '');
+    bodyHtml = `
+      <div class="sourcing-subtabs">${subTabsHtml}</div>
+      <div class="column-body" id="col-${col.key}" ondragover="onDOver(event)" ondrop="onDrop(event,'${col.key}')">${cards}</div>`;
+  } else {
+    const cards = vehicles.map(v => vehicleCard(v)).join('') +
+      lots.map(l => lotCard(l)).join('') +
+      (vehicles.length + lots.length === 0 ? emptyState('✨','Vide') : '');
+    bodyHtml = `<div class="column-body" id="col-${col.key}" ondragover="onDOver(event)" ondrop="onDrop(event,'${col.key}')">${cards}</div>`;
+  }
+
+  const allV = vehicles.length + lots.length;
+  const totalPrix = vehicles.reduce((s,v)=>s+(Number(v.prix_negocie)||Number(v.prix_demande)||0), 0);
+
+  return `<div class="column">
+    <div class="column-header">
+      <span class="col-title">${col.label}</span>
+      <span class="col-count">${allV}</span>
+      ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
+    </div>
+    ${bodyHtml}
+    <div class="col-add"><button onclick="openAddVehicle('${col.key}')">+ Véhicule</button></div>
+  </div>`;
+}
+
+function setActiveSS(ss) { activeSS = ss; renderBoard(); }
+
+function vehicleCard(v) {
+  const urg = urgClass(v.priority);
+  const price = v.prix_negocie || v.prix_demande;
+  const showDocs = docsVisible(v);
+  const missD = hasMissingDocs(v);
+
+  const ssBar = v.column === 'sourcing' ? (() => {
+    const idx = getSSIdx(v.sub_stage);
+    return `<div class="ss-bar">${SUB_STAGES.map((ss,i) => `<div class="ss-step ${i<idx?'done':i===idx?'active':''}"></div>`).join('')}</div>
+    <div class="ss-label">${getSS(v.sub_stage).label}</div>`;
+  })() : '';
+
+  const docBadges = showDocs ? `<div class="doc-badges">${DOCS.map(d =>
+    `<div class="doc-badge ${v.documents&&v.documents[d.key]?'ok':'ko'}" title="${d.full}">${d.label}</div>`).join('')}</div>` : '';
+
+  // Warning persistant dès À Payer et sur toutes les colonnes suivantes (sauf archive)
+  const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
+    ? `<div class="doc-warn">⚠️ Documents manquants</div>` : '';
+
+  let actions = '';
+  if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
+    actions = `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}',event)">→ À Payer</button>`;
+  else if (v.column === 'a_payer')
+    actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
+  else if (v.column === 'en_transport')
+    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Confirmé livré</button>`;
+  else if (v.column === 'livre')
+    actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
+
+  const isMatch = searchQ && matchV(v);
+  return `<div class="card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
+    ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
+    ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+    onclick="openDetail('${v.id}')"
+    oncontextmenu="openCtx(event,'vehicle','${v.id}')">
+    <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+    <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)} ${v.annee||''}</div>
+    <div class="tags">
+      ${v.km ? `<span class="tag">${Number(v.km).toLocaleString('fr-FR')} km</span>` : ''}
+      ${v.carburant ? `<span class="tag">${hl(v.carburant, searchQ)}</span>` : ''}
+      ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
+      ${v.fournisseur_nom ? `<span class="tag">${hl(v.fournisseur_nom, searchQ)}</span>` : ''}
+    </div>
+    ${ssBar}${docBadges}${docWarn}
+    ${actions ? `<div class="card-actions">${actions}</div>` : ''}
+  </div>`;
+}
+
+function lotCard(l) {
+  const urg = urgClass(l.priority);
+  return `<div class="card lot-card ${urg}"
+    onclick="openLotDetail('${l.id}')"
+    oncontextmenu="openCtx(event,'lot','${l.id}')">
+    <div class="lot-badge">📦 ${l.nb_vehicules||'?'} véh.</div>
+    <div class="card-title">${esc(l.nom)}</div>
+    <div class="tags">
+      ${l.fournisseur ? `<span class="tag">${esc(l.fournisseur)}</span>` : ''}
+      ${l.prix_total ? `<span class="tag tag-blue">${fmtN(l.prix_total)}</span>` : ''}
+    </div>
+    ${l.description ? `<div class="card-sub" style="margin-top:4px">${esc(l.description.slice(0,80))}${l.description.length>80?'…':''}</div>` : ''}
+  </div>`;
+}
+
+// -------- TASKS VIEW TOGGLE --------
+let tasksViewMode = localStorage.getItem('tasksViewMode') || 'kanban';
+function setTasksView(mode) {
+  tasksViewMode = mode;
+  localStorage.setItem('tasksViewMode', mode);
+  document.getElementById('tasksBoard').style.display = mode === 'kanban' ? '' : 'none';
+  document.getElementById('tasksList').style.display  = mode === 'list'   ? '' : 'none';
+  document.getElementById('tvt-kanban').classList.toggle('active', mode === 'kanban');
+  document.getElementById('tvt-list').classList.toggle('active', mode === 'list');
+  if (mode === 'list') renderTasksList();
+}
+function initTasksViewMode() {
+  const btn = document.getElementById('tvt-' + tasksViewMode);
+  if (btn) { btn.classList.add('active'); document.getElementById('tvt-' + (tasksViewMode === 'kanban' ? 'list' : 'kanban')).classList.remove('active'); }
+  setTasksView(tasksViewMode);
+}
+
+// -------- TASKS LIST VIEW --------
+const PRIORITY_GROUPS = [
+  { prio: 1, label: '🔴 Urgences', cls: 'urg-1' },
+  { prio: 2, label: '🟠 Priorité normale', cls: 'urg-2' },
+  { prio: 3, label: '🔵 Faible priorité', cls: 'urg-3' },
+  { prio: null, label: '⚪ Sans priorité', cls: '' },
+];
+const ACTIVE_TASK_COLS = ['a_faire','en_cours','en_attente'];
+const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'En attente' };
+
+function renderTasksList() {
+  const el = document.getElementById('tasksList');
+  if (!el) return;
+  const activeTasks = S.tasks.filter(t => ACTIVE_TASK_COLS.includes(t.column) && matchT(t));
+  if (!activeTasks.length) { el.innerHTML = `<div class="tl-empty">✨ Aucune tâche active</div>`; return; }
+  const todayStr = today();
+  let html = '';
+  PRIORITY_GROUPS.forEach(g => {
+    const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
+    if (!group.length) return;
+    html += `<div class="tl-group"><div class="tl-group-title">${g.label} <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">${group.length}</span></div>`;
+    group.forEach(t => {
+      const overdue = t.due_date && t.due_date < todayStr;
+      const isMatch = searchQ && matchT(t);
+      const hasTags = t.due_date || t.linked_vehicle_id;
+      html += `<div class="tl-row ${g.cls}${isMatch ? ' search-match' : ''}" onclick="openEditTask('${t.id}')">
+        <span class="tl-col-badge tl-col-${t.column}">${COL_LABEL[t.column]||t.column}</span>
+        <div class="tl-content">
+          <div class="tl-title">${t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : ''}${hl(t.title, searchQ)}</div>
+          ${t.description ? `<div class="tl-desc">${hl(t.description, searchQ)}</div>` : ''}
+          ${hasTags ? `<div class="tl-tags" style="margin-top:5px">
+            ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time?' · '+t.due_time:''}</span>` : ''}
+            ${t.linked_vehicle_id ? `<span class="tag tag-blue">🚗 Lié véh.</span>` : ''}
+          </div>` : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+// -------- TASKS BOARD --------
+function renderTasksBoard() {
+  document.getElementById('tasksBoard').innerHTML = TASK_COLS.map(col => {
+    const tasks = S.tasks.filter(t => t.column === col.key && matchT(t));
+    return `<div class="column">
+      <div class="column-header">
+        <span class="col-title">${col.label}</span>
+        <span class="col-count">${tasks.length}</span>
+      </div>
+      <div class="column-body" ondragover="onDOver(event)" ondrop="onDropTask(event,'${col.key}')">
+        ${tasks.map(t => taskCard(t)).join('')}
+        ${tasks.length === 0 ? emptyState('✨','Vide') : ''}
+      </div>
+      <div class="col-add"><button onclick="openAddTask('${col.key}')">+ Tâche</button></div>
+    </div>`;
+  }).join('');
+}
+
+function taskCard(t) {
+  const urg = urgClass(t.priority);
+  const overdue = t.due_date && t.due_date < today() && t.column !== 'termine';
+  const isMatch = searchQ && matchT(t);
+  return `<div class="card task-card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
+    ondragstart="dStart(event,'task','${t.id}')" ondragend="dEnd(event)"
+    ontouchstart="tStart(event,'task','${t.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+    onclick="openEditTask('${t.id}')"
+    oncontextmenu="openCtx(event,'task','${t.id}')">
+    <div class="card-btn-group">
+      <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('task','${t.id}')" title="Déplacer vers…">↔</button>
+      <button class="card-icon-btn" onclick="event.stopPropagation();shareTask('${t.id}')" title="Envoyer vers Rappels">📲</button>
+    </div>
+    <div class="card-title" style="padding-right:56px">${t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : ''}${hl(t.title, searchQ)}</div>
+    ${t.description ? `<div class="card-sub" style="margin-top:3px">${hl(t.description.slice(0,70), searchQ)}${t.description.length>70?'…':''}</div>` : ''}
+    <div class="tags" style="margin-top:6px">
+      ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time ? ' · ' + t.due_time : ''}</span>` : ''}
+      ${t.linked_vehicle_id ? `<span class="tag tag-blue">🚗 Lié véh.</span>` : ''}
+    </div>
+  </div>`;
+}
+
+// -------- SIDEBAR BRIEFING --------
+function renderSidebarBriefing() {
+  const panels = ['sidebarBriefing','sidebarBriefingAchats'].map(id => document.getElementById(id)).filter(Boolean);
+  if (!panels.length) return;
+  const panel = panels[0]; // used for early returns below; all panels get same HTML at end
+
+  // --- BLOC 1 : Urgences du jour ---
+  const todayStr = today();
+  const urgent = S.tasks.filter(t => t.column !== 'termine' && t.priority === 1)
+    .sort((a,b) => (a.due_date||'9999') < (b.due_date||'9999') ? -1 : 1);
+  const overdueTasks = S.tasks.filter(t => t.column !== 'termine' && t.due_date && t.due_date < todayStr);
+
+  const urgHTML = urgent.length ? urgent.slice(0,5).map(t => {
+    const overdue = t.due_date && t.due_date < todayStr;
+    const badgeClass = overdue ? 'bp-badge-red' : 'bp-badge-orange';
+    const badgeTxt = overdue ? '⚠️ Retard' : (t.due_date ? fmtDs(t.due_date) + (t.due_time ? ' ' + t.due_time : '') : '');
+    return `<div class="bp-item" onclick="openEditTask('${t.id}')">
+      <div class="bp-item-text">
+        <div class="bp-item-title">${esc(t.title)}</div>
+        ${t.description ? `<div class="bp-item-sub">${esc(t.description.slice(0,45))}${t.description.length>45?'…':''}</div>` : ''}
+      </div>
+      ${badgeTxt ? `<span class="bp-badge ${badgeClass}">${badgeTxt}</span>` : ''}
+    </div>`;
+  }).join('') : `<div class="bp-empty">✅ Aucune urgence</div>`;
+
+  const urgTitle = `🔴 Urgences${overdueTasks.length ? ` <span style="color:#dc2626">(${overdueTasks.length} en retard)</span>` : ''}`;
+
+  // --- BLOC 2 : Emails de la nuit (morning_briefing.json) ---
+  const b = S.morning_briefing;
+  let emailsHTML = '';
+  let briefingDate = '';
+  if (b && b.emails && b.emails.length) {
+    briefingDate = b.date ? `Généré le ${fmtDs(b.date)}` : '';
+    emailsHTML = b.emails.slice(0,5).map(e => {
+      const prio = e.priority === 'urgent' ? 'bp-badge-red' : e.priority === 'normal' ? 'bp-badge-blue' : 'bp-badge-gray';
+      const prioDot = e.priority === 'urgent' ? '🔴' : e.priority === 'normal' ? '🟠' : '🔵';
+      return `<div class="bp-item">
+        <div style="font-size:14px;margin-top:1px">${prioDot}</div>
+        <div class="bp-item-text">
+          <div class="bp-item-title">${esc((e.subject||'').slice(0,42))}${(e.subject||'').length>42?'…':''}</div>
+          <div class="bp-item-sub">${esc((e.from||'').slice(0,35))} ${e.summary ? '— ' + esc(e.summary.slice(0,30)) : ''}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    emailsHTML = `<div class="bp-empty">Aucun email chargé</div>
+      <button class="bp-load-btn" onclick="loadBriefing()">⟳ Charger le briefing matin</button>`;
+  }
+
+  // --- BLOC 3 : Alertes CRM ---
+  const DOCS_KEYS = ['carte_grise','facture_achat','certificat_cession'];
+  const missingDocs = S.vehicles.filter(v =>
+    ['en_transport','livre','a_payer'].includes(v.column) &&
+    DOCS_KEYS.some(d => !v.documents?.[d])
+  );
+  const stuckPayment = S.vehicles.filter(v => v.column === 'a_payer');
+  const overdueV = S.tasks.filter(t => t.auto_generated && t.column !== 'termine');
+
+  const alertsHTML = [
+    missingDocs.length ? `<div class="bp-alert-row"><span style="font-size:15px">📄</span><span><strong>${missingDocs.length}</strong> véhicule${missingDocs.length>1?'s':''} avec docs manquants</span></div>` : '',
+    stuckPayment.length ? `<div class="bp-alert-row"><span style="font-size:15px">💳</span><span><strong>${stuckPayment.length}</strong> véhicule${stuckPayment.length>1?'s':''} en attente de paiement</span></div>` : '',
+    overdueV.length ? `<div class="bp-alert-row"><span style="font-size:15px">🤖</span><span><strong>${overdueV.length}</strong> tâche${overdueV.length>1?'s':''} auto (papiers) ouvertes</span></div>` : '',
+    overdueTasks.length ? `<div class="bp-alert-row"><span style="font-size:15px">⏰</span><span><strong>${overdueTasks.length}</strong> tâche${overdueTasks.length>1?'s':''} en retard</span></div>` : '',
+  ].filter(Boolean).join('') || `<div class="bp-empty">✅ Aucune alerte CRM</div>`;
+
+  const html = `
+    <div class="bp-card">
+      <div class="bp-card-title">🔴 ${urgTitle}</div>
+      ${urgHTML}
+    </div>
+    <div class="bp-card">
+      <div class="bp-card-title">📬 Emails</div>
+      ${emailsHTML}
+      ${briefingDate ? `<div class="bp-refresh">${briefingDate}</div>` : ''}
+    </div>
+    <div class="bp-card">
+      <div class="bp-card-title">⚠️ Alertes CRM</div>
+      ${alertsHTML}
+    </div>`;
+  panels.forEach(p => p.innerHTML = html);
+}
+
+// -------- CARD SIZE --------
+const CARD_SIZES = [
+  { key: 'normal',  label: 'Normal',  cls: '' },
+  { key: 'compact', label: 'Compact', cls: 'card-compact' },
+  { key: 'large',   label: 'Large',   cls: 'card-large' },
+];
+let cardSizeIdx = (() => {
+  const saved = localStorage.getItem('cardSize');
+  const i = CARD_SIZES.findIndex(s => s.key === saved);
+  return i >= 0 ? i : 0;
+})();
+function applyCardSize() {
+  CARD_SIZES.forEach(s => document.body.classList.remove(s.cls));
+  const s = CARD_SIZES[cardSizeIdx];
+  if (s.cls) document.body.classList.add(s.cls);
+  const lbl = document.getElementById('cardSizeLbl');
+  if (lbl) lbl.textContent = s.label;
+  for (let i = 0; i < 3; i++) {
+    const pip = document.getElementById('pip' + i);
+    if (pip) pip.classList.toggle('active', i === cardSizeIdx);
+  }
+}
+function cycleCardSize() {
+  cardSizeIdx = (cardSizeIdx + 1) % CARD_SIZES.length;
+  localStorage.setItem('cardSize', CARD_SIZES[cardSizeIdx].key);
+  applyCardSize();
+}
+applyCardSize();
+
+async function loadBriefing() {
+  const { github_token: tok, github_repo: repo } = S.settings;
+  if (!tok || !repo) { showToast('⚙️ Configure ton token GitHub dans Paramètres'); return; }
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/data/morning_briefing.json`,
+      { headers: { Authorization: `Bearer ${tok}`, Accept: 'application/vnd.github.v3+json' } });
+    if (!r.ok) throw new Error('404');
+    const j = await r.json();
+    S.morning_briefing = JSON.parse(atob(j.content.replace(/\n/g,'')));
+    renderSidebarBriefing();
+    showToast('📬 Briefing chargé !');
+  } catch(e) { showToast('❌ Briefing introuvable — lance le workflow GitHub Actions'); }
+}
+
+// -------- DASHBOARD --------
+function renderDashboard() {
+  const v = S.vehicles;
+  const byCols = {};
+  COLUMNS.forEach(c => byCols[c.key] = v.filter(x => x.column === c.key).length);
+  const totalBudget = v.reduce((s,x)=>s+(Number(x.prix_negocie)||Number(x.prix_demande)||0),0);
+  const aPayer = v.filter(x=>x.column==='a_payer').reduce((s,x)=>s+(Number(x.prix_negocie)||Number(x.prix_demande)||0),0);
+  const docsKO = v.filter(x=>docsVisible(x)&&hasMissingDocs(x)).length;
+
+  const kpis = [
+    { label:'Total véhicules', value:v.length, sub:'en pipeline' },
+    { label:'À payer', value:byCols.a_payer||0, sub:fmtN(aPayer) },
+    { label:'En transport', value:byCols.en_transport||0, sub:'' },
+    { label:'Livrés', value:byCols.livre||0, sub:'' },
+    { label:'Budget engagé', value:fmtN(totalBudget), sub:'', big:true },
+    { label:'Lots actifs', value:S.lots.filter(l=>l.column!=='archive').length, sub:'' },
+    { label:'Tâches ouvertes', value:S.tasks.filter(t=>t.column!=='termine').length, sub:'' },
+    { label:'Docs manquants', value:docsKO, sub:'véhicules', warn: docsKO > 0 },
+  ];
+  document.getElementById('kpiGrid').innerHTML = kpis.map(k=>`
+    <div class="kpi-card">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value${k.warn?' warn':''}">${k.value}</div>
+      ${k.sub ? `<div class="kpi-sub">${k.sub}</div>` : ''}
+    </div>`).join('');
+
+  const maxC = Math.max(...COLUMNS.map(c=>byCols[c.key]||0), 1);
+  document.getElementById('pipeline').innerHTML = COLUMNS.map(c=>`
+    <div class="pipe-item">
+      <span class="pipe-label">${c.label.replace(/[📋💳🚛✅🗄️]/g,'').trim()}</span>
+      <div class="pipe-bar-wrap"><div class="pipe-bar" style="width:${((byCols[c.key]||0)/maxC*100).toFixed(0)}%"></div></div>
+      <span class="pipe-num">${byCols[c.key]||0}</span>
+    </div>`).join('');
+
+  const uc = S.settings.urgency_colors;
+  const colorLabels = { urg_1:'🔴 Très urgent', urg_2:'🟠 Urgent', urg_3:'⚪ Normal', urg_done:'✅ Terminé' };
+  document.getElementById('colorGrid').innerHTML = Object.entries(colorLabels).map(([k,lbl])=>`
+    <div class="color-item">
+      <div class="color-swatch" style="background:${uc[k]||'#888'}">
+        <input type="color" value="${uc[k]||'#888'}" oninput="updateColor('${k}',this.value)" title="Modifier">
+      </div>
+      <span>${lbl}</span>
+    </div>`).join('');
+
+  // Doc alerts
+  const alerts = v.filter(x=>docsVisible(x)&&hasMissingDocs(x));
+  document.getElementById('docAlerts').innerHTML = alerts.length === 0
+    ? '<span style="color:var(--urg-done);font-size:13px">✅ Tous les documents sont reçus</span>'
+    : alerts.map(x=>`<div class="alert-item">
+        <span style="color:var(--urg-1)">⚠️</span>
+        <strong style="font-size:13px">${esc(x.marque)} ${esc(x.modele)}</strong>
+        <span style="font-size:12px;color:var(--text-muted)">— ${DOCS.filter(d=>!x.documents||!x.documents[d.key]).map(d=>d.full).join(', ')}</span>
+        <button class="btn btn-ghost btn-sm" onclick="openDetail('${x.id}');showView('achats',document.querySelector('.tab-btn'))">Voir</button>
+      </div>`).join('');
+
+  // Auto tasks
+  const auto = S.tasks.filter(t=>t.auto_generated && t.column !== 'termine');
+  document.getElementById('autoTasks').innerHTML = auto.length === 0
+    ? '<span style="color:var(--text-muted);font-size:13px">Aucune tâche auto-générée en attente</span>'
+    : auto.map(t=>`<div class="alert-item">
+        <span style="color:var(--urg-1)">🤖</span>
+        <strong style="font-size:13px">${esc(t.title)}</strong>
+        <button class="btn btn-ghost btn-sm" onclick="openEditTask('${t.id}');showView('taches',document.querySelectorAll('.tab-btn')[1])">Ouvrir</button>
+      </div>`).join('');
+}
+
+function updateColor(k, val) {
+  S.settings.urgency_colors[k] = val;
+  applyColors();
+  saveToGH();
+}
+
+function applyColors() {
+  const uc = S.settings.urgency_colors;
+  const r = document.documentElement;
+  if (uc.urg_1) r.style.setProperty('--urg-1', uc.urg_1);
+  if (uc.urg_2) r.style.setProperty('--urg-2', uc.urg_2);
+  if (uc.urg_3) r.style.setProperty('--urg-3', uc.urg_3);
+  if (uc.urg_done) r.style.setProperty('--urg-done', uc.urg_done);
+}
+
+// -------- BRIEFING --------
+function renderBriefing() {
+  const b = S.briefing;
+  if (!b) return;
+  if (b.date) document.getElementById('briefingTitle').textContent = `📬 Briefing — ${fmtDs(b.date)}`;
+  const emails = b.emails || [];
+  document.getElementById('briefingEmails').innerHTML = emails.length === 0
+    ? '<span style="font-size:13px;color:var(--text-muted)">Aucun email récent</span>'
+    : emails.map(e=>`<div class="email-card ${e.priority||'normal'}">
+        <div class="email-from">${esc(e.from||'')}</div>
+        <div class="email-subj">${esc(e.subject||'')}</div>
+      </div>`).join('');
+  if (b.crm_alerts) document.getElementById('briefingAlerts').textContent = b.crm_alerts;
+  if (emails.some(e=>e.priority==='urgent')) document.getElementById('notifDot').style.display = 'block';
+}
+
+function emptyState(icon, txt) {
+  return `<div class="empty"><div class="empty-icon">${icon}</div>${txt}</div>`;
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'dashboard') renderDashboard();
+}
+
+function toggleBriefing() {
+  const p = document.getElementById('briefingPanel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) document.getElementById('notifDot').style.display = 'none';
+}
+
+// ============================================================
+// FORM HELPERS
+// ============================================================
+function pickSS(el) {
+  document.querySelectorAll('#vSubStage .stage-opt').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function pickUrg(el, groupId) {
+  document.querySelectorAll(`#${groupId} .urg-opt`).forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function pickRadio(el, groupId) {
+  document.querySelectorAll(`#${groupId} .radio-opt`).forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function getUrg(groupId) { const el = document.querySelector(`#${groupId} .urg-opt.sel`); return el ? Number(el.dataset.urg) : 3; }
+function getSel(sel) { const el = document.querySelector(sel+'.sel'); return el ? el.dataset.ss || el.dataset.val : null; }
+
+// ============================================================
+// VEHICLE CRUD
+// ============================================================
+function openAddVehicle(col) {
+  editingVehicleId = null;
+  window._addCol = col || 'sourcing';
+  document.getElementById('vModalTitle').textContent = 'Nouveau véhicule';
+  // Reset form
+  ['vMarque','vModele','vAnnee','vKm','vVin','vImmat','vPrixD','vPrixN','vUrl','vFNom','vFTel','vFEmail','vComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('vCarburant').value='Essence';
+  document.getElementById('vBoite').value='Automatique';
+  document.getElementById('vSource').value='LeBonCoin';
+  document.querySelectorAll('#vSubStage .stage-opt').forEach(el=>el.classList.toggle('sel',el.dataset.ss==='a_contacter'));
+  document.querySelectorAll('#vUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg==='3'));
+  openModal('ovVehicle');
+}
+
+function editVehicle() {
+  const v = S.vehicles.find(x=>x.id===currentDetailId);
+  if (!v) return;
+  closeModal('ovDetail');
+  editingVehicleId = v.id;
+  document.getElementById('vModalTitle').textContent = 'Modifier véhicule';
+  const set = (id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
+  set('vMarque',v.marque); set('vModele',v.modele); set('vAnnee',v.annee); set('vKm',v.km);
+  set('vVin',v.vin); set('vImmat',v.immatriculation); set('vPrixD',v.prix_demande); set('vPrixN',v.prix_negocie);
+  set('vUrl',v.url_annonce); set('vFNom',v.fournisseur_nom); set('vFTel',v.fournisseur_tel);
+  set('vFEmail',v.fournisseur_email); set('vComment',v.commentaire);
+  document.getElementById('vCarburant').value = v.carburant||'Essence';
+  document.getElementById('vBoite').value = v.boite||'Automatique';
+  document.getElementById('vSource').value = v.source||'LeBonCoin';
+  document.querySelectorAll('#vSubStage .stage-opt').forEach(el=>el.classList.toggle('sel',el.dataset.ss===v.sub_stage));
+  document.querySelectorAll('#vUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg===String(v.priority)));
+  openModal('ovVehicle');
+}
+
+function saveVehicle() {
+  const marque = document.getElementById('vMarque').value.trim();
+  const modele = document.getElementById('vModele').value.trim();
+  if (!marque || !modele) { alert('Marque et modèle requis'); return; }
+
+  const ss = getSel('#vSubStage .stage-opt') || 'a_contacter';
+  const urg = getUrg('vUrg');
+
+  const data = {
+    marque, modele,
+    annee: document.getElementById('vAnnee').value,
+    km: document.getElementById('vKm').value,
+    carburant: document.getElementById('vCarburant').value,
+    boite: document.getElementById('vBoite').value,
+    vin: document.getElementById('vVin').value.trim(),
+    immatriculation: document.getElementById('vImmat').value.trim(),
+    prix_demande: document.getElementById('vPrixD').value,
+    prix_negocie: document.getElementById('vPrixN').value,
+    source: document.getElementById('vSource').value,
+    url_annonce: document.getElementById('vUrl').value.trim(),
+    fournisseur_nom: document.getElementById('vFNom').value.trim(),
+    fournisseur_tel: document.getElementById('vFTel').value.trim(),
+    fournisseur_email: document.getElementById('vFEmail').value.trim(),
+    commentaire: document.getElementById('vComment').value.trim(),
+    sub_stage: ss,
+    priority: urg
+  };
+
+  if (editingVehicleId) {
+    const v = S.vehicles.find(x=>x.id===editingVehicleId);
+    if (v) { Object.assign(v, data); addHist(v,'Informations modifiées'); }
+  } else {
+    const col = window._addCol || 'sourcing';
+    const v = {
+      id: uid(), column: col, sub_stage: col === 'sourcing' ? ss : null,
+      priority: urg, created_at: today(),
+      documents: { carte_grise:false, facture_achat:false, certificat_cession:false },
+      historique: [{ date:today(), action:'Véhicule créé' }],
+      ...data
+    };
+    // Auto-transition BC Signé → À Payer
+    if (col === 'sourcing' && ss === 'bc_signe') {
+      v.column = 'a_payer'; v.sub_stage = null;
+      addHist(v, 'Auto-passage en À Payer (BC Signé)');
+      S.vehicles.push(v);
+      createDocsTask(v); // auto-tâche si docs manquants
+    } else {
+      S.vehicles.push(v);
+    }
+  }
+
+  closeModal('ovVehicle');
+  render();
+  saveToGH();
+}
+
+function deleteVehicle(id) {
+  if (!confirm('Supprimer ce véhicule définitivement ?')) return;
+  S.vehicles = S.vehicles.filter(v=>v.id!==id);
+  closeModal('ovDetail');
+  render();
+  saveToGH();
+}
+
+// ============================================================
+// VEHICLE TRANSITIONS
+// ============================================================
+
+// Crée l'auto-tâche "Demander les papiers" si docs manquants et pas déjà ouverte
+function createDocsTask(v) {
+  if (!hasMissingDocs(v)) return;
+  const alreadyOpen = S.tasks.find(t => t.linked_vehicle_id === v.id && t.auto_generated && t.column !== 'termine');
+  if (alreadyOpen) return;
+  const missing = DOCS.filter(d => !v.documents || !v.documents[d.key]).map(d => d.full).join(', ');
+  S.tasks.push({
+    id: uid(), column: 'a_faire',
+    title: `Demander les papiers — ${v.marque} ${v.modele}`,
+    description: `Documents manquants : ${missing}`,
+    priority: 1, due_date: today(),
+    linked_vehicle_id: v.id, auto_generated: true, created_at: today()
+  });
+}
+
+function moveToAPayer(id, event) {
+  if (event) event.stopPropagation();
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  v.column = 'a_payer'; v.sub_stage = null;
+  addHist(v, 'Passé en À Payer');
+  createDocsTask(v); // auto-tâche dès le paiement si docs manquants
+  render(); saveToGH();
+}
+
+function openTransportModal(id, event) {
+  if (event) event.stopPropagation();
+  pendingTransportId = id;
+  document.getElementById('tDate').value = today();
+  document.getElementById('tNotes').value = '';
+  document.querySelectorAll('#transportMode .radio-opt').forEach(el=>el.classList.toggle('sel',el.dataset.val==='camion'));
+  openModal('ovTransport');
+}
+
+function confirmTransport() {
+  if (!pendingTransportId) return;
+  const v = S.vehicles.find(x=>x.id===pendingTransportId);
+  if (!v) return;
+  const modeEl = document.querySelector('#transportMode .radio-opt.sel');
+  v.transport_methode = modeEl ? modeEl.dataset.val : 'camion';
+  v.transport_date = document.getElementById('tDate').value;
+  v.transport_notes = document.getElementById('tNotes').value;
+  v.column = 'en_transport';
+  addHist(v, `Mis en transport (${v.transport_methode === 'camion' ? 'Camion' : 'Convoyage'})`);
+  closeModal('ovTransport');
+  render(); saveToGH();
+}
+
+function confirmArrival(id, event) {
+  if (event) event.stopPropagation();
+  if (!confirm('Confirmer la livraison de ce véhicule ?')) return;
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  v.column = 'livre'; v.date_livraison = today();
+  addHist(v, 'Livraison confirmée');
+  createDocsTask(v); // re-crée la tâche si elle a été clôturée entre temps
+  render(); saveToGH();
+}
+
+function archiveV(id, event) {
+  if (event) event.stopPropagation();
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  v.column = 'archive'; addHist(v,'Archivé');
+  render(); saveToGH();
+}
+
+// ============================================================
+// VEHICLE DETAIL
+// ============================================================
+function openDetail(id) {
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  currentDetailId = id;
+  document.getElementById('detailTitle').textContent = `${v.marque} ${v.modele}${v.annee?' '+v.annee:''}`;
+
+  const showDocs = docsVisible(v);
+  const missD = hasMissingDocs(v);
+
+  const docsSection = showDocs ? `
+    <div class="form-section">
+      <div class="form-section-title">📄 Documents ${missD ? '<span style="color:var(--urg-2)">⚠️ Incomplets</span>' : '<span style="color:var(--urg-done)">✅ Complets</span>'}</div>
+      <div class="doc-checklist">
+        ${DOCS.map(d=>`
+          <div class="doc-item ${v.documents&&v.documents[d.key]?'checked':''}" onclick="toggleDoc('${v.id}','${d.key}')">
+            <div class="doc-checkbox">${v.documents&&v.documents[d.key]?'✓':''}</div>
+            <span class="doc-label">${d.full}</span>
+          </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  const transportSection = v.transport_methode ? `
+    <div class="form-section">
+      <div class="form-section-title">🚛 Transport</div>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Mode</label><value>${v.transport_methode==='camion'?'🚛 Camion':'🚗 Convoyage'}</value></div>
+        <div class="detail-field"><label>Date départ</label><value>${fmtD(v.transport_date)}</value></div>
+      </div>
+      ${v.transport_notes ? `<div style="font-size:13px;margin-top:8px;color:var(--text-muted)">${esc(v.transport_notes)}</div>` : ''}
+    </div>` : '';
+
+  const histSection = v.historique && v.historique.length ? `
+    <div class="form-section">
+      <div class="form-section-title">📅 Historique</div>
+      <div class="timeline">
+        ${[...v.historique].reverse().slice(0,8).map(h=>`
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-txt"><strong>${h.date}</strong> — ${esc(h.action)}</div></div>`).join('')}
+      </div>
+    </div>` : '';
+
+  let actionBtns = '';
+  if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
+    actionBtns += `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}');closeModal('ovDetail')">→ À Payer</button>`;
+  if (v.column === 'a_payer')
+    actionBtns += `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}');closeModal('ovDetail')">🚛 Transport</button>`;
+  if (v.column === 'en_transport')
+    actionBtns += `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}');closeModal('ovDetail')">✅ Livré</button>`;
+  if (v.column === 'livre')
+    actionBtns += `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}');closeModal('ovDetail')">🗄️ Archiver</button>`;
+  actionBtns += `<button class="btn btn-danger btn-sm" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
+
+  const price = v.prix_negocie || v.prix_demande;
+  document.getElementById('detailBody').innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-field"><label>Kilométrage</label><value>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</value></div>
+      <div class="detail-field"><label>Carburant / Boîte</label><value>${v.carburant||'—'} / ${v.boite||'—'}</value></div>
+      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande)}</value></div>
+      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
+      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
+      ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
+      <div class="detail-field"><label>Source</label><value>${v.url_annonce ? `<a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary)">${esc(v.source)}</a>` : esc(v.source)||'—'}</value></div>
+      <div class="detail-field"><label>Colonne</label><value>${COLUMNS.find(c=>c.key===v.column)?.label||v.column}</value></div>
+    </div>
+    ${v.fournisseur_nom ? `
+    <div class="form-section">
+      <div class="form-section-title">🏢 Fournisseur</div>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom)}</value></div>
+        ${v.fournisseur_tel ? `<div class="detail-field"><label>Tél</label><value><a href="tel:${esc(v.fournisseur_tel)}" style="color:var(--primary)">${esc(v.fournisseur_tel)}</a></value></div>` : ''}
+        ${v.fournisseur_email ? `<div class="detail-field"><label>Email</label><value><a href="mailto:${esc(v.fournisseur_email)}" style="color:var(--primary)">${esc(v.fournisseur_email)}</a></value></div>` : ''}
+      </div>
+    </div>` : ''}
+    ${docsSection}
+    ${transportSection}
+    ${v.commentaire ? `<div class="form-section"><div class="form-section-title">💬 Commentaire</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5">${esc(v.commentaire)}</div></div>` : ''}
+    ${histSection}
+    <div class="form-section" style="display:flex;gap:8px;justify-content:flex-end">${actionBtns}</div>
+  `;
+  openModal('ovDetail');
+}
+
+function toggleDoc(vehicleId, docKey) {
+  const v = S.vehicles.find(x=>x.id===vehicleId);
+  if (!v) return;
+  if (!v.documents) v.documents = {};
+  v.documents[docKey] = !v.documents[docKey];
+  addHist(v, `Document "${DOCS.find(d=>d.key===docKey)?.full||docKey}" ${v.documents[docKey]?'reçu ✓':'retiré'}`);
+  openDetail(vehicleId); // refresh detail
+  render();
+  saveToGH();
+}
+
+// ============================================================
+// LOT CRUD
+// ============================================================
+function openAddLot() {
+  editingLotId = null;
+  ['lNom','lFourn','lDesc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('lNb').value='';
+  document.getElementById('lPrix').value='';
+  document.querySelectorAll('#lUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg==='3'));
+  openModal('ovLot');
+}
+
+function saveLot() {
+  const nom = document.getElementById('lNom').value.trim();
+  if (!nom) { alert('Nom du lot requis'); return; }
+  const urg = getUrg('lUrg');
+  const data = {
+    nom, fournisseur: document.getElementById('lFourn').value.trim(),
+    nb_vehicules: document.getElementById('lNb').value,
+    prix_total: document.getElementById('lPrix').value,
+    description: document.getElementById('lDesc').value.trim(),
+    priority: urg
+  };
+  if (editingLotId) {
+    const l = S.lots.find(x=>x.id===editingLotId);
+    if (l) Object.assign(l, data);
+  } else {
+    S.lots.push({ id:uid(), column:'sourcing', sub_stage:'a_contacter', created_at:today(), ...data });
+  }
+  closeModal('ovLot'); render(); saveToGH();
+}
+
+function openLotDetail(id) {
+  const l = S.lots.find(x=>x.id===id);
+  if (!l) return;
+  // Simplified: show alert, could be a full modal
+  if (confirm(`📦 ${l.nom}\nFournisseur: ${l.fournisseur||'—'}\nVéhicules: ${l.nb_vehicules||'—'}\nPrix total: ${fmtN(l.prix_total)}\n\nModifier ce lot ?`)) {
+    editingLotId = l.id;
+    document.getElementById('lNom').value = l.nom;
+    document.getElementById('lFourn').value = l.fournisseur||'';
+    document.getElementById('lNb').value = l.nb_vehicules||'';
+    document.getElementById('lPrix').value = l.prix_total||'';
+    document.getElementById('lDesc').value = l.description||'';
+    document.querySelectorAll('#lUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg===String(l.priority)));
+    openModal('ovLot');
+  }
+}
+
+function deleteLot(id) {
+  if (!confirm('Supprimer ce lot ?')) return;
+  S.lots = S.lots.filter(l=>l.id!==id);
+  render(); saveToGH();
+}
+
+// ============================================================
+// TASK CRUD
+// ============================================================
+function openAddTask(col) {
+  editingTaskId = null;
+  document.getElementById('taskModalTitle').textContent = 'Nouvelle tâche';
+  document.getElementById('btnShareTask').style.display = 'none';
+  document.getElementById('tTitle').value = '';
+  document.getElementById('tDesc').value = '';
+  document.getElementById('tDue').value = '';
+  document.getElementById('tDueTime').value = '';
+  document.getElementById('tCol').value = col || 'a_faire';
+  document.querySelectorAll('#tUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg==='3'));
+  openModal('ovTask');
+}
+
+function openEditTask(id) {
+  const t = S.tasks.find(x=>x.id===id);
+  if (!t) return;
+  editingTaskId = t.id;
+  document.getElementById('taskModalTitle').textContent = 'Modifier tâche';
+  document.getElementById('btnShareTask').style.display = 'inline-flex';
+  document.getElementById('tTitle').value = t.title;
+  document.getElementById('tDesc').value = t.description||'';
+  document.getElementById('tDue').value = t.due_date||'';
+  document.getElementById('tDueTime').value = t.due_time||'';
+  document.getElementById('tCol').value = t.column;
+  document.querySelectorAll('#tUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg===String(t.priority)));
+  openModal('ovTask');
+}
+
+function saveTask() {
+  const title = document.getElementById('tTitle').value.trim();
+  if (!title) { alert('Titre requis'); return; }
+  const data = {
+    title, description: document.getElementById('tDesc').value.trim(),
+    priority: getUrg('tUrg'), due_date: document.getElementById('tDue').value,
+    due_time: document.getElementById('tDueTime').value,
+    column: document.getElementById('tCol').value
+  };
+  if (editingTaskId) {
+    const t = S.tasks.find(x=>x.id===editingTaskId);
+    if (t) Object.assign(t, data);
+  } else {
+    S.tasks.push({ id:uid(), created_at:today(), auto_generated:false, ...data });
+  }
+  closeModal('ovTask'); render(); saveToGH();
+}
+
+function deleteTask(id) {
+  if (!confirm('Supprimer cette tâche ?')) return;
+  S.tasks = S.tasks.filter(t=>t.id!==id);
+  render(); saveToGH();
+}
+
+// ============================================================
+// SHARE TO REMINDERS (iOS Rappels / Web Share API)
+// ============================================================
+async function shareTask(id) {
+  const t = id ? S.tasks.find(x=>x.id===id) : null;
+  if (!t) return;
+
+  // Construire le texte du rappel
+  const urgLabels = { 1:'🔴 Très urgent', 2:'🟠 Urgent', 3:'Normal' };
+  const lines = [t.title];
+  if (t.description) lines.push(t.description);
+  if (t.due_date) lines.push(`Échéance : ${fmtD(t.due_date)}${t.due_time ? ' à ' + t.due_time : ''}`);
+  if (t.priority && t.priority !== 3) lines.push(urgLabels[t.priority] || '');
+  const shareText = lines.filter(Boolean).join('\n');
+
+  // Web Share API — ouvre la feuille de partage native iOS
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: t.title, text: shareText });
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return; // user cancelled
+    }
+  }
+
+  // Fallback desktop : copier dans le presse-papier
+  try {
+    await navigator.clipboard.writeText(shareText);
+    showToast('✅ Copié ! Collez dans l\'app Rappels.');
+  } catch(e) {
+    // Dernier recours : prompt
+    prompt('Copiez ce texte dans Rappels :', shareText);
+  }
+}
+
+// Toast notification légère
+function showToast(msg) {
+  let toast = document.getElementById('crmToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'crmToast';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1d2e;color:white;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;pointer-events:none;transition:opacity 0.3s;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2800);
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function openSettings() {
+  document.getElementById('sToken').value = S.settings.github_token || localStorage.getItem('gh_token')||'';
+  document.getElementById('sRepo').value = S.settings.github_repo||'';
+  document.getElementById('sEmail').value = S.settings.email||'';
+  document.getElementById('sReminder').value = S.settings.reminder_days||3;
+  document.getElementById('sArchive').checked = S.settings.show_archive||false;
+  openModal('ovSettings');
+}
+
+function saveSettings() {
+  const token = document.getElementById('sToken').value.trim();
+  if (token) { S.settings.github_token = token; localStorage.setItem('gh_token', token); }
+  S.settings.github_repo = document.getElementById('sRepo').value.trim();
+  S.settings.email = document.getElementById('sEmail').value.trim();
+  S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
+  S.settings.show_archive = document.getElementById('sArchive').checked;
+  closeModal('ovSettings');
+  saveToGH();
+  setSyncBadge('loading');
+  loadFromGH().then(ok => { if (ok) { render(); loadBriefing(); }});
+}
+
+// ============================================================
+// DRAG & DROP
+// ============================================================
+let dragType = null, dragId = null;
+
+function dStart(event, type, id) {
+  dragType = type; dragId = id;
+  event.dataTransfer.effectAllowed = 'move';
+  // Légère transparence sur la carte qu'on déplace
+  setTimeout(() => event.target.closest('.card')?.classList.add('dragging'), 0);
+}
+function onDOver(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+  // Highlight de la colonne survolée
+  const col = event.currentTarget;
+  if (col && col.classList.contains('column-body')) {
+    document.querySelectorAll('.column-body.drag-over').forEach(el => { if(el!==col) el.classList.remove('drag-over'); });
+    col.classList.add('drag-over');
+  }
+}
+
+function onDrop(event, colKey) {
+  event.preventDefault();
+  if (!dragId || dragType !== 'vehicle') return;
+  const vid = dragId; dragType = null; dragId = null;
+  // Remove dragging style
+  document.querySelectorAll('.card.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.column-body.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+  const v = S.vehicles.find(x=>x.id===vid);
+  if (!v || v.column === colKey) return;
+
+  // En transport → ouvrir le modal transport directement
+  if (colKey === 'en_transport') {
+    openTransportModal(vid, null);
+    return;
+  }
+
+  const prev = v.column;
+  v.column = colKey;
+  v.sub_stage = colKey === 'sourcing' ? 'a_contacter' : null;
+  addHist(v, `Déplacé: ${prev} → ${colKey}`);
+  if (colKey === 'a_payer' || colKey === 'livre') createDocsTask(v);
+  render(); saveToGH();
+}
+
+function onDropTask(event, colKey) {
+  event.preventDefault();
+  if (!dragId || dragType !== 'task') return;
+  const tid = dragId; dragType = null; dragId = null;
+  document.querySelectorAll('.card.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.column-body.drag-over').forEach(el => el.classList.remove('drag-over'));
+  const t = S.tasks.find(x=>x.id===tid);
+  if (!t || t.column === colKey) return;
+  t.column = colKey;
+  render(); saveToGH();
+}
+
+function dEnd(event) {
+  document.querySelectorAll('.card.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.column-body.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+// ──────────────────────────────────────────
+// TOUCH DRAG (long press → move sheet)
+// ──────────────────────────────────────────
+let _tTimer = null, _tMoved = false, _tType = null, _tId = null;
+
+function tStart(event, type, id) {
+  _tMoved = false; _tType = type; _tId = id;
+  _tTimer = setTimeout(() => {
+    if (!_tMoved) {
+      // Vibration feedback si dispo
+      if (navigator.vibrate) navigator.vibrate(40);
+      openMoveSheet(type, id);
+    }
+  }, 500);
+}
+function tEnd(event) { clearTimeout(_tTimer); }
+function tMove(event) { _tMoved = true; clearTimeout(_tTimer); }
+
+// ──────────────────────────────────────────
+// MOVE SHEET (picker de colonne universel)
+// ──────────────────────────────────────────
+let _msType = null, _msId = null;
+
+function openMoveSheet(type, id) {
+  _msType = type; _msId = id;
+  const cols = type === 'task' ? TASK_COLS : COLUMNS;
+  const current = type === 'task'
+    ? S.tasks.find(t=>t.id===id)?.column
+    : S.vehicles.find(v=>v.id===id)?.column;
+  const label = type === 'task'
+    ? (S.tasks.find(t=>t.id===id)?.title || 'Tâche')
+    : (() => { const v = S.vehicles.find(x=>x.id===id); return v ? `${v.marque} ${v.modele}` : 'Véhicule'; })();
+
+  document.getElementById('moveSheetTitle').textContent = `↔ ${label.slice(0,30)}`;
+  document.getElementById('moveSheetCols').innerHTML = cols.map(c => `
+    <button class="move-col-btn ${c.key===current?'current':''}"
+      onclick="${c.key===current ? '' : `execMove('${c.key}')`}">
+      ${c.label} ${c.key===current ? '← actuel' : ''}
+    </button>`).join('');
+  openModal('ovMoveSheet');
+}
+
+function execMove(colKey) {
+  closeModal('ovMoveSheet');
+  if (_msType === 'task') {
+    const t = S.tasks.find(x=>x.id===_msId);
+    if (t) { t.column = colKey; render(); saveToGH(); }
+    return;
+  }
+  // Vehicle
+  if (colKey === 'en_transport') {
+    openTransportModal(_msId, null);
+    return;
+  }
+  const v = S.vehicles.find(x=>x.id===_msId);
+  if (!v) return;
+  const prev = v.column;
+  v.column = colKey;
+  v.sub_stage = colKey === 'sourcing' ? 'a_contacter' : null;
+  addHist(v, `Déplacé: ${prev} → ${colKey}`);
+  if (colKey === 'a_payer' || colKey === 'livre') createDocsTask(v);
+  render(); saveToGH();
+}
+
+// ============================================================
+// CONTEXT MENU
+// ============================================================
+let ctxType = null, ctxId = null;
+
+function openCtx(event, type, id) {
+  event.preventDefault(); event.stopPropagation();
+  ctxType = type; ctxId = id;
+  const menu = document.getElementById('ctxMenu');
+  menu.style.display = 'block';
+  menu.style.left = Math.min(event.clientX, window.innerWidth-170) + 'px';
+  menu.style.top = Math.min(event.clientY, window.innerHeight-120) + 'px';
+
+  document.getElementById('ctxEdit').onclick = () => {
+    hideCtx();
+    if (ctxType === 'vehicle') { currentDetailId = ctxId; editVehicle(); }
+    else if (ctxType === 'task') openEditTask(ctxId);
+    else if (ctxType === 'lot') openLotDetail(ctxId);
+  };
+  document.getElementById('ctxMove').onclick = () => {
+    hideCtx();
+    if (ctxType === 'vehicle') moveDialog(ctxId);
+  };
+  document.getElementById('ctxDelete').onclick = () => {
+    hideCtx();
+    if (ctxType === 'vehicle') deleteVehicle(ctxId);
+    else if (ctxType === 'task') deleteTask(ctxId);
+    else if (ctxType === 'lot') deleteLot(ctxId);
+  };
+}
+
+function hideCtx() { document.getElementById('ctxMenu').style.display = 'none'; }
+
+function moveDialog(id) {
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  const opts = COLUMNS.map((c,i)=>`${i+1}: ${c.label.replace(/[📋💳🚛✅🗄️]/g,'').trim()}`).join('\n');
+  const choice = prompt(`Déplacer vers :\n${opts}\n\nColonne actuelle : ${v.column}\n\nEntrez le numéro :`, '');
+  const idx = parseInt(choice) - 1;
+  if (isNaN(idx) || !COLUMNS[idx]) return;
+  const target = COLUMNS[idx].key;
+  if (target === 'en_transport') { alert('Utilisez le bouton Transport depuis À Payer'); return; }
+  const prev = v.column;
+  v.column = target;
+  v.sub_stage = target === 'sourcing' ? 'a_contacter' : null;
+  addHist(v, `Déplacé: ${prev} → ${target}`);
+  render(); saveToGH();
+}
+
+document.addEventListener('click', e => { if (!e.target.closest('#ctxMenu')) hideCtx(); });
+
+// ============================================================
+// MODAL HELPERS
+// ============================================================
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function overlayClick(e, id) { if (e.target.id === id) closeModal(id); }
+
+// ============================================================
+// INIT
+// ============================================================
+// Chargement synchrone immédiat — visible dès le premier rendu
+(function() {
+  loadLocal();
+  applyColors();
+  // Si pas de données locales → charger les démo
+  if (!S.vehicles.length && !S.tasks.length) seedDemoData();
+  render();
+  initTasksViewMode();
+  renderSidebarBriefing();
+})();
+
+// Sync GitHub en arrière-plan si token présent
+async function init() {
+  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  if (!token) {
+    setSyncBadge('error');
+    document.getElementById('syncBadge').title = 'Cliquez pour configurer GitHub';
+    return;
+  }
+  S.settings.github_token = token;
+  const ok = await loadFromGH();
+  if (ok) { render(); renderSidebarBriefing(); await loadBriefing(); }
+}
+
+init();
+</script>
+</body>
+</html>
