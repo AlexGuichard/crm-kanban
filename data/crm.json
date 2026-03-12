@@ -93,14 +93,15 @@
   "tasks": [
     {
       "id": "mmnj2d4c5io5",
-      "column": "a_faire",
+      "column": "termine",
       "title": "Demander les papiers — Renault Clio",
       "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
       "priority": 1,
       "due_date": "2026-03-12",
       "linked_vehicle_id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
       "auto_generated": true,
-      "created_at": "2026-03-12"
+      "created_at": "2026-03-12",
+      "due_time": ""
     }
   ],
   "settings": {
