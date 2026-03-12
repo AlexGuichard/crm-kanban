@@ -104,15 +104,11 @@ def parse_lbc(html, url):
     phones = owner.get("phone_numbers") or []
     vendeur_tel = phones[0] if phones else owner.get("phone", "")
 
-    # Année + date de mise en circulation (regdate = "2019-01")
+    # Année + date de mise en circulation
     annee_raw = attrs.get("regdate", "")
     annee = int(annee_raw[:4]) if annee_raw and len(annee_raw) >= 4 else None
-    # Date MEC formatée "MM/YYYY" si dispo, sinon juste l'année
-    date_mec = ""
-    if annee_raw and len(annee_raw) >= 7:
-        date_mec = f"{annee_raw[5:7]}/{annee_raw[:4]}"
-    elif annee:
-        date_mec = str(annee)
+    # issuance_date = "11/2024" (plus précis que regdate)
+    date_mec = attrs.get("issuance_date") or (str(annee) if annee else "")
 
     # Debug : afficher tous les attributs disponibles
     print(f"[DEBUG] attributs LBC: {json.dumps(attrs, ensure_ascii=False)}", flush=True)
@@ -141,7 +137,7 @@ def parse_lbc(html, url):
         "prix_demande":    prix,
         "carburant":       attrs.get("fuel", ""),
         "boite":           boite,
-        "couleur":         attrs.get("color", ""),
+        "couleur":         attrs.get("vehicule_color") or attrs.get("color", ""),
         "localisation":    localisation,
         "fournisseur_nom": vendeur_nom,
         "fournisseur_tel": vendeur_tel,
