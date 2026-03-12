@@ -408,6 +408,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
     <button class="tab-btn" onclick="showView('dashboard',this)">📊 Dashboard</button>
   </nav>
   <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" id="refreshBtn" onclick="manualRefresh()" title="Rafraîchir tout" style="font-size:12px;padding:4px 10px">⟳ Refresh</button>
     <span class="sync-badge" id="syncBadge" style="cursor:pointer" onclick="openSettings()">⏳ Config…</span>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
@@ -1272,26 +1273,48 @@ function renderSidebarBriefing() {
 
   const urgTitle = `🔴 Urgences${overdueTasks.length ? ` <span style="color:#dc2626">(${overdueTasks.length} en retard)</span>` : ''}`;
 
-  // --- BLOC 2 : Emails de la nuit (morning_briefing.json) ---
-  const b = S.morning_briefing;
+  // --- BLOC 2 : Emails (morning_briefing.json) ---
+  const b = S.morning_briefing || S.briefing;
   let emailsHTML = '';
   let briefingDate = '';
   if (b && b.emails && b.emails.length) {
-    briefingDate = b.date ? `Généré le ${fmtDs(b.date)}` : '';
-    emailsHTML = b.emails.slice(0,5).map(e => {
-      const prio = e.priority === 'urgent' ? 'bp-badge-red' : e.priority === 'normal' ? 'bp-badge-blue' : 'bp-badge-gray';
-      const prioDot = e.priority === 'urgent' ? '🔴' : e.priority === 'normal' ? '🟠' : '🔵';
-      return `<div class="bp-item">
-        <div style="font-size:14px;margin-top:1px">${prioDot}</div>
-        <div class="bp-item-text">
-          <div class="bp-item-title">${esc((e.subject||'').slice(0,42))}${(e.subject||'').length>42?'…':''}</div>
-          <div class="bp-item-sub">${esc((e.from||'').slice(0,35))} ${e.summary ? '— ' + esc(e.summary.slice(0,30)) : ''}</div>
+    briefingDate = b.generated_at
+      ? `Mis à jour ${new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`
+      : (b.date ? `Généré le ${fmtDs(b.date)}` : '');
+    emailsHTML = b.emails.slice(0, 7).map(e => {
+      const sc = e.score || 0;
+      // Couleur selon le score
+      const scoreColor = sc >= 9 ? '#dc2626' : sc >= 7 ? '#f97316' : sc >= 5 ? '#eab308' : '#6b7280';
+      const scoreBg   = sc >= 9 ? '#fef2f2' : sc >= 7 ? '#fff7ed' : sc >= 5 ? '#fefce8' : '#f3f4f6';
+      // Label badge
+      const labelBadge = e.label
+        ? `<span style="font-size:9px;background:var(--primary);color:#fff;border-radius:4px;padding:1px 5px;margin-left:4px">${esc(e.label)}</span>`
+        : (e.category === 'sans_reponse' ? `<span style="font-size:9px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 5px;margin-left:4px">sans réponse</span>` : '');
+      // Ancienneté
+      const age = e.hours_old != null
+        ? (e.hours_old < 1 ? 'Il y a moins d\'1h' : `Il y a ${Math.round(e.hours_old)}h`)
+        : '';
+      return `<div class="bp-item" style="align-items:flex-start;gap:8px">
+        <div style="min-width:26px;height:26px;border-radius:6px;background:${scoreBg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${scoreColor};flex-shrink:0">${sc}</div>
+        <div class="bp-item-text" style="min-width:0">
+          <div class="bp-item-title" style="line-height:1.3">${esc((e.subject||'').slice(0,40))}${(e.subject||'').length>40?'…':''}${labelBadge}</div>
+          <div class="bp-item-sub">${esc((e.from||'').replace(/<.*>/,'').trim().slice(0,30))}${age ? ' · ' + age : ''}</div>
         </div>
       </div>`;
     }).join('');
+    // Résumé chiffré
+    const sum = b.summary || {};
+    if (sum.total > 7) emailsHTML += `<div class="bp-refresh" style="text-align:center;margin-top:6px">+${sum.total - 7} autres emails</div>`;
+    if (sum.critical || sum.high) {
+      emailsHTML = `<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+        ${sum.critical ? `<span style="font-size:11px;background:#fef2f2;color:#dc2626;border-radius:6px;padding:2px 8px;font-weight:700">🔴 ${sum.critical} critique${sum.critical>1?'s':''}</span>` : ''}
+        ${sum.high ? `<span style="font-size:11px;background:#fff7ed;color:#f97316;border-radius:6px;padding:2px 8px;font-weight:700">🟠 ${sum.high} important${sum.high>1?'s':''}</span>` : ''}
+        ${sum.medium ? `<span style="font-size:11px;background:#fefce8;color:#854d0e;border-radius:6px;padding:2px 8px;font-weight:700">🟡 ${sum.medium} à traiter</span>` : ''}
+      </div>` + emailsHTML;
+    }
   } else {
     emailsHTML = `<div class="bp-empty">Aucun email chargé</div>
-      <button class="bp-load-btn" onclick="loadBriefing()">⟳ Charger le briefing matin</button>`;
+      <button class="bp-load-btn" onclick="loadBriefing()">⟳ Charger</button>`;
   }
 
   // --- BLOC 3 : Alertes CRM ---
@@ -2293,6 +2316,19 @@ function overlayClick(e, id) { if (e.target.id === id) closeModal(id); }
 // ============================================================
 // INIT
 // ============================================================
+async function manualRefresh() {
+  const btn = document.getElementById('refreshBtn');
+  if (btn) { btn.textContent = '⟳ …'; btn.disabled = true; }
+  try {
+    const ok = await loadFromGH();
+    if (ok) render();
+    await loadBriefing();
+    renderSidebarBriefing();
+  } finally {
+    if (btn) { btn.textContent = '⟳ Refresh'; btn.disabled = false; }
+  }
+}
+
 async function init() {
   const token = S.settings.github_token || localStorage.getItem('gh_token');
   if (!token) {
