@@ -921,7 +921,10 @@ async function saveToGH() {
   saveLocal(); // always local backup
   if (!repo || !S.settings.github_token) return;
   setSyncBadge('loading');
-  const payload = { vehicles: S.vehicles, lots: S.lots, tasks: S.tasks, settings: S.settings };
+  // Ne jamais stocker le token dans le fichier GitHub (secret scanning bloquerait le push)
+  const safeSettings = Object.assign({}, S.settings);
+  delete safeSettings.github_token;
+  const payload = { vehicles: S.vehicles, lots: S.lots, tasks: S.tasks, settings: safeSettings };
   const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
   const body = { message: `CRM update ${today()}`, content: b64, ...(ghSha ? { sha: ghSha } : {}) };
   const res = await ghPut(`/repos/${repo}/contents/data/crm.json`, body);
