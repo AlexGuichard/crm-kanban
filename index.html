@@ -1047,7 +1047,7 @@ function renderCol(col) {
       ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
     </div>
     ${bodyHtml}
-    ${col.key === 'sourcing' ? `<div class="col-add" style="display:flex;gap:4px"><button style="flex:1" onclick="openAddVehicle('sourcing')">+ Véhicule</button><button style="flex:1" onclick="openLBCImport()">🔗 LBC</button></div>` : ''}
+    ${col.key === 'sourcing' ? `<div class="col-add"><button style="width:100%" onclick="openAddVehicle('sourcing')">+ Véhicule</button></div>` : ''}
   </div>`;
 }
 
