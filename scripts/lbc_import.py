@@ -98,36 +98,41 @@ def parse_lbc(html, url):
 
     # Vendeur
     owner = ad.get("owner", {})
-    vendeur_type = "pro" if owner.get("type") == "pro" else "particulier"
-    vendeur_nom  = owner.get("name", "")
+    vendeur_type   = "pro" if owner.get("type") == "pro" else "particulier"
+    vendeur_nom    = owner.get("name", "")
+    # Téléphone : LBC le stocke parfois dans owner.phone ou owner.phone_numbers
+    phones = owner.get("phone_numbers") or []
+    vendeur_tel = phones[0] if phones else owner.get("phone", "")
 
     # Année (regdate = "2019-01" → 2019)
     annee_raw = attrs.get("regdate", "")
     annee = int(annee_raw[:4]) if annee_raw and len(annee_raw) >= 4 else None
 
     vehicle = {
-        "id":           str(uuid.uuid4()),
-        "lbc_id":       str(ad.get("list_id", "")),
-        "url_annonce":  url,
-        "marque":       attrs.get("brand", ""),
-        "modele":       attrs.get("model", ad.get("subject", "")),
-        "annee":        annee,
-        "kilometrage":  int(re.sub(r"\D", "", attrs.get("mileage", "0")) or 0),
-        "prix":         prix,
-        "carburant":    attrs.get("fuel", ""),
-        "boite":        attrs.get("gearbox_type", ""),
-        "couleur":      attrs.get("color", ""),
-        "localisation": localisation,
-        "vendeur":      vendeur_nom,
-        "vendeur_type": vendeur_type,
-        "photo":        photo_url,
-        "titre":        ad.get("subject", ""),
-        "description":  ad.get("body", "")[:300] if ad.get("body") else "",
-        "column":       "sourcing",
-        "sub_stage":    "a_contacter",
-        "urgence":      "urg_3",
-        "created_at":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
-        "historique":   [{"date": datetime.now(timezone.utc).strftime("%Y-%m-%d"), "action": "Importé depuis LBC"}],
+        "id":              str(uuid.uuid4()),
+        "lbc_id":          str(ad.get("list_id", "")),
+        "url_annonce":     url,
+        "source":          "LeBonCoin",
+        "marque":          attrs.get("brand", ""),
+        "modele":          attrs.get("model", ad.get("subject", "")),
+        "annee":           annee,
+        "km":              int(re.sub(r"\D", "", attrs.get("mileage", "0")) or 0),
+        "prix_demande":    prix,
+        "carburant":       attrs.get("fuel", ""),
+        "boite":           attrs.get("gearbox_type", ""),
+        "couleur":         attrs.get("color", ""),
+        "localisation":    localisation,
+        "fournisseur_nom": vendeur_nom,
+        "fournisseur_tel": vendeur_tel,
+        "fournisseur_type": vendeur_type,
+        "photo":           photo_url,
+        "titre":           ad.get("subject", ""),
+        "description":     ad.get("body", "")[:300] if ad.get("body") else "",
+        "column":          "sourcing",
+        "sub_stage":       "a_contacter",
+        "urgence":         "urg_3",
+        "created_at":      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+        "historique":      [{"date": datetime.now(timezone.utc).strftime("%Y-%m-%d"), "action": "Importé depuis LBC"}],
     }
     return vehicle
 
