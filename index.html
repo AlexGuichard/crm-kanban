@@ -504,6 +504,25 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       <button class="close-btn" onclick="closeModal('ovVehicle')">×</button>
     </div>
 
+    <!-- Onglets Manuel / LBC (visibles uniquement en mode "Nouveau") -->
+    <div id="vTabs" style="display:flex;gap:6px;padding:0 16px 12px;border-bottom:1px solid var(--border);margin-bottom:12px">
+      <button id="vTabManuel" class="btn btn-primary btn-sm" onclick="switchVTab('manuel')">✏️ Manuel</button>
+      <button id="vTabLBC" class="btn btn-ghost btn-sm" onclick="switchVTab('lbc')">🔗 Importer LBC</button>
+    </div>
+
+    <!-- Section LBC (cachée par défaut) -->
+    <div id="vLBCSection" style="display:none;padding:0 4px">
+      <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne).</p>
+      <textarea id="lbcUrls" rows="5" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);color:var(--text);resize:vertical"></textarea>
+      <div id="lbcStatus" style="margin-top:10px;font-size:13px;display:none"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
+        <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">Importer</button>
+      </div>
+    </div>
+
+    <!-- Section formulaire manuel -->
+    <div id="vFormSection">
     <div class="form-section" style="border:none;padding:0;margin:0">
       <div class="form-section-title">🚗 Véhicule</div>
       <div class="form-row">
@@ -584,6 +603,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
       <button class="btn btn-primary" onclick="saveVehicle()">Enregistrer</button>
     </div>
+    </div><!-- fin vFormSection -->
   </div>
 </div>
 
@@ -1007,7 +1027,7 @@ function renderCol(col) {
       ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
     </div>
     ${bodyHtml}
-    ${col.key === 'sourcing' ? `<div class="col-add" style="display:flex;gap:4px"><button style="flex:1" onclick="openAddVehicle('sourcing')">+ Véhicule</button><button style="flex:1" onclick="openLBCImport()">🔗 LBC</button></div>` : ''}
+    ${col.key === 'sourcing' ? `<div class="col-add"><button onclick="openAddVehicle('sourcing')">+ Véhicule</button></div>` : ''}
   </div>`;
 }
 
@@ -1049,8 +1069,9 @@ function vehicleCard(v) {
     onclick="openDetail('${v.id}')"
     oncontextmenu="openCtx(event,'vehicle','${v.id}')">
     <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
-    <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)} ${v.annee||''}</div>
+    <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
     <div class="tags">
+      ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
       ${v.km ? `<span class="tag">${Number(v.km).toLocaleString('fr-FR')} km</span>` : ''}
       ${v.carburant ? `<span class="tag">${hl(v.carburant, searchQ)}</span>` : ''}
       ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
@@ -1439,10 +1460,26 @@ function getSel(sel) { const el = document.querySelector(sel+'.sel'); return el 
 // ============================================================
 // VEHICLE CRUD
 // ============================================================
+function switchVTab(tab) {
+  const isLBC = tab === 'lbc';
+  document.getElementById('vLBCSection').style.display = isLBC ? 'block' : 'none';
+  document.getElementById('vFormSection').style.display = isLBC ? 'none' : 'block';
+  document.getElementById('vTabManuel').className = isLBC ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
+  document.getElementById('vTabLBC').className = isLBC ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  if (isLBC) {
+    document.getElementById('lbcUrls').value = '';
+    document.getElementById('lbcStatus').style.display = 'none';
+    document.getElementById('lbcImportBtn').disabled = false;
+    document.getElementById('lbcImportBtn').textContent = 'Importer';
+  }
+}
+
 function openAddVehicle(col) {
   editingVehicleId = null;
   window._addCol = col || 'sourcing';
   document.getElementById('vModalTitle').textContent = 'Nouveau véhicule';
+  document.getElementById('vTabs').style.display = 'flex';
+  switchVTab('manuel');
   // Reset form
   ['vMarque','vModele','vAnnee','vKm','vVin','vImmat','vPrixD','vPrixN','vUrl','vFNom','vFTel','vFEmail','vComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('vCarburant').value='Essence';
@@ -1469,6 +1506,10 @@ function editVehicle() {
   document.getElementById('vSource').value = v.source||'LeBonCoin';
   document.querySelectorAll('#vSubStage .stage-opt').forEach(el=>el.classList.toggle('sel',el.dataset.ss===v.sub_stage));
   document.querySelectorAll('#vUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg===String(v.priority)));
+  // Masquer les onglets en mode édition
+  document.getElementById('vTabs').style.display = 'none';
+  document.getElementById('vLBCSection').style.display = 'none';
+  document.getElementById('vFormSection').style.display = 'block';
   openModal('ovVehicle');
 }
 
@@ -1667,26 +1708,36 @@ function openDetail(id) {
       <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
     </div>` : ''}
     ${v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : ''}
+    ${v.titre ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic">${esc(v.titre)}</div>` : ''}
     <div class="detail-grid">
       <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
-      <div class="detail-field"><label>Carburant / Boîte</label><value>${v.carburant||'—'} / ${v.boite||'—'}</value></div>
+      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
       <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
+      <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
       <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
+      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
+      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
       ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
       ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
       ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
       ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
     </div>
-    ${(v.fournisseur_nom||v.vendeur) ? `
     <div class="form-section">
       <div class="form-section-title">🏢 Fournisseur</div>
       <div class="detail-grid">
-        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur)}</value></div>
-        ${v.fournisseur_type||v.vendeur_type ? `<div class="detail-field"><label>Type</label><value>${esc(v.fournisseur_type||v.vendeur_type)}</value></div>` : ''}
-        ${v.fournisseur_tel ? `<div class="detail-field"><label>Tél</label><value><a href="tel:${esc(v.fournisseur_tel)}" style="color:var(--primary)">${esc(v.fournisseur_tel)}</a></value></div>` : ''}
-        ${v.fournisseur_email ? `<div class="detail-field"><label>Email</label><value><a href="mailto:${esc(v.fournisseur_email)}" style="color:var(--primary)">${esc(v.fournisseur_email)}</a></value></div>` : ''}
+        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
+        <div class="detail-field"><label>Téléphone</label>
+          <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
+            onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
+        </div>
+        <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
+          <input type="email" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
+            onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
+        </div>
       </div>
-    </div>` : ''}
+    </div>
     ${docsSection}
     ${transportSection}
     ${v.commentaire ? `<div class="form-section"><div class="form-section-title">💬 Commentaire</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5">${esc(v.commentaire)}</div></div>` : ''}
@@ -1869,6 +1920,13 @@ function showToast(msg) {
 // ============================================================
 // SETTINGS
 // ============================================================
+function saveInlineField(id, field, value) {
+  const v = S.vehicles.find(x => x.id === id);
+  if (!v || v[field] === value) return;
+  v[field] = value;
+  saveToGH();
+}
+
 // ============================================================
 // IMPORT LBC
 // ============================================================
