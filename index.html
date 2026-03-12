@@ -1753,6 +1753,9 @@ function openDetail(id) {
             onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
             style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
         </div>
+        <div style="grid-column:1/-1;margin-top:6px">
+          <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
+        </div>
       </div>
     </div>
     ${docsSection}
