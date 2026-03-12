@@ -201,6 +201,9 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 .bp-empty { text-align: center; color: var(--muted); font-size: 12px; padding: 12px 0; }
 .bp-alert-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
 .bp-alert-row:last-child { border-bottom: none; }
+.bp-alert-clickable { cursor: pointer; border-radius: 6px; padding: 6px 4px; margin: 0 -4px; transition: background 0.12s; }
+.bp-alert-clickable:hover { background: var(--bg); }
+.bp-alert-arrow { margin-left: auto; color: var(--text-muted); font-size: 16px; font-weight: 300; }
 .bp-refresh { font-size: 10px; color: var(--muted); text-align: right; margin-top: 4px; }
 .bp-load-btn { width: 100%; font-size: 11px; padding: 6px; border-radius: 6px; border: 1px dashed var(--border); background: none; color: var(--muted); cursor: pointer; margin-top: 4px; }
 .bp-load-btn:hover { border-color: var(--primary); color: var(--primary); }
@@ -1120,7 +1123,7 @@ function renderEmailsView() {
 
   countEl.textContent = `${filtered.length} email${filtered.length>1?'s':''} ${b ? '· Mis à jour ' + new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : ''}`;
 
-  if (!b) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">Briefing en cours de chargement…</div>`; return; }
+  if (!b) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8"><div style="font-size:28px;margin-bottom:8px">📬</div><div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div><div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.<br>Si cela persiste, vérifie que le script Google Apps est actif.</div><button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing().then(()=>renderEmailsView())">⟳ Charger maintenant</button></div>`; return; }
   if (!filtered.length) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`; return; }
 
   listEl.innerHTML = filtered.map(e => {
@@ -1464,10 +1467,10 @@ function renderSidebarBriefing() {
   const overdueV = S.tasks.filter(t => t.auto_generated && t.column !== 'termine');
 
   const alertsHTML = [
-    missingDocs.length ? `<div class="bp-alert-row"><span style="font-size:15px">📄</span><span><strong>${missingDocs.length}</strong> véhicule${missingDocs.length>1?'s':''} avec docs manquants</span></div>` : '',
-    stuckPayment.length ? `<div class="bp-alert-row"><span style="font-size:15px">💳</span><span><strong>${stuckPayment.length}</strong> véhicule${stuckPayment.length>1?'s':''} en attente de paiement</span></div>` : '',
-    overdueV.length ? `<div class="bp-alert-row"><span style="font-size:15px">🤖</span><span><strong>${overdueV.length}</strong> tâche${overdueV.length>1?'s':''} auto (papiers) ouvertes</span></div>` : '',
-    overdueTasks.length ? `<div class="bp-alert-row"><span style="font-size:15px">⏰</span><span><strong>${overdueTasks.length}</strong> tâche${overdueTasks.length>1?'s':''} en retard</span></div>` : '',
+    missingDocs.length ? `<div class="bp-alert-row bp-alert-clickable" onclick="showView('achats',document.getElementById('tabAchats'));setTimeout(()=>document.getElementById('board')?.scrollIntoView({behavior:'smooth'}),100)" title="Voir les véhicules"><span style="font-size:15px">📄</span><span><strong>${missingDocs.length}</strong> véhicule${missingDocs.length>1?'s':''} avec docs manquants</span><span class="bp-alert-arrow">›</span></div>` : '',
+    stuckPayment.length ? `<div class="bp-alert-row bp-alert-clickable" onclick="showView('achats',document.getElementById('tabAchats'))" title="Voir les véhicules À Payer"><span style="font-size:15px">💳</span><span><strong>${stuckPayment.length}</strong> véhicule${stuckPayment.length>1?'s':''} en attente de paiement</span><span class="bp-alert-arrow">›</span></div>` : '',
+    overdueV.length ? `<div class="bp-alert-row bp-alert-clickable" onclick="showView('taches',document.getElementById('tabTaches'))" title="Voir les tâches"><span style="font-size:15px">🤖</span><span><strong>${overdueV.length}</strong> tâche${overdueV.length>1?'s':''} auto (papiers) à traiter</span><span class="bp-alert-arrow">›</span></div>` : '',
+    overdueTasks.length ? `<div class="bp-alert-row bp-alert-clickable" onclick="showView('taches',document.getElementById('tabTaches'))" title="Voir les tâches en retard"><span style="font-size:15px">⏰</span><span><strong>${overdueTasks.length}</strong> tâche${overdueTasks.length>1?'s':''} en retard</span><span class="bp-alert-arrow">›</span></div>` : '',
   ].filter(Boolean).join('') || `<div class="bp-empty">✅ Aucune alerte CRM</div>`;
 
   const html = `
@@ -1536,6 +1539,8 @@ async function loadBriefing() {
     const j = await r.json();
     S.morning_briefing = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))));
     renderSidebarBriefing();
+    // Si l'onglet emails est ouvert, le rafraîchir automatiquement
+    if (document.getElementById('view-emails')?.classList.contains('active')) renderEmailsView();
     showToast('📬 Briefing chargé !');
   } catch(e) { showToast('❌ Briefing introuvable — lance le workflow GitHub Actions'); }
 }
