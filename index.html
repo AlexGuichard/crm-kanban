@@ -872,7 +872,13 @@ async function loadFromGH() {
     if (Array.isArray(content.vehicles)) S.vehicles = content.vehicles;
     if (Array.isArray(content.lots)) S.lots = content.lots;
     if (Array.isArray(content.tasks)) S.tasks = content.tasks;
-    if (content.settings) S.settings = { ...S.settings, ...content.settings };
+    if (content.settings) {
+      const localToken = S.settings.github_token;
+      const localRepo  = S.settings.github_repo;
+      S.settings = { ...S.settings, ...content.settings };
+      if (localToken) S.settings.github_token = localToken;
+      if (localRepo)  S.settings.github_repo  = localRepo;
+    }
     setSyncBadge('ok');
     applyColors();
     return true;
