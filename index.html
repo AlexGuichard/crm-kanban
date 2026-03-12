@@ -417,6 +417,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
     </button>
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="btn btn-primary" onclick="openAddVehicle()">+ Véhicule</button>
+    <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openLBCImport()" title="Importer depuis LeBonCoin">🔗 LBC</button>
     <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openAddLot()">+ Lot</button>
   </div>
 </header>
@@ -728,6 +729,25 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       <button class="close-btn" onclick="closeModal('ovMoveSheet')">×</button>
     </div>
     <div class="move-sheet-cols" id="moveSheetCols"></div>
+  </div>
+</div>
+
+<!-- MODAL IMPORT LBC -->
+<div class="modal-overlay" id="ovLBC" onclick="overlayClick(event,'ovLBC')">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <div class="modal-title">🔗 Importer depuis LeBonCoin</div>
+      <button class="close-btn" onclick="closeModal('ovLBC')">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne). Les véhicules seront ajoutés automatiquement en <strong>Sourcing</strong>.</p>
+      <textarea id="lbcUrls" rows="6" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/...&#10;..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);color:var(--text);resize:vertical"></textarea>
+      <div id="lbcStatus" style="margin-top:10px;font-size:13px;display:none"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovLBC')">Annuler</button>
+      <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">Importer</button>
+    </div>
   </div>
 </div>
 
@@ -1839,6 +1859,67 @@ function showToast(msg) {
 // ============================================================
 // SETTINGS
 // ============================================================
+// ============================================================
+// IMPORT LBC
+// ============================================================
+function openLBCImport() {
+  document.getElementById('lbcUrls').value = '';
+  document.getElementById('lbcStatus').style.display = 'none';
+  document.getElementById('lbcImportBtn').disabled = false;
+  document.getElementById('lbcImportBtn').textContent = 'Importer';
+  openModal('ovLBC');
+}
+
+async function triggerLBCImport() {
+  const urls = document.getElementById('lbcUrls').value.trim();
+  if (!urls) return;
+  const validUrls = urls.split('\n').map(u=>u.trim()).filter(u=>u.startsWith('http'));
+  if (!validUrls.length) {
+    setLBCStatus('error', '❌ Aucune URL valide trouvée');
+    return;
+  }
+  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  if (!token) {
+    setLBCStatus('error', '❌ Token GitHub manquant — configure-le dans ⚙️ Paramètres');
+    return;
+  }
+
+  document.getElementById('lbcImportBtn').disabled = true;
+  document.getElementById('lbcImportBtn').textContent = 'Lancement…';
+  setLBCStatus('info', `⏳ Lancement du scraping pour ${validUrls.length} annonce(s)…`);
+
+  try {
+    // Déclenche le workflow GitHub Actions
+    const resp = await fetch(`https://api.github.com/repos/${S.settings.github_repo||'AlexGuichard/crm-kanban'}/actions/workflows/lbc_import.yml/dispatches`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'main', inputs: { lbc_urls: validUrls.join('\n') } })
+    });
+
+    if (resp.status === 204) {
+      setLBCStatus('success', `✅ Scraping lancé pour ${validUrls.length} annonce(s). Les véhicules apparaîtront dans Sourcing dans ~45 secondes (le CRM se rafraîchit automatiquement).`);
+      document.getElementById('lbcImportBtn').textContent = 'Fermé dans 5s…';
+      setTimeout(() => closeModal('ovLBC'), 5000);
+    } else {
+      const err = await resp.json();
+      setLBCStatus('error', `❌ Erreur GitHub (${resp.status}): ${err.message || JSON.stringify(err)}`);
+      document.getElementById('lbcImportBtn').disabled = false;
+      document.getElementById('lbcImportBtn').textContent = 'Réessayer';
+    }
+  } catch(e) {
+    setLBCStatus('error', `❌ Erreur réseau: ${e.message}`);
+    document.getElementById('lbcImportBtn').disabled = false;
+    document.getElementById('lbcImportBtn').textContent = 'Réessayer';
+  }
+}
+
+function setLBCStatus(type, msg) {
+  const el = document.getElementById('lbcStatus');
+  el.style.display = 'block';
+  el.style.color = type === 'error' ? 'var(--danger)' : type === 'success' ? 'var(--success)' : 'var(--text-muted)';
+  el.textContent = msg;
+}
+
 function openSettings() {
   document.getElementById('sToken').value = S.settings.github_token || localStorage.getItem('gh_token')||'';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
