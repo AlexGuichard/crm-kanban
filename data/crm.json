@@ -31,6 +31,38 @@
           "action": "Importé depuis LBC"
         }
       ]
+    },
+    {
+      "id": "4a9caa35-eaf6-4528-acc6-29a6d9be625a",
+      "lbc_id": "3154780715",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3154780715",
+      "source": "LeBonCoin",
+      "marque": "Dacia",
+      "modele": "Sandero",
+      "annee": 2025,
+      "date_mec": "04/2025",
+      "km": 11400,
+      "prix_demande": 17450,
+      "carburant": "GPL",
+      "boite": "Manuelle",
+      "couleur": "Vert",
+      "localisation": "Muret (31)",
+      "fournisseur_nom": "MURET NORD AUTOMOBILES ( AUTO )",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/68/5f/e1/685fe14488521827a0830f82ad16fb621760cdc4.jpg?rule=ad-large",
+      "titre": "DACIA SANDERO ECO-G 100 Stepway Extreme - Pack Confort & Navigation",
+      "description": "Votre agence RENAULT MURET NORD vous ouvre ses portes au 1 RUE ARISTIDE BERGES 31600 à MURET. Afin de vivre une expérience automobile unique. Notre équipe commerciale est à votre entière disposition afin de vous accompagner au mieux dans l'achat de votre nouveau véhicule.\nL'agence Renault Muret Nord",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "urgence": "urg_3",
+      "created_at": "2026-03-12T12:58:46",
+      "historique": [
+        {
+          "date": "2026-03-12",
+          "action": "Importé depuis LBC"
+        }
+      ]
     }
   ],
   "lots": [],
