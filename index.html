@@ -182,7 +182,9 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 .tl-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
 
 /* BRIEFING PANEL */
-.briefing-panel-sidebar { width: 280px; min-width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; }
+.briefing-panel-sidebar { width: 280px; min-width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; position: relative; }
+.sidebar-resize-handle { position: absolute; left: -4px; top: 0; bottom: 0; width: 8px; cursor: col-resize; z-index: 10; border-radius: 4px; transition: background 0.15s; }
+.sidebar-resize-handle:hover, .sidebar-resize-handle.dragging { background: rgba(77,101,255,0.25); }
 .bp-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 14px; }
 .bp-card-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .bp-item { display: flex; gap: 8px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
@@ -273,6 +275,21 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 .doc-checkbox { width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: white; flex-shrink: 0; }
 .doc-item.checked .doc-checkbox { background: var(--urg-done); border-color: var(--urg-done); }
 .doc-label { font-size: 13px; font-weight: 500; }
+
+/* EMAILS VIEW */
+.email-filter-btn { padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.12s;color:var(--text-muted); }
+.email-filter-btn.active { background:var(--primary);color:#fff;border-color:var(--primary); }
+.email-row { background:var(--surface);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;border:1px solid var(--border);transition:box-shadow 0.15s;cursor:pointer; }
+.email-row:hover { box-shadow:0 2px 12px rgba(77,101,255,0.10); }
+.email-row.dismissed { opacity:0.35;pointer-events:none; }
+.email-score { min-width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0; }
+.email-body { flex:1;min-width:0; }
+.email-subject { font-size:14px;font-weight:700;margin-bottom:3px;line-height:1.3; }
+.email-meta { font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap; }
+.email-snippet { font-size:12px;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+.email-actions { display:flex;gap:6px;margin-top:8px; }
+.email-label { font-size:9px;background:var(--primary);color:#fff;border-radius:4px;padding:2px 6px;font-weight:700; }
+.email-label.sans-reponse { background:#e0e7ff;color:#4338ca; }
 
 /* DETAIL */
 .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -405,6 +422,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
   <nav class="tabs">
     <button class="tab-btn active" onclick="showView('achats',this)">🚗 Achats</button>
     <button class="tab-btn" onclick="showView('taches',this)">✅ Tâches</button>
+    <button class="tab-btn" onclick="showView('emails',this)" id="tabEmails">📬 Emails</button>
     <button class="tab-btn" onclick="showView('dashboard',this)">📊 Dashboard</button>
   </nav>
   <div class="header-actions">
@@ -437,7 +455,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 <div class="view active" id="view-achats">
   <div class="tasks-view-layout">
     <div class="board" id="board" style="flex:1;min-width:0;"></div>
-    <div class="briefing-panel-sidebar" id="sidebarBriefingAchats"></div>
+    <div class="briefing-panel-sidebar" id="sidebarBriefingAchats"><div class="sidebar-resize-handle" onmousedown="startSidebarResize(event)"></div></div>
   </div>
 </div>
 
@@ -458,8 +476,18 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       <div class="tasks-board" id="tasksBoard"></div>
       <div class="tasks-list" id="tasksList" style="display:none"></div>
     </div>
-    <div class="briefing-panel-sidebar" id="sidebarBriefing"></div>
+    <div class="briefing-panel-sidebar" id="sidebarBriefing"><div class="sidebar-resize-handle" onmousedown="startSidebarResize(event)"></div></div>
   </div>
+</div>
+
+<!-- VIEW: EMAILS -->
+<div class="view" id="view-emails">
+  <div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
+    <h2 style="font-size:15px;font-weight:800;margin:0">📬 Emails à traiter</h2>
+    <div id="emailFilters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    <span id="emailCount" style="font-size:12px;color:var(--text-muted);margin-left:auto"></span>
+  </div>
+  <div id="emailsList"></div>
 </div>
 
 <!-- VIEW: DASHBOARD -->
@@ -1052,6 +1080,138 @@ function renderCol(col) {
 
 function setActiveSS(ss) { activeSS = ss; renderBoard(); }
 
+// ============================================================
+// EMAILS VIEW
+// ============================================================
+let emailFilter = 'all';
+const dismissedEmails = JSON.parse(localStorage.getItem('dismissed_emails') || '[]');
+
+function renderEmailsView() {
+  const b = S.briefing;
+  const filtersEl = document.getElementById('emailFilters');
+  const listEl = document.getElementById('emailsList');
+  const countEl = document.getElementById('emailCount');
+  if (!filtersEl || !listEl) return;
+
+  const emails = (b && b.emails) ? b.emails.filter(e => !dismissedEmails.includes(e.id)) : [];
+
+  // Filtres
+  const filters = [
+    { key:'all', label:'Tous' },
+    { key:'critical', label:'🔴 Critiques (9-10)' },
+    { key:'important', label:'🟠 Importants (7-8)' },
+    { key:'a_traiter', label:'A traiter' },
+    { key:'bdc', label:'BDC à signer' },
+    { key:'dash', label:'Ajouter au dash' },
+    { key:'sans_reponse', label:'Sans réponse' },
+  ];
+  filtersEl.innerHTML = filters.map(f =>
+    `<button class="email-filter-btn ${emailFilter===f.key?'active':''}" onclick="setEmailFilter('${f.key}')">${f.label}</button>`
+  ).join('');
+
+  // Filtre actif
+  let filtered = emails;
+  if (emailFilter === 'critical') filtered = emails.filter(e => e.score >= 9);
+  else if (emailFilter === 'important') filtered = emails.filter(e => e.score >= 7 && e.score < 9);
+  else if (emailFilter === 'a_traiter') filtered = emails.filter(e => e.label === 'A traiter');
+  else if (emailFilter === 'bdc') filtered = emails.filter(e => e.label === 'BDC a signer');
+  else if (emailFilter === 'dash') filtered = emails.filter(e => e.label === 'ajouter au dash');
+  else if (emailFilter === 'sans_reponse') filtered = emails.filter(e => e.category === 'sans_reponse');
+
+  countEl.textContent = `${filtered.length} email${filtered.length>1?'s':''} ${b ? '· Mis à jour ' + new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : ''}`;
+
+  if (!b) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">Briefing en cours de chargement…</div>`; return; }
+  if (!filtered.length) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`; return; }
+
+  listEl.innerHTML = filtered.map(e => {
+    const sc = e.score || 0;
+    const scoreColor = sc>=9?'#dc2626':sc>=7?'#f97316':sc>=5?'#eab308':'#6b7280';
+    const scoreBg   = sc>=9?'#fef2f2':sc>=7?'#fff7ed':sc>=5?'#fefce8':'#f3f4f6';
+    const labelHtml = e.label
+      ? `<span class="email-label">${esc(e.label)}</span>`
+      : (e.category==='sans_reponse' ? `<span class="email-label sans-reponse">sans réponse</span>` : '');
+    const age = e.hours_old != null ? (e.hours_old < 1 ? 'il y a moins d\'1h' : `il y a ${Math.round(e.hours_old)}h`) : '';
+    const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${e.id}`;
+    const sender = (e.from||'').replace(/<.*>/,'').trim();
+    return `<div class="email-row" id="email-${esc(e.id)}">
+      <div class="email-score" style="background:${scoreBg};color:${scoreColor}">${sc}</div>
+      <div class="email-body">
+        <div class="email-subject">${esc((e.subject||'').slice(0,80))}${(e.subject||'').length>80?'…':''}</div>
+        <div class="email-meta">
+          <span>${esc(sender.slice(0,40))}</span>
+          ${age ? `<span>· ${age}</span>` : ''}
+          ${labelHtml}
+        </div>
+        ${e.snippet ? `<div class="email-snippet">${esc(e.snippet)}</div>` : ''}
+        <div class="email-actions">
+          <a href="${gmailUrl}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:11px" onclick="event.stopPropagation()">✉️ Ouvrir</a>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id)}')">✅ Traité</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setEmailFilter(f) { emailFilter = f; renderEmailsView(); }
+
+function generateEmailActions(emails) {
+  if (!emails.length) return `<div class="bp-empty">✅ Aucun email à traiter</div>`;
+  const actions = [];
+
+  // BDC à signer
+  const bdc = emails.filter(e => e.label === 'BDC a signer');
+  if (bdc.length) actions.push({ priority: 9, icon: '✍️', text: `Signer ${bdc.length} BDC en attente`, emails: bdc });
+
+  // Factures / impayés
+  const factures = emails.filter(e => e.score === 10 && /facture|impay|relance/i.test(e.subject));
+  if (factures.length) actions.push({ priority: 10, icon: '🚨', text: `${factures.length} facture${factures.length>1?'s':''} impayée${factures.length>1?'s':''} à traiter`, emails: factures });
+
+  // Sans réponse depuis +12h
+  const noReply = emails.filter(e => e.category === 'sans_reponse' && e.hours_old > 12);
+  if (noReply.length) actions.push({ priority: 8, icon: '⏰', text: `${noReply.length} email${noReply.length>1?'s':''} sans réponse depuis +12h`, emails: noReply });
+
+  // A traiter
+  const aTraiter = emails.filter(e => e.label === 'A traiter');
+  if (aTraiter.length) actions.push({ priority: 7, icon: '📋', text: `${aTraiter.length} email${aTraiter.length>1?'s':''} labellisé "A traiter"`, emails: aTraiter });
+
+  // Critiques restants
+  const autresCritiques = emails.filter(e => e.score >= 9 && !bdc.includes(e) && !factures.includes(e));
+  if (autresCritiques.length) actions.push({ priority: 9, icon: '🔴', text: `${autresCritiques.length} email${autresCritiques.length>1?'s':''} urgent${autresCritiques.length>1?'s':''} à traiter`, emails: autresCritiques });
+
+  // Ajouter au dash
+  const dash = emails.filter(e => e.label === 'ajouter au dash');
+  if (dash.length) actions.push({ priority: 5, icon: '📊', text: `${dash.length} email${dash.length>1?'s':''} à ajouter au dashboard`, emails: dash });
+
+  if (!actions.length) {
+    const top = emails.filter(e => e.score >= 7).slice(0, 3);
+    top.forEach(e => actions.push({ priority: e.score, icon: '📬', text: (e.subject||'').slice(0, 45), emails: [e] }));
+  }
+
+  actions.sort((a, b) => b.priority - a.priority);
+
+  return actions.slice(0, 5).map((a, i) => {
+    const gmailUrl = a.emails.length === 1 ? `https://mail.google.com/mail/u/0/#inbox/${a.emails[0].id}` : null;
+    return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:13px;flex-shrink:0">${a.icon}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:600;line-height:1.3">${i+1}. ${esc(a.text)}</div>
+        ${gmailUrl ? `<a href="${gmailUrl}" target="_blank" style="font-size:10px;color:var(--primary)">Ouvrir →</a>` : `<span style="font-size:10px;color:var(--text-muted)">${a.emails.length} emails</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function dismissEmail(id) {
+  if (!dismissedEmails.includes(id)) {
+    dismissedEmails.push(id);
+    localStorage.setItem('dismissed_emails', JSON.stringify(dismissedEmails));
+  }
+  const el = document.getElementById('email-' + id);
+  if (el) el.style.display = 'none';
+  renderEmailsView();
+  renderSidebarBriefing();
+}
+
 function onDOverSS(event) {
   if (dragType !== 'vehicle') return;
   event.preventDefault();
@@ -1279,37 +1439,17 @@ function renderSidebarBriefing() {
     briefingDate = b.generated_at
       ? `Mis à jour ${new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`
       : (b.date ? `Généré le ${fmtDs(b.date)}` : '');
-    emailsHTML = b.emails.slice(0, 7).map(e => {
-      const sc = e.score || 0;
-      // Couleur selon le score
-      const scoreColor = sc >= 9 ? '#dc2626' : sc >= 7 ? '#f97316' : sc >= 5 ? '#eab308' : '#6b7280';
-      const scoreBg   = sc >= 9 ? '#fef2f2' : sc >= 7 ? '#fff7ed' : sc >= 5 ? '#fefce8' : '#f3f4f6';
-      // Label badge
-      const labelBadge = e.label
-        ? `<span style="font-size:9px;background:var(--primary);color:#fff;border-radius:4px;padding:1px 5px;margin-left:4px">${esc(e.label)}</span>`
-        : (e.category === 'sans_reponse' ? `<span style="font-size:9px;background:#e0e7ff;color:#4338ca;border-radius:4px;padding:1px 5px;margin-left:4px">sans réponse</span>` : '');
-      // Ancienneté
-      const age = e.hours_old != null
-        ? (e.hours_old < 1 ? 'Il y a moins d\'1h' : `Il y a ${Math.round(e.hours_old)}h`)
-        : '';
-      return `<div class="bp-item" style="align-items:flex-start;gap:8px">
-        <div style="min-width:26px;height:26px;border-radius:6px;background:${scoreBg};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:${scoreColor};flex-shrink:0">${sc}</div>
-        <div class="bp-item-text" style="min-width:0">
-          <div class="bp-item-title" style="line-height:1.3">${esc((e.subject||'').slice(0,40))}${(e.subject||'').length>40?'…':''}${labelBadge}</div>
-          <div class="bp-item-sub">${esc((e.from||'').replace(/<.*>/,'').trim().slice(0,30))}${age ? ' · ' + age : ''}</div>
-        </div>
-      </div>`;
-    }).join('');
-    // Résumé chiffré
+    // Résumé intelligent sidebar
+    const activeEmails = b.emails.filter(e => !dismissedEmails.includes(e.id));
     const sum = b.summary || {};
-    if (sum.total > 7) emailsHTML += `<div class="bp-refresh" style="text-align:center;margin-top:6px">+${sum.total - 7} autres emails</div>`;
-    if (sum.critical || sum.high) {
-      emailsHTML = `<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-        ${sum.critical ? `<span style="font-size:11px;background:#fef2f2;color:#dc2626;border-radius:6px;padding:2px 8px;font-weight:700">🔴 ${sum.critical} critique${sum.critical>1?'s':''}</span>` : ''}
-        ${sum.high ? `<span style="font-size:11px;background:#fff7ed;color:#f97316;border-radius:6px;padding:2px 8px;font-weight:700">🟠 ${sum.high} important${sum.high>1?'s':''}</span>` : ''}
-        ${sum.medium ? `<span style="font-size:11px;background:#fefce8;color:#854d0e;border-radius:6px;padding:2px 8px;font-weight:700">🟡 ${sum.medium} à traiter</span>` : ''}
-      </div>` + emailsHTML;
-    }
+    const actions = generateEmailActions(activeEmails);
+    const sumBadges = `<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+      ${sum.critical ? `<span style="font-size:11px;background:#fef2f2;color:#dc2626;border-radius:6px;padding:2px 8px;font-weight:700">🔴 ${sum.critical} critique${sum.critical>1?'s':''}</span>` : ''}
+      ${sum.high ? `<span style="font-size:11px;background:#fff7ed;color:#f97316;border-radius:6px;padding:2px 8px;font-weight:700">🟠 ${sum.high} important${sum.high>1?'s':''}</span>` : ''}
+      ${sum.medium ? `<span style="font-size:11px;background:#fefce8;color:#854d0e;border-radius:6px;padding:2px 8px;font-weight:700">🟡 ${sum.medium} moyen${sum.medium>1?'s':''}</span>` : ''}
+    </div>`;
+    emailsHTML = sumBadges + actions +
+      `<div style="margin-top:8px"><button class="btn btn-ghost btn-sm" style="width:100%;font-size:11px" onclick="showView('emails',document.getElementById('tabEmails'))">Voir tous les emails →</button></div>`;
   } else {
     emailsHTML = `<div class="bp-empty">Chargement en cours…</div>`;
   }
@@ -1344,7 +1484,17 @@ function renderSidebarBriefing() {
       <div class="bp-card-title">⚠️ Alertes CRM</div>
       ${alertsHTML}
     </div>`;
-  panels.forEach(p => p.innerHTML = html);
+  panels.forEach(p => {
+    p.innerHTML = html;
+    // Re-inject resize handle (lost after innerHTML overwrite)
+    const handle = document.createElement('div');
+    handle.className = 'sidebar-resize-handle';
+    handle.onmousedown = startSidebarResize;
+    p.insertBefore(handle, p.firstChild);
+    // Restore saved width
+    const saved = localStorage.getItem('sidebarWidth');
+    if (saved) p.style.width = Math.min(SIDEBAR_MAX, Math.max(SIDEBAR_MIN, parseInt(saved))) + 'px';
+  });
 }
 
 // -------- CARD SIZE --------
@@ -1500,6 +1650,7 @@ function showView(id, btn) {
   document.getElementById('view-'+id).classList.add('active');
   if (btn) btn.classList.add('active');
   if (id === 'dashboard') renderDashboard();
+  if (id === 'emails') renderEmailsView();
 }
 
 function toggleBriefing() {
@@ -2364,6 +2515,50 @@ if (document.readyState === 'loading') {
 } else {
   startApp();
 }
+
+// ============================================================
+// SIDEBAR RESIZABLE
+// ============================================================
+const SIDEBAR_MIN = 200;
+const SIDEBAR_MAX = 480;
+let sidebarResizing = false;
+let sidebarResizeStartX = 0;
+let sidebarResizeStartW = 0;
+let sidebarResizeTarget = null;
+
+function startSidebarResize(e) {
+  e.preventDefault();
+  sidebarResizing = true;
+  sidebarResizeTarget = e.currentTarget.parentElement;
+  sidebarResizeStartX = e.clientX;
+  sidebarResizeStartW = sidebarResizeTarget.offsetWidth;
+  e.currentTarget.classList.add('dragging');
+
+  document.addEventListener('mousemove', onSidebarResizeMove);
+  document.addEventListener('mouseup', onSidebarResizeEnd);
+  document.body.style.cursor = 'col-resize';
+  document.body.style.userSelect = 'none';
+}
+
+function onSidebarResizeMove(e) {
+  if (!sidebarResizing || !sidebarResizeTarget) return;
+  const delta = sidebarResizeStartX - e.clientX; // drag left = wider
+  const newW = Math.min(SIDEBAR_MAX, Math.max(SIDEBAR_MIN, sidebarResizeStartW + delta));
+  sidebarResizeTarget.style.width = newW + 'px';
+  // Apply to all sidebars simultaneously for consistency
+  document.querySelectorAll('.briefing-panel-sidebar').forEach(s => { s.style.width = newW + 'px'; });
+  localStorage.setItem('sidebarWidth', newW);
+}
+
+function onSidebarResizeEnd(e) {
+  sidebarResizing = false;
+  document.querySelectorAll('.sidebar-resize-handle').forEach(h => h.classList.remove('dragging'));
+  document.removeEventListener('mousemove', onSidebarResizeMove);
+  document.removeEventListener('mouseup', onSidebarResizeEnd);
+  document.body.style.cursor = '';
+  document.body.style.userSelect = '';
+}
+
 </script>
 </body>
 </html>
