@@ -86,7 +86,8 @@
       "transport_methode": "camion",
       "transport_date": "2026-03-12",
       "date_livraison": "2026-03-12",
-      "transport_notes": "1"
+      "transport_notes": "1",
+      "fournisseur_email": "eliot@flease.fr"
     }
   ],
   "lots": [],
