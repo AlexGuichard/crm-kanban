@@ -1663,7 +1663,10 @@ function openDetail(id) {
 
   const docsSection = showDocs ? `
     <div class="form-section">
-      <div class="form-section-title">📄 Documents ${missD ? '<span style="color:var(--urg-2)">⚠️ Incomplets</span>' : '<span style="color:var(--urg-done)">✅ Complets</span>'}</div>
+      <div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>📄 Documents ${missD ? '<span style="color:var(--urg-2)">⚠️ Incomplets</span>' : '<span style="color:var(--urg-done)">✅ Complets</span>'}</span>
+        <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="sendDocsEmail('${v.id}')">📧 Demander</button>
+      </div>
       <div class="doc-checklist">
         ${DOCS.map(d=>`
           <div class="doc-item ${v.documents&&v.documents[d.key]?'checked':''}" onclick="toggleDoc('${v.id}','${d.key}')">
@@ -1732,7 +1735,7 @@ function openDetail(id) {
             style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
         </div>
         <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
-          <input type="email" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
+          <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
             onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
             style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
         </div>
@@ -1920,6 +1923,46 @@ function showToast(msg) {
 // ============================================================
 // SETTINGS
 // ============================================================
+function sendDocsEmail(id) {
+  const v = S.vehicles.find(x => x.id === id);
+  if (!v) return;
+
+  // Récupère l'email depuis le champ inline (en cas de saisie non encore sauvegardée)
+  const emailInput = document.getElementById('inlineEmail_' + id);
+  const email = (emailInput ? emailInput.value.trim() : '') || v.fournisseur_email || '';
+
+  if (!email) {
+    alert('Aucune adresse email renseignée pour ce fournisseur.\nSaisissez-la dans le champ Email ci-dessus.');
+    return;
+  }
+
+  const vehicule = `${v.marque} ${v.modele}${v.annee ? ' ' + v.annee : ''}${v.km ? ' — ' + Number(v.km).toLocaleString('fr-FR') + ' km' : ''}`;
+  const fournisseur = v.fournisseur_nom || v.vendeur || 'Madame, Monsieur';
+
+  const sujet = encodeURIComponent(`Demande de documents — ${vehicule}`);
+  const corps = encodeURIComponent(
+`Bonjour${v.fournisseur_nom ? ' ' + v.fournisseur_nom : ''},
+
+Suite à notre échange concernant le véhicule suivant :
+${vehicule}${v.url_annonce ? '\n' + v.url_annonce : ''}
+
+Pourriez-vous nous faire parvenir les documents nécessaires à la finalisation de l'achat :
+
+• Carte grise (certificat d'immatriculation)
+• Facture d'achat
+• Certificat de cession
+
+Ces documents sont indispensables pour que nous puissions procéder au règlement dans les meilleurs délais.
+
+Merci d'avance pour votre retour.
+
+Cordialement,
+Flease`
+  );
+
+  window.location.href = `mailto:${email}?subject=${sujet}&body=${corps}`;
+}
+
 function saveInlineField(id, field, value) {
   const v = S.vehicles.find(x => x.id === id);
   if (!v || v[field] === value) return;
