@@ -1,6 +1,6 @@
 {
   "date": "2026-03-12",
-  "generated_at": "2026-03-12T15:33:37.109Z",
+  "generated_at": "2026-03-12T15:35:45.625Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Fwd: relance factures impayés",
       "snippet": "Bonjour, suite à votre demande, nous vous confirmons que vous êtes en possession des papiers originaux des véhicules. VR7EDYHZ7SN554070 - envoie des papiers le 21/11/2025 VR7E",
       "date": "2026-02-11T09:32:21.000Z",
-      "hours_old": 702,
+      "hours_old": 702.1,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -20,7 +20,7 @@
       "subject": "Fwd: 100048131 : factures en attentes de règlement",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-02T08:14:02.000Z",
-      "hours_old": 247.3,
+      "hours_old": 247.4,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -42,7 +42,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Les cartes grise ont toutes été faites mais il me manquait des papiers à signer pour clôturer mes dossiers de livraison. En pièce-jointe je vous ai mis pour chaque véh",
       "date": "2026-03-09T16:43:41.000Z",
-      "hours_old": 70.8,
+      "hours_old": 70.9,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -152,7 +152,7 @@
       "subject": "RE: copie CG Trafic / JL CHEVRON x3",
       "snippet": "Bonjour Elle vous a été envoyée lors de mon précédent mail le 30/01. Cordialement, [cid:image011.png@01DC9C19.18F18870]<https://cloud.letsignit.com/collect/bc/61d42441d8",
       "date": "2026-02-12T11:14:25.000Z",
-      "hours_old": 676.3,
+      "hours_old": 676.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "Re: REPORT DU RDV RENAULT MASTER GW328HK",
       "snippet": "Bonjour, En PJ la preuve de virement, il a été effectué hier donc vous devriez avoir les fonds dans la journée/demain. Cordialement, Alex Guichard - International Purchaser M",
       "date": "2026-02-20T09:08:17.000Z",
-      "hours_old": 486.4,
+      "hours_old": 486.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "Re: Achat Kangoo",
       "snippet": "Bonjour, Et voici l’attestation d’assurance Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drev",
       "date": "2026-02-23T08:26:50.000Z",
-      "hours_old": 415.1,
+      "hours_old": 415.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -251,7 +251,7 @@
       "subject": "Re: docs",
       "snippet": "Bonjour, Il me faut absolument les docs par scan aujourd’hui svp Merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.",
       "date": "2026-02-26T09:38:52.000Z",
-      "hours_old": 341.9,
+      "hours_old": 342,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -273,7 +273,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Et voici en PJ les docs signés. Vous pouvez envoyer les originaux à l’adresse suivante : 887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire Alex GUICHARD Merci, Ale",
       "date": "2026-03-02T16:14:40.000Z",
-      "hours_old": 239.3,
+      "hours_old": 239.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "Re: VENTE CITROEN BERLINGO VAN M GK-392-HW",
       "snippet": "Bonjour, Et voici en PJ. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-e",
       "date": "2026-03-03T08:44:27.000Z",
-      "hours_old": 222.8,
+      "hours_old": 222.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -317,7 +317,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Avez-vous pu faire le nécessaire ? Dans l'attente de votre retour, Cdt Le mer. 4 mars 2026 à 09:40, Administratif TTRM AUTO <info@ttrmauto.com> a écrit : >",
       "date": "2026-03-06T09:44:42.000Z",
-      "hours_old": 149.8,
+      "hours_old": 149.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -339,8 +339,19 @@
       "subject": "8x AUDI A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT 2025 à 32 490€ Chez VO-LINK",
       "snippet": "A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT Prix de Vente x8 unités : 32 490€ TTC Prix de Vente x4 unités : 32 790€ TTC Prix de Vente unitaire : 32 990€ TTC",
       "date": "2026-03-11T16:14:18.000Z",
-      "hours_old": 23.3,
+      "hours_old": 23.4,
       "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19c93fa4c258aacc",
+      "from": "ARANDA Jean-Pierre <J.ARANDA@autobernard.com>",
+      "subject": "RE: Voitures en attente de paiement.",
+      "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
+      "date": "2026-03-11T16:32:02.000Z",
+      "hours_old": 23.1,
+      "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
     },
@@ -352,17 +363,6 @@
       "date": "2026-03-11T16:30:12.000Z",
       "hours_old": 23.1,
       "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
-      "id": "19c93fa4c258aacc",
-      "from": "ARANDA Jean-Pierre <J.ARANDA@autobernard.com>",
-      "subject": "RE: Voitures en attente de paiement.",
-      "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
-      "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 23,
-      "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
     },
@@ -383,7 +383,7 @@
       "subject": "RE: GS330CF/TRAFIC",
       "snippet": "Bonjour M GUICHARD Auriez-vous l’avis de virement ? Car sauf erreur de ma part sans virement, je ne peux pas facturer ou vous envoyer les documents relatifs à ces véhicules.",
       "date": "2026-03-12T07:25:20.000Z",
-      "hours_old": 8.1,
+      "hours_old": 8.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -394,7 +394,7 @@
       "subject": "Lien sécurisé pour vous connecter à Claude.ai |  2026-03-12 10:02:40",
       "snippet": "[image: Claude] Connectons-vous Connectez-vous avec le lien sécurisé ci-dessous Connectez-vous à Claude.ai <https://claude.ai/magic-link?client=desktop_app#1ea5064a42486ae469c",
       "date": "2026-03-12T09:02:40.000Z",
-      "hours_old": 6.5,
+      "hours_old": 6.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -427,7 +427,7 @@
       "subject": " 🚗 Nouveau catalogue VO et VN 🚗",
       "snippet": "",
       "date": "2026-03-12T08:08:24.000Z",
-      "hours_old": 7.4,
+      "hours_old": 7.5,
       "label": null,
       "category": "sans_reponse",
       "score": 6
