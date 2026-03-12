@@ -417,7 +417,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
     </button>
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="btn btn-primary" onclick="openAddVehicle()">+ Véhicule</button>
-    <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openLBCImport()" title="Importer depuis LeBonCoin">🔗 LBC</button>
+    <button class="btn btn-ghost btn-sm" onclick="openLBCImport()" title="Importer depuis LeBonCoin">🔗 LBC</button>
     <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openAddLot()">+ Lot</button>
   </div>
 </header>
@@ -733,7 +733,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 </div>
 
 <!-- MODAL IMPORT LBC -->
-<div class="modal-overlay" id="ovLBC" onclick="overlayClick(event,'ovLBC')">
+<div class="overlay" id="ovLBC" onclick="overlayClick(event,'ovLBC')">
   <div class="modal" style="max-width:520px">
     <div class="modal-header">
       <div class="modal-title">🔗 Importer depuis LeBonCoin</div>
