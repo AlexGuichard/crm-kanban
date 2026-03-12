@@ -875,6 +875,17 @@ async function ghGet(path) {
 async function ghPut(path, body) {
   try {
     const r = await fetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    if (r.status === 409) {
+      // SHA stale (conflit) : re-fetch le SHA puis retry une fois
+      const fresh = await ghGet(path);
+      if (fresh && fresh.sha) {
+        ghSha = fresh.sha;
+        body.sha = fresh.sha;
+        const r2 = await fetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+        return r2.ok ? r2.json() : null;
+      }
+      return null;
+    }
     return r.ok ? r.json() : null;
   } catch(e) { return null; }
 }
