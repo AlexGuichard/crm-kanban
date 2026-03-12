@@ -114,10 +114,19 @@ def parse_lbc(html, url):
     elif annee:
         date_mec = str(annee)
 
-    # Boîte de vitesse : LBC renvoie "automatic" / "manual" → on traduit
-    boite_raw = attrs.get("gearbox_type", "")
-    boite_map = {"automatic": "Automatique", "manual": "Manuelle", "semi_auto": "Semi-auto"}
-    boite = boite_map.get(boite_raw.lower(), boite_raw.capitalize() if boite_raw else "")
+    # Debug : afficher tous les attributs disponibles
+    print(f"[DEBUG] attributs LBC: {json.dumps(attrs, ensure_ascii=False)}", flush=True)
+
+    # Boîte de vitesse : LBC peut utiliser plusieurs clés selon les annonces
+    boite_raw = (attrs.get("gearbox_type") or attrs.get("transmission") or
+                 attrs.get("gearbox") or attrs.get("boite_vitesse") or "")
+    boite_map = {
+        "automatic": "Automatique", "automatique": "Automatique",
+        "manual": "Manuelle", "manuelle": "Manuelle",
+        "semi_auto": "Semi-auto", "semi-auto": "Semi-auto",
+        "1": "Manuelle", "2": "Automatique",
+    }
+    boite = boite_map.get(boite_raw.lower(), boite_raw if boite_raw else "")
 
     vehicle = {
         "id":              str(uuid.uuid4()),
