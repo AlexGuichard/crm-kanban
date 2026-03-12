@@ -1,0 +1,27 @@
+name: Import LBC
+
+on:
+  workflow_dispatch:
+    inputs:
+      lbc_urls:
+        description: "URLs LeBonCoin (une par ligne)"
+        required: true
+        type: string
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Import véhicules LBC
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO:  ${{ github.repository }}
+          LBC_URLS:     ${{ github.event.inputs.lbc_urls }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+        run: python scripts/lbc_import.py
