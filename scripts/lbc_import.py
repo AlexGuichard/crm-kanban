@@ -104,9 +104,20 @@ def parse_lbc(html, url):
     phones = owner.get("phone_numbers") or []
     vendeur_tel = phones[0] if phones else owner.get("phone", "")
 
-    # Année (regdate = "2019-01" → 2019)
+    # Année + date de mise en circulation (regdate = "2019-01")
     annee_raw = attrs.get("regdate", "")
     annee = int(annee_raw[:4]) if annee_raw and len(annee_raw) >= 4 else None
+    # Date MEC formatée "MM/YYYY" si dispo, sinon juste l'année
+    date_mec = ""
+    if annee_raw and len(annee_raw) >= 7:
+        date_mec = f"{annee_raw[5:7]}/{annee_raw[:4]}"
+    elif annee:
+        date_mec = str(annee)
+
+    # Boîte de vitesse : LBC renvoie "automatic" / "manual" → on traduit
+    boite_raw = attrs.get("gearbox_type", "")
+    boite_map = {"automatic": "Automatique", "manual": "Manuelle", "semi_auto": "Semi-auto"}
+    boite = boite_map.get(boite_raw.lower(), boite_raw.capitalize() if boite_raw else "")
 
     vehicle = {
         "id":              str(uuid.uuid4()),
@@ -116,10 +127,11 @@ def parse_lbc(html, url):
         "marque":          attrs.get("brand", ""),
         "modele":          attrs.get("model", ad.get("subject", "")),
         "annee":           annee,
+        "date_mec":        date_mec,
         "km":              int(re.sub(r"\D", "", attrs.get("mileage", "0")) or 0),
         "prix_demande":    prix,
         "carburant":       attrs.get("fuel", ""),
-        "boite":           attrs.get("gearbox_type", ""),
+        "boite":           boite,
         "couleur":         attrs.get("color", ""),
         "localisation":    localisation,
         "fournisseur_nom": vendeur_nom,
