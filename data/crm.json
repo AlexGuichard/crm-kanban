@@ -21,14 +21,18 @@
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/38/ef/f1/38eff13522233672ad094ec9e53bbf57e0f155b4.jpg?rule=ad-large",
       "titre": "Renault Clio Blue dCi 100 ch GSR2 Evolution",
       "description": "Renault Clio Blue dCi 100 ch GSR2 Evolution berline, noir, 5 cv, 5 portes, première mise en circulation le 21/11/2024, garantie 12 mois.\n\nPrix TTC : 17 450,00 €\nPrix HT : 14 541,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  Prédisp",
-      "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "column": "a_payer",
+      "sub_stage": null,
       "urgence": "urg_3",
       "created_at": "2026-03-12T12:55:03",
       "historique": [
         {
           "date": "2026-03-12",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-12",
+          "action": "Passé en À Payer"
         }
       ]
     },
@@ -66,16 +70,28 @@
     }
   ],
   "lots": [],
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "mmnj2d4c5io5",
+      "column": "a_faire",
+      "title": "Demander les papiers — Renault Clio",
+      "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
+      "priority": 1,
+      "due_date": "2026-03-12",
+      "linked_vehicle_id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
+      "auto_generated": true,
+      "created_at": "2026-03-12"
+    }
+  ],
   "settings": {
     "github_repo": "AlexGuichard/crm-kanban",
-    "github_token": "",
+    "email": "",
+    "reminder_days": 3,
+    "show_archive": false,
     "urgency_colors": {
       "1": "#e8294a",
       "2": "#e87a00",
       "3": "#4d65ff"
-    },
-    "show_archive": false,
-    "reminder_days": 3
+    }
   }
 }
