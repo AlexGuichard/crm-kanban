@@ -95,7 +95,7 @@
     },
     {
       "id": "mmnj2tjwnb6c",
-      "column": "a_faire",
+      "column": "en_cours",
       "title": "Test tâche",
       "description": "desc test",
       "urgence": "urg_2",
