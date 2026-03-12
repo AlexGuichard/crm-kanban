@@ -92,6 +92,14 @@
       "linked_vehicle_id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
       "auto_generated": true,
       "created_at": "2026-03-12"
+    },
+    {
+      "id": "mmnj2tjwnb6c",
+      "column": "a_faire",
+      "title": "Test tâche",
+      "description": "desc test",
+      "urgence": "urg_2",
+      "created_at": "2026-03-12"
     }
   ],
   "settings": {
