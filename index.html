@@ -84,6 +84,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .sourcing-subtabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
 .ss-tab { flex: 1; padding: 5px 2px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.12s; line-height: 1.3; }
 .ss-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--surface); }
+.ss-tab.ss-tab-drop { background: rgba(77,101,255,0.12); border-bottom-color: var(--primary); color: var(--primary); transform: scale(1.04); }
 .ss-tab-count { display: block; font-size: 11px; font-weight: 700; color: inherit; }
 
 /* CARDS */
@@ -1016,7 +1017,11 @@ function renderCol(col) {
     SUB_STAGES.forEach(ss => { bySS[ss.key] = vehicles.filter(v => v.sub_stage === ss.key); });
     const curVehicles = bySS[activeSS] || [];
     const subTabsHtml = SUB_STAGES.map(ss => `
-      <div class="ss-tab ${activeSS === ss.key ? 'active' : ''}" onclick="setActiveSS('${ss.key}')">
+      <div class="ss-tab ${activeSS === ss.key ? 'active' : ''}"
+        onclick="setActiveSS('${ss.key}')"
+        ondragover="onDOverSS(event)"
+        ondrop="onDropSS(event,'${ss.key}')"
+        ondragleave="this.classList.remove('ss-tab-drop')">
         ${ss.label}<span class="ss-tab-count">${bySS[ss.key].length}</span>
       </div>`).join('');
     const cards = curVehicles.map(v => vehicleCard(v)).join('') +
@@ -1047,6 +1052,35 @@ function renderCol(col) {
 }
 
 function setActiveSS(ss) { activeSS = ss; renderBoard(); }
+
+function onDOverSS(event) {
+  if (dragType !== 'vehicle') return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.currentTarget.classList.add('ss-tab-drop');
+}
+
+function onDropSS(event, ssKey) {
+  event.preventDefault();
+  event.stopPropagation();
+  event.currentTarget.classList.remove('ss-tab-drop');
+  if (!dragId || dragType !== 'vehicle') return;
+  const v = S.vehicles.find(x => x.id === dragId);
+  dragType = null; dragId = null;
+  document.querySelectorAll('.card.dragging').forEach(el => el.classList.remove('dragging'));
+  if (!v || v.column !== 'sourcing' || v.sub_stage === ssKey) return;
+  const prev = v.sub_stage;
+  v.sub_stage = ssKey;
+  // BC Signé → passage auto en À Payer
+  if (ssKey === 'bc_signe') {
+    addHist(v, `Sourcing : ${prev} → BC Signé`);
+  } else {
+    addHist(v, `Sourcing : ${prev} → ${ssKey}`);
+  }
+  activeSS = ssKey;
+  render();
+  saveToGH();
+}
 
 function vehicleCard(v) {
   const urg = urgClass(v.priority);
