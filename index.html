@@ -435,9 +435,7 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       <span class="search-icon">🔍</span>
       <input class="search-input" id="searchInput" placeholder="Rechercher…" oninput="onSearch()">
     </div>
-    <button class="btn btn-icon btn-ghost" onclick="toggleBriefing()" title="Briefing du matin">
-      📬<span class="notif-dot" id="notifDot"></span>
-    </button>
+    <span class="notif-dot" id="notifDot" style="display:none"></span>
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
   </div>
 </header>
@@ -1090,7 +1088,7 @@ let emailFilter = 'all';
 const dismissedEmails = JSON.parse(localStorage.getItem('dismissed_emails') || '[]');
 
 function renderEmailsView() {
-  const b = S.briefing;
+  const b = S.morning_briefing;
   const filtersEl = document.getElementById('emailFilters');
   const listEl = document.getElementById('emailsList');
   const countEl = document.getElementById('emailCount');
