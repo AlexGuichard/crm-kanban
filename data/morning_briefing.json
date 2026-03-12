@@ -1,6 +1,6 @@
 {
   "date": "2026-03-12",
-  "generated_at": "2026-03-12T19:05:49.801Z",
+  "generated_at": "2026-03-12T19:10:45.674Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "Fwd: 100048131 : factures en attentes de règlement",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-02T08:14:02.000Z",
-      "hours_old": 250.9,
+      "hours_old": 251,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -42,7 +42,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Les cartes grise ont toutes été faites mais il me manquait des papiers à signer pour clôturer mes dossiers de livraison. En pièce-jointe je vous ai mis pour chaque véh",
       "date": "2026-03-09T16:43:41.000Z",
-      "hours_old": 74.4,
+      "hours_old": 74.5,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -53,7 +53,7 @@
       "subject": "Demande de signature",
       "snippet": "Demande de signature Bonjour LPF Entreprise, TEC3H vous invite à signer : Commande N° 2510-227 Pour lire et signer les documents, cliquez sur le bouton ci-dessous : Accéder aux doc",
       "date": "2025-11-21T13:37:45.000Z",
-      "hours_old": 2669.5,
+      "hours_old": 2669.6,
       "label": "BDC a signer",
       "category": "label",
       "score": 9
@@ -86,7 +86,7 @@
       "subject": "Fwd: 5x c3",
       "snippet": "Si vous pouvez régulariser svp Merci bcp Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire",
       "date": "2026-02-04T10:12:42.000Z",
-      "hours_old": 872.9,
+      "hours_old": 873,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Re: Clio Evolution TCe 90",
       "snippet": "Hi, Thanks for your quick feedback. However, he is asking us for the sales history, not the transport history. Can you send me the transfer agreement between you and your supp",
       "date": "2026-02-11T13:17:17.000Z",
-      "hours_old": 701.8,
+      "hours_old": 701.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Re: Facture remise en état",
       "snippet": "Et voici la preuve de virement en PJ. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Cal",
       "date": "2026-02-17T15:42:35.000Z",
-      "hours_old": 555.4,
+      "hours_old": 555.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "Re: RESERVATION DACIA JOGGER",
       "snippet": "Bonjour, Le virement va être effectué sous 24h. Le véhicule est toujours disponible ? Merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10",
       "date": "2026-02-18T15:53:25.000Z",
-      "hours_old": 531.2,
+      "hours_old": 531.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 507,
+      "hours_old": 507.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "PRISE DE RDV VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de Saint Priest Lyon, nous revenons vers vous afin de convenir d'un ren",
       "date": "2026-03-04T10:47:11.000Z",
-      "hours_old": 200.3,
+      "hours_old": 200.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -328,7 +328,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 34.7,
+      "hours_old": 34.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -350,7 +350,7 @@
       "subject": "RE: GS330CF/TRAFIC",
       "snippet": "Bonjour M GUICHARD Auriez-vous l’avis de virement ? Car sauf erreur de ma part sans virement, je ne peux pas facturer ou vous envoyer les documents relatifs à ces véhicules.",
       "date": "2026-03-12T07:25:20.000Z",
-      "hours_old": 11.7,
+      "hours_old": 11.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -372,7 +372,7 @@
       "subject": "RE: COPIE CG",
       "snippet": "Je suis désolé sans l'accord de Mat je ne peux pas, Mathieu ne travail pas aujourd'hui Bonne journée Dorine ACTIV' AUTOMOBILES 12 Rue du Saintois 54520 LAXOU-LA-SAPI",
       "date": "2026-03-12T10:24:41.000Z",
-      "hours_old": 8.7,
+      "hours_old": 8.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -416,7 +416,7 @@
       "subject": "RENAULT TRAFIC L2H1 2.0 DCI 150 ch BVA 9 PLACES de 05/2024 avec 70 619 Kms à 26 990€ HT",
       "snippet": "Renault Trafic BOITE AUTO Minibus L2H1 en 9 PLACES ! RENAULT TRAFIC L2H1 9 PLACES 2.0 DCI 150CH BVA Version : ZEN De 05/2024 70 619 KM Couleur",
       "date": "2026-03-12T09:57:40.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -427,7 +427,7 @@
       "subject": "new: Peugeot 208_2008",
       "snippet": "Hello, please see our current offer for new Peugeot: * 208 * 2008 More information in the attachment (excel file). If you are interested in the offer, I remain at yo",
       "date": "2026-03-12T09:59:25.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -438,7 +438,7 @@
       "subject": "used: Toyota cars",
       "snippet": "Hello, please see our current offer for Toyota used cars. More information in the attachment (excel file). If you are interested in the offer, I remain at your disposal.",
       "date": "2026-03-12T09:59:23.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": null,
       "category": "sans_reponse",
       "score": 6
