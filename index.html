@@ -417,7 +417,6 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
     </button>
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="btn btn-primary" onclick="openAddVehicle()">+ Véhicule</button>
-    <button class="btn btn-ghost btn-sm" onclick="openLBCImport()" title="Importer depuis LeBonCoin">🔗 LBC</button>
     <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openAddLot()">+ Lot</button>
   </div>
 </header>
@@ -1008,7 +1007,7 @@ function renderCol(col) {
       ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
     </div>
     ${bodyHtml}
-    ${['sourcing','a_payer'].includes(col.key) ? `<div class="col-add"><button onclick="openAddVehicle('${col.key}')">+ Véhicule</button></div>` : ''}
+    ${col.key === 'sourcing' ? `<div class="col-add" style="display:flex;gap:4px"><button style="flex:1" onclick="openAddVehicle('sourcing')">+ Véhicule</button><button style="flex:1" onclick="openLBCImport()">🔗 LBC</button></div>` : ''}
   </div>`;
 }
 
@@ -1664,21 +1663,26 @@ function openDetail(id) {
 
   const price = v.prix_negocie || v.prix_demande;
   document.getElementById('detailBody').innerHTML = `
+    ${v.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;max-height:200px;background:var(--bg)">
+      <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
+    </div>` : ''}
+    ${v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : ''}
     <div class="detail-grid">
-      <div class="detail-field"><label>Kilométrage</label><value>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</value></div>
+      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
       <div class="detail-field"><label>Carburant / Boîte</label><value>${v.carburant||'—'} / ${v.boite||'—'}</value></div>
-      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande)}</value></div>
+      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
       <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
+      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
+      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
       ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
       ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
-      <div class="detail-field"><label>Source</label><value>${v.url_annonce ? `<a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary)">${esc(v.source)}</a>` : esc(v.source)||'—'}</value></div>
-      <div class="detail-field"><label>Colonne</label><value>${COLUMNS.find(c=>c.key===v.column)?.label||v.column}</value></div>
     </div>
-    ${v.fournisseur_nom ? `
+    ${(v.fournisseur_nom||v.vendeur) ? `
     <div class="form-section">
       <div class="form-section-title">🏢 Fournisseur</div>
       <div class="detail-grid">
-        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom)}</value></div>
+        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur)}</value></div>
+        ${v.fournisseur_type||v.vendeur_type ? `<div class="detail-field"><label>Type</label><value>${esc(v.fournisseur_type||v.vendeur_type)}</value></div>` : ''}
         ${v.fournisseur_tel ? `<div class="detail-field"><label>Tél</label><value><a href="tel:${esc(v.fournisseur_tel)}" style="color:var(--primary)">${esc(v.fournisseur_tel)}</a></value></div>` : ''}
         ${v.fournisseur_email ? `<div class="detail-field"><label>Email</label><value><a href="mailto:${esc(v.fournisseur_email)}" style="color:var(--primary)">${esc(v.fournisseur_email)}</a></value></div>` : ''}
       </div>
