@@ -887,7 +887,8 @@ async function loadFromGH() {
   if (!data) { setSyncBadge('error'); return false; }
   try {
     ghSha = data.sha;
-    const content = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    const raw = atob(data.content.replace(/\n/g,''));
+    const content = JSON.parse(decodeURIComponent(escape(raw)));
     if (Array.isArray(content.vehicles)) S.vehicles = content.vehicles;
     if (Array.isArray(content.lots)) S.lots = content.lots;
     if (Array.isArray(content.tasks)) S.tasks = content.tasks;
@@ -923,7 +924,7 @@ async function loadBriefing() {
   const data = await ghGet(`/repos/${repo}/contents/data/morning_briefing.json`);
   if (!data || !data.content) return;
   try {
-    S.briefing = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    S.briefing = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
     renderBriefing();
   } catch(e) {}
 }
@@ -1315,7 +1316,7 @@ async function loadBriefing() {
       { headers: { Authorization: `Bearer ${tok}`, Accept: 'application/vnd.github.v3+json' } });
     if (!r.ok) throw new Error('404');
     const j = await r.json();
-    S.morning_briefing = JSON.parse(atob(j.content.replace(/\n/g,'')));
+    S.morning_briefing = JSON.parse(decodeURIComponent(escape(atob(j.content.replace(/\n/g,'')))));
     renderSidebarBriefing();
     showToast('📬 Briefing chargé !');
   } catch(e) { showToast('❌ Briefing introuvable — lance le workflow GitHub Actions'); }
@@ -1715,7 +1716,6 @@ function openDetail(id) {
       <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
       <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
       <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
-      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
       ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
       ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
       ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
