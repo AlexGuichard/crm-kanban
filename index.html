@@ -418,8 +418,6 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
       📬<span class="notif-dot" id="notifDot"></span>
     </button>
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
-    <button class="btn btn-primary" onclick="openAddVehicle()">+ Véhicule</button>
-    <button class="btn btn-ghost btn-sm btn-sm-hide" onclick="openAddLot()">+ Lot</button>
   </div>
 </header>
 
@@ -1313,8 +1311,7 @@ function renderSidebarBriefing() {
       </div>` + emailsHTML;
     }
   } else {
-    emailsHTML = `<div class="bp-empty">Aucun email chargé</div>
-      <button class="bp-load-btn" onclick="loadBriefing()">⟳ Charger</button>`;
+    emailsHTML = `<div class="bp-empty">Chargement en cours…</div>`;
   }
 
   // --- BLOC 3 : Alertes CRM ---
