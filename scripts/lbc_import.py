@@ -1,251 +1,288 @@
 #!/usr/bin/env python3
 """
 Import de véhicules LeBonCoin → CRM Flease
-Accepte une ou plusieurs URLs LBC, scrape les données et les écrit dans crm.json sur GitHub.
+- ScraperAPI avec render=true comme méthode principale (LBC est Next.js)
+- Fallback requête directe si pas de clé ScraperAPI
 """
 
+import base64
+import gzip
 import json
 import os
 import re
 import sys
 import time
+import urllib.parse
+import urllib.request
 import uuid
 from datetime import datetime, timezone
-import urllib.request
-import urllib.error
 
-GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
-GITHUB_REPO  = os.environ.get("GITHUB_REPO", "AlexGuichard/crm-kanban")
-CRM_FILE     = "data/crm.json"
+GITHUB_TOKEN   = os.environ["GITHUB_TOKEN"]
+GITHUB_REPO    = os.environ.get("GITHUB_REPO", "AlexGuichard/crm-kanban")
+CRM_FILE       = "data/crm.json"
+SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+HEADERS_BROWSER = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    ),
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "fr-FR,fr;q=0.9",
-    "Accept-Encoding": "gzip, deflate",
+    "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
+    "Cache-Control": "no-cache",
 }
 
 
-# ── Scraping LBC ─────────────────────────────────────────────
+# ── Fetch ───────────────────────────────────────────────────────────────────
 
-def fetch_page(url):
-    """Télécharge la page LBC et retourne le HTML."""
-    req = urllib.request.Request(url, headers=HEADERS)
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            content = resp.read()
-            # Décompression gzip si nécessaire
-            if resp.info().get("Content-Encoding") == "gzip":
-                import gzip
-                content = gzip.decompress(content)
-            return content.decode("utf-8", errors="replace")
-    except Exception as e:
-        # Fallback ScraperAPI si disponible
-        scraperapi_key = os.environ.get("SCRAPERAPI_KEY")
-        if scraperapi_key:
-            api_url = f"http://api.scraperapi.com?api_key={scraperapi_key}&url={url}"
-            req2 = urllib.request.Request(api_url, headers={"User-Agent": "python"})
-            with urllib.request.urlopen(req2, timeout=30) as resp2:
-                return resp2.read().decode("utf-8", errors="replace")
-        raise e
+def scraper_api_fetch(url: str, render: bool) -> str:
+    """Appelle ScraperAPI avec ou sans rendu JS."""
+    api_url = (
+        f"http://api.scraperapi.com"
+        f"?api_key={SCRAPERAPI_KEY}"
+        f"&url={urllib.parse.quote(url, safe='')}"
+        f"&country_code=fr"
+        + ("&render=true" if render else "")
+    )
+    req = urllib.request.Request(api_url, headers={"User-Agent": "python-scraperapi"})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        return r.read().decode("utf-8", errors="replace")
 
 
-def parse_lbc(html, url):
-    """Extrait les données du véhicule depuis __NEXT_DATA__."""
-    match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', html, re.DOTALL)
-    if not match:
-        raise ValueError("__NEXT_DATA__ introuvable — LBC a peut-être changé sa structure")
+def fetch_page(url: str) -> str:
+    """Tente plusieurs méthodes pour obtenir la page LBC."""
 
-    data = json.loads(match.group(1))
-
-    # Cherche l'annonce dans la hiérarchie Next.js
-    ad = None
-    try:
-        ad = data["props"]["pageProps"]["ad"]
-    except KeyError:
-        pass
-    if not ad:
+    if SCRAPERAPI_KEY:
+        # ① ScraperAPI + JS rendering (nécessaire pour LBC Next.js)
+        print("  [fetch] ScraperAPI render=true...", flush=True)
         try:
-            ad = data["props"]["pageProps"]["adView"]["ad"]
-        except KeyError:
-            pass
-    if not ad:
-        raise ValueError("Structure de l'annonce introuvable dans __NEXT_DATA__")
+            html = scraper_api_fetch(url, render=True)
+            if "__NEXT_DATA__" in html:
+                print(f"  [fetch] ✅ __NEXT_DATA__ via ScraperAPI render ({len(html):,} car)", flush=True)
+                return html
+            print(f"  [fetch] ⚠ Render OK mais __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
+            print(f"  [fetch]   Extrait: {html[:200]!r}", flush=True)
+        except Exception as e:
+            print(f"  [fetch] ⚠ ScraperAPI render échoué: {e}", flush=True)
 
-    # Attributs clés/valeurs (kilomètres, année, carburant, boîte, etc.)
-    attrs = {}
-    for a in ad.get("attributes", []):
-        attrs[a.get("key", "")] = a.get("value_label") or a.get("value", "")
+        # ② ScraperAPI sans rendu (fallback rapide)
+        print("  [fetch] ScraperAPI sans render...", flush=True)
+        try:
+            html = scraper_api_fetch(url, render=False)
+            if "__NEXT_DATA__" in html:
+                print(f"  [fetch] ✅ __NEXT_DATA__ via ScraperAPI ({len(html):,} car)", flush=True)
+                return html
+            print(f"  [fetch] ⚠ Sans render: __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
+        except Exception as e:
+            print(f"  [fetch] ⚠ ScraperAPI sans render échoué: {e}", flush=True)
+
+    # ③ Requête directe
+    print("  [fetch] Requête directe...", flush=True)
+    req = urllib.request.Request(url, headers=HEADERS_BROWSER)
+    with urllib.request.urlopen(req, timeout=20) as r:
+        raw = r.read()
+        if r.info().get("Content-Encoding") == "gzip":
+            raw = gzip.decompress(raw)
+        html = raw.decode("utf-8", errors="replace")
+    if "__NEXT_DATA__" in html:
+        print(f"  [fetch] ✅ __NEXT_DATA__ direct ({len(html):,} car)", flush=True)
+    else:
+        print(f"  [fetch] ⚠ Direct: __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
+    return html
+
+
+# ── Parse ───────────────────────────────────────────────────────────────────
+
+def parse_lbc(html: str, url: str) -> dict:
+    m = re.search(
+        r'<script[^>]+id=["\']__NEXT_DATA__["\'][^>]*>(.*?)</script>',
+        html, re.DOTALL
+    )
+    if not m:
+        if "captcha" in html.lower() or "robot" in html.lower():
+            raise ValueError("CAPTCHA détecté — ScraperAPI render=true nécessaire")
+        raise ValueError(
+            f"__NEXT_DATA__ introuvable (page {len(html):,} car). "
+            f"Extrait: {html[:300]!r}"
+        )
+
+    data = json.loads(m.group(1))
+    pp = data.get("props", {}).get("pageProps", {})
+
+    # Cherche l'objet 'ad' dans différentes structures Next.js
+    ad = (
+        pp.get("ad") or
+        pp.get("adView", {}).get("ad") or
+        pp.get("initialState", {}).get("adView", {}).get("adData", {}).get("ad")
+    )
+    if not ad:
+        print(f"  [parse] Clés pageProps: {list(pp.keys())}", flush=True)
+        raise ValueError("Objet 'ad' introuvable dans __NEXT_DATA__")
+
+    # Attributs
+    attrs = {a.get("key", ""): (a.get("value_label") or a.get("value", ""))
+             for a in ad.get("attributes", [])}
+    print(f"  [parse] Attributs: {json.dumps(attrs, ensure_ascii=False)}", flush=True)
 
     # Prix
     prices = ad.get("price", [])
     prix = int(prices[0]) if prices else None
 
-    # Photos
-    images = ad.get("images", {})
-    photo_url = None
-    for key in ("urls_large", "urls", "urls_thumb"):
-        urls = images.get(key, [])
-        if urls:
-            photo_url = urls[0]
-            break
+    # Photo
+    imgs = ad.get("images", {})
+    photo = next(
+        (imgs[k][0] for k in ("urls_large", "urls", "urls_thumb") if imgs.get(k)),
+        None
+    )
 
     # Localisation
     loc = ad.get("location", {})
-    localisation = loc.get("city", "") or loc.get("region_label", "")
-    if loc.get("zipcode"):
-        localisation += f" ({loc['zipcode'][:2]})"
+    city = loc.get("city", "") or loc.get("region_label", "")
+    localisation = city + (f" ({loc['zipcode'][:2]})" if loc.get("zipcode") else "")
 
-    # Vendeur
+    # Fournisseur
     owner = ad.get("owner", {})
-    vendeur_type   = "pro" if owner.get("type") == "pro" else "particulier"
-    vendeur_nom    = owner.get("name", "")
-    # Téléphone : LBC le stocke parfois dans owner.phone ou owner.phone_numbers
     phones = owner.get("phone_numbers") or []
-    vendeur_tel = phones[0] if phones else owner.get("phone", "")
+    tel = phones[0] if phones else owner.get("phone", "")
 
-    # Année + date de mise en circulation
-    annee_raw = attrs.get("regdate", "")
-    annee = int(annee_raw[:4]) if annee_raw and len(annee_raw) >= 4 else None
-    # issuance_date = "11/2024" (plus précis que regdate)
+    # Année
+    reg = attrs.get("regdate", "")
+    annee = int(reg[:4]) if reg and len(reg) >= 4 else None
     date_mec = attrs.get("issuance_date") or (str(annee) if annee else "")
 
-    # Debug : afficher tous les attributs disponibles
-    print(f"[DEBUG] attributs LBC: {json.dumps(attrs, ensure_ascii=False)}", flush=True)
+    # Km
+    km = int(re.sub(r"\D", "", attrs.get("mileage", "0") or "0") or 0)
 
-    # Boîte de vitesse : LBC peut utiliser plusieurs clés selon les annonces
-    boite_raw = (attrs.get("gearbox_type") or attrs.get("transmission") or
-                 attrs.get("gearbox") or attrs.get("boite_vitesse") or "")
-    boite_map = {
-        "automatic": "Automatique", "automatique": "Automatique",
-        "manual": "Manuelle", "manuelle": "Manuelle",
-        "semi_auto": "Semi-auto", "semi-auto": "Semi-auto",
-        "1": "Manuelle", "2": "Automatique",
+    # Boîte
+    boite_raw = (attrs.get("gearbox_type") or attrs.get("gearbox") or
+                 attrs.get("transmission") or "").lower()
+    boite = {"automatic": "Automatique", "automatique": "Automatique",
+             "manual": "Manuelle", "manuelle": "Manuelle",
+             "semi_auto": "Semi-auto"}.get(boite_raw, boite_raw or "")
+
+    # Carburant
+    fuel_raw = attrs.get("fuel", "").lower()
+    carburant = {"essence": "Essence", "gasoline": "Essence",
+                 "diesel": "Diesel", "electric": "Électrique",
+                 "hybrid": "Hybride", "lpg": "GPL"}.get(fuel_raw, attrs.get("fuel", ""))
+
+    return {
+        "id":               str(uuid.uuid4()),
+        "lbc_id":           str(ad.get("list_id", "")),
+        "url_annonce":      url,
+        "source":           "LeBonCoin",
+        "marque":           attrs.get("brand", ""),
+        "modele":           attrs.get("model", ad.get("subject", "")),
+        "annee":            annee,
+        "date_mec":         date_mec,
+        "km":               km,
+        "prix_demande":     prix,
+        "carburant":        carburant,
+        "boite":            boite,
+        "couleur":          attrs.get("vehicule_color") or attrs.get("color", ""),
+        "localisation":     localisation,
+        "fournisseur_nom":  owner.get("name", ""),
+        "fournisseur_tel":  tel,
+        "fournisseur_type": "pro" if owner.get("type") == "pro" else "particulier",
+        "photo":            photo,
+        "titre":            ad.get("subject", ""),
+        "description":      (ad.get("body") or "")[:300],
+        "column":           "sourcing",
+        "sub_stage":        "a_contacter",
+        "priority":         3,
+        "documents":        {"carte_grise": False, "facture_achat": False, "certificat_cession": False},
+        "created_at":       datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+        "historique":       [{"date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                              "action": "Importé depuis LBC"}],
     }
-    boite = boite_map.get(boite_raw.lower(), boite_raw if boite_raw else "")
-
-    vehicle = {
-        "id":              str(uuid.uuid4()),
-        "lbc_id":          str(ad.get("list_id", "")),
-        "url_annonce":     url,
-        "source":          "LeBonCoin",
-        "marque":          attrs.get("brand", ""),
-        "modele":          attrs.get("model", ad.get("subject", "")),
-        "annee":           annee,
-        "date_mec":        date_mec,
-        "km":              int(re.sub(r"\D", "", attrs.get("mileage", "0")) or 0),
-        "prix_demande":    prix,
-        "carburant":       attrs.get("fuel", ""),
-        "boite":           boite,
-        "couleur":         attrs.get("vehicule_color") or attrs.get("color", ""),
-        "localisation":    localisation,
-        "fournisseur_nom": vendeur_nom,
-        "fournisseur_tel": vendeur_tel,
-        "fournisseur_type": vendeur_type,
-        "photo":           photo_url,
-        "titre":           ad.get("subject", ""),
-        "description":     ad.get("body", "")[:300] if ad.get("body") else "",
-        "column":          "sourcing",
-        "sub_stage":       "a_contacter",
-        "urgence":         "urg_3",
-        "created_at":      datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
-        "historique":      [{"date": datetime.now(timezone.utc).strftime("%Y-%m-%d"), "action": "Importé depuis LBC"}],
-    }
-    return vehicle
 
 
-# ── GitHub API ───────────────────────────────────────────────
+# ── GitHub API ──────────────────────────────────────────────────────────────
 
-def gh_get(path):
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}"
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-    })
+def gh_get(path: str) -> dict:
+    req = urllib.request.Request(
+        f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}",
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}",
+                 "Accept": "application/vnd.github+json"},
+    )
     with urllib.request.urlopen(req, timeout=15) as r:
         return json.loads(r.read())
 
 
-def gh_put(path, content_str, sha, message):
-    import base64
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}"
+def gh_put(path: str, content_str: str, sha: str, message: str) -> None:
     body = json.dumps({
         "message": message,
-        "content": base64.b64encode(content_str.encode()).decode(),
+        "content": base64.b64encode(content_str.encode("utf-8")).decode("ascii"),
         "sha": sha,
-    }).encode()
-    req = urllib.request.Request(url, data=body, method="PUT", headers={
-        "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github+json",
-        "Content-Type": "application/json",
-    })
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read())
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        f"https://api.github.com/repos/{GITHUB_REPO}/contents/{path}",
+        data=body, method="PUT",
+        headers={"Authorization": f"Bearer {GITHUB_TOKEN}",
+                 "Accept": "application/vnd.github+json",
+                 "Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=15):
+        pass
 
 
-# ── Main ─────────────────────────────────────────────────────
+# ── Main ────────────────────────────────────────────────────────────────────
 
 def main():
     urls_raw = os.environ.get("LBC_URLS", "").strip()
     if not urls_raw:
-        print("❌ Aucune URL fournie (variable LBC_URLS vide)")
+        print("❌ Variable LBC_URLS vide")
         sys.exit(1)
 
     urls = [u.strip() for u in re.split(r"[\n,;]+", urls_raw) if u.strip().startswith("http")]
     if not urls:
-        print("❌ Aucune URL valide trouvée")
+        print("❌ Aucune URL valide")
         sys.exit(1)
 
     print(f"📋 {len(urls)} URL(s) à traiter")
+    print(f"🔑 ScraperAPI: {'configurée ✅' if SCRAPERAPI_KEY else 'absente ⚠'}")
 
-    # Charger crm.json depuis GitHub
     gh_file = gh_get(CRM_FILE)
-    import base64
-    crm = json.loads(base64.b64decode(gh_file["content"]).decode())
+    crm = json.loads(base64.b64decode(gh_file["content"]).decode("utf-8"))
     sha = gh_file["sha"]
+    existing_ids = {v.get("lbc_id") for v in crm.get("vehicles", []) if v.get("lbc_id")}
 
-    existing_lbc_ids = {v.get("lbc_id") for v in crm.get("vehicles", []) if v.get("lbc_id")}
-
-    added = []
-    errors = []
+    added, errors = [], []
 
     for i, url in enumerate(urls):
-        print(f"\n[{i+1}/{len(urls)}] {url}")
+        print(f"\n━━━ [{i+1}/{len(urls)}] {url}", flush=True)
         try:
             html = fetch_page(url)
-            vehicle = parse_lbc(html, url)
-
-            if vehicle["lbc_id"] and vehicle["lbc_id"] in existing_lbc_ids:
-                print(f"  ⚠ Déjà dans le CRM (LBC ID: {vehicle['lbc_id']}) — ignoré")
+            v = parse_lbc(html, url)
+            if v["lbc_id"] and v["lbc_id"] in existing_ids:
+                print(f"  ⚠ Déjà présent (ID {v['lbc_id']}) — ignoré")
                 continue
-
-            crm.setdefault("vehicles", []).append(vehicle)
-            existing_lbc_ids.add(vehicle["lbc_id"])
-            added.append(f"{vehicle['marque']} {vehicle['modele']} ({vehicle.get('annee','?')}) — {vehicle.get('prix','?')} €")
-            print(f"  ✅ {added[-1]}")
+            crm.setdefault("vehicles", []).append(v)
+            existing_ids.add(v["lbc_id"])
+            label = f"{v['marque']} {v['modele']} {v.get('annee','?')} — {v['km']:,} km — {v.get('prix_demande','?')} €"
+            added.append(label)
+            print(f"  ✅ {label}")
         except Exception as e:
             errors.append(f"{url}: {e}")
-            print(f"  ❌ Erreur: {e}")
-
+            print(f"  ❌ {e}")
         if i < len(urls) - 1:
-            time.sleep(1)  # pause entre requêtes
+            time.sleep(2)
 
     if not added:
         print("\n⚠ Aucun véhicule ajouté")
         if errors:
-            print("Erreurs:", "\n".join(errors))
+            print("\n".join(f"  • {e}" for e in errors))
         sys.exit(1 if errors else 0)
 
-    # Sauvegarder crm.json sur GitHub
-    msg = f"Import LBC: {len(added)} véhicule(s) ajouté(s)"
-    gh_put(CRM_FILE, json.dumps(crm, ensure_ascii=False, indent=2), sha, msg)
-    print(f"\n✅ {msg}")
-    for v in added:
-        print(f"  + {v}")
+    gh_put(CRM_FILE, json.dumps(crm, ensure_ascii=False, indent=2), sha,
+           f"Import LBC: {len(added)} véhicule(s)")
+    print(f"\n✅ {len(added)} véhicule(s) ajouté(s):")
+    for label in added:
+        print(f"  + {label}")
     if errors:
         print(f"\n⚠ {len(errors)} erreur(s):")
         for e in errors:
-            print(f"  - {e}")
+            print(f"  • {e}")
 
 
 if __name__ == "__main__":
