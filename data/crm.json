@@ -88,6 +88,38 @@
       "date_livraison": "2026-03-12",
       "transport_notes": "1",
       "fournisseur_email": "eliot@flease.fr"
+    },
+    {
+      "id": "a7de2130-5222-4377-aa45-3177095cf4f4",
+      "lbc_id": "3151852605",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3151852605",
+      "source": "LeBonCoin",
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
+      "annee": 2024,
+      "date_mec": "05/2024",
+      "km": 22100,
+      "prix_demande": 33290,
+      "carburant": "Essence",
+      "boite": "Automatique",
+      "couleur": "Gris",
+      "localisation": "Brie-Comte-Robert (77)",
+      "fournisseur_nom": "Volkswagen Brie-Comte-Robert Groupe Gueudet",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/8d/c6/a3/8dc6a34faac79427e95f01c777cb42b72f9d6176.jpg?rule=ad-large",
+      "titre": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 Life Plus",
+      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 Life Plus tout-terrain, gris, 7 cv, 5 portes, première mise en circulation le 07/05/2024, garantie 12 mois.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  App-Connect sans fil\n  -  Ecran tactile 12\n  -  Service d'appel d'urgence e-Call\n  -",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "urgence": "urg_3",
+      "created_at": "2026-03-13T09:31:41",
+      "historique": [
+        {
+          "date": "2026-03-13",
+          "action": "Importé depuis LBC"
+        }
+      ]
     }
   ],
   "lots": [],
