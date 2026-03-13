@@ -2120,18 +2120,16 @@ function openDetail(id) {
     ${docsSection}
     ${transportSection}
     <div class="form-section">
-      <div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">
-        <span>💬 Commentaire</span>
-        ${v.commentaire ? `<button class="btn btn-ghost btn-sm" style="font-size:10px;padding:2px 7px;color:var(--urg-1)" onclick="clearComment('${v.id}')">✕ Effacer</button>` : ''}
+      <div class="form-section-title">💬 Commentaires</div>
+      <div id="commentList_${v.id}">
+        ${buildCommentListHTML(v)}
       </div>
-      <textarea id="inlineComment_${v.id}"
-        placeholder="Ajouter un commentaire…"
-        rows="3"
-        onblur="saveInlineField('${v.id}','commentaire',this.value)"
-        style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;line-height:1.5;transition:border-color 0.15s"
-        onfocus="this.style.borderColor='var(--primary)'"
-        onblur="this.style.borderColor='var(--border)';saveInlineField('${v.id}','commentaire',this.value)"
-      >${esc(v.commentaire||'')}</textarea>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
+          style="flex:1;padding:7px 10px;font-size:13px"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
+        <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+ Ajouter</button>
+      </div>
     </div>
     ${histSection}
     <div class="form-section" style="display:flex;gap:8px;justify-content:flex-end">${actionBtns}</div>
@@ -2359,12 +2357,83 @@ function saveInlineField(id, field, value) {
   saveToGH();
 }
 
+// ---- COMMENTAIRES HORODATÉS ----
+function nowTs() {
+  const n = new Date();
+  const d = String(n.getDate()).padStart(2,'0');
+  const mo = String(n.getMonth()+1).padStart(2,'0');
+  const h = String(n.getHours()).padStart(2,'0');
+  const mi = String(n.getMinutes()).padStart(2,'0');
+  return `${d}/${mo}/${n.getFullYear()} ${h}:${mi}`;
+}
+
+function getCommentaires(v) {
+  if (!v.commentaires) {
+    v.commentaires = [];
+    // Migration : ancien champ commentaire (texte libre)
+    if (v.commentaire && v.commentaire.trim()) {
+      const lines = v.commentaire.split('\n').filter(l => l.trim());
+      lines.forEach(line => {
+        const m = line.match(/^(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}) : (.+)$/);
+        v.commentaires.push(m ? { ts: m[1], text: m[2].trim() } : { ts: nowTs(), text: line.trim() });
+      });
+    }
+  }
+  return v.commentaires;
+}
+
+function buildCommentListHTML(v) {
+  const list = getCommentaires(v);
+  if (!list.length) return `<div style="color:var(--text-muted);font-size:12px;padding:4px 0;font-style:italic">Aucun commentaire</div>`;
+  return list.map((c, i) => `
+    <div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1;min-width:0;line-height:1.4">
+        <span style="font-size:10px;font-weight:700;color:var(--text-muted);white-space:nowrap">${esc(c.ts)}</span>
+        <span style="font-size:12px;color:var(--text-muted);margin:0 4px">·</span>
+        <span style="font-size:13px;color:var(--text)">${esc(c.text)}</span>
+      </div>
+      <button onclick="deleteComment('${v.id}',${i})" title="Supprimer"
+        style="background:none;border:none;cursor:pointer;color:var(--border);font-size:15px;padding:0;line-height:1;flex-shrink:0;transition:color 0.1s"
+        onmouseover="this.style.color='var(--urg-1)'" onmouseout="this.style.color='var(--border)'">✕</button>
+    </div>`).join('');
+}
+
+function addComment(id) {
+  const v = S.vehicles.find(x => x.id === id);
+  const input = document.getElementById('newCommentInput_' + id);
+  if (!v || !input) return;
+  const text = input.value.trim();
+  if (!text) { input.focus(); return; }
+  getCommentaires(v); // ensure array exists
+  v.commentaires.push({ ts: nowTs(), text });
+  // Sync legacy field
+  v.commentaire = v.commentaires.map(c => `${c.ts} : ${c.text}`).join('\n');
+  input.value = '';
+  // Refresh just the comment list without closing the modal
+  const listEl = document.getElementById('commentList_' + id);
+  if (listEl) listEl.innerHTML = buildCommentListHTML(v);
+  saveToGH();
+}
+
+function deleteComment(id, idx) {
+  const v = S.vehicles.find(x => x.id === id);
+  if (!v) return;
+  getCommentaires(v);
+  v.commentaires.splice(idx, 1);
+  v.commentaire = v.commentaires.map(c => `${c.ts} : ${c.text}`).join('\n');
+  const listEl = document.getElementById('commentList_' + id);
+  if (listEl) listEl.innerHTML = buildCommentListHTML(v);
+  saveToGH();
+}
+
 function clearComment(id) {
   const v = S.vehicles.find(x => x.id === id);
   if (!v) return;
+  v.commentaires = [];
   v.commentaire = '';
   saveToGH();
-  openDetail(id); // refresh detail
+  const listEl = document.getElementById('commentList_' + id);
+  if (listEl) listEl.innerHTML = buildCommentListHTML(v);
 }
 
 // ============================================================
