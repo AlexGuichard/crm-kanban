@@ -96,10 +96,10 @@
       "source": "LeBonCoin",
       "marque": "Volkswagen",
       "modele": "Tiguan",
-      "annee": 2024,
+      "annee": "2024",
       "date_mec": "05/2024",
-      "km": 22100,
-      "prix_demande": 33290,
+      "km": "22100",
+      "prix_demande": "33290",
       "carburant": "Essence",
       "boite": "Automatique",
       "couleur": "Gris",
@@ -122,8 +122,18 @@
         {
           "date": "2026-03-13",
           "action": "Sourcing : a_contacter → contacte"
+        },
+        {
+          "date": "2026-03-13",
+          "action": "Informations modifiées"
         }
-      ]
+      ],
+      "vin": "",
+      "immatriculation": "",
+      "prix_negocie": "",
+      "fournisseur_email": "",
+      "commentaire": "Doit revenir vers moi me confirmer qu'il y'a de la TVA ou non",
+      "priority": 3
     }
   ],
   "lots": [],
