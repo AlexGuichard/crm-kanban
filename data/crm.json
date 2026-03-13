@@ -7,10 +7,10 @@
       "source": "LeBonCoin",
       "marque": "Renault",
       "modele": "Clio",
-      "annee": 2024,
+      "annee": "2024",
       "date_mec": "11/2024",
-      "km": 12054,
-      "prix_demande": 17450,
+      "km": "12054",
+      "prix_demande": "17450",
       "carburant": "Diesel",
       "boite": "Manuelle",
       "couleur": "Noir",
@@ -81,13 +81,22 @@
         {
           "date": "2026-03-12",
           "action": "Sourcing : bc_signe → negociation"
+        },
+        {
+          "date": "2026-03-13",
+          "action": "Informations modifiées"
         }
       ],
       "transport_methode": "camion",
       "transport_date": "2026-03-12",
       "date_livraison": "2026-03-12",
       "transport_notes": "1",
-      "fournisseur_email": "eliot@flease.fr"
+      "fournisseur_email": "eliot@flease.fr",
+      "vin": "",
+      "immatriculation": "",
+      "prix_negocie": "",
+      "commentaire": "x1 clio 16 000€ \nx1 Clio 17 500€\nCG à ajouter",
+      "priority": 3
     },
     {
       "id": "a7de2130-5222-4377-aa45-3177095cf4f4",
