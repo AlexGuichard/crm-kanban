@@ -168,13 +168,17 @@
         {
           "date": "2026-03-13",
           "action": "Informations modifiées"
+        },
+        {
+          "date": "2026-03-13",
+          "action": "Informations modifiées"
         }
       ],
       "vin": "",
       "immatriculation": "",
       "prix_negocie": "",
       "fournisseur_email": "",
-      "commentaire": "Sms envoyé, le sale doit m'appeler",
+      "commentaire": "PAS DE TVA",
       "priority": 3
     }
   ],
