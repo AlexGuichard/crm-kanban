@@ -184,6 +184,38 @@
       "fournisseur_email": "",
       "commentaire": "PAS DE TVA",
       "priority": 3
+    },
+    {
+      "id": "3596d5c7-7d10-44b3-a9cf-62c4be0f7616",
+      "lbc_id": "3151533865",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3151533865",
+      "source": "LeBonCoin",
+      "marque": "Peugeot",
+      "modele": "5008",
+      "annee": 2024,
+      "date_mec": "06/2024",
+      "km": 25413,
+      "prix_demande": 25490,
+      "carburant": "Essence",
+      "boite": "Automatique",
+      "couleur": "Bleu",
+      "localisation": "Décines-Charpieu (69)",
+      "fournisseur_nom": "Ayvens ON LINE",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/3d/c9/28/3dc928733da1defd4d71acd5a9949811ef9dbec8.jpg?rule=ad-large",
+      "titre": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6",
+      "description": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6 crossover, suv, bleu, 7 cv, 5 portes, première mise en circulation le 02/06/2024, garantie 12 mois.\n\n7 places, longueur : 1,00 mètre(s), poids en charge : 1 kg\n\nOPTIONS ET ÉQUIPEMENTS :\nCouleur :\n  - PEINTURE METALLISEE\n\nAutres équipements et informations",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "urgence": "urg_3",
+      "created_at": "2026-03-13T10:08:25",
+      "historique": [
+        {
+          "date": "2026-03-13",
+          "action": "Importé depuis LBC"
+        }
+      ]
     }
   ],
   "lots": [],
