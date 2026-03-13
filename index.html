@@ -256,6 +256,21 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .close-btn:hover { background: var(--border); }
 
 /* FORM */
+/* LBC PROGRESS BAR */
+.lbc-progress-wrap { margin-top: 14px; display: none; }
+.lbc-progress-wrap.visible { display: block; }
+.lbc-progress-bar-bg { height: 8px; background: var(--border); border-radius: 8px; overflow: hidden; }
+.lbc-progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 8px; transition: width 0.6s ease; width: 0%; }
+.lbc-progress-bar-fill.pulse { animation: lbc-pulse 1.2s ease-in-out infinite; }
+@keyframes lbc-pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.lbc-progress-label { font-size: 12px; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.lbc-progress-step { font-size: 11px; font-weight: 700; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 2px 8px; }
+.lbc-progress-step.active { background: var(--primary); color: white; border-color: var(--primary); }
+.lbc-steps-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.lbc-result { margin-top: 10px; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; display: none; }
+.lbc-result.success { background: rgba(22,163,74,0.1); color: #16a34a; border: 1px solid rgba(22,163,74,0.3); }
+.lbc-result.error { background: rgba(232,41,74,0.08); color: var(--urg-1); border: 1px solid rgba(232,41,74,0.25); }
+
 .form-group { margin-bottom: 12px; }
 .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
 .form-input, .form-select, .form-textarea { width: 100%; padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; background: var(--surface); color: var(--text); transition: border-color 0.15s; }
@@ -888,12 +903,31 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     </div>
     <div class="modal-body">
       <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne). Les véhicules seront ajoutés automatiquement en <strong>Sourcing</strong>.</p>
-      <textarea id="lbcUrls" rows="6" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/...&#10;..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);color:var(--text);resize:vertical"></textarea>
-      <div id="lbcStatus" style="margin-top:10px;font-size:13px;display:none"></div>
+      <textarea id="lbcUrls" rows="4" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical"></textarea>
+
+      <!-- Barre de progression -->
+      <div class="lbc-progress-wrap" id="lbcProgressWrap">
+        <div class="lbc-progress-bar-bg">
+          <div class="lbc-progress-bar-fill pulse" id="lbcProgressFill"></div>
+        </div>
+        <div class="lbc-progress-label">
+          <span id="lbcProgressText">En attente…</span>
+        </div>
+        <div class="lbc-steps-row">
+          <span class="lbc-progress-step" id="lstep1">1. Déclenchement</span>
+          <span class="lbc-progress-step" id="lstep2">2. Scraping LBC</span>
+          <span class="lbc-progress-step" id="lstep3">3. Analyse</span>
+          <span class="lbc-progress-step" id="lstep4">4. Sauvegarde</span>
+          <span class="lbc-progress-step" id="lstep5">5. Terminé</span>
+        </div>
+      </div>
+
+      <!-- Résultat -->
+      <div class="lbc-result" id="lbcResult"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('ovLBC')">Annuler</button>
-      <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">Importer</button>
+      <button class="btn btn-ghost" id="lbcCancelBtn" onclick="closeModal('ovLBC')">Annuler</button>
+      <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">🔗 Importer</button>
     </div>
   </div>
 </div>
@@ -2440,61 +2474,163 @@ function clearComment(id) {
 // IMPORT LBC
 // ============================================================
 function openLBCImport() {
+  clearTimeout(_lbcPollTimer);
   document.getElementById('lbcUrls').value = '';
-  document.getElementById('lbcStatus').style.display = 'none';
-  document.getElementById('lbcImportBtn').disabled = false;
-  document.getElementById('lbcImportBtn').textContent = 'Importer';
+  // Reset progression
+  const wrap = document.getElementById('lbcProgressWrap');
+  if (wrap) wrap.classList.remove('visible');
+  const fill = document.getElementById('lbcProgressFill');
+  if (fill) { fill.style.width = '0%'; fill.style.background = ''; fill.classList.add('pulse'); }
+  const res = document.getElementById('lbcResult');
+  if (res) res.style.display = 'none';
+  [1,2,3,4,5].forEach(i => { const el = document.getElementById('lstep'+i); if(el) el.classList.remove('active'); });
+  const btn = document.getElementById('lbcImportBtn');
+  btn.disabled = false;
+  btn.textContent = '🔗 Importer';
+  btn.onclick = triggerLBCImport;
+  document.getElementById('lbcCancelBtn').textContent = 'Annuler';
   openModal('ovLBC');
 }
 
+// ── LBC Import avec barre de progression ──────────────────────────────────
+
+let _lbcPollTimer = null;
+let _lbcStartTime = 0;
+
+function lbcSetStep(n, pct, label) {
+  document.getElementById('lbcProgressFill').style.width = pct + '%';
+  document.getElementById('lbcProgressText').textContent = label;
+  [1,2,3,4,5].forEach(i => {
+    const el = document.getElementById('lstep' + i);
+    if (el) el.classList.toggle('active', i <= n);
+  });
+}
+
+function lbcShowResult(ok, msg) {
+  const fill = document.getElementById('lbcProgressFill');
+  fill.classList.remove('pulse');
+  fill.style.width = ok ? '100%' : '100%';
+  fill.style.background = ok ? '#16a34a' : 'var(--urg-1)';
+
+  const res = document.getElementById('lbcResult');
+  res.style.display = 'block';
+  res.className = 'lbc-result ' + (ok ? 'success' : 'error');
+  res.textContent = msg;
+
+  lbcSetStep(ok ? 5 : 3, 100, ok ? '✅ Import terminé !' : '❌ Erreur');
+
+  const btn = document.getElementById('lbcImportBtn');
+  btn.disabled = false;
+  btn.textContent = ok ? '✓ Fermer' : 'Réessayer';
+  if (ok) btn.onclick = () => closeModal('ovLBC');
+  document.getElementById('lbcCancelBtn').textContent = ok ? 'Fermer' : 'Annuler';
+}
+
+async function lbcPollRun(token, repo, dispatchTime) {
+  const elapsed = (Date.now() - _lbcStartTime) / 1000;
+
+  // Progression simulée pendant l'attente
+  if (elapsed < 8) {
+    lbcSetStep(1, 15, '⏳ Déclenchement du workflow…');
+  } else if (elapsed < 20) {
+    lbcSetStep(2, 30 + (elapsed - 8), '🔍 Scraping LeBonCoin en cours…');
+  } else if (elapsed < 50) {
+    lbcSetStep(3, 50 + (elapsed - 20) * 0.8, '⚙️ Analyse des données véhicule…');
+  } else {
+    lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
+  }
+
+  try {
+    // Cherche le dernier run du workflow déclenché après dispatchTime
+    const r = await fetch(
+      `https://api.github.com/repos/${repo}/actions/workflows/lbc_import.yml/runs?per_page=5&event=workflow_dispatch`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data = await r.json();
+    const run = (data.workflow_runs || []).find(x =>
+      new Date(x.created_at).getTime() >= dispatchTime - 5000
+    );
+
+    if (!run) {
+      // Pas encore visible (GitHub lag) — on continue
+      _lbcPollTimer = setTimeout(() => lbcPollRun(token, repo, dispatchTime), 4000);
+      return;
+    }
+
+    if (run.status === 'completed') {
+      clearTimeout(_lbcPollTimer);
+      if (run.conclusion === 'success') {
+        lbcShowResult(true, '✅ Véhicule(s) ajouté(s) avec succès ! Le CRM se recharge…');
+        // Recharger les données
+        setTimeout(async () => {
+          const ok = await loadFromGH();
+          if (ok) { render(); renderSidebarBriefing(); }
+          setTimeout(() => closeModal('ovLBC'), 2000);
+        }, 1500);
+      } else {
+        lbcShowResult(false, `❌ Le scraping a échoué (${run.conclusion}). Vérifie la clé ScraperAPI dans les Secrets GitHub.`);
+      }
+    } else {
+      // En cours : continue à poller
+      _lbcPollTimer = setTimeout(() => lbcPollRun(token, repo, dispatchTime), 3000);
+    }
+  } catch(e) {
+    // Erreur réseau — on continue à poller silencieusement
+    _lbcPollTimer = setTimeout(() => lbcPollRun(token, repo, dispatchTime), 5000);
+  }
+}
+
 async function triggerLBCImport() {
-  const urls = document.getElementById('lbcUrls').value.trim();
-  if (!urls) return;
-  const validUrls = urls.split('\n').map(u=>u.trim()).filter(u=>u.startsWith('http'));
+  const urlsRaw = document.getElementById('lbcUrls').value.trim();
+  if (!urlsRaw) return;
+  const validUrls = urlsRaw.split('\n').map(u => u.trim()).filter(u => u.startsWith('http'));
   if (!validUrls.length) {
-    setLBCStatus('error', '❌ Aucune URL valide trouvée');
+    lbcShowResult(false, '❌ Aucune URL valide trouvée');
     return;
   }
   const token = S.settings.github_token || localStorage.getItem('gh_token');
   if (!token) {
-    setLBCStatus('error', '❌ Token GitHub manquant — configure-le dans ⚙️ Paramètres');
+    lbcShowResult(false, '❌ Token GitHub manquant — configure dans ⚙️ Paramètres');
     return;
   }
 
-  document.getElementById('lbcImportBtn').disabled = true;
-  document.getElementById('lbcImportBtn').textContent = 'Lancement…';
-  setLBCStatus('info', `⏳ Lancement du scraping pour ${validUrls.length} annonce(s)…`);
+  const repo = S.settings.github_repo || 'AlexGuichard/crm-kanban';
+  const btn = document.getElementById('lbcImportBtn');
+  btn.disabled = true;
+  btn.textContent = 'Lancement…';
+
+  // Réinitialise la progression
+  document.getElementById('lbcProgressWrap').classList.add('visible');
+  document.getElementById('lbcResult').style.display = 'none';
+  document.getElementById('lbcProgressFill').style.background = '';
+  document.getElementById('lbcProgressFill').classList.add('pulse');
+  lbcSetStep(1, 8, `⏳ Déclenchement pour ${validUrls.length} annonce(s)…`);
+
+  _lbcStartTime = Date.now();
+  const dispatchTime = _lbcStartTime;
 
   try {
-    // Déclenche le workflow GitHub Actions
-    const resp = await fetch(`https://api.github.com/repos/${S.settings.github_repo||'AlexGuichard/crm-kanban'}/actions/workflows/lbc_import.yml/dispatches`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ref: 'main', inputs: { lbc_urls: validUrls.join('\n') } })
-    });
+    const resp = await fetch(
+      `https://api.github.com/repos/${repo}/actions/workflows/lbc_import.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ref: 'main', inputs: { lbc_urls: validUrls.join('\n') } })
+      }
+    );
 
     if (resp.status === 204) {
-      setLBCStatus('success', `✅ Scraping lancé pour ${validUrls.length} annonce(s). Les véhicules apparaîtront dans Sourcing dans ~45 secondes (le CRM se rafraîchit automatiquement).`);
-      document.getElementById('lbcImportBtn').textContent = 'Fermé dans 5s…';
-      setTimeout(() => closeModal('ovLBC'), 5000);
+      lbcSetStep(1, 12, `✅ Workflow lancé — scraping de ${validUrls.length} annonce(s)…`);
+      // Démarre le polling
+      clearTimeout(_lbcPollTimer);
+      _lbcPollTimer = setTimeout(() => lbcPollRun(token, repo, dispatchTime), 4000);
     } else {
-      const err = await resp.json();
-      setLBCStatus('error', `❌ Erreur GitHub (${resp.status}): ${err.message || JSON.stringify(err)}`);
-      document.getElementById('lbcImportBtn').disabled = false;
-      document.getElementById('lbcImportBtn').textContent = 'Réessayer';
+      const err = await resp.json().catch(() => ({}));
+      lbcShowResult(false, `❌ GitHub (${resp.status}): ${err.message || 'Erreur inconnue'}`);
     }
   } catch(e) {
-    setLBCStatus('error', `❌ Erreur réseau: ${e.message}`);
-    document.getElementById('lbcImportBtn').disabled = false;
-    document.getElementById('lbcImportBtn').textContent = 'Réessayer';
+    lbcShowResult(false, `❌ Erreur réseau: ${e.message}`);
   }
-}
-
-function setLBCStatus(type, msg) {
-  const el = document.getElementById('lbcStatus');
-  el.style.display = 'block';
-  el.style.color = type === 'error' ? 'var(--danger)' : type === 'success' ? 'var(--success)' : 'var(--text-muted)';
-  el.textContent = msg;
 }
 
 function toggleDarkMode(on) {
