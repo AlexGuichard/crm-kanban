@@ -148,6 +148,13 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 .lot-card { background: linear-gradient(135deg, rgba(29,32,78,0.05) 0%, rgba(29,32,78,0.02) 100%); }
 .lot-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--primary); color: white; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-bottom: 5px; }
 
+/* DEAL PERDU column */
+.column-deal-perdu { min-width: 200px; max-width: 216px; border-top: 3px solid var(--urg-1); }
+.column-deal-perdu .column-header { background: rgba(232,41,74,0.04); }
+.column-deal-perdu .col-title { color: var(--urg-1); }
+.deal-lost-reason { font-size: 10px; color: var(--urg-1); margin-top: 3px; font-style: italic; opacity: 0.85; }
+body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.08); }
+
 /* TASK CARD */
 .task-card { border-left-color: var(--lime) !important; }
 
@@ -843,6 +850,24 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   </div>
 </div>
 
+<!-- DEAL PERDU -->
+<div class="overlay" id="ovDealPerdu" onclick="overlayClick(event,'ovDealPerdu')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">❌ Marquer comme deal perdu</div>
+      <button class="close-btn" onclick="closeModal('ovDealPerdu')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Raison (optionnel)</label>
+      <input class="form-input" id="dealLostReason" placeholder="Prix trop élevé, vendu, pas de réponse…">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovDealPerdu')">Annuler</button>
+      <button class="btn btn-danger" onclick="confirmDealLost()">Confirmer deal perdu</button>
+    </div>
+  </div>
+</div>
+
 <!-- MOVE SHEET (déplacer vers une colonne) -->
 <div class="overlay" id="ovMoveSheet" onclick="overlayClick(event,'ovMoveSheet')">
   <div class="modal modal-sm">
@@ -896,6 +921,7 @@ const COLUMNS = [
   { key:'a_payer', label:'💳 À Payer' },
   { key:'en_transport', label:'🚛 En Transport' },
   { key:'livre', label:'✅ Livré' },
+  { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
   { key:'archive', label:'🗄️ Archive' }
 ];
 const TASK_COLS = [
@@ -1103,7 +1129,10 @@ function render() {
 
 // -------- BOARD --------
 function renderBoard() {
-  const cols = COLUMNS.filter(c => c.key !== 'archive' || S.settings.show_archive);
+  const cols = COLUMNS.filter(c => {
+    if (c.key === 'archive') return S.settings.show_archive;
+    return true;
+  });
   document.getElementById('board').innerHTML = cols.map(col => renderCol(col)).join('');
 }
 
@@ -1142,11 +1171,12 @@ function renderCol(col) {
   const allV = vehicles.length + lots.length;
   const totalPrix = vehicles.reduce((s,v)=>s+(Number(v.prix_negocie)||Number(v.prix_demande)||0), 0);
 
-  return `<div class="column">
+  const extraClass = col.key === 'deal_perdu' ? ' column-deal-perdu' : '';
+  return `<div class="column${extraClass}">
     <div class="column-header">
       <span class="col-title">${col.label}</span>
       <span class="col-count">${allV}</span>
-      ${totalPrix > 0 ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
+      ${totalPrix > 0 && col.key !== 'deal_perdu' ? `<span class="col-price">${fmtN(totalPrix)}</span>` : ''}
     </div>
     ${bodyHtml}
     ${col.key === 'sourcing' ? `<div class="col-add"><button style="width:100%" onclick="openAddVehicle('sourcing')">+ Véhicule</button></div>` : ''}
@@ -1219,7 +1249,7 @@ function renderEmailsView() {
         </div>
         ${e.snippet ? `<div class="email-snippet">${esc(e.snippet)}</div>` : ''}
         <div class="email-actions">
-          <a href="${gmailUrl}" target="_blank" class="btn btn-ghost btn-sm" style="font-size:11px" onclick="event.stopPropagation()">✉️ Ouvrir</a>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="openEmailMimestream('${esc(e.id)}','${esc((e.subject||'').replace(/'/g,"\\'"))}','${esc((e.from||'').replace(/'/g,"\\'"))}');event.stopPropagation()">✉️ Ouvrir</button>
           <button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id)}')">✅ Traité</button>
         </div>
       </div>
@@ -1265,15 +1295,25 @@ function generateEmailActions(emails) {
   actions.sort((a, b) => b.priority - a.priority);
 
   return actions.slice(0, 5).map((a, i) => {
-    const gmailUrl = a.emails.length === 1 ? `https://mail.google.com/mail/u/0/#inbox/${a.emails[0].id}` : null;
+    const firstEmail = a.emails.length === 1 ? a.emails[0] : null;
     return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)">
       <span style="font-size:13px;flex-shrink:0">${a.icon}</span>
       <div style="flex:1;min-width:0">
         <div style="font-size:12px;font-weight:600;line-height:1.3">${i+1}. ${esc(a.text)}</div>
-        ${gmailUrl ? `<a href="${gmailUrl}" target="_blank" style="font-size:10px;color:var(--primary)">Ouvrir →</a>` : `<span style="font-size:10px;color:var(--text-muted)">${a.emails.length} emails</span>`}
+        ${firstEmail ? `<button onclick="openEmailMimestream('${esc(firstEmail.id)}','${esc((firstEmail.subject||'').replace(/'/g,"\\'"))}','${esc((firstEmail.from||'').replace(/'/g,"\\'"))}')" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--primary);padding:0;font-family:inherit">Ouvrir →</button>` : `<span style="font-size:10px;color:var(--text-muted)">${a.emails.length} emails</span>`}
       </div>
     </div>`;
   }).join('');
+}
+
+function openEmailMimestream(threadId, subject, from) {
+  const bridgeUrl = `http://localhost:9876/open?id=${encodeURIComponent(threadId)}&subject=${encodeURIComponent(subject)}&from=${encodeURIComponent(from)}`;
+  const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${threadId}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1200);
+  fetch(bridgeUrl, { signal: controller.signal, mode: 'no-cors' })
+    .then(() => { clearTimeout(timer); /* Mimestream bridge responded */ })
+    .catch(() => { clearTimeout(timer); window.open(gmailUrl, '_blank'); });
 }
 
 function dismissEmail(id) {
@@ -1361,6 +1401,7 @@ function vehicleCard(v) {
       ${v.fournisseur_nom ? `<span class="tag">${hl(v.fournisseur_nom, searchQ)}</span>` : ''}
     </div>
     ${ssBar}${docBadges}${docWarn}
+    ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : ''}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
   </div>`;
 }
@@ -1780,13 +1821,25 @@ function openAddVehicle(col) {
   document.getElementById('vModalTitle').textContent = 'Nouveau véhicule';
   document.getElementById('vTabs').style.display = 'flex';
   switchVTab('manuel');
-  // Reset form
-  ['vMarque','vModele','vAnnee','vKm','vVin','vImmat','vPrixD','vPrixN','vUrl','vFNom','vFTel','vFEmail','vComment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('vCarburant').value='Essence';
-  document.getElementById('vBoite').value='Automatique';
-  document.getElementById('vSource').value='LeBonCoin';
+  // Reset ALL form fields
+  ['vMarque','vModele','vAnnee','vKm','vVin','vImmat','vPrixD','vPrixN','vUrl','vFNom','vFTel','vFEmail','vComment'].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('vCarburant').value = 'Essence';
+  document.getElementById('vBoite').value = 'Automatique';
+  document.getElementById('vSource').value = 'LeBonCoin';
   document.querySelectorAll('#vSubStage .stage-opt').forEach(el=>el.classList.toggle('sel',el.dataset.ss==='a_contacter'));
   document.querySelectorAll('#vUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg==='3'));
+  // Reset LBC section
+  const lbcUrls = document.getElementById('lbcUrls');
+  if (lbcUrls) lbcUrls.value = '';
+  const lbcBtn = document.getElementById('lbcImportBtn');
+  if (lbcBtn) { lbcBtn.disabled = false; lbcBtn.textContent = 'Importer'; }
+  // Clear photo preview if any
+  const photoPreview = document.getElementById('vPhotoPreview');
+  if (photoPreview) photoPreview.style.display = 'none';
+  window._pendingPhoto = null;
   openModal('ovVehicle');
 }
 
@@ -1948,6 +2001,25 @@ function archiveV(id, event) {
   render(); saveToGH();
 }
 
+let _dealLostId = null;
+function openDealLost(id) {
+  _dealLostId = id;
+  document.getElementById('dealLostReason').value = '';
+  closeModal('ovDetail');
+  openModal('ovDealPerdu');
+}
+function confirmDealLost() {
+  const v = S.vehicles.find(x=>x.id===_dealLostId);
+  if (!v) return;
+  const reason = document.getElementById('dealLostReason').value.trim();
+  v.column = 'deal_perdu';
+  v.deal_lost_reason = reason || null;
+  addHist(v, `Deal perdu${reason ? ' — ' + reason : ''}`);
+  closeModal('ovDealPerdu');
+  render(); saveToGH();
+  showToast('❌ Deal marqué comme perdu');
+}
+
 // ============================================================
 // VEHICLE DETAIL
 // ============================================================
@@ -2003,6 +2075,8 @@ function openDetail(id) {
     actionBtns += `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}');closeModal('ovDetail')">✅ Livré</button>`;
   if (v.column === 'livre')
     actionBtns += `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}');closeModal('ovDetail')">🗄️ Archiver</button>`;
+  if (v.column !== 'deal_perdu' && v.column !== 'archive')
+    actionBtns += `<button class="btn btn-ghost btn-sm" style="color:var(--urg-1);border-color:var(--urg-1)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
   actionBtns += `<button class="btn btn-danger btn-sm" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
 
   const price = v.prix_negocie || v.prix_demande;
@@ -2045,7 +2119,20 @@ function openDetail(id) {
     </div>
     ${docsSection}
     ${transportSection}
-    ${v.commentaire ? `<div class="form-section"><div class="form-section-title">💬 Commentaire</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5">${esc(v.commentaire)}</div></div>` : ''}
+    <div class="form-section">
+      <div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>💬 Commentaire</span>
+        ${v.commentaire ? `<button class="btn btn-ghost btn-sm" style="font-size:10px;padding:2px 7px;color:var(--urg-1)" onclick="clearComment('${v.id}')">✕ Effacer</button>` : ''}
+      </div>
+      <textarea id="inlineComment_${v.id}"
+        placeholder="Ajouter un commentaire…"
+        rows="3"
+        onblur="saveInlineField('${v.id}','commentaire',this.value)"
+        style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical;line-height:1.5;transition:border-color 0.15s"
+        onfocus="this.style.borderColor='var(--primary)'"
+        onblur="this.style.borderColor='var(--border)';saveInlineField('${v.id}','commentaire',this.value)"
+      >${esc(v.commentaire||'')}</textarea>
+    </div>
     ${histSection}
     <div class="form-section" style="display:flex;gap:8px;justify-content:flex-end">${actionBtns}</div>
   `;
@@ -2270,6 +2357,14 @@ function saveInlineField(id, field, value) {
   if (!v || v[field] === value) return;
   v[field] = value;
   saveToGH();
+}
+
+function clearComment(id) {
+  const v = S.vehicles.find(x => x.id === id);
+  if (!v) return;
+  v.commentaire = '';
+  saveToGH();
+  openDetail(id); // refresh detail
 }
 
 // ============================================================
