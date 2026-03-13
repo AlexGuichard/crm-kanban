@@ -192,10 +192,10 @@
       "source": "LeBonCoin",
       "marque": "Peugeot",
       "modele": "5008",
-      "annee": 2024,
+      "annee": "2024",
       "date_mec": "06/2024",
-      "km": 25413,
-      "prix_demande": 25490,
+      "km": "25413",
+      "prix_demande": "25490",
       "carburant": "Essence",
       "boite": "Automatique",
       "couleur": "Bleu",
@@ -214,8 +214,18 @@
         {
           "date": "2026-03-13",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-13",
+          "action": "Informations modifiées"
         }
-      ]
+      ],
+      "vin": "",
+      "immatriculation": "",
+      "prix_negocie": "",
+      "fournisseur_email": "",
+      "commentaire": "Ayvens, mail envoyé à Angel en att de son retour",
+      "priority": 3
     }
   ],
   "lots": [],
