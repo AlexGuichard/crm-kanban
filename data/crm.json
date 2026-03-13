@@ -134,6 +134,38 @@
       "fournisseur_email": "",
       "commentaire": "Doit revenir vers moi me confirmer qu'il y'a de la TVA ou non",
       "priority": 3
+    },
+    {
+      "id": "0d65ec47-bc84-46fd-861d-e81b0dd7b686",
+      "lbc_id": "3088723479",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3088723479",
+      "source": "LeBonCoin",
+      "marque": "Volkswagen",
+      "modele": "Tiguan",
+      "annee": 2024,
+      "date_mec": "09/2024",
+      "km": 17095,
+      "prix_demande": 33490,
+      "carburant": "Essence",
+      "boite": "Automatique",
+      "couleur": "Gris",
+      "localisation": "Mâcon (71)",
+      "fournisseur_nom": "VOLKSWAGEN SEAT SKODA MACON - SUMA",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/ce/e6/90/cee6903db8c2928e834316a1e8cff496b602c61d.jpg?rule=ad-large",
+      "titre": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 VW Edition",
+      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 VW Edition tout-terrain, gris, 7 cv, 5 portes, couleur intérieure : noir, première mise en circulation le 26/09/2024, garantie 32 mois.\n\n5 places, longueur : 4 539,00 mètre(s), poids en charge : 1598 kg, carnet d'entretien\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Téléc",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "urgence": "urg_3",
+      "created_at": "2026-03-13T09:37:24",
+      "historique": [
+        {
+          "date": "2026-03-13",
+          "action": "Importé depuis LBC"
+        }
+      ]
     }
   ],
   "lots": [],
