@@ -1,6 +1,6 @@
 {
   "date": "2026-03-15",
-  "generated_at": "2026-03-15T05:05:49.355Z",
+  "generated_at": "2026-03-15T05:10:45.170Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "RE: GROUPE CHOPARD",
       "snippet": "Bonjour Monsieur , Voici les documents à me retourner (tampon + signature), par retour de mail. Bien cordialement [https://www.rdv.groupechopard.com/wp-content/uploads/signatu",
       "date": "2026-03-04T09:57:32.000Z",
-      "hours_old": 259.1,
+      "hours_old": 259.2,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -31,7 +31,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Les cartes grise ont toutes été faites mais il me manquait des papiers à signer pour clôturer mes dossiers de livraison. En pièce-jointe je vous ai mis pour chaque véh",
       "date": "2026-03-09T16:43:41.000Z",
-      "hours_old": 132.4,
+      "hours_old": 132.5,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -42,7 +42,7 @@
       "subject": "Fwd: relance factures impayés",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-13T12:35:48.000Z",
-      "hours_old": 40.5,
+      "hours_old": 40.6,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -53,7 +53,7 @@
       "subject": "Demande de signature",
       "snippet": "Demande de signature Bonjour LPF Entreprise, TEC3H vous invite à signer : Commande N° 2510-227 Pour lire et signer les documents, cliquez sur le bouton ci-dessous : Accéder aux doc",
       "date": "2025-11-21T13:37:45.000Z",
-      "hours_old": 2727.5,
+      "hours_old": 2727.6,
       "label": "BDC a signer",
       "category": "label",
       "score": 9
@@ -64,7 +64,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Bonjour, Et voici les bons de commande signés. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre D",
       "date": "2026-03-13T13:59:18.000Z",
-      "hours_old": 39.1,
+      "hours_old": 39.2,
       "label": "ajouter au dash",
       "category": "label",
       "score": 9
@@ -75,7 +75,7 @@
       "subject": "Re: KBIS",
       "snippet": "Bonjour, Pouvez-vous m’envoyer le RIB de la concession svp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Che",
       "date": "2026-02-03T14:04:23.000Z",
-      "hours_old": 951,
+      "hours_old": 951.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "Fwd: 5x c3",
       "snippet": "Si vous pouvez régulariser svp Merci bcp Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire",
       "date": "2026-02-04T10:12:42.000Z",
-      "hours_old": 930.9,
+      "hours_old": 931,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "PEUGEOT 2008 ET 3008",
       "snippet": "Bonjour Alex, Comme convenu, je t’envoie la liste des Peugeot 2008 et 3008 que nous avons en stock. À noter que je n’ai qu’un seul 3008, mais il dispose en option du pack cu",
       "date": "2026-02-05T13:09:39.000Z",
-      "hours_old": 903.9,
+      "hours_old": 904,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "Re: Commande VW GOLF",
       "snippet": "Comme déjà indiqué à plusieurs reprises, le document était joint à notre dernier échange. Je vous le renvoie une nouvelle fois ci-joint. Le mar. 10 févr. 2026 à 10:08, Alex G",
       "date": "2026-02-10T09:16:04.000Z",
-      "hours_old": 787.8,
+      "hours_old": 787.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Re: Clio Evolution TCe 90",
       "snippet": "Hi, Thanks for your quick feedback. However, he is asking us for the sales history, not the transport history. Can you send me the transfer agreement between you and your supp",
       "date": "2026-02-11T13:17:17.000Z",
-      "hours_old": 759.8,
+      "hours_old": 759.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "Re: Besoins",
       "snippet": "Bonjour Alex, Suite au tableau ci-dessus J’ai trouvé ces véhicules qui pourrait vous intéresser, C3 Société 100 chevaux Finition, feel 38 000 km 2022 noir 9000 € Renault a",
       "date": "2026-02-13T08:45:48.000Z",
-      "hours_old": 716.3,
+      "hours_old": 716.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "RE: TR: Bon de commande Arkana+RIB",
       "snippet": "Et voilà la cession . Cordialement, Alexandra LE HO Secretaire commerciale VO- PEUGEOT GEMY Pontivy 02 97 25 93 30 40 Rue Colbert-56300 PONTIVY [cid:image001.png@01DCA",
       "date": "2026-02-17T14:10:05.000Z",
-      "hours_old": 614.9,
+      "hours_old": 615,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Re: Facture remise en état",
       "snippet": "Et voici la preuve de virement en PJ. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Cal",
       "date": "2026-02-17T15:42:35.000Z",
-      "hours_old": 613.4,
+      "hours_old": 613.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "Re: RESERVATION DACIA JOGGER",
       "snippet": "Bonjour, Le virement va être effectué sous 24h. Le véhicule est toujours disponible ? Merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10",
       "date": "2026-02-18T15:53:25.000Z",
-      "hours_old": 589.2,
+      "hours_old": 589.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "RE: Facturation / solde / Rib",
       "snippet": "Vos factures sont parties au courrier ce matin, elles devraient arrivées d’ici lundi chez vous. Par contre, je crois qu’il y a maldone sur les immatriculations. Pourriez vous",
       "date": "2026-02-19T15:51:39.000Z",
-      "hours_old": 565.2,
+      "hours_old": 565.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 565,
+      "hours_old": 565.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "DOCS",
       "snippet": "Bonjour Monsieur, Comme convenu, vous trouverez les docs demandés en pièce jointe Bien à vous, [cid:image001.png@01DCA71A.55D1E6C0] Chiara Errera Assistante Commerciale",
       "date": "2026-02-26T11:21:25.000Z",
-      "hours_old": 401.7,
+      "hours_old": 401.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "PRISE DE RDV VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de Saint Priest Lyon, nous revenons vers vous afin de convenir d'un ren",
       "date": "2026-03-04T10:47:11.000Z",
-      "hours_old": 258.3,
+      "hours_old": 258.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "RE: BC",
       "snippet": "Bonjour, Voici les deux cartes grises Cordialement Dorine ACTIV' AUTOMOBILES 12 Rue du Saintois 54520 LAXOU-LA-SAPINIERE 03.83.97.97.97 ____________________",
       "date": "2026-03-05T16:03:25.000Z",
-      "hours_old": 229,
+      "hours_old": 229.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -317,7 +317,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 92.7,
+      "hours_old": 92.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -339,7 +339,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Concernant le véhicule acheté récemment WVGZZZA14SV030659, pouvez-vous nous envoyer l’exonération de quitus afin qu’on immatricule le véhicule svp ? Merci beaucoup",
       "date": "2026-03-13T15:38:55.000Z",
-      "hours_old": 37.4,
+      "hours_old": 37.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -350,10 +350,10 @@
       "subject": "Nowa nazwa dla większego bezpieczeństwa",
       "snippet": "Standvirtual ( https://clicks.mail.otomoto.pl/f/a/67KwtzXbRpJyD3CBq4Z_ig~~/AAAHahA~/5ZvvkhodAGmr40HJWXkmiPl2hftTzAyJonQhjoThxqGOLzpDTw523zYobH_O3gIec13vrJ1emyPmD5lDbD3SEKzNRHqKyuh",
       "date": "2026-03-15T03:09:07.000Z",
-      "hours_old": 1.9,
+      "hours_old": 2,
       "label": null,
       "category": "sans_reponse",
-      "score": 2
+      "score": 4
     },
     {
       "id": "19c560a725df4813",
@@ -361,7 +361,7 @@
       "subject": "R: Message from KM_C258",
       "snippet": "Hi Alex, When are you going to make the payment for the last truck? As agreed, this document will be give with double key to the transporter of the last truck. Best,",
       "date": "2026-02-16T13:53:42.000Z",
-      "hours_old": 639.2,
+      "hours_old": 639.3,
       "label": "A traiter",
       "category": "label",
       "score": 1
@@ -372,7 +372,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 543.3,
+      "hours_old": 543.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -383,7 +383,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-03-03T13:16:06.000Z",
-      "hours_old": 279.8,
+      "hours_old": 279.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -394,7 +394,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 279.1,
+      "hours_old": 279.2,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -405,7 +405,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (862a438)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 8.0 seconds Finished: 2026-03-14 06:56:41 UTC",
       "date": "2026-03-14T06:57:01.000Z",
-      "hours_old": 22.1,
+      "hours_old": 22.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
