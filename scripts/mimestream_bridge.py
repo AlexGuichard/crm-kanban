@@ -1,160 +1,143 @@
 #!/usr/bin/env python3
 """
-Mimestream Bridge — Flease CRM
-================================
-Serveur local (localhost:9876) qui intercepte les clics "Ouvrir" du CRM
-et ouvre l'email directement dans Mimestream.
-
-USAGE :
-  python3 mimestream_bridge.py
-
-DÉMARRAGE AUTO (login item macOS) :
-  1. Ouvre "Préférences Système" → "Général" → "Éléments de connexion"
-  2. Clique sur "+" et sélectionne ce script (ou l'app créée avec launch_agent.sh)
-
-OU via launchd (recommandé) :
-  python3 mimestream_bridge.py --install    # installe le LaunchAgent
-  python3 mimestream_bridge.py --uninstall  # désinstalle
+Mimestream Bridge — localhost:9876
+Ouvre un email dans Mimestream via AppleScript quand le CRM Flease appelle /open
+Usage :
+  python3 mimestream_bridge.py           # démarrer le serveur
+  python3 mimestream_bridge.py --install  # installer en LaunchAgent (démarrage auto)
+  python3 mimestream_bridge.py --uninstall # désinstaller le LaunchAgent
 """
 
+import os
 import sys
+import json
 import subprocess
 import urllib.parse
-import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 PORT = 9876
+PLIST_LABEL = "com.flease.mimestream-bridge"
+PLIST_PATH  = os.path.expanduser(f"~/Library/LaunchAgents/{PLIST_LABEL}.plist")
+SCRIPT_PATH = os.path.abspath(__file__)
 
 
-def open_in_mimestream(thread_id: str, subject: str, from_addr: str):
-    """Ouvre Mimestream et navigue vers l'email via search."""
-    # 1. Active/ouvre Mimestream
-    subprocess.Popen(['open', '-a', 'Mimestream'])
-    time.sleep(0.6)
+class BridgeHandler(BaseHTTPRequestHandler):
 
-    # 2. Si on a un sujet, on fait une recherche dans Mimestream via AppleScript
-    search_term = subject[:50] if subject else from_addr[:50] if from_addr else ''
+    def log_message(self, fmt, *args):
+        print(f"[bridge] {fmt % args}", flush=True)
 
-    if search_term:
-        # Nettoie les guillemets pour AppleScript
-        safe_term = search_term.replace('"', "'").replace('\\', '')
-        script = f'''
-tell application "Mimestream"
-    activate
-end tell
-delay 0.4
-tell application "System Events"
-    tell process "Mimestream"
-        -- Cmd+F ou Cmd+Option+F pour ouvrir la recherche
-        key code 3 using {{command down, option down}}
-        delay 0.3
-        keystroke "{safe_term}"
-    end tell
-end tell
-'''
-        try:
-            subprocess.run(
-                ['osascript', '-e', script],
-                capture_output=True,
-                timeout=5
-            )
-        except (subprocess.TimeoutExpired, Exception):
-            pass  # Mimestream est quand même ouvert
+    def send_cors(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "*")
 
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_cors()
+        self.end_headers()
 
-class MimestreamHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         params = urllib.parse.parse_qs(parsed.query)
 
-        # CORS headers pour permettre les appels depuis GitHub Pages
-        self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        self.send_header('Content-Type', 'text/plain; charset=utf-8')
+        if parsed.path == "/ping":
+            self.send_response(200)
+            self.send_cors()
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(b'{"status":"ok"}')
+            return
+
+        if parsed.path == "/open":
+            subject = params.get("subject", [""])[0]
+            from_   = params.get("from",    [""])[0]
+
+            if subject:
+                script = f'''
+tell application "Mimestream"
+    activate
+end tell
+delay 0.5
+tell application "System Events"
+    tell process "Mimestream"
+        keystroke "f" using {{command down, shift down}}
+        delay 0.4
+        keystroke "{subject.replace('"', '')}"
+    end try
+    end tell
+end tell
+'''
+                try:
+                    subprocess.run(["osascript", "-e", script], timeout=10, check=False)
+                    print(f"[bridge] ✅ Ouvert dans Mimestream : {subject[:60]}", flush=True)
+                except Exception as e:
+                    print(f"[bridge] ⚠ AppleScript erreur : {e}", flush=True)
+
+            self.send_response(200)
+            self.send_cors()
+            self.send_header("Content-Type", "text/html")
+            self.end_headers()
+            self.wfile.write(b'<html><body><script>window.close()</script></body></html>')
+            return
+
+        self.send_response(404)
         self.end_headers()
 
-        if parsed.path == '/open':
-            thread_id = params.get('id', [''])[0]
-            subject   = params.get('subject', [''])[0]
-            from_addr = params.get('from', [''])[0]
-            open_in_mimestream(thread_id, subject, from_addr)
-            self.wfile.write(b'ok')
-        elif parsed.path == '/ping':
-            self.wfile.write(b'pong')
-        else:
-            self.wfile.write(b'Mimestream Bridge running')
 
-    def do_OPTIONS(self):
-        self.send_response(204)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-        self.end_headers()
-
-    def log_message(self, fmt, *args):
-        # Log épuré
-        print(f'[bridge] {self.address_string()} — {fmt % args}')
-
-
-def install_launch_agent():
-    """Installe un LaunchAgent macOS pour démarrage auto."""
-    import os, plistlib, pathlib
-
-    script_path = pathlib.Path(__file__).resolve()
-    python_path = sys.executable
-    plist_path = pathlib.Path.home() / 'Library/LaunchAgents/com.flease.mimestream-bridge.plist'
-
-    plist = {
-        'Label': 'com.flease.mimestream-bridge',
-        'ProgramArguments': [python_path, str(script_path)],
-        'RunAtLoad': True,
-        'KeepAlive': True,
-        'StandardOutPath': str(pathlib.Path.home() / 'Library/Logs/mimestream-bridge.log'),
-        'StandardErrorPath': str(pathlib.Path.home() / 'Library/Logs/mimestream-bridge-error.log'),
-    }
-
-    plist_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(plist_path, 'wb') as f:
-        plistlib.dump(plist, f)
-
-    os.system(f'launchctl load "{plist_path}"')
-    print(f'✅ LaunchAgent installé : {plist_path}')
-    print('   Le bridge démarrera automatiquement au prochain login.')
-    print('   Pour le démarrer maintenant :')
-    print(f'   launchctl start com.flease.mimestream-bridge')
+def install():
+    plist = f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{PLIST_LABEL}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>{SCRIPT_PATH}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/mimestream_bridge.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/mimestream_bridge.log</string>
+</dict>
+</plist>
+"""
+    os.makedirs(os.path.dirname(PLIST_PATH), exist_ok=True)
+    with open(PLIST_PATH, "w") as f:
+        f.write(plist)
+    subprocess.run(["launchctl", "load", PLIST_PATH], check=True)
+    print(f"✅ LaunchAgent installé : {PLIST_PATH}")
+    print(f"   Le bridge démarrera automatiquement à chaque connexion.")
+    print(f"   Pour vérifier : curl http://localhost:{PORT}/ping")
 
 
-def uninstall_launch_agent():
-    import pathlib, os
-    plist_path = pathlib.Path.home() / 'Library/LaunchAgents/com.flease.mimestream-bridge.plist'
-    if plist_path.exists():
-        os.system(f'launchctl unload "{plist_path}"')
-        plist_path.unlink()
-        print(f'✅ LaunchAgent désinstallé.')
+def uninstall():
+    if os.path.exists(PLIST_PATH):
+        subprocess.run(["launchctl", "unload", PLIST_PATH], check=False)
+        os.remove(PLIST_PATH)
+        print(f"✅ LaunchAgent supprimé.")
     else:
-        print('Aucun LaunchAgent trouvé.')
+        print("⚠ Aucun LaunchAgent trouvé.")
 
 
-if __name__ == '__main__':
-    if '--install' in sys.argv:
-        install_launch_agent()
-        sys.exit(0)
-    if '--uninstall' in sys.argv:
-        uninstall_launch_agent()
-        sys.exit(0)
-
-    print(f'🚀 Mimestream Bridge — http://localhost:{PORT}')
-    print(f'   Ouvre Mimestream à chaque clic "Ouvrir" dans le CRM Flease.')
-    print(f'   Installe le démarrage auto : python3 {__file__} --install')
-    print(f'   Ctrl+C pour arrêter.\n')
-
-    try:
-        server = HTTPServer(('localhost', PORT), MimestreamHandler)
-        server.serve_forever()
-    except KeyboardInterrupt:
-        print('\n👋 Bridge arrêté.')
-    except OSError as e:
-        if 'Address already in use' in str(e):
-            print(f'❌ Port {PORT} déjà utilisé — le bridge est peut-être déjà lancé.')
-        else:
-            raise
+if __name__ == "__main__":
+    if "--install" in sys.argv:
+        install()
+    elif "--uninstall" in sys.argv:
+        uninstall()
+    else:
+        print(f"🚀 Mimestream Bridge démarré sur http://localhost:{PORT}", flush=True)
+        print(f"   /ping  — vérifie que le bridge tourne")
+        print(f"   /open  — ouvre un email dans Mimestream")
+        print(f"   Ctrl+C pour arrêter\n")
+        server = HTTPServer(("127.0.0.1", PORT), BridgeHandler)
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            print("\n🛑 Bridge arrêté.")
