@@ -53,25 +53,13 @@ class BridgeHandler(BaseHTTPRequestHandler):
             from_   = params.get("from",    [""])[0]
 
             if subject:
-                safe_subject = subject.replace('"', '').replace('\\', '')[:80]
-                script = f'''
-tell application "Mimestream"
-    activate
-end tell
-delay 0.8
-tell application "System Events"
-    tell process "Mimestream"
-        keystroke "f" using {{command down}}
-        delay 0.5
-        keystroke "{safe_subject}"
-    end tell
-end tell
-'''
+                query = urllib.parse.quote(subject[:120])
+                url = f"mimestream://search?q={query}"
                 try:
-                    subprocess.run(["osascript", "-e", script], timeout=10, check=False)
-                    print(f"[bridge] ✅ Ouvert dans Mimestream : {subject[:60]}", flush=True)
+                    subprocess.run(["open", url], timeout=10, check=False)
+                    print(f"[bridge] ✅ Recherche Mimestream : {subject[:60]}", flush=True)
                 except Exception as e:
-                    print(f"[bridge] ⚠ AppleScript erreur : {e}", flush=True)
+                    print(f"[bridge] ⚠ open URL erreur : {e}", flush=True)
 
             self.send_response(200)
             self.send_cors()
