@@ -290,7 +290,7 @@
       "titre": "Volkswagen Tiguan 1.5 eTSI 131ch DSG7 Life Plus",
       "description": "Volkswagen Tiguan 1.5 eTSI 131ch DSG7 Life Plus tout-terrain, bleu, 7 cv, 5 portes, couleur intérieure : noir, première mise en circulation le 06/11/2024, première main, garantie 44 mois.\n\nPrix TTC : 33 990,00 €\nPrix HT : 28 325,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places, longueur : 4 53",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "contacte",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -302,8 +302,13 @@
         {
           "date": "2026-03-16",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-16",
+          "action": "Sourcing : a_contacter → contacte"
         }
-      ]
+      ],
+      "commentaires": []
     },
     {
       "id": "c8f8425a-f555-4820-9fd7-d7d7d6695a39",
