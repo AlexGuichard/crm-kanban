@@ -1343,11 +1343,9 @@ function generateEmailActions(emails) {
 function openEmailMimestream(threadId, subject, from) {
   const bridgeUrl = `http://localhost:9876/open?id=${encodeURIComponent(threadId)}&subject=${encodeURIComponent(subject)}&from=${encodeURIComponent(from)}`;
   const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${threadId}`;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 1200);
-  fetch(bridgeUrl, { signal: controller.signal, mode: 'no-cors' })
-    .then(() => { clearTimeout(timer); /* Mimestream bridge responded */ })
-    .catch(() => { clearTimeout(timer); window.open(gmailUrl, '_blank'); });
+  // fetch() est bloqué (mixed content HTTPS→HTTP) — window.open() fonctionne
+  const w = window.open(bridgeUrl, '_mimestream_bridge', 'width=1,height=1,top=-200,left=-200');
+  if (!w) window.open(gmailUrl, '_blank'); // popup bloqué → fallback Gmail
 }
 
 function dismissEmail(id) {
