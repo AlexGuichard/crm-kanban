@@ -332,7 +332,7 @@
       "titre": "Nissan Qashqai e-POWER 190ch Business Edition 2022",
       "description": "Nissan Qashqai e-POWER 190ch Business Edition 2022, (S.U.V.), Noir Métallisé, 8cv, 5 portes, mise en circulation le 17-05-2024, première main, garantie 24 mois (Constructeur), garantie constructeur.\n\n5 places, longueur : 4,42 mètres, poids en charge 2180 Kg,\nboîte de vitesse : automatique\n\nOPTIONS E",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "contacte",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -344,8 +344,13 @@
         {
           "date": "2026-03-16",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-16",
+          "action": "Sourcing : a_contacter → contacte"
         }
-      ]
+      ],
+      "commentaires": []
     }
   ],
   "lots": [],
