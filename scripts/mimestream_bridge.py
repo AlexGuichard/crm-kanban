@@ -61,7 +61,7 @@ end tell
 delay 0.8
 tell application "System Events"
     tell process "Mimestream"
-        keystroke "f" using {{command down, shift down}}
+        keystroke "f" using {{command down}}
         delay 0.5
         keystroke "{safe_subject}"
     end tell
