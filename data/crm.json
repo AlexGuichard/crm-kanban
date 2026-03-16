@@ -391,7 +391,14 @@
           "date": "2026-03-16",
           "action": "Sourcing : a_contacter → contacte"
         }
-      ]
+      ],
+      "commentaires": [
+        {
+          "ts": "16/03/2026 18:53",
+          "text": "Je dois rappeler demain"
+        }
+      ],
+      "commentaire": "16/03/2026 18:53 : Je dois rappeler demain"
     }
   ],
   "lots": [],
