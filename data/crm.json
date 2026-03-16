@@ -374,7 +374,7 @@
       "titre": "Renault Clio Blue dCi 100 Evolution",
       "description": "Renault Clio Blue dCi 100 Evolution berline, blanc, 5 cv, 5 portes, première mise en circulation le 29/11/2024, garantie 12 mois.\n\nPrix TTC : 16 450,00 €\nPrix HT : 13 708,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - radio numérique",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "contacte",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -386,6 +386,10 @@
         {
           "date": "2026-03-16",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-16",
+          "action": "Sourcing : a_contacter → contacte"
         }
       ]
     }
