@@ -391,14 +391,15 @@
     },
     {
       "id": "mmp4ghw6wv6b",
-      "column": "a_faire",
+      "column": "termine",
       "title": "Demander les papiers — Volkswagen Tiguan",
       "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
       "priority": 1,
       "due_date": "2026-03-13",
       "linked_vehicle_id": "a7de2130-5222-4377-aa45-3177095cf4f4",
       "auto_generated": true,
-      "created_at": "2026-03-13"
+      "created_at": "2026-03-13",
+      "due_time": ""
     },
     {
       "id": "mmt7q0yi4wnj",
