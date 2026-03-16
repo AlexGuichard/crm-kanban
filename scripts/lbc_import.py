@@ -53,28 +53,28 @@ def fetch_page(url: str) -> str:
     """Tente plusieurs méthodes pour obtenir la page LBC."""
 
     if SCRAPERAPI_KEY:
-        # ① ScraperAPI + JS rendering (nécessaire pour LBC Next.js)
-        print("  [fetch] ScraperAPI render=true...", flush=True)
-        try:
-            html = scraper_api_fetch(url, render=True)
-            if "__NEXT_DATA__" in html:
-                print(f"  [fetch] ✅ __NEXT_DATA__ via ScraperAPI render ({len(html):,} car)", flush=True)
-                return html
-            print(f"  [fetch] ⚠ Render OK mais __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
-            print(f"  [fetch]   Extrait: {html[:200]!r}", flush=True)
-        except Exception as e:
-            print(f"  [fetch] ⚠ ScraperAPI render échoué: {e}", flush=True)
-
-        # ② ScraperAPI sans rendu (fallback rapide)
-        print("  [fetch] ScraperAPI sans render...", flush=True)
+        # ① ScraperAPI sans render — rapide (~5-8s), fonctionne pour LBC
+        print("  [fetch] ScraperAPI (fast)...", flush=True)
         try:
             html = scraper_api_fetch(url, render=False)
             if "__NEXT_DATA__" in html:
                 print(f"  [fetch] ✅ __NEXT_DATA__ via ScraperAPI ({len(html):,} car)", flush=True)
                 return html
             print(f"  [fetch] ⚠ Sans render: __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
+            print(f"  [fetch]   Extrait: {html[:200]!r}", flush=True)
         except Exception as e:
-            print(f"  [fetch] ⚠ ScraperAPI sans render échoué: {e}", flush=True)
+            print(f"  [fetch] ⚠ ScraperAPI fast échoué: {e}", flush=True)
+
+        # ② ScraperAPI avec render JS — plus lent (~25-40s), si la page nécessite JS
+        print("  [fetch] ScraperAPI render=true (JS)...", flush=True)
+        try:
+            html = scraper_api_fetch(url, render=True)
+            if "__NEXT_DATA__" in html:
+                print(f"  [fetch] ✅ __NEXT_DATA__ via ScraperAPI render ({len(html):,} car)", flush=True)
+                return html
+            print(f"  [fetch] ⚠ Render: __NEXT_DATA__ absent ({len(html):,} car)", flush=True)
+        except Exception as e:
+            print(f"  [fetch] ⚠ ScraperAPI render échoué: {e}", flush=True)
 
     # ③ Requête directe
     print("  [fetch] Requête directe...", flush=True)
