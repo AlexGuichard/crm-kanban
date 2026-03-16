@@ -1341,11 +1341,12 @@ function generateEmailActions(emails) {
 }
 
 function openEmailMimestream(threadId, subject, from) {
-  const bridgeUrl = `http://localhost:9876/open?id=${encodeURIComponent(threadId)}&subject=${encodeURIComponent(subject)}&from=${encodeURIComponent(from)}`;
-  const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${threadId}`;
-  // fetch() est bloqué (mixed content HTTPS→HTTP) — window.open() fonctionne
-  const w = window.open(bridgeUrl, '_mimestream_bridge', 'width=1,height=1,top=-200,left=-200');
-  if (!w) window.open(gmailUrl, '_blank'); // popup bloqué → fallback Gmail
+  // Le navigateur ouvre directement le URL scheme mimestream:// — pas besoin de bridge
+  if (subject) {
+    window.location.href = `mimestream://search?q=${encodeURIComponent(subject)}`;
+  } else {
+    window.open(`https://mail.google.com/mail/u/0/#inbox/${threadId}`, '_blank');
+  }
 }
 
 function dismissEmail(id) {
