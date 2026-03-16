@@ -1,6 +1,6 @@
 {
   "date": "2026-03-17",
-  "generated_at": "2026-03-16T23:00:45.312Z",
+  "generated_at": "2026-03-16T23:05:45.446Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Fwd: 100048131 : factures en attentes de règlement",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-02T08:14:02.000Z",
-      "hours_old": 350.8,
+      "hours_old": 350.9,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -31,7 +31,7 @@
       "subject": "Fwd: relance factures impayés",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-13T12:35:48.000Z",
-      "hours_old": 82.4,
+      "hours_old": 82.5,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -42,7 +42,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Merci du retour 😊 Ci-joint le duplicata de facture demandé. Cordialement, Julie FILLET Assistante commerciale véhicules d’occasion– Citroën - DS Automobiles",
       "date": "2026-03-16T13:34:45.000Z",
-      "hours_old": 9.4,
+      "hours_old": 9.5,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 10
@@ -53,7 +53,7 @@
       "subject": "Demande de signature",
       "snippet": "Demande de signature Bonjour LPF Entreprise, TEC3H vous invite à signer : Commande N° 2510-227 Pour lire et signer les documents, cliquez sur le bouton ci-dessous : Accéder aux doc",
       "date": "2025-11-21T13:37:45.000Z",
-      "hours_old": 2769.4,
+      "hours_old": 2769.5,
       "label": "BDC a signer",
       "category": "label",
       "score": 9
@@ -64,7 +64,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Bonjour, Et voici les bons de commande signés. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre D",
       "date": "2026-03-13T13:59:18.000Z",
-      "hours_old": 81,
+      "hours_old": 81.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 9
@@ -75,7 +75,7 @@
       "subject": "Re: KBIS",
       "snippet": "Bonjour, Pouvez-vous m’envoyer le RIB de la concession svp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Che",
       "date": "2026-02-03T14:04:23.000Z",
-      "hours_old": 992.9,
+      "hours_old": 993,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "Fwd: 5x c3",
       "snippet": "Si vous pouvez régulariser svp Merci bcp Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire",
       "date": "2026-02-04T10:12:42.000Z",
-      "hours_old": 972.8,
+      "hours_old": 972.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "Re: Commande VW GOLF",
       "snippet": "Comme déjà indiqué à plusieurs reprises, le document était joint à notre dernier échange. Je vous le renvoie une nouvelle fois ci-joint. Le mar. 10 févr. 2026 à 10:08, Alex G",
       "date": "2026-02-10T09:16:04.000Z",
-      "hours_old": 829.7,
+      "hours_old": 829.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Re: Clio Evolution TCe 90",
       "snippet": "Hi, Thanks for your quick feedback. However, he is asking us for the sales history, not the transport history. Can you send me the transfer agreement between you and your supp",
       "date": "2026-02-11T13:17:17.000Z",
-      "hours_old": 801.7,
+      "hours_old": 801.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "RE: copie CG Trafic / JL CHEVRON x3",
       "snippet": "Bonjour Elle vous a été envoyée lors de mon précédent mail le 30/01. Cordialement, [cid:image011.png@01DC9C19.18F18870]<https://cloud.letsignit.com/collect/bc/61d42441d8",
       "date": "2026-02-12T11:14:25.000Z",
-      "hours_old": 779.8,
+      "hours_old": 779.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "RE: TR: Bon de commande Arkana+RIB",
       "snippet": "Et voilà la cession . Cordialement, Alexandra LE HO Secretaire commerciale VO- PEUGEOT GEMY Pontivy 02 97 25 93 30 40 Rue Colbert-56300 PONTIVY [cid:image001.png@01DCA",
       "date": "2026-02-17T14:10:05.000Z",
-      "hours_old": 656.8,
+      "hours_old": 656.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Re: Facture remise en état",
       "snippet": "Et voici la preuve de virement en PJ. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Cal",
       "date": "2026-02-17T15:42:35.000Z",
-      "hours_old": 655.3,
+      "hours_old": 655.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 606.9,
+      "hours_old": 607,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "Re: REPORT DU RDV RENAULT MASTER GW328HK",
       "snippet": "Bonjour, En PJ la preuve de virement, il a été effectué hier donc vous devriez avoir les fonds dans la journée/demain. Cordialement, Alex Guichard - International Purchaser M",
       "date": "2026-02-20T09:08:17.000Z",
-      "hours_old": 589.9,
+      "hours_old": 590,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "Re: Achat Kangoo",
       "snippet": "Bonjour, Et voici l’attestation d’assurance Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drev",
       "date": "2026-02-23T08:26:50.000Z",
-      "hours_old": 518.6,
+      "hours_old": 518.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "Re: VENTE CITROEN BERLINGO VAN M GK-392-HW",
       "snippet": "Bonjour, Et voici en PJ. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-e",
       "date": "2026-03-03T08:44:27.000Z",
-      "hours_old": 326.3,
+      "hours_old": 326.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -273,7 +273,7 @@
       "subject": "PRISE DE RDV VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de Saint Priest Lyon, nous revenons vers vous afin de convenir d'un ren",
       "date": "2026-03-04T10:47:11.000Z",
-      "hours_old": 300.2,
+      "hours_old": 300.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 134.6,
+      "hours_old": 134.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 126.5,
+      "hours_old": 126.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -306,7 +306,7 @@
       "subject": "RE: GS330CF/TRAFIC",
       "snippet": "Bonjour M GUICHARD Auriez-vous l’avis de virement ? Car sauf erreur de ma part sans virement, je ne peux pas facturer ou vous envoyer les documents relatifs à ces véhicules.",
       "date": "2026-03-12T07:25:20.000Z",
-      "hours_old": 111.6,
+      "hours_old": 111.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -317,7 +317,7 @@
       "subject": "MG ZS1.5L Hybrid+ 197ch Luxury",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/Fk4F9eKToZMD) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-16T08:18:17.000Z",
-      "hours_old": 14.7,
+      "hours_old": 14.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -328,7 +328,7 @@
       "subject": "RE: Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6/ on line",
       "snippet": "Etant donné que nous l’avons eu la semaine dernière et qu’on est hyper bien placé niveau prix, je ne peux pas faire grand-chose… 300€ c’est le max que je puisse faire :/ Je me",
       "date": "2026-03-16T08:56:14.000Z",
-      "hours_old": 14.1,
+      "hours_old": 14.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -339,7 +339,7 @@
       "subject": "FIAT DUCATO 3T3 L2H2  2.3 HDI 140CH BVA de 12/2022 avec 66 550 Kms à 14 990€ HT",
       "snippet": "Bonjour nous commençons cette nouvelle semaine avec un italien en L2H2 ! FIAT DUCATO 3T3 L2H2 (MH2) 2.2 HDI 140CH Version : BUSINESS De 12/2022 6",
       "date": "2026-03-16T09:48:24.000Z",
-      "hours_old": 13.2,
+      "hours_old": 13.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -350,7 +350,29 @@
       "subject": "Liste VO Exclusive MASSOUTRE du 16.03.2026",
       "snippet": "L'email ne s'affiche pas correctement ? *Cliquez-ici* <https://clicks.messengeo.net?i=a0a1c9e0e0e913eb15de87e2c5a931fb&c=cmYuZXNhZWxmQHhlbGE6OjQwODcyODYyNzM=> Découvrez vite no",
       "date": "2026-03-16T09:47:37.000Z",
-      "hours_old": 13.2,
+      "hours_old": 13.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19cf6187e1db862b",
+      "from": "Renault Autobernard <contact@autobernard.com>",
+      "subject": "Foire aux pneus Renault Autobernard : jusqu'à 120 € remboursés jusqu'au 30 avril",
+      "snippet": "Si cet e-mail ne s'affiche pas correctement, cliquez https://click.chez.autobernard.com/?qs=eyJkZWtJZCI6IjA1NmEzNzI4LTc1ZTgtNDlmMy1hMjBiLTBlMDZhYmNjNjY2OSIsImRla1ZlcnNpb24iOjEsIm",
+      "date": "2026-03-16T10:02:05.000Z",
+      "hours_old": 13.1,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19cf6183c9f10337",
+      "from": "\"François Cousin\" <francois.cousin@okmobility.com>",
+      "subject": "«Empresa» Kamiq , check it please, it's huge discount and perfect configuration Black Dots",
+      "snippet": "Hola «Nombre», Happy new year si no te lo dije todavia !!! Esta propuesta es muy muy buena. Te ofrezco esos «Oferta» y no tengo muchos asi que es una buena oportunidad. No t",
+      "date": "2026-03-16T10:01:43.000Z",
+      "hours_old": 13.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -367,34 +389,12 @@
       "score": 8
     },
     {
-      "id": "19cf6187e1db862b",
-      "from": "Renault Autobernard <contact@autobernard.com>",
-      "subject": "Foire aux pneus Renault Autobernard : jusqu'à 120 € remboursés jusqu'au 30 avril",
-      "snippet": "Si cet e-mail ne s'affiche pas correctement, cliquez https://click.chez.autobernard.com/?qs=eyJkZWtJZCI6IjA1NmEzNzI4LTc1ZTgtNDlmMy1hMjBiLTBlMDZhYmNjNjY2OSIsImRla1ZlcnNpb24iOjEsIm",
-      "date": "2026-03-16T10:02:05.000Z",
-      "hours_old": 13,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
-      "id": "19cf6183c9f10337",
-      "from": "\"François Cousin\" <francois.cousin@okmobility.com>",
-      "subject": "«Empresa» Kamiq , check it please, it's huge discount and perfect configuration Black Dots",
-      "snippet": "Hola «Nombre», Happy new year si no te lo dije todavia !!! Esta propuesta es muy muy buena. Te ofrezco esos «Oferta» y no tengo muchos asi que es una buena oportunidad. No t",
-      "date": "2026-03-16T10:01:43.000Z",
-      "hours_old": 13,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19c8b11c89e6c093",
       "from": "Alex Guichard <alex@flease.fr>",
       "subject": "Re: BC",
       "snippet": "Bonjour Dorine, Merci beaucoup 🙂 Bonne journée Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-16T14:01:17.000Z",
-      "hours_old": 9,
+      "hours_old": 9.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -405,7 +405,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous n'avons toujours aucune trace de ce règlement malgré de nombreuses relances. Pouvez-vous, s'il vous plaît, effectuer le règlement ? Dans l'attente de votre ré",
       "date": "2026-03-16T15:42:34.000Z",
-      "hours_old": 7.3,
+      "hours_old": 7.4,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -416,7 +416,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Non, le véhicule a été acheté HT ; Nous devons régler la TVA sur l’ANTS afin d’obtenir le document. Bien cordialement, [cid:image001.jpg@01DCB54F.34809C80]",
       "date": "2026-03-16T13:14:32.000Z",
-      "hours_old": 9.8,
+      "hours_old": 9.9,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -427,7 +427,7 @@
       "subject": "livraison golf",
       "snippet": "Je me permets de revenir vers toi car il faut absolument que je livre les 2 golfs que vous avez commandé avant la fin du mois. Peux-tu effectuer les virements stp ? L'une est à L",
       "date": "2026-03-16T13:52:46.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -438,7 +438,7 @@
       "subject": "used: VW T-Roc DSG",
       "snippet": "Hello, please see our current offer for used: * VW T-Roc Style 1.5 TSI ACT DSG More information in the attachment (excel file). If you are interested in the offer, I",
       "date": "2026-03-16T12:11:09.000Z",
-      "hours_old": 10.8,
+      "hours_old": 10.9,
       "label": null,
       "category": "sans_reponse",
       "score": 6
