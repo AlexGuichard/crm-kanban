@@ -53,17 +53,17 @@ class BridgeHandler(BaseHTTPRequestHandler):
             from_   = params.get("from",    [""])[0]
 
             if subject:
+                safe_subject = subject.replace('"', '').replace('\\', '')[:80]
                 script = f'''
 tell application "Mimestream"
     activate
 end tell
-delay 0.5
+delay 0.8
 tell application "System Events"
     tell process "Mimestream"
         keystroke "f" using {{command down, shift down}}
-        delay 0.4
-        keystroke "{subject.replace('"', '')}"
-    end try
+        delay 0.5
+        keystroke "{safe_subject}"
     end tell
 end tell
 '''
