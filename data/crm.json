@@ -476,7 +476,7 @@
     "github_repo": "AlexGuichard/crm-kanban",
     "email": "",
     "reminder_days": 3,
-    "show_archive": true,
+    "show_archive": false,
     "urgency_colors": {
       "1": "#e8294a",
       "2": "#e87a00",
