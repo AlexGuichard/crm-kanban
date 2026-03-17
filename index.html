@@ -115,6 +115,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .ss-step.active { background: var(--primary); }
 .ss-label { font-size: 10px; color: var(--primary); font-weight: 600; margin-top: 3px; }
 
+/* CARD HEADER ROW */
+.card-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
+.card-header-row .card-title { margin-bottom: 0; flex: 1; }
+
+/* SS BADGE (replaces ss-bar on card) */
+.ss-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-top: 5px; }
+
+/* FRESHNESS BADGE */
+.freshness-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 8px; font-size: 9px; font-weight: 700; background: var(--bg); color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.freshness-badge.fresh { background: rgba(22,163,74,0.1); color: var(--urg-done); }
+.freshness-badge.stale { background: rgba(232,122,0,0.1); color: var(--urg-2); }
+
+/* NEXT ACTION */
+.next-action { font-size: 10px; color: var(--text-muted); margin-top: 5px; font-style: italic; }
+
 /* DOCS BADGES */
 .doc-badges { display: flex; gap: 3px; margin-top: 6px; }
 .doc-badge { width: 22px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
@@ -1395,19 +1410,65 @@ function vehicleCard(v) {
   const showDocs = docsVisible(v);
   const missD = hasMissingDocs(v);
 
-  const ssBar = v.column === 'sourcing' ? (() => {
-    const idx = getSSIdx(v.sub_stage);
-    return `<div class="ss-bar">${SUB_STAGES.map((ss,i) => `<div class="ss-step ${i<idx?'done':i===idx?'active':''}"></div>`).join('')}</div>
-    <div class="ss-label">${getSS(v.sub_stage).label}</div>`;
-  })() : '';
+  // === DEAL PERDU : fiche minimaliste ===
+  if (v.column === 'deal_perdu') {
+    const isMatch = searchQ && matchV(v);
+    return `<div class="card ${urg}${isMatch?' search-match':''}" draggable="true"
+      style="border-left-color:var(--urg-1);opacity:0.8"
+      ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
+      ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+      onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')">
+      <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+      <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+      <div class="tags">
+        ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
+        ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
+      </div>
+      ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : '<div class="deal-lost-reason" style="color:var(--text-muted)">Raison non précisée</div>'}
+    </div>`;
+  }
 
-  const docBadges = showDocs ? `<div class="doc-badges">${DOCS.map(d =>
-    `<div class="doc-badge ${v.documents&&v.documents[d.key]?'ok':'ko'}" title="${d.full}">${d.label}</div>`).join('')}</div>` : '';
+  // === Bordure gauche colorée par sous-étape (sourcing) ===
+  const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', negociation:'var(--urg-2)', bc_signe:'var(--urg-done)' };
+  const SS_BADGE  = {
+    a_contacter: { label:'À contacter', color:'var(--text-muted)', bg:'var(--bg)' },
+    contacte:    { label:'Contacté',    color:'var(--accent)',     bg:'rgba(61,85,240,0.09)' },
+    negociation: { label:'Négociation', color:'var(--urg-2)',      bg:'rgba(232,122,0,0.1)' },
+    bc_signe:    { label:'BC Signé ✓',  color:'var(--urg-done)',   bg:'rgba(22,163,74,0.1)' }
+  };
+  const ssKey = v.sub_stage || 'a_contacter';
+  const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
+  const ssBadgeInfo = v.column === 'sourcing' ? (SS_BADGE[ssKey] || SS_BADGE.a_contacter) : null;
+  const ssBadgeHtml = ssBadgeInfo
+    ? `<span class="ss-badge" style="background:${ssBadgeInfo.bg};color:${ssBadgeInfo.color}">${ssBadgeInfo.label}</span>`
+    : '';
 
-  // Warning persistant dès À Payer et sur toutes les colonnes suivantes (sauf archive)
+  // === Indicateur de fraîcheur ===
+  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
+  let freshnessHtml = '';
+  if (lastDate) {
+    const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
+    if (days === 0)      freshnessHtml = `<span class="freshness-badge fresh">Aujourd'hui</span>`;
+    else if (days === 1) freshnessHtml = `<span class="freshness-badge">Hier</span>`;
+    else if (days >= 5)  freshnessHtml = `<span class="freshness-badge stale">il y a ${days}j</span>`;
+    else                 freshnessHtml = `<span class="freshness-badge">il y a ${days}j</span>`;
+  }
+
+  // === Prochaine action ===
+  const NEXT_ACTIONS = {
+    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', negociation:'🤝 En négociation', bc_signe:'💳 Passer en paiement' },
+    a_payer:'💳 En attente de paiement', en_transport:'🚛 Suivre le transport', livre:'✅ Livré — à archiver'
+  };
+  let nextAction = '';
+  if (v.column === 'sourcing') nextAction = NEXT_ACTIONS.sourcing[ssKey] || '';
+  else if (NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
+  const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
+
+  // === Avertissement docs ===
   const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
     ? `<div class="doc-warn">⚠️ Documents manquants</div>` : '';
 
+  // === Bouton action principale ===
   let actions = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
     actions = `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}',event)">→ À Payer</button>`;
@@ -1419,22 +1480,25 @@ function vehicleCard(v) {
     actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
 
   const isMatch = searchQ && matchV(v);
-  return `<div class="card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
+  return `<div class="card ${urg}${isMatch?' search-match':''}" draggable="true"
+    style="border-left-color:${borderColor}"
     ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
     ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
-    onclick="openDetail('${v.id}')"
-    oncontextmenu="openCtx(event,'vehicle','${v.id}')">
+    onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')">
     <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
-    <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+    <div class="card-header-row">
+      <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+      ${freshnessHtml}
+    </div>
     <div class="tags">
       ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
       ${v.km ? `<span class="tag">${Number(v.km).toLocaleString('fr-FR')} km</span>` : ''}
       ${v.carburant ? `<span class="tag">${hl(v.carburant, searchQ)}</span>` : ''}
       ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
-      ${v.fournisseur_nom ? `<span class="tag">${hl(v.fournisseur_nom, searchQ)}</span>` : ''}
     </div>
-    ${ssBar}${docBadges}${docWarn}
-    ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : ''}
+    ${ssBadgeHtml}
+    ${nextActionHtml}
+    ${docWarn}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
   </div>`;
 }
@@ -2065,6 +2129,48 @@ function openDetail(id) {
   const showDocs = docsVisible(v);
   const missD = hasMissingDocs(v);
 
+  // ---- Sections communes ----
+  const photoHtml = v.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;max-height:200px;background:var(--bg)">
+    <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
+  </div>` : '';
+
+  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : '';
+
+  const infoGridHtml = `
+    <div class="detail-grid">
+      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
+      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
+      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
+      <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
+      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
+      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
+      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
+      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
+      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
+      ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
+    </div>`;
+
+  const fournisseurSection = `
+    <div class="form-section">
+      <div class="form-section-title">🏢 Fournisseur</div>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
+        <div class="detail-field"><label>Téléphone</label>
+          <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
+            onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
+        </div>
+        <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
+          <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
+            onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
+        </div>
+        <div style="grid-column:1/-1;margin-top:6px">
+          <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
+        </div>
+      </div>
+    </div>`;
+
   const docsSection = showDocs ? `
     <div class="form-section">
       <div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">
@@ -2090,6 +2196,18 @@ function openDetail(id) {
       ${v.transport_notes ? `<div style="font-size:13px;margin-top:8px;color:var(--text-muted)">${esc(v.transport_notes)}</div>` : ''}
     </div>` : '';
 
+  const commentSection = `
+    <div class="form-section">
+      <div class="form-section-title">💬 Commentaires</div>
+      <div id="commentList_${v.id}">${buildCommentListHTML(v)}</div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
+          style="flex:1;padding:7px 10px;font-size:13px"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
+        <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+ Ajouter</button>
+      </div>
+    </div>`;
+
   const histSection = v.historique && v.historique.length ? `
     <div class="form-section">
       <div class="form-section-title">📅 Historique</div>
@@ -2099,6 +2217,7 @@ function openDetail(id) {
       </div>
     </div>` : '';
 
+  // ---- Boutons d'action ----
   let actionBtns = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
     actionBtns += `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}');closeModal('ovDetail')">→ À Payer</button>`;
@@ -2112,59 +2231,74 @@ function openDetail(id) {
     actionBtns += `<button class="btn btn-ghost btn-sm" style="color:var(--urg-1);border-color:var(--urg-1)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
   actionBtns += `<button class="btn btn-danger btn-sm" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
 
+  // ---- Composition contextuelle selon stade ----
+  let bodyContent = '';
+
+  if (v.column === 'deal_perdu') {
+    // Vue simplifiée : raison + infos de base + commentaires + historique
+    bodyContent = `
+      <div style="background:rgba(232,41,74,0.06);border:1px solid rgba(232,41,74,0.2);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;color:var(--urg-1);margin-bottom:4px">❌ DEAL PERDU</div>
+        <div style="font-size:13px;color:var(--text)">${v.deal_lost_reason ? esc(v.deal_lost_reason) : '<em style="color:var(--text-muted)">Raison non précisée</em>'}</div>
+      </div>
+      ${infoGridHtml}
+      ${commentSection}
+      ${histSection}`;
+
+  } else if (v.column === 'archive') {
+    // Vue lecture seule : infos + commentaires
+    bodyContent = `
+      ${photoHtml}${annonceLinkHtml}
+      ${infoGridHtml}
+      ${commentSection}
+      ${histSection}`;
+
+  } else if (v.column === 'sourcing') {
+    // Vue sourcing : contact prioritaire, docs uniquement si bc_signé
+    bodyContent = `
+      ${photoHtml}${annonceLinkHtml}
+      ${v.titre ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic">${esc(v.titre)}</div>` : ''}
+      ${infoGridHtml}
+      ${fournisseurSection}
+      ${docsSection}
+      ${commentSection}
+      ${histSection}`;
+
+  } else if (v.column === 'a_payer') {
+    // Vue paiement : docs en premier (c'est ce qui bloque), puis fournisseur
+    bodyContent = `
+      ${photoHtml}
+      ${infoGridHtml}
+      ${docsSection}
+      ${fournisseurSection}
+      ${commentSection}
+      ${histSection}`;
+
+  } else if (v.column === 'en_transport') {
+    // Vue transport : infos transport en premier, puis docs
+    bodyContent = `
+      ${photoHtml}
+      ${infoGridHtml}
+      ${transportSection}
+      ${docsSection}
+      ${commentSection}
+      ${histSection}`;
+
+  } else {
+    // Vue par défaut (livre, etc.)
+    bodyContent = `
+      ${photoHtml}${annonceLinkHtml}
+      ${infoGridHtml}
+      ${fournisseurSection}
+      ${docsSection}
+      ${transportSection}
+      ${commentSection}
+      ${histSection}`;
+  }
+
   const price = v.prix_negocie || v.prix_demande;
   document.getElementById('detailBody').innerHTML = `
-    ${v.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;max-height:200px;background:var(--bg)">
-      <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
-    </div>` : ''}
-    ${v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : ''}
-    ${v.titre ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic">${esc(v.titre)}</div>` : ''}
-    <div class="detail-grid">
-      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
-      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
-      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
-      <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
-      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
-      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
-      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
-      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
-      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
-      ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
-    </div>
-    <div class="form-section">
-      <div class="form-section-title">🏢 Fournisseur</div>
-      <div class="detail-grid">
-        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
-        <div class="detail-field"><label>Téléphone</label>
-          <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
-            onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
-            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
-        </div>
-        <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
-          <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
-            onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
-            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
-        </div>
-        <div style="grid-column:1/-1;margin-top:6px">
-          <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
-        </div>
-      </div>
-    </div>
-    ${docsSection}
-    ${transportSection}
-    <div class="form-section">
-      <div class="form-section-title">💬 Commentaires</div>
-      <div id="commentList_${v.id}">
-        ${buildCommentListHTML(v)}
-      </div>
-      <div style="display:flex;gap:6px;margin-top:8px">
-        <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
-          style="flex:1;padding:7px 10px;font-size:13px"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
-        <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+ Ajouter</button>
-      </div>
-    </div>
-    ${histSection}
+    ${bodyContent}
     <div class="form-section" style="display:flex;gap:8px;justify-content:flex-end">${actionBtns}</div>
   `;
   openModal('ovDetail');
