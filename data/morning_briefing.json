@@ -1,6 +1,6 @@
 {
   "date": "2026-03-18",
-  "generated_at": "2026-03-17T23:50:47.409Z",
+  "generated_at": "2026-03-17T23:55:47.293Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Fwd: 100048131 : factures en attentes de règlement",
       "snippet": "Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire ---------- Message trans",
       "date": "2026-03-02T08:14:02.000Z",
-      "hours_old": 375.6,
+      "hours_old": 375.7,
       "label": "A traiter",
       "category": "label",
       "score": 10
@@ -20,7 +20,7 @@
       "subject": "Re: KBIS",
       "snippet": "Bonjour, Pouvez-vous m’envoyer le RIB de la concession svp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Che",
       "date": "2026-02-03T14:04:23.000Z",
-      "hours_old": 1017.8,
+      "hours_old": 1017.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 159.4,
+      "hours_old": 159.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 151.3,
+      "hours_old": 151.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Non, le véhicule a été acheté HT ; Nous devons régler la TVA sur l’ANTS afin d’obtenir le document. Bien cordialement, [cid:image001.jpg@01DCB54F.34809C80]",
       "date": "2026-03-16T13:14:32.000Z",
-      "hours_old": 34.6,
+      "hours_old": 34.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "livraison golf",
       "snippet": "Je me permets de revenir vers toi car il faut absolument que je livre les 2 golfs que vous avez commandé avant la fin du mois. Peux-tu effectuer les virements stp ? L'une est à L",
       "date": "2026-03-16T13:52:46.000Z",
-      "hours_old": 34,
+      "hours_old": 34.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "Re: BC",
       "snippet": "Bonjour Dorine, Merci beaucoup 🙂 Bonne journée Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-16T14:01:17.000Z",
-      "hours_old": 33.8,
+      "hours_old": 33.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous n'avons toujours aucune trace de ce règlement malgré de nombreuses relances. Pouvez-vous, s'il vous plaît, effectuer le règlement ? Dans l'attente de votre ré",
       "date": "2026-03-16T15:42:34.000Z",
-      "hours_old": 32.1,
+      "hours_old": 32.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT 2025 à 32 490€ Chez VO-LINK",
       "snippet": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT Prix de Vente x8 unités : 32 490€ TTC Prix de Vente x4 unités : 32 790€ TTC Prix de Vente unitaire : 32 990",
       "date": "2026-03-17T08:34:22.000Z",
-      "hours_old": 15.3,
+      "hours_old": 15.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Yaris Teamplayer 1.5 Hybrid 116 CVT",
       "snippet": "Bonjour, Celles-ci sont immédiatement disponibles ici 3 semaines !! N’hésitez pas s’il y a des questions : [cid:image001.png@01DCB56F.FD70AED0] [cid:image002.png@01DCB56F.",
       "date": "2026-03-17T08:30:59.000Z",
-      "hours_old": 15.3,
+      "hours_old": 15.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "New and used MIX : Suzuki / Dacia / Hyundai / Nissan / Renault/ Peugeot / VAG",
       "snippet": "Hey ! We send below the vehicle options currently available under very attractive conditions. These models are in",
       "date": "2026-03-17T09:08:16.000Z",
-      "hours_old": 14.7,
+      "hours_old": 14.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "Enchère du mois de Mars",
       "snippet": "**C'est le grand jour !** ------------------------- **Les enchères ouvrent à 15h****🚨** Des **dizaines d’opportunités multimarques**, réservées aux professionnels comme v",
       "date": "2026-03-17T09:33:20.000Z",
-      "hours_old": 14.3,
+      "hours_old": 14.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Yaris Cross Dynamique + 1,5 Hybrid 116 CVT",
       "snippet": "Bonjour, Celles-ci sont disponibles la semaine prochaine. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg km Dommages Couleur Prix HTVA JTDKBABB20A498879",
       "date": "2026-03-17T09:31:49.000Z",
-      "hours_old": 14.3,
+      "hours_old": 14.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "70 VU, 2 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour Voici notre liste stock à jour du Mardi… Bonne réception, Cordialement",
       "date": "2026-03-17T09:57:27.000Z",
-      "hours_old": 13.9,
+      "hours_old": 14,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "120i M Sport Aut.",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg Km Dommages Couleur Prix HTVA WBA81GE0907T68182 12",
       "date": "2026-03-17T10:04:22.000Z",
-      "hours_old": 13.8,
+      "hours_old": 13.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "X1 18i sDrive M Sport Pro Aut.",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg Km Dommages Couleur Prix HTVA WBA11EE0305387182 X1",
       "date": "2026-03-17T10:21:26.000Z",
-      "hours_old": 13.5,
+      "hours_old": 13.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "RDV - VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de LYON, nous revenons vers vous afin de convenir d'un rendez-vous de r",
       "date": "2026-03-17T10:36:24.000Z",
-      "hours_old": 13.2,
+      "hours_old": 13.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "X1 18i sDrive M Sport Aut. // Pano // Alu 19”",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : X1 18i sDrive M Sport Aut. // Pano // Alu 19” Max 15 000km Immatriculation:",
       "date": "2026-03-17T10:43:41.000Z",
-      "hours_old": 13.1,
+      "hours_old": 13.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -251,7 +251,7 @@
       "subject": "RE: CG Trafic",
       "snippet": "Bonjour ci-joint les 3 dossiers. Cordialement, [cid:image001.png@01DCB634.E0D03B90]<https://cloud.letsignit.com/collect/bc/61d42441d8ad05d9b780fd69?p=ke0F1QwhoBvdKfxc8Hn",
       "date": "2026-03-17T16:38:52.000Z",
-      "hours_old": 7.2,
+      "hours_old": 7.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique",
       "snippet": "Avis de contravention électronique [image: Logo Antai] Avis de contravention électronique Bonjour, Un avis de contravention a été établi au nom de GUICHARD ALEX pour une infr",
       "date": "2026-03-17T18:56:12.000Z",
-      "hours_old": 4.9,
+      "hours_old": 5,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -273,7 +273,7 @@
       "subject": "ID.7 Pro Tourer Edition Export",
       "snippet": "[cid:image001.png@01DCB613.69AF9220] Med vänlig hälsning / Best regards Jon Halef Säljare Begagnat [cid:image002.png@01DCB613.69AF9220] Volkswagen Hammarby Sjöstad Hamma",
       "date": "2026-03-17T12:38:46.000Z",
-      "hours_old": 11.2,
+      "hours_old": 11.3,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -295,7 +295,7 @@
       "subject": "RE: Tiguan",
       "snippet": "Bonjour Alex, J’ai ce modèle à vous proposer : Volkswagen Tiguan Life GOAL 1.5 eTSI 110kW 7-speed DSG du 22/07/2025 avec 25 256kms – IMPORT DE Prix : 30500€ TTC Le véhicule",
       "date": "2026-03-17T16:13:41.000Z",
-      "hours_old": 7.6,
+      "hours_old": 7.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -306,7 +306,7 @@
       "subject": "PEUGEOT BOXER L1H2 2.2 HDI 120CH DU 04/2021 avec 38 728 kms à 13 590 € HT",
       "snippet": "Le plus court des BOXER ! PEUGEOT BOXER L1H2 2.2 HDI 120CH Version : ASPHALT De 04/2021 38 728 Kms Couleur : BLANC *CAM *TEL *REGUL",
       "date": "2026-03-17T16:55:11.000Z",
-      "hours_old": 6.9,
+      "hours_old": 7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -317,7 +317,7 @@
       "subject": "Message from KM_C258",
       "snippet": "",
       "date": "2026-03-17T16:54:09.000Z",
-      "hours_old": 6.9,
+      "hours_old": 7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -328,7 +328,7 @@
       "subject": "Découvrez nos offres pro valables jusqu'au 31/03/2026 🤝",
       "snippet": "Web Version: https://click.volkswagen-group-retail.fr/?qs=eyJkZWtJZCI6IjBkZDgyZGUzLTk1OWEtNGVmNS1hMDc0LTU2OGI3MmZiMjgwYyIsImRla1ZlcnNpb24iOjEsIml2IjoiY08zY2ZzbFhCOFo5d3hIN1hYZl",
       "date": "2026-03-17T17:02:30.000Z",
-      "hours_old": 6.8,
+      "hours_old": 6.9,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -350,7 +350,7 @@
       "subject": "5x Renault Megane EV40 130ch EV-1",
       "snippet": "Dear customers, Available in 2 weeks COC included **5x Renault Megane EV40 130ch EV-1 Equilibre ** 1st reg : 07/2023 Km : 22.000 (average) Damage : 600€",
       "date": "2026-03-17T18:56:13.000Z",
-      "hours_old": 4.9,
+      "hours_old": 5,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -361,7 +361,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 610,
+      "hours_old": 610.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -372,7 +372,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-03-03T13:16:06.000Z",
-      "hours_old": 346.6,
+      "hours_old": 346.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -383,7 +383,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 345.8,
+      "hours_old": 345.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -394,7 +394,7 @@
       "subject": "Nouvelle(s) voiture(s) en vente",
       "snippet": "$title [image: Car Market] <https://syxiz.mjt.lu/lnk/EAAACGB01g8AAc6bMJIAA_n2ougAAYKKTxMAAAAAADCjOgBpuO-9hS9vQsAySnmGH413pJ9OtQAsedE/1/RImMoAIQHldtvmnjK_VCbQ/aHR0cDovL2Nhci1tYXJ",
       "date": "2026-03-17T06:07:57.000Z",
-      "hours_old": 17.7,
+      "hours_old": 17.8,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -405,7 +405,7 @@
       "subject": "V.I.P list",
       "snippet": "https://www.kvalitetsbiler.dk?utm_source=Engros&utm_campaign=10e2e194c5-EMAIL_CAMPAIGN_2024_08_29_12_09_COPY_02&utm_medium=email&utm_term=0_-cd3313881e-634862412 Hi 😊 New ca",
       "date": "2026-03-17T06:32:32.000Z",
-      "hours_old": 17.3,
+      "hours_old": 17.4,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -416,7 +416,7 @@
       "subject": "16x Renault Symbioz & Captur Esprit Alpine      Full Hybrid E-Tech 160ch",
       "snippet": "Retrouvez ci-dessous notre nouvelle opportunité chez ACT Consulting avec l'arrivée de Renault Captur et Symbioz ! ****X16 Renault Captur Esprit Alpine 160cv E-Tech**** Mise",
       "date": "2026-03-17T07:15:35.000Z",
-      "hours_old": 16.6,
+      "hours_old": 16.7,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -427,7 +427,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (4b884a7)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 9.0 seconds Finished: 2026-03-17 07:12:12 UTC",
       "date": "2026-03-17T07:12:33.000Z",
-      "hours_old": 16.6,
+      "hours_old": 16.7,
       "label": null,
       "category": "sans_reponse",
       "score": 1
