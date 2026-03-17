@@ -1185,8 +1185,14 @@ function renderBoard() {
   document.getElementById('board').innerHTML = cols.map(col => renderCol(col)).join('');
 }
 
+const sortByRecent = arr => [...arr].sort((a,b) => {
+  const da = a.historique && a.historique.length ? a.historique[a.historique.length-1].date : (a.created_at||'');
+  const db = b.historique && b.historique.length ? b.historique[b.historique.length-1].date : (b.created_at||'');
+  return db.localeCompare(da);
+});
+
 function renderCol(col) {
-  const vehicles = S.vehicles.filter(v => v.column === col.key && matchV(v));
+  const vehicles = sortByRecent(S.vehicles.filter(v => v.column === col.key && matchV(v)));
   const lots = S.lots.filter(l => l.column === col.key && matchL(l));
 
   let bodyHtml;
