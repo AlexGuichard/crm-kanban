@@ -1,6 +1,6 @@
 {
   "date": "2026-03-18",
-  "generated_at": "2026-03-18T04:40:47.241Z",
+  "generated_at": "2026-03-18T04:45:47.318Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "Re: KBIS",
       "snippet": "Bonjour, Pouvez-vous m’envoyer le RIB de la concession svp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Che",
       "date": "2026-02-03T14:04:23.000Z",
-      "hours_old": 1022.6,
+      "hours_old": 1022.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 636.6,
+      "hours_old": 636.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "PRISE DE RDV VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de Saint Priest Lyon, nous revenons vers vous afin de convenir d'un ren",
       "date": "2026-03-04T10:47:11.000Z",
-      "hours_old": 329.9,
+      "hours_old": 330,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 164.3,
+      "hours_old": 164.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Bonjour, Et voici les bons de commande signés. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre D",
       "date": "2026-03-13T13:59:18.000Z",
-      "hours_old": 110.7,
+      "hours_old": 110.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Non, le véhicule a été acheté HT ; Nous devons régler la TVA sur l’ANTS afin d’obtenir le document. Bien cordialement, [cid:image001.jpg@01DCB54F.34809C80]",
       "date": "2026-03-16T13:14:32.000Z",
-      "hours_old": 39.4,
+      "hours_old": 39.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "livraison golf",
       "snippet": "Je me permets de revenir vers toi car il faut absolument que je livre les 2 golfs que vous avez commandé avant la fin du mois. Peux-tu effectuer les virements stp ? L'une est à L",
       "date": "2026-03-16T13:52:46.000Z",
-      "hours_old": 38.8,
+      "hours_old": 38.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,9 +119,20 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous n'avons toujours aucune trace de ce règlement malgré de nombreuses relances. Pouvez-vous, s'il vous plaît, effectuer le règlement ? Dans l'attente de votre ré",
       "date": "2026-03-16T15:42:34.000Z",
-      "hours_old": 37,
+      "hours_old": 37.1,
       "label": "A traiter",
       "category": "label",
+      "score": 8
+    },
+    {
+      "id": "19cfaee966febbaa",
+      "from": "Valentin LUCQUIN <v.lucquin@vo-link.com>",
+      "subject": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT 2025 à 32 490€ Chez VO-LINK",
+      "snippet": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT Prix de Vente x8 unités : 32 490€ TTC Prix de Vente x4 unités : 32 790€ TTC Prix de Vente unitaire : 32 990",
+      "date": "2026-03-17T08:34:22.000Z",
+      "hours_old": 20.2,
+      "label": null,
+      "category": "sans_reponse",
       "score": 8
     },
     {
@@ -136,23 +147,23 @@
       "score": 8
     },
     {
-      "id": "19cfaee966febbaa",
-      "from": "Valentin LUCQUIN <v.lucquin@vo-link.com>",
-      "subject": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT 2025 à 32 490€ Chez VO-LINK",
-      "snippet": "10x A3 SPORTBACK 35 TFSI 150CH S LINE S TRONIC 7 + TOIT OUVRANT Prix de Vente x8 unités : 32 490€ TTC Prix de Vente x4 unités : 32 790€ TTC Prix de Vente unitaire : 32 990",
-      "date": "2026-03-17T08:34:22.000Z",
-      "hours_old": 20.1,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19cfb0da692ec8e0",
       "from": "Euro Car Zone Poland <sales@eurocarzone.eu>",
       "subject": "New and used MIX : Suzuki / Dacia / Hyundai / Nissan / Renault/ Peugeot / VAG",
       "snippet": "Hey ! We send below the vehicle options currently available under very attractive conditions. These models are in",
       "date": "2026-03-17T09:08:16.000Z",
-      "hours_old": 19.5,
+      "hours_old": 19.6,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19cfb2484240322c",
+      "from": "InterVO France <no-reply@intervo.fr>",
+      "subject": "Enchère du mois de Mars",
+      "snippet": "**C'est le grand jour !** ------------------------- **Les enchères ouvrent à 15h****🚨** Des **dizaines d’opportunités multimarques**, réservées aux professionnels comme v",
+      "date": "2026-03-17T09:33:20.000Z",
+      "hours_old": 19.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -169,23 +180,12 @@
       "score": 8
     },
     {
-      "id": "19cfb2484240322c",
-      "from": "InterVO France <no-reply@intervo.fr>",
-      "subject": "Enchère du mois de Mars",
-      "snippet": "**C'est le grand jour !** ------------------------- **Les enchères ouvrent à 15h****🚨** Des **dizaines d’opportunités multimarques**, réservées aux professionnels comme v",
-      "date": "2026-03-17T09:33:20.000Z",
-      "hours_old": 19.1,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19cfb750269d77f0",
       "from": "Julien PROVOST - LABEL AUTO <com2@label-auto.fr>",
       "subject": "70 VU, 2 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour Voici notre liste stock à jour du Mardi… Bonne réception, Cordialement",
       "date": "2026-03-17T09:57:27.000Z",
-      "hours_old": 18.7,
+      "hours_old": 18.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "120i M Sport Aut.",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg Km Dommages Couleur Prix HTVA WBA81GE0907T68182 12",
       "date": "2026-03-17T10:04:22.000Z",
-      "hours_old": 18.6,
+      "hours_old": 18.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "X1 18i sDrive M Sport Pro Aut.",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg Km Dommages Couleur Prix HTVA WBA11EE0305387182 X1",
       "date": "2026-03-17T10:21:26.000Z",
-      "hours_old": 18.3,
+      "hours_old": 18.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "RDV - VOLKSWAGEN Golf - GZ-434-XR",
       "snippet": "Bonjour Monsieur CONSTANTIN ELIARD, Pour faire suite à la commande du véhicule GZ-434-XR sur notre agence de LYON, nous revenons vers vous afin de convenir d'un rendez-vous de r",
       "date": "2026-03-17T10:36:24.000Z",
-      "hours_old": 18.1,
+      "hours_old": 18.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "520i Touring M Sport Pro // Pano // Alu 20\"",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 à 8 semaines. N’hésitez pas s’il y a des questions : 520i Touring M Sport Pro // Pano // Alu 20” Max 15 000km Immatriculation: 11",
       "date": "2026-03-17T10:59:46.000Z",
-      "hours_old": 17.7,
+      "hours_old": 17.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -251,7 +251,7 @@
       "subject": "ID.7 Pro Tourer Edition Export",
       "snippet": "[cid:image001.png@01DCB613.69AF9220] Med vänlig hälsning / Best regards Jon Halef Säljare Begagnat [cid:image002.png@01DCB613.69AF9220] Volkswagen Hammarby Sjöstad Hamma",
       "date": "2026-03-17T12:38:46.000Z",
-      "hours_old": 16,
+      "hours_old": 16.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "RE: x3 Véhicules non présents",
       "snippet": "Ah dacc ça marche. Oui c'est en cours pour la HB-340-XQ j'attend leur retour pour te dire ce qu'il est en. Cordialement, [cid:2b33ab1c-00e2-41b6-97a6-893615b7e936] ____",
       "date": "2026-03-17T13:59:40.000Z",
-      "hours_old": 14.7,
+      "hours_old": 14.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "RE: CG Trafic",
       "snippet": "Bonjour ci-joint les 3 dossiers. Cordialement, [cid:image001.png@01DCB634.E0D03B90]<https://cloud.letsignit.com/collect/bc/61d42441d8ad05d9b780fd69?p=ke0F1QwhoBvdKfxc8Hn",
       "date": "2026-03-17T16:38:52.000Z",
-      "hours_old": 12,
+      "hours_old": 12.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,10 +295,21 @@
       "subject": "[Votre démarche] Avis de contravention électronique",
       "snippet": "Avis de contravention électronique [image: Logo Antai] Avis de contravention électronique Bonjour, Un avis de contravention a été établi au nom de GUICHARD ALEX pour une infr",
       "date": "2026-03-17T18:56:12.000Z",
-      "hours_old": 9.7,
+      "hours_old": 9.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
+    },
+    {
+      "id": "19cfca58a20e59b8",
+      "from": "no-reply@flease.fr",
+      "subject": "Message from KM_C258",
+      "snippet": "",
+      "date": "2026-03-17T16:54:09.000Z",
+      "hours_old": 11.9,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 6
     },
     {
       "id": "19cfcc00af38c966",
@@ -312,23 +323,12 @@
       "score": 6
     },
     {
-      "id": "19cfca58a20e59b8",
-      "from": "no-reply@flease.fr",
-      "subject": "Message from KM_C258",
-      "snippet": "",
-      "date": "2026-03-17T16:54:09.000Z",
-      "hours_old": 11.8,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 6
-    },
-    {
       "id": "19cfcbfc358366fd",
       "from": "SKODA Douai <skoda@volkswagen-group-retail.fr>",
       "subject": "Découvrez nos offres pro valables jusqu'au 31/03/2026 🤝",
       "snippet": "Web Version: https://click.volkswagen-group-retail.fr/?qs=eyJkZWtJZCI6IjBkZDgyZGUzLTk1OWEtNGVmNS1hMDc0LTU2OGI3MmZiMjgwYyIsImRla1ZlcnNpb24iOjEsIml2IjoiY08zY2ZzbFhCOFo5d3hIN1hYZl",
       "date": "2026-03-17T17:02:30.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -339,7 +339,7 @@
       "subject": "Bonjour  M. Guichard - Profils Achats qualifiés ⚫🟡",
       "snippet": "Bonjour M. Guichard, Besoin de renforcer votre équipe achats ? Chez Recrut’Achats, nous mettons notre expertise achats au service de vos recrutements, avec une approche",
       "date": "2026-03-17T18:35:12.000Z",
-      "hours_old": 10.1,
+      "hours_old": 10.2,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -350,7 +350,7 @@
       "subject": "5x Renault Megane EV40 130ch EV-1",
       "snippet": "Dear customers, Available in 2 weeks COC included **5x Renault Megane EV40 130ch EV-1 Equilibre ** 1st reg : 07/2023 Km : 22.000 (average) Damage : 600€",
       "date": "2026-03-17T18:56:13.000Z",
-      "hours_old": 9.7,
+      "hours_old": 9.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -361,7 +361,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 614.9,
+      "hours_old": 615,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -372,7 +372,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-03-03T13:16:06.000Z",
-      "hours_old": 351.4,
+      "hours_old": 351.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -383,7 +383,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 350.7,
+      "hours_old": 350.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -405,7 +405,7 @@
       "subject": "V.I.P list",
       "snippet": "https://www.kvalitetsbiler.dk?utm_source=Engros&utm_campaign=10e2e194c5-EMAIL_CAMPAIGN_2024_08_29_12_09_COPY_02&utm_medium=email&utm_term=0_-cd3313881e-634862412 Hi 😊 New ca",
       "date": "2026-03-17T06:32:32.000Z",
-      "hours_old": 22.1,
+      "hours_old": 22.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -416,7 +416,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (4b884a7)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 9.0 seconds Finished: 2026-03-17 07:12:12 UTC",
       "date": "2026-03-17T07:12:33.000Z",
-      "hours_old": 21.5,
+      "hours_old": 21.6,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -427,7 +427,7 @@
       "subject": "16x Renault Symbioz & Captur Esprit Alpine      Full Hybrid E-Tech 160ch",
       "snippet": "Retrouvez ci-dessous notre nouvelle opportunité chez ACT Consulting avec l'arrivée de Renault Captur et Symbioz ! ****X16 Renault Captur Esprit Alpine 160cv E-Tech**** Mise",
       "date": "2026-03-17T07:15:35.000Z",
-      "hours_old": 21.4,
+      "hours_old": 21.5,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -438,7 +438,7 @@
       "subject": "Mise à jour UPS : le colis est programmé pour une livraison demain",
       "snippet": "UPS [image: UPS] <https://www.ups.com> Un colis vous sera remis demain. De *AUTO ZAGO SRL* Recevez des notifications pour les colis UPS qui vont vous être livrés. Livrai",
       "date": "2026-03-17T10:35:29.000Z",
-      "hours_old": 18.1,
+      "hours_old": 18.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
