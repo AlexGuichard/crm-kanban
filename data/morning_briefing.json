@@ -1,6 +1,6 @@
 {
   "date": "2026-03-20",
-  "generated_at": "2026-03-20T10:15:46.526Z",
+  "generated_at": "2026-03-20T10:20:45.244Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 690.2,
+      "hours_old": 690.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 209.7,
+      "hours_old": 209.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Non, le véhicule a été acheté HT ; Nous devons régler la TVA sur l’ANTS afin d’obtenir le document. Bien cordialement, [cid:image001.jpg@01DCB54F.34809C80]",
       "date": "2026-03-16T13:14:32.000Z",
-      "hours_old": 93,
+      "hours_old": 93.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Re: BC",
       "snippet": "Bonjour Dorine, Merci beaucoup 🙂 Bonne journée Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-16T14:01:17.000Z",
-      "hours_old": 92.2,
+      "hours_old": 92.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 25.4,
+      "hours_old": 25.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 25,
+      "hours_old": 25.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "PEUGEOT BOXER 3T5 BENNE + COFFRE 2.2 HDI 140 CH de 07/2023 avec 18 997 Kms à 24 900€ HT ",
       "snippet": "Seulement 18 997 KMS sur ce Peugeot BOXER BENNE ! PEUGEOT BOXER 3T5 BENNE + COFFRE 2.2 HDI 140CH Version : ASPHALT De 07/2023 18 997 Kms Cou",
       "date": "2026-03-19T09:43:03.000Z",
-      "hours_old": 24.5,
+      "hours_old": 24.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -108,18 +108,7 @@
       "subject": "Liste VO Exclusive MASSOUTRE du 19.03.2026",
       "snippet": "L'email ne s'affiche pas correctement ? *Cliquez-ici* <https://clicks.messengeo.net?i=722b8152c51385813254813560777a09&c=cmYuZXNhZWxmQHhlbGE6OjQ2NzI2NDIzNzM=> Découvrez vite no",
       "date": "2026-03-19T10:23:20.000Z",
-      "hours_old": 23.9,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
-      "id": "19d059bad251b923",
-      "from": "Steve Van der Wilt <steve@gpccarconsult.be>",
-      "subject": "Golf Life Business 1.5 eTSI 116 DSG",
-      "snippet": "Bonjour, Celles-ci sont disponibles juin 2026 ! N’hésitez pas s’il y a des questions : [cid:image001.png@01DCB791.9A5B7C20] [cid:image002.png@01DCB791.9A5B7C20] [cid:imag",
-      "date": "2026-03-19T10:19:31.000Z",
-      "hours_old": 23.9,
+      "hours_old": 24,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -130,7 +119,7 @@
       "subject": "TR: Liste VO : Nouvelle A5 Avant, Yaris Cross, Ds4, Ds7, 208, 3008, 5008.....",
       "snippet": "Bonjour, Voici en pièce jointe notre liste à jour avec plusieurs nouveautés à découvrir 😉 [cid:d6927ddf-3304-4567-a6cd-cde2e642ecf2] [cid:d6927ddf-3304-4567-a6cd-cde2e6",
       "date": "2026-03-19T10:56:19.000Z",
-      "hours_old": 23.3,
+      "hours_old": 23.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +152,7 @@
       "subject": "Welcome to Supabase",
       "snippet": "() ************* Hey there, ************* Welcome to Supabase, the Postgres development platform. Supabase gives you all the backend features you need to build a produc",
       "date": "2026-03-19T12:46:52.000Z",
-      "hours_old": 21.5,
+      "hours_old": 21.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +163,7 @@
       "subject": "[GitHub] A third-party OAuth application has been added to your account",
       "snippet": "Hey AlexGuichard! A third-party OAuth application (Supabase) with user:email scopes was recently authorized to access your account. Visit https://github.com/settings/connection",
       "date": "2026-03-19T12:43:51.000Z",
-      "hours_old": 21.5,
+      "hours_old": 21.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +174,7 @@
       "subject": "Give me offer on this one Passat eHybrid",
       "snippet": "Begagnad bil till salu: Volkswagen Passat - 2025 - Vit - 177 Hk - Kombi | BLOCKET<https://www.blocket.se/mobility/item/18399415> Med vänlig hälsning / Best regards Jon Halef",
       "date": "2026-03-19T12:49:27.000Z",
-      "hours_old": 21.4,
+      "hours_old": 21.5,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,7 +185,7 @@
       "subject": "[GitHub] A personal access token (classic) has been added to your account",
       "snippet": "Hey AlexGuichard! A personal access token (classic) \"bot-guilde\" with repo scope was recently added to your account. Visit https://github.com/settings/tokens for more informatio",
       "date": "2026-03-19T12:58:07.000Z",
-      "hours_old": 21.3,
+      "hours_old": 21.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +196,7 @@
       "subject": "[GitHub] Sudo email verification code",
       "snippet": "Hey, AlexGuichard! Here is your GitHub sudo authentication code: 09871919 This code is valid for 15 minutes and can only be used once. Please don't share this code with anyo",
       "date": "2026-03-19T12:57:30.000Z",
-      "hours_old": 21.3,
+      "hours_old": 21.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +207,7 @@
       "subject": "Your 🎉 free 🎉 30 days of Fly.io Support starts now!",
       "snippet": "Fly.io Logo Welcome to Fly.io! We want to help you get up and running smoothly, so we've activated 30 days of Standard support for you at no charge. Whether you have question",
       "date": "2026-03-19T13:02:14.000Z",
-      "hours_old": 21.2,
+      "hours_old": 21.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +218,7 @@
       "subject": "Activate your Fly.io account",
       "snippet": "Welcome to Fly.io! Check out our docs to help you get things rolling: https://fly.io/docs/ If you have questions, get stuck, or want to talk about what you're building, visit",
       "date": "2026-03-19T13:02:07.000Z",
-      "hours_old": 21.2,
+      "hours_old": 21.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +229,7 @@
       "subject": "[GitHub] A third-party GitHub Application has been added to your account",
       "snippet": "Hey AlexGuichard! A third-party GitHub Application (Fly.io) with the following permissions: - View your email addresses Was recently authorized to access your account.",
       "date": "2026-03-19T13:02:04.000Z",
-      "hours_old": 21.2,
+      "hours_old": 21.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -251,7 +240,7 @@
       "subject": "Congrats on deploying!",
       "snippet": "We noticed that you deployed your first app to Fly.io! That&#39;s great! 🎉 In case you’d like to keep that momentum going and learn more about using Fly.io, here are some resou",
       "date": "2026-03-19T13:11:15.000Z",
-      "hours_old": 21.1,
+      "hours_old": 21.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +251,7 @@
       "subject": "Tayron R-Line Plus 1.5 eHybrid PHEV 272 DSG (MY26)",
       "snippet": "Bonjour, Celles-ci sont disponibles immédiatement. N’hésitez pas s’il y a des questions : [cid:image001.jpg@01DCB7BE.130ED280] [cid:image002.jpg@01DCB7BE.130ED280] Volkswa",
       "date": "2026-03-19T15:33:15.000Z",
-      "hours_old": 18.7,
+      "hours_old": 18.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -273,7 +262,7 @@
       "subject": "Votre paiement RNO Muret",
       "snippet": "VOTRE PAIEMENT RNO MURET Bonjour, Pour valider la transaction RNO Muret - vo006954 d’un montant de 16 228,76 €, veuillez procéder au paiement par virement en cliquant sur le",
       "date": "2026-03-19T16:04:15.000Z",
-      "hours_old": 18.2,
+      "hours_old": 18.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -284,7 +273,7 @@
       "subject": "Re: Commande Tiguan",
       "snippet": "Alex, Avez-vous fait le virement ? [img]<https://app.signitic.com/l/VnVNQi9pZWRNdys2VGREZkN3S1A4QT09-VzNGNG5oU1pWYjZRMTVQMUxBZ2xJZz09> [img]<https://app.signitic.com/l/VnVNQi9",
       "date": "2026-03-19T16:55:09.000Z",
-      "hours_old": 17.3,
+      "hours_old": 17.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,7 +284,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonsoir, Problème, sur le Kbis que vous m'avez envoyé il est stipulé commerce de voitures et véhicules légers et nous avons interdiction de vendre a des revendeurs, loueurs oui",
       "date": "2026-03-19T16:55:40.000Z",
-      "hours_old": 17.3,
+      "hours_old": 17.4,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -328,7 +317,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, A-t-on du nouveau concernant le règlement de cette facture ? Dans l'attente de votre réponse, Cdt Le lun. 16 mars 2026 à 16:42, Administratif TTRM AUTO <info@t",
       "date": "2026-03-20T08:53:42.000Z",
-      "hours_old": 1.4,
+      "hours_old": 1.5,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -339,7 +328,7 @@
       "subject": "CITROËN C3 AIRCROSS1.2 Hybride 145ch Plus e-DCS6",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/ezt0ngPSy7ZO) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-20T08:01:28.000Z",
-      "hours_old": 2.2,
+      "hours_old": 2.3,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -361,7 +350,7 @@
       "subject": "TR: Liste VO : A5 Compétation, Tourneo, Master Cab Appro, 420d Gran Coupé, X5, 208, 3008, 5008...",
       "snippet": "Bonjour, Pas mal de mouvement cette semaine, je me permets donc de vous renvoyer une liste MAJ avec * Tourneo 9 Places * Master 7 places * A5 Compétition *",
       "date": "2026-03-20T09:08:21.000Z",
-      "hours_old": 1.1,
+      "hours_old": 1.2,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -372,7 +361,7 @@
       "subject": "EP Véhicules --> Stock à jour",
       "snippet": "Bonjour, Voici notre stock ! Prix départ Rodange ! Les frais vo viennent en déduction des prix de vente ! COC fournis ! Bonne réception, [cid:image001.png@01DCB852.63",
       "date": "2026-03-20T09:19:37.000Z",
-      "hours_old": 0.9,
+      "hours_old": 1,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -383,7 +372,7 @@
       "subject": "PROFITEZ DE NOS NOUVEAUX ARRIVAGES CHEZ VO-LINK !! LISTE COMPLÈTE À JOUR",
       "snippet": "Bonjour à tous, Afin de bien terminer la semaine, vous trouverez ci-joint la liste complète de nos véhicules en stock et sur parc. De nouveaux arrivages tels que du 3008 BLUE",
       "date": "2026-03-20T09:39:30.000Z",
-      "hours_old": 0.6,
+      "hours_old": 0.7,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -411,6 +400,17 @@
       "score": 1
     },
     {
+      "id": "19d062fbd332df0e",
+      "from": "Car Market <info@car-market.be>",
+      "subject": "7x Grandland GS 1.2 Turbo 130 ch 2025",
+      "snippet": "$title [image: Car Market] <https://syxiz.mjt.lu/lnk/CAAACGFQoBUAAc6bbDgAA_n2ougAAYKKTxMAAAAAADCjOgBpu_OkWwsTIM_URUe--dtCQ96XkwAsedE/1/NmNYKV8eVNJu55qJ_dZqcA/aHR0cDovL2Nhci1tYXJ",
+      "date": "2026-03-19T13:01:24.000Z",
+      "hours_old": 21.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 1
+    },
+    {
       "id": "19d062f28661957d",
       "from": "\"Déborah de Pennylane\" <no.reply@pennylane.com>",
       "subject": "Besoin de trésorerie ? Financez vos factures clients instantanément !",
@@ -422,23 +422,23 @@
       "score": 1
     },
     {
-      "id": "19d062fbd332df0e",
-      "from": "Car Market <info@car-market.be>",
-      "subject": "7x Grandland GS 1.2 Turbo 130 ch 2025",
-      "snippet": "$title [image: Car Market] <https://syxiz.mjt.lu/lnk/CAAACGFQoBUAAc6bbDgAA_n2ougAAYKKTxMAAAAAADCjOgBpu_OkWwsTIM_URUe--dtCQ96XkwAsedE/1/NmNYKV8eVNJu55qJ_dZqcA/aHR0cDovL2Nhci1tYXJ",
-      "date": "2026-03-19T13:01:24.000Z",
-      "hours_old": 21.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 1
-    },
-    {
       "id": "19d06435244c560f",
       "from": "\"Network4Cars Trading B.V.\" <marketing@marketing.network4cars.com>",
       "subject": "Fiat Scudo L3 2.2 BlueHDi 150 S&S EAT8",
       "snippet": "Cher Monsieur ALEX, Voici de nouveaux véhicules en stock . Vous souhaitez en savoir plus ? Contactez un de nos collaborateurs commerciaux: Myriam Ellaoui (Vendeuse) tel.:",
       "date": "2026-03-19T13:22:36.000Z",
-      "hours_old": 20.9,
+      "hours_old": 21,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 1
+    },
+    {
+      "id": "19d0a0ed093251f0",
+      "from": "Alex G <notifications@github.com>",
+      "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (220c434)",
+      "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 10.0 seconds Finished: 2026-03-20 07:03:35 UT",
+      "date": "2026-03-20T07:03:55.000Z",
+      "hours_old": 3.3,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -447,8 +447,8 @@
   "summary": {
     "total": 40,
     "critical": 0,
-    "high": 30,
+    "high": 29,
     "medium": 0,
-    "low": 10
+    "low": 11
   }
 }
