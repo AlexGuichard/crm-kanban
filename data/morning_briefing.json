@@ -1,6 +1,6 @@
 {
   "date": "2026-03-20",
-  "generated_at": "2026-03-20T13:30:49.723Z",
+  "generated_at": "2026-03-20T13:35:49.514Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 693.4,
+      "hours_old": 693.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 221.1,
+      "hours_old": 221.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 213,
+      "hours_old": 213.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 28.6,
+      "hours_old": 28.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 28.3,
+      "hours_old": 28.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "X 2 RENAULT MASTER 2.3 DCI 135 CH L3H2 à partir de 19 590€ HT",
       "snippet": "X 2 RENAULT MASTER L3H2 EN 3.5 T RENAULT MASTER 3T5 L3H2 2.3 DCI 135 CH GRAND CONFORT +GPS+ REGUL + CLIM + TEL + PLANCHER BOIS BLANC 10/04/2023 65",
       "date": "2026-03-19T17:06:45.000Z",
-      "hours_old": 20.4,
+      "hours_old": 20.5,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, J’ai relancé la comptabilité mon côté le règlement va être effectué. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr",
       "date": "2026-03-20T10:38:15.000Z",
-      "hours_old": 2.9,
+      "hours_old": 3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 1.1,
+      "hours_old": 1.2,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Yann, Je te transfert le mail de retour de la société de location longue durée, que fait-on ? [cid:image001.png@01DCB874.2BB128E0] Xavier LE GAL Conseiller Commercial RENA",
       "date": "2026-03-20T13:16:47.000Z",
-      "hours_old": 0.2,
+      "hours_old": 0.3,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 1.6,
+      "hours_old": 1.7,
       "label": "A traiter",
       "category": "label",
       "score": 7
@@ -152,7 +152,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
       "date": "2026-03-20T12:19:31.000Z",
-      "hours_old": 1.2,
+      "hours_old": 1.3,
       "label": "A traiter",
       "category": "label",
       "score": 7
@@ -163,7 +163,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 0.1,
+      "hours_old": 0.2,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -174,7 +174,7 @@
       "subject": "CITROËN C3 AIRCROSS1.2 Hybride 145ch Plus e-DCS6",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/ezt0ngPSy7ZO) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-20T08:01:28.000Z",
-      "hours_old": 5.5,
+      "hours_old": 5.6,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -185,7 +185,7 @@
       "subject": "Sprinter chassis cab",
       "snippet": "Dispo imm&eacute;diate Si vous avez des difficultés à visualiser cet email, suivez ce lien [https://eye.offre.sourcingauto.fr/m2?r=wAXNCTS4NjVlNTg3NDgyYzg3NTE1MWNhYWY5OGQwxBDQ1",
       "date": "2026-03-20T08:30:33.000Z",
-      "hours_old": 5,
+      "hours_old": 5.1,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -196,7 +196,7 @@
       "subject": "TR: Liste VO : A5 Compétation, Tourneo, Master Cab Appro, 420d Gran Coupé, X5, 208, 3008, 5008...",
       "snippet": "Bonjour, Pas mal de mouvement cette semaine, je me permets donc de vous renvoyer une liste MAJ avec * Tourneo 9 Places * Master 7 places * A5 Compétition *",
       "date": "2026-03-20T09:08:21.000Z",
-      "hours_old": 4.4,
+      "hours_old": 4.5,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -207,7 +207,7 @@
       "subject": "EP Véhicules --> Stock à jour",
       "snippet": "Bonjour, Voici notre stock ! Prix départ Rodange ! Les frais vo viennent en déduction des prix de vente ! COC fournis ! Bonne réception, [cid:image001.png@01DCB852.63",
       "date": "2026-03-20T09:19:37.000Z",
-      "hours_old": 4.2,
+      "hours_old": 4.3,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -229,7 +229,7 @@
       "subject": "78 VU, 2 MINIBUS, 1TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour, Voici notre liste stock à jour du Vendredi… Bonne réception à tous.",
       "date": "2026-03-20T09:47:10.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -240,7 +240,7 @@
       "subject": "new: MG3_MG ZS Nissan Qashqai",
       "snippet": "Hello, please see our current offer for new: * MG3 * MG ZS * Nissan Qashqai More information in the attachment (excel file). If you are interested in the offer, I r",
       "date": "2026-03-20T10:56:20.000Z",
-      "hours_old": 2.6,
+      "hours_old": 2.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -251,7 +251,7 @@
       "subject": "VW Golf",
       "snippet": "Salut Alex, J’ai 3 Golf dispo Version Châssis Date Immat Kms Prix de vente TTC Expertise Macadam Volkswagen Golf Life ACTIVE 2.0 TDI SCR 110kW 7-speed DSG WVWZZZ",
       "date": "2026-03-20T11:10:51.000Z",
-      "hours_old": 2.3,
+      "hours_old": 2.4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -262,7 +262,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 671.7,
+      "hours_old": 671.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -273,7 +273,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 407.5,
+      "hours_old": 407.6,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -295,7 +295,7 @@
       "subject": "Index your entire codebase with Warp",
       "snippet": "Professional engineers are using Warp in codebases with over 1M lines of code. Warp Email Warp Warp Warp ********************************************* Let Wa",
       "date": "2026-03-20T10:28:06.000Z",
-      "hours_old": 3,
+      "hours_old": 3.1,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -306,7 +306,7 @@
       "subject": "Reprise de vos services ORA7 PRO",
       "snippet": "<<logo>> [https://pro.ora7.fr] Reprise des services ORA7 PRO [https://pro.ora7.fr/] Retour des +400 véhicules à prix marchand ! Cher utilisateurs, Après",
       "date": "2026-03-20T11:16:20.000Z",
-      "hours_old": 2.2,
+      "hours_old": 2.3,
       "label": null,
       "category": "sans_reponse",
       "score": 1
