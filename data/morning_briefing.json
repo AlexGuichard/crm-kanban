@@ -1,6 +1,6 @@
 {
   "date": "2026-03-20",
-  "generated_at": "2026-03-20T18:40:45.508Z",
+  "generated_at": "2026-03-20T18:45:45.567Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 698.6,
+      "hours_old": 698.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 226.3,
+      "hours_old": 226.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 33.8,
+      "hours_old": 33.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, J’ai relancé la comptabilité mon côté le règlement va être effectué. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr",
       "date": "2026-03-20T10:38:15.000Z",
-      "hours_old": 8,
+      "hours_old": 8.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: BC",
       "snippet": "Hello Mathieu, Si on peut te récupérer ces véhicules sur le même système de la dernière fois sur ces véhicules : VR3USHPY7SJ726391 VR3USHPY8SJ725766 VR3USHPY9SJ726778 VR3USH",
       "date": "2026-03-20T12:15:26.000Z",
-      "hours_old": 6.4,
+      "hours_old": 6.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 6.3,
+      "hours_old": 6.4,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Yann, Je te transfert le mail de retour de la société de location longue durée, que fait-on ? [cid:image001.png@01DCB874.2BB128E0] Xavier LE GAL Conseiller Commercial RENA",
       "date": "2026-03-20T13:16:47.000Z",
-      "hours_old": 5.4,
+      "hours_old": 5.5,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 6.7,
+      "hours_old": 6.8,
       "label": "A traiter",
       "category": "label",
       "score": 7
@@ -130,7 +130,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 5.3,
+      "hours_old": 5.4,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -152,7 +152,7 @@
       "subject": "Sprinter chassis cab",
       "snippet": "Dispo imm&eacute;diate Si vous avez des difficultés à visualiser cet email, suivez ce lien [https://eye.offre.sourcingauto.fr/m2?r=wAXNCTS4NjVlNTg3NDgyYzg3NTE1MWNhYWY5OGQwxBDQ1",
       "date": "2026-03-20T08:30:33.000Z",
-      "hours_old": 10.2,
+      "hours_old": 10.3,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -163,7 +163,7 @@
       "subject": "TR: Liste VO : A5 Compétation, Tourneo, Master Cab Appro, 420d Gran Coupé, X5, 208, 3008, 5008...",
       "snippet": "Bonjour, Pas mal de mouvement cette semaine, je me permets donc de vous renvoyer une liste MAJ avec * Tourneo 9 Places * Master 7 places * A5 Compétition *",
       "date": "2026-03-20T09:08:21.000Z",
-      "hours_old": 9.5,
+      "hours_old": 9.6,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -185,7 +185,7 @@
       "subject": "PROFITEZ DE NOS NOUVEAUX ARRIVAGES CHEZ VO-LINK !! LISTE COMPLÈTE À JOUR",
       "snippet": "Bonjour à tous, Afin de bien terminer la semaine, vous trouverez ci-joint la liste complète de nos véhicules en stock et sur parc. De nouveaux arrivages tels que du 3008 BLUE",
       "date": "2026-03-20T09:39:30.000Z",
-      "hours_old": 9,
+      "hours_old": 9.1,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -196,7 +196,7 @@
       "subject": "78 VU, 2 MINIBUS, 1TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour, Voici notre liste stock à jour du Vendredi… Bonne réception à tous.",
       "date": "2026-03-20T09:47:10.000Z",
-      "hours_old": 8.9,
+      "hours_old": 9,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -207,7 +207,7 @@
       "subject": "new: MG3_MG ZS Nissan Qashqai",
       "snippet": "Hello, please see our current offer for new: * MG3 * MG ZS * Nissan Qashqai More information in the attachment (excel file). If you are interested in the offer, I r",
       "date": "2026-03-20T10:56:20.000Z",
-      "hours_old": 7.7,
+      "hours_old": 7.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -218,10 +218,87 @@
       "subject": "VW Golf",
       "snippet": "Salut Alex, J’ai 3 Golf dispo Version Châssis Date Immat Kms Prix de vente TTC Expertise Macadam Volkswagen Golf Life ACTIVE 2.0 TDI SCR 110kW 7-speed DSG WVWZZZ",
       "date": "2026-03-20T11:10:51.000Z",
-      "hours_old": 7.5,
+      "hours_old": 7.6,
       "label": null,
       "category": "sans_reponse",
       "score": 6
+    },
+    {
+      "id": "19d0b9faaa1e47c0",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47116] - [gz434xr (WVWZZZCD7RW015122)] - My Express Driver - Validation des horaires de enlevement",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/XgHFx3LNWvKw2XnZ4KFBcmr8q_tg_1_XXn4m5TQIq1GX57qVxMOsfOp4l7NSlV5H8ayanAULbHZZEfKRrxIF0N8hK21t-CSYuwBezeSbVYboX8X1QqDoYibV",
+      "date": "2026-03-20T14:21:45.000Z",
+      "hours_old": 4.4,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7bb6c7df20",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47121] - [gx531wm (VF1RJK00772830388)] - My Express Driver - Validation des horaires de livraison",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/Wv-ZUCsdP31VxsC4OSEMXw0eiG8OQmoeEd28u8yumzpyoAjyxy2yx7IIZrAMQSXVWRGFisSUbx63S8NOct42TAeOn6gg4njJql82KycMywRZlSJXIqhk3yYd",
+      "date": "2026-03-20T14:30:33.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7b479b582d",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47121] - [gx531wm (VF1RJK00772830388)] - My Express Driver - Validation des horaires de enlevement",
+      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/06apnsEuMF_tE-oHNxyG2TpJ74VlBPq5PzjYoSDK248djrYWKx9JFHY-F_NCjr-hdL-VV_bqO_Zb-hgDGg2wc-d9s5Z0fWC_6lRtsGoSoE-d7Q7JXo_NX2c_8ta",
+      "date": "2026-03-20T14:30:32.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7abe05b164",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47120] - [gx386kv (VF1RJK00872830366)] - My Express Driver - Validation des horaires de livraison",
+      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/Dmi4_s9DB1vrGSK6Lcr3krkd7a6VdZvU-AQ49jAtf6oCNxaK5h3NlIgj4L4dPx_2r1GZ1o1DHg1spnK0oAd7FFrjB0AHg4yhO6AN7NNFDgrQwAR46bNm6jXi",
+      "date": "2026-03-20T14:30:29.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7a925c8165",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47120] - [gx386kv (VF1RJK00872830366)] - My Express Driver - Validation des horaires de enlevement",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/IQvZ7HfoyBd1K-1RzToWQIaT3XNnq2C90atWP7c91oa1OruF5Tr7jcuFf77Iy9OJwLlFQsSZOyIx8OzRy0lc46xfjKzn-PHEc29-50c31xxjICmC2__9XwDx",
+      "date": "2026-03-20T14:30:29.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7a4eb59cc6",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47119] - [gx350kv (VF1RJK00272830363)] - My Express Driver - Validation des horaires de livraison",
+      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/IkgPd9CQZHmHBAMyy9sui158MqLLxCSa3E1kvQhKOQGGywA62osFg2QoJuW0X1peofoS_Ygha22eNPy2vhYbiWwrlIH-Wrq8t0-VKXQkEnD2eg-XK2BwJSaH",
+      "date": "2026-03-20T14:30:28.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0ba7a07aadffb",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47119] - [gx350kv (VF1RJK00272830363)] - My Express Driver - Validation des horaires de enlevement",
+      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/BQAJsJ8Zf3JI5eBuphJmPG1RL7v__Hr0A0BuUhTGggvxsT2c3KTH1IhDJchRkSor2tt4evOnsQuu8Yq0CVEdwdqIBtu_TkaWE5ljPFHhkgPoQ_7cd6lNN5gJ",
+      "date": "2026-03-20T14:30:27.000Z",
+      "hours_old": 4.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
     },
     {
       "id": "19d0ba28d67a43e7",
@@ -246,89 +323,12 @@
       "score": 4
     },
     {
-      "id": "19d0b9faaa1e47c0",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47116] - [gz434xr (WVWZZZCD7RW015122)] - My Express Driver - Validation des horaires de enlevement",
-      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/XgHFx3LNWvKw2XnZ4KFBcmr8q_tg_1_XXn4m5TQIq1GX57qVxMOsfOp4l7NSlV5H8ayanAULbHZZEfKRrxIF0N8hK21t-CSYuwBezeSbVYboX8X1QqDoYibV",
-      "date": "2026-03-20T14:21:45.000Z",
-      "hours_old": 4.3,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7bb6c7df20",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47121] - [gx531wm (VF1RJK00772830388)] - My Express Driver - Validation des horaires de livraison",
-      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/Wv-ZUCsdP31VxsC4OSEMXw0eiG8OQmoeEd28u8yumzpyoAjyxy2yx7IIZrAMQSXVWRGFisSUbx63S8NOct42TAeOn6gg4njJql82KycMywRZlSJXIqhk3yYd",
-      "date": "2026-03-20T14:30:33.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7b479b582d",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47121] - [gx531wm (VF1RJK00772830388)] - My Express Driver - Validation des horaires de enlevement",
-      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/06apnsEuMF_tE-oHNxyG2TpJ74VlBPq5PzjYoSDK248djrYWKx9JFHY-F_NCjr-hdL-VV_bqO_Zb-hgDGg2wc-d9s5Z0fWC_6lRtsGoSoE-d7Q7JXo_NX2c_8ta",
-      "date": "2026-03-20T14:30:32.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7abe05b164",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47120] - [gx386kv (VF1RJK00872830366)] - My Express Driver - Validation des horaires de livraison",
-      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/Dmi4_s9DB1vrGSK6Lcr3krkd7a6VdZvU-AQ49jAtf6oCNxaK5h3NlIgj4L4dPx_2r1GZ1o1DHg1spnK0oAd7FFrjB0AHg4yhO6AN7NNFDgrQwAR46bNm6jXi",
-      "date": "2026-03-20T14:30:29.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7a925c8165",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47120] - [gx386kv (VF1RJK00872830366)] - My Express Driver - Validation des horaires de enlevement",
-      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/IQvZ7HfoyBd1K-1RzToWQIaT3XNnq2C90atWP7c91oa1OruF5Tr7jcuFf77Iy9OJwLlFQsSZOyIx8OzRy0lc46xfjKzn-PHEc29-50c31xxjICmC2__9XwDx",
-      "date": "2026-03-20T14:30:29.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7a4eb59cc6",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47119] - [gx350kv (VF1RJK00272830363)] - My Express Driver - Validation des horaires de livraison",
-      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/IkgPd9CQZHmHBAMyy9sui158MqLLxCSa3E1kvQhKOQGGywA62osFg2QoJuW0X1peofoS_Ygha22eNPy2vhYbiWwrlIH-Wrq8t0-VKXQkEnD2eg-XK2BwJSaH",
-      "date": "2026-03-20T14:30:28.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0ba7a07aadffb",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47119] - [gx350kv (VF1RJK00272830363)] - My Express Driver - Validation des horaires de enlevement",
-      "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/BQAJsJ8Zf3JI5eBuphJmPG1RL7v__Hr0A0BuUhTGggvxsT2c3KTH1IhDJchRkSor2tt4evOnsQuu8Yq0CVEdwdqIBtu_TkaWE5ljPFHhkgPoQ_7cd6lNN5gJ",
-      "date": "2026-03-20T14:30:27.000Z",
-      "hours_old": 4.2,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
       "id": "19d0bb7e6ff91733",
       "from": "Support My Express Driver <support@myexpressdriver.com>",
       "subject": "[M-47124] - [zz000zz (WVGZZZCT8SW024016)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/UkLIa_3yXY4bTHl2KNliGaQL31aL6Z2NSVnDbllUI_w9CCZABE7As-Oxl0JuuSll-i6FYUvYoZuRDXddUAeKn0NoKSTMhH37dLUyqfNy5QHT-TFsCZV4jhLx",
       "date": "2026-03-20T14:48:11.000Z",
-      "hours_old": 3.9,
+      "hours_old": 4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -339,7 +339,7 @@
       "subject": "[M-47124] - [zz000zz (WVGZZZCT8SW024016)] - My Express Driver - Validation des horaires de enlevement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/3u_Hxw-YJcPHTyBjFU8_8G9Z7wIsm2KCpSiX1IrQc0qRhJPCEv0OuskeLDlobizmL2KcRcQeSFI7TAj41d0qnL6t8eLRFC-fou-Gv2kIG_ji3Q8-fqTLfRdt",
       "date": "2026-03-20T14:48:11.000Z",
-      "hours_old": 3.9,
+      "hours_old": 4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -350,7 +350,7 @@
       "subject": "[M-47118] - [gx364kv (VF1RJK00472830364)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/05ys7jPmGilrteScQ-GftgHB5_cASWcMmNcMpn1UZIg192-QOen2DBWoJU2d-aLuCQwakE8TokBxukN1hw04k3a0T7aWw79pCN0gACg-o7RtEHNxs2WkPbao",
       "date": "2026-03-20T14:45:15.000Z",
-      "hours_old": 3.9,
+      "hours_old": 4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -361,18 +361,7 @@
       "subject": "[M-47118] - [gx364kv (VF1RJK00472830364)] - My Express Driver - Validation des horaires de enlevement",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/5elDNk844sf34gAgc2vn_YY2tyalCCSM-g077dFyMlA5EB-XArsOo1TcFfr60pBLWo9Lit6aklYH__YrGdqWn7i88IrtJsCTbqNlWjIMhXH5OsDEV4M1b8tz",
       "date": "2026-03-20T14:45:15.000Z",
-      "hours_old": 3.9,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 4
-    },
-    {
-      "id": "19d0bc4664c5bfe5",
-      "from": "Steve Van der Wilt <steve@gpccarconsult.be>",
-      "subject": "Terramar Impulse 1.5 eTSI 150 DSG",
-      "snippet": "Bonjour, Celle-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image001.jpg@01DCB882.B231F530] [cid:image002.png@01DCB882.B231F530] Cupra",
-      "date": "2026-03-20T15:01:41.000Z",
-      "hours_old": 3.7,
+      "hours_old": 4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -383,7 +372,7 @@
       "subject": "[M-47120] - [GX386KV] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/1uLzWLhVyFO9ufYh-0n7QVhTOkjzZ0St4i3W654_VydZ6YpEtlM2WrTX3DbA918PpSSLrDm7_FxlRhhwUdgJHpM1ViTlJVcNeWhJGcQvcsh8UrbeBxsVK812",
       "date": "2026-03-20T14:58:36.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -394,7 +383,7 @@
       "subject": "[M-47120] - [GX386KV] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/Ot7WJaF34-_HEeMHtd6kJwbI0VvjAiK6Uz4en2IiTT4GVqh1CWc1Z7GGWr8WC4N50aRmNWfQELR1ezap2veC_11u73jFCd0tN66bGC9270T_KHScwUJ3BV6xoxD",
       "date": "2026-03-20T14:58:36.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -405,7 +394,7 @@
       "subject": "new: Fiat Scudo",
       "snippet": "Hello, please see our current offer for new: * FIAT Scudo More information in the attachment (excel file). If you are interested in the offer, I remain at your dispos",
       "date": "2026-03-20T14:58:23.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -416,7 +405,7 @@
       "subject": "[M-47118] - [GX364KV] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/xv9unhmkHe-j_ygK4aaujTZAybMldQ1LeJ87nbT_xd6UphTCQF99zHS9VwRi4p32uatkka2ELPy-7yYErYvrfhL4tCAJY9WOPqaYFVobFORfTRsFrNRdKkIszV8",
       "date": "2026-03-20T14:57:48.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -427,7 +416,7 @@
       "subject": "[M-47118] - [GX364KV] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/L_v-IMi1ZzxaRVhk99K0J_zAJQbmjDJijtaJ4qM_X6jiQbgU2FPKQkxpVONQ1_jvHtOx4aagxZj5belDy_eSJDenRq3EUOs-p1ObiGb39nxEHbGeshuDc17ActT",
       "date": "2026-03-20T14:57:48.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -438,7 +427,18 @@
       "subject": "[M-47117] - [GV020MY] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/hQ78LRQdzbeBDRfRnccayAyrWeK9MhhAsiAZ5rTq70nMRM8TYEFGwX5veEbXznT5-a3eD5nsAFe_DHO-bP_8jVEsL-VHNBZl1f2cPqXrguMeYdBMEhHT4g77FTL",
       "date": "2026-03-20T15:05:10.000Z",
-      "hours_old": 3.6,
+      "hours_old": 3.7,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 4
+    },
+    {
+      "id": "19d0bc7684dc6448",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47117] - [GV020MY] - My Express Driver -Un transport a été planifié vers votre établissement",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/HCpBKXFpOskFS3U5aah-Hqv0yYP1IYHxGlUt3O45OQUi1Qo-u26uXfEAfSnn9XlN34OR04t-caKo62rJ8gvPdC-pZntPIgk7Vd1NLuVzP31dyFw7YHXejtjZ",
+      "date": "2026-03-20T15:05:10.000Z",
+      "hours_old": 3.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
