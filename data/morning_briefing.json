@@ -1,6 +1,6 @@
 {
   "date": "2026-03-21",
-  "generated_at": "2026-03-21T19:10:45.722Z",
+  "generated_at": "2026-03-21T19:15:45.466Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 723.1,
+      "hours_old": 723.2,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 250.8,
+      "hours_old": 250.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 242.6,
+      "hours_old": 242.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 58.3,
+      "hours_old": 58.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, J’ai relancé la comptabilité mon côté le règlement va être effectué. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr",
       "date": "2026-03-20T10:38:15.000Z",
-      "hours_old": 32.5,
+      "hours_old": 32.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 31.2,
+      "hours_old": 31.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,8 +86,19 @@
       "subject": "Re: BC",
       "snippet": "Hello Mathieu, Si on peut te récupérer ces véhicules sur le même système de la dernière fois sur ces véhicules : VR3USHPY7SJ726391 VR3USHPY8SJ725766 VR3USHPY9SJ726778 VR3USH",
       "date": "2026-03-20T12:15:26.000Z",
-      "hours_old": 30.9,
+      "hours_old": 31,
       "label": "ajouter au dash",
+      "category": "label",
+      "score": 8
+    },
+    {
+      "id": "19cf6ebcba3d2756",
+      "from": "REXY NELSON Angel <angel.rexy-nelson@ayvens.com>",
+      "subject": "RE: livraison golf",
+      "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
+      "date": "2026-03-20T12:23:16.000Z",
+      "hours_old": 30.9,
+      "label": "A traiter",
       "category": "label",
       "score": 8
     },
@@ -103,23 +114,12 @@
       "score": 8
     },
     {
-      "id": "19cf6ebcba3d2756",
-      "from": "REXY NELSON Angel <angel.rexy-nelson@ayvens.com>",
-      "subject": "RE: livraison golf",
-      "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
-      "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 30.8,
-      "label": "A traiter",
-      "category": "label",
-      "score": 8
-    },
-    {
       "id": "19d01c78958bddd7",
       "from": "Xavier LE-GAL <xavier.le-gal@edenauto.com>",
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Yann, Je te transfert le mail de retour de la société de location longue durée, que fait-on ? [cid:image001.png@01DCB874.2BB128E0] Xavier LE GAL Conseiller Commercial RENA",
       "date": "2026-03-20T13:16:47.000Z",
-      "hours_old": 29.9,
+      "hours_old": 30,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 29.8,
+      "hours_old": 29.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "New and Used : Jeep/ BMW/ Dacia/ Kia/ Nissan/ Fiat/ Ford/ Peugeot",
       "snippet": "",
       "date": "2026-03-20T21:22:06.000Z",
-      "hours_old": 21.8,
+      "hours_old": 21.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 701.4,
+      "hours_old": 701.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -174,7 +174,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 437.2,
+      "hours_old": 437.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -185,7 +185,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (5545bc2)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 7.0 seconds Finished: 2026-03-21 06:53:35 UTC",
       "date": "2026-03-21T06:53:56.000Z",
-      "hours_old": 12.3,
+      "hours_old": 12.4,
       "label": null,
       "category": "sans_reponse",
       "score": 1
