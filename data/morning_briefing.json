@@ -1,6 +1,6 @@
 {
   "date": "2026-03-22",
-  "generated_at": "2026-03-22T03:43:25.121Z",
+  "generated_at": "2026-03-22T03:45:45.442Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "Votre Vente à marchands",
       "snippet": "[image: SpiderVo] Bonjour , Vous pouvez consulter votre *vente à marchands* en cliquant sur le bouton ci-dessous. Voir le document <https://r.brevo3.spider-vo.com/tr/cl/IX2",
       "date": "2026-02-19T16:05:42.000Z",
-      "hours_old": 731.6,
+      "hours_old": 731.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 66.8,
+      "hours_old": 66.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -92,6 +92,17 @@
       "score": 8
     },
     {
+      "id": "19cf6ebcba3d2756",
+      "from": "REXY NELSON Angel <angel.rexy-nelson@ayvens.com>",
+      "subject": "RE: livraison golf",
+      "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
+      "date": "2026-03-20T12:23:16.000Z",
+      "hours_old": 39.4,
+      "label": "A traiter",
+      "category": "label",
+      "score": 8
+    },
+    {
       "id": "19c9eccff082f86a",
       "from": "Alex Guichard <alex@flease.fr>",
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
@@ -103,23 +114,12 @@
       "score": 8
     },
     {
-      "id": "19cf6ebcba3d2756",
-      "from": "REXY NELSON Angel <angel.rexy-nelson@ayvens.com>",
-      "subject": "RE: livraison golf",
-      "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
-      "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 39.3,
-      "label": "A traiter",
-      "category": "label",
-      "score": 8
-    },
-    {
       "id": "19d01c78958bddd7",
       "from": "Xavier LE-GAL <xavier.le-gal@edenauto.com>",
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Yann, Je te transfert le mail de retour de la société de location longue durée, que fait-on ? [cid:image001.png@01DCB874.2BB128E0] Xavier LE GAL Conseiller Commercial RENA",
       "date": "2026-03-20T13:16:47.000Z",
-      "hours_old": 38.4,
+      "hours_old": 38.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 38.3,
+      "hours_old": 38.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 709.9,
+      "hours_old": 710,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -163,7 +163,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 445.7,
+      "hours_old": 445.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -174,7 +174,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (5545bc2)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 7.0 seconds Finished: 2026-03-21 06:53:35 UTC",
       "date": "2026-03-21T06:53:56.000Z",
-      "hours_old": 20.8,
+      "hours_old": 20.9,
       "label": null,
       "category": "sans_reponse",
       "score": 1
