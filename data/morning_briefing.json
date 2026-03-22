@@ -1,6 +1,6 @@
 {
   "date": "2026-03-22",
-  "generated_at": "2026-03-22T14:50:45.700Z",
+  "generated_at": "2026-03-22T14:55:45.520Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 270.4,
+      "hours_old": 270.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 262.3,
+      "hours_old": 262.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 78,
+      "hours_old": 78.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 77.6,
+      "hours_old": 77.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, J’ai relancé la comptabilité mon côté le règlement va être effectué. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr",
       "date": "2026-03-20T10:38:15.000Z",
-      "hours_old": 52.2,
+      "hours_old": 52.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 50.9,
+      "hours_old": 51,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,8 +86,19 @@
       "subject": "Re: BC",
       "snippet": "Hello Mathieu, Si on peut te récupérer ces véhicules sur le même système de la dernière fois sur ces véhicules : VR3USHPY7SJ726391 VR3USHPY8SJ725766 VR3USHPY9SJ726778 VR3USH",
       "date": "2026-03-20T12:15:26.000Z",
-      "hours_old": 50.6,
+      "hours_old": 50.7,
       "label": "ajouter au dash",
+      "category": "label",
+      "score": 8
+    },
+    {
+      "id": "19c9eccff082f86a",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
+      "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
+      "date": "2026-03-20T12:19:31.000Z",
+      "hours_old": 50.6,
+      "label": "A traiter",
       "category": "label",
       "score": 8
     },
@@ -103,23 +114,12 @@
       "score": 8
     },
     {
-      "id": "19c9eccff082f86a",
-      "from": "Alex Guichard <alex@flease.fr>",
-      "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
-      "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
-      "date": "2026-03-20T12:19:31.000Z",
-      "hours_old": 50.5,
-      "label": "A traiter",
-      "category": "label",
-      "score": 8
-    },
-    {
       "id": "19d01c78958bddd7",
       "from": "Xavier LE-GAL <xavier.le-gal@edenauto.com>",
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Yann, Je te transfert le mail de retour de la société de location longue durée, que fait-on ? [cid:image001.png@01DCB874.2BB128E0] Xavier LE GAL Conseiller Commercial RENA",
       "date": "2026-03-20T13:16:47.000Z",
-      "hours_old": 49.6,
+      "hours_old": 49.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 49.4,
+      "hours_old": 49.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 47.5,
+      "hours_old": 47.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Votre bon de commande est toujours en attente",
       "snippet": "",
       "date": "2026-03-22T09:00:20.000Z",
-      "hours_old": 5.8,
+      "hours_old": 5.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -163,7 +163,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 721,
+      "hours_old": 721.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -174,7 +174,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 456.8,
+      "hours_old": 456.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -185,7 +185,7 @@
       "subject": "V.I.P list",
       "snippet": "https://www.kvalitetsbiler.dk?utm_source=Engros&utm_campaign=e490178099-EMAIL_CAMPAIGN_2024_08_29_12_09_COPY_06&utm_medium=email&utm_term=0_-cd3313881e-634862412 Hi 😊 New ca",
       "date": "2026-03-22T06:15:06.000Z",
-      "hours_old": 8.6,
+      "hours_old": 8.7,
       "label": null,
       "category": "sans_reponse",
       "score": 1
