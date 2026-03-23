@@ -1,6 +1,6 @@
 {
   "date": "2026-03-23",
-  "generated_at": "2026-03-23T14:25:49.716Z",
+  "generated_at": "2026-03-23T14:30:49.411Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Sauf erreur de ma part, je n’ai pas reçu le retour des documents de livraison signés. Si vous l’avez déjà fait, pouvez-vous me renvoyer le mail avec les documents si",
       "date": "2026-03-23T14:20:50.000Z",
-      "hours_old": 0.1,
+      "hours_old": 0.2,
       "label": null,
       "category": "sans_reponse",
       "score": 10
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 294,
+      "hours_old": 294.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 285.9,
+      "hours_old": 286,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 101.2,
+      "hours_old": 101.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 74.5,
+      "hours_old": 74.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: BC",
       "snippet": "Hello Mathieu, Si on peut te récupérer ces véhicules sur le même système de la dernière fois sur ces véhicules : VR3USHPY7SJ726391 VR3USHPY8SJ725766 VR3USHPY9SJ726778 VR3USH",
       "date": "2026-03-20T12:15:26.000Z",
-      "hours_old": 74.2,
+      "hours_old": 74.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
       "date": "2026-03-20T12:19:31.000Z",
-      "hours_old": 74.1,
+      "hours_old": 74.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 74,
+      "hours_old": 74.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 73,
+      "hours_old": 73.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 71.1,
+      "hours_old": 71.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 67.3,
+      "hours_old": 67.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous vous confirmons la bonne réception de la facture. Un virement a bien été enregistré, il sera validé lors de notre prochaine campagne de virement. Nous reston",
       "date": "2026-03-23T10:29:18.000Z",
-      "hours_old": 3.9,
+      "hours_old": 4,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 0.4,
+      "hours_old": 0.5,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Vous trouverez ci-joint, les documents à nous retourner signé. Merci de nous transmettre également les attestations d'assurance. Je vous joins également les copies",
       "date": "2026-03-23T09:35:01.000Z",
-      "hours_old": 4.8,
+      "hours_old": 4.9,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -185,7 +185,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 4.7,
+      "hours_old": 4.8,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -196,7 +196,7 @@
       "subject": "SIGNATURE DOCUMENT",
       "snippet": "Hello Alex, J'espère que tu vas bien. Peux-tu me retourner les documents signés que je t'ai transmis semaine dernière s'il te plait ? Sans cela, nous ne pouvons pas livrer les",
       "date": "2026-03-23T13:11:30.000Z",
-      "hours_old": 1.2,
+      "hours_old": 1.3,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -207,7 +207,7 @@
       "subject": "Votre paiement est validé !",
       "snippet": "VOTRE PAIEMENT EST VALIDÉ ! Bonjour, Nous vous informons que le paiement pour votre transaction RNO Muret via Fintecture a été réalisé avec succès. Récapitulatif du p",
       "date": "2026-03-23T05:45:29.000Z",
-      "hours_old": 8.7,
+      "hours_old": 8.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -229,7 +229,7 @@
       "subject": "Ateca Style 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image006.jpg@01DCB880.F0F82070] [cid:image007.jpg@01DCB880.F0F82070] Ch",
       "date": "2026-03-23T08:36:09.000Z",
-      "hours_old": 5.8,
+      "hours_old": 5.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -240,7 +240,7 @@
       "subject": "Cupra Leon Impulse 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image001.png@01DCB880.5B31D770] [cid:image002.png@01DCB880.5B31D770] Cupra",
       "date": "2026-03-23T08:35:51.000Z",
-      "hours_old": 5.8,
+      "hours_old": 5.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -251,7 +251,7 @@
       "subject": "RENAULT TRAFIC L2H1 2.0 DCI 150 CH EDC CAB APPRO 6 PL de 12/2025 avec 181 kms à 32 990€ HT",
       "snippet": "Bonjour, Un Renault Trafic Cabine approfondie 6 places en BOITE AUTO ! RENAULT TRAFIC L2H1 CAB APPRO 6 PLACES 2.0 DCI 150 CH EDC De 12/2025 181 Kms",
       "date": "2026-03-23T09:24:14.000Z",
-      "hours_old": 5,
+      "hours_old": 5.1,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -273,7 +273,7 @@
       "subject": "PEUGEOT EXPERT CAXL 2.0 BlueHDi 180ch EAT8",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/4yhxrj4sZ1_w) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-23T10:59:21.000Z",
-      "hours_old": 3.4,
+      "hours_old": 3.5,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -284,7 +284,18 @@
       "subject": "Message from KM_C258",
       "snippet": "",
       "date": "2026-03-23T13:20:22.000Z",
-      "hours_old": 1.1,
+      "hours_old": 1.2,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 2
+    },
+    {
+      "id": "19d1afc8535d45b4",
+      "from": "Sourcing Auto <stephane.pinson@offre.sourcingauto.fr>",
+      "subject": "Gla 200 amg line",
+      "snippet": "Dispo imm&eacute;diate Si vous avez des difficultés à visualiser cet email, suivez ce lien [https://eye.offre.sourcingauto.fr/m2?r=wAXNCTe4NjVlNTg3NDgyYzg3NTE1MWNhYWY5OGQwxBAV0",
+      "date": "2026-03-23T13:57:29.000Z",
+      "hours_old": 0.6,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -301,23 +312,12 @@
       "score": 2
     },
     {
-      "id": "19d1afc8535d45b4",
-      "from": "Sourcing Auto <stephane.pinson@offre.sourcingauto.fr>",
-      "subject": "Gla 200 amg line",
-      "snippet": "Dispo imm&eacute;diate Si vous avez des difficultés à visualiser cet email, suivez ce lien [https://eye.offre.sourcingauto.fr/m2?r=wAXNCTe4NjVlNTg3NDgyYzg3NTE1MWNhYWY5OGQwxBAV0",
-      "date": "2026-03-23T13:57:29.000Z",
-      "hours_old": 0.5,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 2
-    },
-    {
       "id": "19cb4001bae9d85b",
       "from": "Angel REXY-NELSON via Docusign <dse@eumail.docusign.net>",
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 480.4,
+      "hours_old": 480.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -328,7 +328,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: pages build and deployment - main (d20d55a)",
       "snippet": "[AlexGuichard/crm-kanban] pages build and deployment workflow run Repository: AlexGuichard/crm-kanban Workflow: pages build and deployment Duration: 59.0 seconds Finished: 20",
       "date": "2026-03-22T18:12:09.000Z",
-      "hours_old": 20.2,
+      "hours_old": 20.3,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -339,7 +339,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: pages build and deployment - main (85867cd)",
       "snippet": "[AlexGuichard/crm-kanban] pages build and deployment workflow run Repository: AlexGuichard/crm-kanban Workflow: pages build and deployment Duration: 59.0 seconds Finished: 20",
       "date": "2026-03-22T23:27:08.000Z",
-      "hours_old": 15,
+      "hours_old": 15.1,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -361,7 +361,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (c3bc190)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 10.0 seconds Finished: 2026-03-23 07:19:26 UT",
       "date": "2026-03-23T07:19:46.000Z",
-      "hours_old": 7.1,
+      "hours_old": 7.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -372,7 +372,7 @@
       "subject": "TTRM AUTO : véhicules en stock",
       "snippet": "Bonjour, Voici ci-dessous ma liste de véhicules actualisée : Modèle KM Couleur MEC Prix TTC Options Fre RENAULT Captur Techno 160 E-tech 1.8 10 Gris rafale 2025 25 800 € Ga",
       "date": "2026-03-23T08:38:42.000Z",
-      "hours_old": 5.8,
+      "hours_old": 5.9,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -383,7 +383,7 @@
       "subject": "Citroën C3 et C5 Aircross Hybride 145ch",
       "snippet": "Cher Monsieur ALEX, Voici de nouveaux véhicules en stock . Vous souhaitez en savoir plus ? Contactez un de nos collaborateurs commerciaux: Myriam Ellaoui (Vendeuse) tel.:",
       "date": "2026-03-23T10:07:20.000Z",
-      "hours_old": 4.3,
+      "hours_old": 4.4,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -394,7 +394,7 @@
       "subject": "TTRM AUTO : offre de 308 sw 145",
       "snippet": "Bonjour, Vous trouverez ci-dessous mon offre de 308 SW : Modèle KM Couleur MEC Prix TTC 308 sw e-dcs6 Allure 145 18 000 Bleu avatar 2025 21 500 € - Prix TTC (TVA 20%) -",
       "date": "2026-03-23T14:21:49.000Z",
-      "hours_old": 0.1,
+      "hours_old": 0.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
