@@ -1,6 +1,6 @@
 {
   "date": "2026-03-23",
-  "generated_at": "2026-03-23T09:20:45.366Z",
+  "generated_at": "2026-03-23T09:25:45.417Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 288.9,
+      "hours_old": 289,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 280.8,
+      "hours_old": 280.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 96.5,
+      "hours_old": 96.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 96.1,
+      "hours_old": 96.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, J’ai relancé la comptabilité mon côté le règlement va être effectué. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr",
       "date": "2026-03-20T10:38:15.000Z",
-      "hours_old": 70.7,
+      "hours_old": 70.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 69.4,
+      "hours_old": 69.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,8 +86,19 @@
       "subject": "Re: BC",
       "snippet": "Hello Mathieu, Si on peut te récupérer ces véhicules sur le même système de la dernière fois sur ces véhicules : VR3USHPY7SJ726391 VR3USHPY8SJ725766 VR3USHPY9SJ726778 VR3USH",
       "date": "2026-03-20T12:15:26.000Z",
-      "hours_old": 69.1,
+      "hours_old": 69.2,
       "label": "ajouter au dash",
+      "category": "label",
+      "score": 8
+    },
+    {
+      "id": "19c9eccff082f86a",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
+      "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
+      "date": "2026-03-20T12:19:31.000Z",
+      "hours_old": 69.1,
+      "label": "A traiter",
       "category": "label",
       "score": 8
     },
@@ -103,23 +114,12 @@
       "score": 8
     },
     {
-      "id": "19c9eccff082f86a",
-      "from": "Alex Guichard <alex@flease.fr>",
-      "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
-      "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
-      "date": "2026-03-20T12:19:31.000Z",
-      "hours_old": 69,
-      "label": "A traiter",
-      "category": "label",
-      "score": 8
-    },
-    {
       "id": "19d0b6bfc1b01db3",
       "from": "Ingrid CELESTIN <ingrid.celestin@bodemerauto.com>",
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 67.9,
+      "hours_old": 68,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 66,
+      "hours_old": 66.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 62.2,
+      "hours_old": 62.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Re: Proposition commerciale Clio DCI",
       "snippet": "Bonjour, Des nouvelles svp ? Merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Dre",
       "date": "2026-03-23T09:04:47.000Z",
-      "hours_old": 0.3,
+      "hours_old": 0.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 0.3,
+      "hours_old": 0.4,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 5
@@ -174,7 +174,7 @@
       "subject": "Votre paiement est validé !",
       "snippet": "VOTRE PAIEMENT EST VALIDÉ ! Bonjour, Nous vous informons que le paiement pour votre transaction RNO Muret via Fintecture a été réalisé avec succès. Récapitulatif du p",
       "date": "2026-03-23T05:45:29.000Z",
-      "hours_old": 3.6,
+      "hours_old": 3.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -185,7 +185,7 @@
       "subject": "PEUGEOT EXPERT CAXL 2.0 BlueHDi 180ch EAT8",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/rgFxCJDa0_p_) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-23T08:00:26.000Z",
-      "hours_old": 1.3,
+      "hours_old": 1.4,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -196,7 +196,7 @@
       "subject": "Ateca Style 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image006.jpg@01DCB880.F0F82070] [cid:image007.jpg@01DCB880.F0F82070] Ch",
       "date": "2026-03-23T08:36:09.000Z",
-      "hours_old": 0.7,
+      "hours_old": 0.8,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -207,7 +207,7 @@
       "subject": "Cupra Leon Impulse 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image001.png@01DCB880.5B31D770] [cid:image002.png@01DCB880.5B31D770] Cupra",
       "date": "2026-03-23T08:35:51.000Z",
-      "hours_old": 0.7,
+      "hours_old": 0.8,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -218,7 +218,7 @@
       "subject": "Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Angel REXY-NELSON vous a envoyé un nouveau document Docusign à consulter et à signer. Veuillez cliquer sur le lien ci‑dessous pour commencer le processus d",
       "date": "2026-02-20T13:48:17.000Z",
-      "hours_old": 739.5,
+      "hours_old": 739.6,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -229,7 +229,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 475.3,
+      "hours_old": 475.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -240,7 +240,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: pages build and deployment - main (d20d55a)",
       "snippet": "[AlexGuichard/crm-kanban] pages build and deployment workflow run Repository: AlexGuichard/crm-kanban Workflow: pages build and deployment Duration: 59.0 seconds Finished: 20",
       "date": "2026-03-22T18:12:09.000Z",
-      "hours_old": 15.1,
+      "hours_old": 15.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -251,7 +251,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: pages build and deployment - main (85867cd)",
       "snippet": "[AlexGuichard/crm-kanban] pages build and deployment workflow run Repository: AlexGuichard/crm-kanban Workflow: pages build and deployment Duration: 59.0 seconds Finished: 20",
       "date": "2026-03-22T23:27:08.000Z",
-      "hours_old": 9.9,
+      "hours_old": 10,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -273,7 +273,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (c3bc190)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 10.0 seconds Finished: 2026-03-23 07:19:26 UT",
       "date": "2026-03-23T07:19:46.000Z",
-      "hours_old": 2,
+      "hours_old": 2.1,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -284,7 +284,7 @@
       "subject": "TTRM AUTO : véhicules en stock",
       "snippet": "Bonjour, Voici ci-dessous ma liste de véhicules actualisée : Modèle KM Couleur MEC Prix TTC Options Fre RENAULT Captur Techno 160 E-tech 1.8 10 Gris rafale 2025 25 800 € Ga",
       "date": "2026-03-23T08:38:42.000Z",
-      "hours_old": 0.7,
+      "hours_old": 0.8,
       "label": null,
       "category": "sans_reponse",
       "score": 1
