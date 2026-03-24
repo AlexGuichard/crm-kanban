@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T20:41:26.617Z",
+  "generated_at": "2026-03-24T20:42:14.811Z",
   "is_morning": false,
   "emails": [
     {
@@ -119,7 +119,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 34.9,
+      "hours_old": 35,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -328,7 +328,7 @@
       "subject": "Jean Lain facture N°867336",
       "snippet": "SOCIETE FLEASE Nous vous remercions de trouver ci-joint votre facture N°867336. Cordialement, Jean Lain Ce mail vous a été envoyé depuis une adresse ne pouvant recevoir",
       "date": "2026-03-24T10:20:54.000Z",
-      "hours_old": 10.3,
+      "hours_old": 10.4,
       "label": null,
       "category": "sans_reponse",
       "score": 6
