@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T19:37:31.481Z",
+  "generated_at": "2026-03-24T19:40:45.985Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 323.2,
+      "hours_old": 323.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 130.4,
+      "hours_old": 130.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 103.2,
+      "hours_old": 103.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 102.2,
+      "hours_old": 102.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 100.3,
+      "hours_old": 100.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 96.5,
+      "hours_old": 96.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous vous confirmons la bonne réception de la facture. Un virement a bien été enregistré, il sera validé lors de notre prochaine campagne de virement. Nous reston",
       "date": "2026-03-23T10:29:18.000Z",
-      "hours_old": 33.1,
+      "hours_old": 33.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 29.6,
+      "hours_old": 29.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "MIX : Renault / Suzuki / Hyundai / Peugeot / Dacia / Skoda /Toyota /Mitsubishi",
       "snippet": "",
       "date": "2026-03-23T22:07:12.000Z",
-      "hours_old": 21.5,
+      "hours_old": 21.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Aucun problème pour les factures, c’est uniquement pour les CG. Toutes nos CG sont sur la filiale : Flease Fleet Merci beaucoup Cordialement, Alex Guichard - Intern",
       "date": "2026-03-24T09:07:11.000Z",
-      "hours_old": 10.5,
+      "hours_old": 10.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "TR: GS330CF/TRAFIC",
       "snippet": "Bonjour Mr GUICHARD, Vous avez dû recevoir à l’instant la facture par mail via norely@jeanlain.com<mailto:norely@jeanlain.com> Dans l’attente de votre règlement Excellente j",
       "date": "2026-03-24T10:30:37.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "Re: BC",
       "snippet": "Hello Steeven, Plusieurs problèmes de récupération sur les parcs. « le vh est HS impossible de le mette à disposition pour votre convoyeur veuillez prévenir votre client et",
       "date": "2026-03-24T14:24:31.000Z",
-      "hours_old": 5.2,
+      "hours_old": 5.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "TR: Pièce jointe",
       "snippet": "Hello Alex, Peux-tu me renvoyer ces documents tamponnés et signés s’il te plait et aussi m’envoyer les attestations d’assurances pour les deux véhicules livrés aujourd’hui. J",
       "date": "2026-03-24T09:53:02.000Z",
-      "hours_old": 9.7,
+      "hours_old": 9.8,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -229,7 +229,7 @@
       "subject": "TR: LIVRAISON / GZ-434-XR",
       "snippet": "Tu trouveras ci-joint tous les documents de vente ainsi que la facture de la GOLF GZ-434-XR Je t’enverrai les autres documents de l’autre golf quand tu auras signé et tamponné les",
       "date": "2026-03-24T12:36:48.000Z",
-      "hours_old": 7,
+      "hours_old": 7.1,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -251,7 +251,7 @@
       "subject": "RE: Enlevement véhicules My Express Driver",
       "snippet": "Bonjour, c'est noté les chauffeurs doivent impérativement imprimer ces documents svp pour récupérer leur vh Cordialement, Valentin – Service Accueil TEA TOULOUSE Groupe",
       "date": "2026-03-24T09:11:57.000Z",
-      "hours_old": 10.4,
+      "hours_old": 10.5,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -273,7 +273,7 @@
       "subject": "LEXON - 4 x Skoda Kamiq 1.0TSi DSG Selection - 2025",
       "snippet": "Bonjour, Les prochaines unités sont en stock, toutes les photo’s ici joint; [IMG_6962.jpeg][IMG_6964.jpeg] PRIX 16.995€ htva TMBGR6NW8S3059352 Skoda Kamiq 1.0TSI 115",
       "date": "2026-03-24T09:35:33.000Z",
-      "hours_old": 10,
+      "hours_old": 10.1,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -317,7 +317,7 @@
       "subject": "💥CROSSLAND ELEGANCE💥€ 9.500💥MOUREY APPRO",
       "snippet": ">>> OPEL CROSSLAND 1.2 Turbo 110ch Elegance Business. PRIX H.T. : € 9.500 [cid:077395f1-a597-44dc-ae13-05d11f5db535] EQUIPEMENT & OPTIONS : NAVI JANTES ALU 16 CA",
       "date": "2026-03-24T10:05:54.000Z",
-      "hours_old": 9.5,
+      "hours_old": 9.6,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -350,7 +350,7 @@
       "subject": "Confirmer votre adresse e-mail sur Slack",
       "snippet": "Confirmez votre adresse e-mail pour commencer dans Slack. Quand vous aurez confirmé que alex@flease.fr est votre adresse e-mail, nous vous aiderons à trouver vos espaces de trav",
       "date": "2026-03-24T10:59:35.000Z",
-      "hours_old": 8.6,
+      "hours_old": 8.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -372,7 +372,7 @@
       "subject": "RE: Enlevement véhicules My Express Driver",
       "snippet": "Bonjour, Si l’enlèvement se fait par un transporteur, il est nécessaire de prendre rendez-vous sur la plateforme dédiée, Planning transporteur : gca2<https://gca2.espacerende",
       "date": "2026-03-24T12:13:47.000Z",
-      "hours_old": 7.4,
+      "hours_old": 7.5,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -383,7 +383,7 @@
       "subject": "[M-47246] - [HE014LX] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/aBh5NcETP7ctcWTWDRPWehBi1JOaYRssfOq0BK2A_Gcl2ZId4b6ePHwd02ztH13f1kDDVdvp7FqfGahjfBNIHQ0In451_0mJcTBOrDxxYEfvuTRez9bscYW_",
       "date": "2026-03-24T12:48:33.000Z",
-      "hours_old": 6.8,
+      "hours_old": 6.9,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -394,7 +394,7 @@
       "subject": "[M-47246] - [he014lx (VR3USHPY1SJ725771)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/IkgxQSnApefp2bIyxGGyjVrl5KIhGKdRLvsDv0kSOu9m2bMBf7BwCEIO3kdGpdpwKropUMBKxOGAD0VganM8cqI-VfbA-s5hmrIMKaV45MDCIVRjkatkvfsTT9k",
       "date": "2026-03-24T14:06:56.000Z",
-      "hours_old": 5.5,
+      "hours_old": 5.6,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -405,7 +405,7 @@
       "subject": "Fwd: Trajet (HE042SX - PEUGEOT 2008 II)",
       "snippet": "Bonjour, Ci dessous mon échange de mail avec le parc BTV Toulouse qui m'annonce que le véhicule est HS. Dans l'attente de votre retour. Cordialement, Forwarded Conversat",
       "date": "2026-03-24T14:18:22.000Z",
-      "hours_old": 5.3,
+      "hours_old": 5.4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -416,7 +416,7 @@
       "subject": "FIAT DUCATO 3T5 MAXI L PLATEAU  2.2 HDI 180 CH de 11/2025 avec 28 kms à 34 990 € HT",
       "snippet": "UN PLATEAU DE 3M10 DE LONGUEUR UTILE AVEC BACHE ET COFFRE EN 180CH BVA ! FIAT DUCATO 3T5 MAXI L PLATEAU 2.2 HDI 180CH BVA Couleur : BLANC",
       "date": "2026-03-24T14:30:45.000Z",
-      "hours_old": 5.1,
+      "hours_old": 5.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
