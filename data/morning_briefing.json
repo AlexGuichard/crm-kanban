@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T05:30:45.586Z",
+  "generated_at": "2026-03-24T05:35:45.708Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "RE: commandes C3",
       "snippet": "Bonjour, Sauf erreur de ma part, je n’ai pas reçu le retour des documents de livraison signés. Si vous l’avez déjà fait, pouvez-vous me renvoyer le mail avec les documents si",
       "date": "2026-03-23T14:20:50.000Z",
-      "hours_old": 15.2,
+      "hours_old": 15.3,
       "label": null,
       "category": "sans_reponse",
       "score": 10
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 309.1,
+      "hours_old": 309.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 301,
+      "hours_old": 301.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 116.6,
+      "hours_old": 116.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 116.3,
+      "hours_old": 116.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 89.6,
+      "hours_old": 89.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, En PJ la preuve de virement pour le deuxième T-roc. Le véhicule va être récupéré chez vous Mardi 24 Mars dans la matinée. Si vous avez des docs à me faire signer n’",
       "date": "2026-03-20T12:19:31.000Z",
-      "hours_old": 89.2,
+      "hours_old": 89.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 89.1,
+      "hours_old": 89.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 88.1,
+      "hours_old": 88.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 86.2,
+      "hours_old": 86.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 82.4,
+      "hours_old": 82.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Ateca Style 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image006.jpg@01DCB880.F0F82070] [cid:image007.jpg@01DCB880.F0F82070] Ch",
       "date": "2026-03-23T08:36:09.000Z",
-      "hours_old": 20.9,
+      "hours_old": 21,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Cupra Leon Impulse 1.5 eTSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 6 semaines. N’hésitez pas s’il y a des questions : [cid:image001.png@01DCB880.5B31D770] [cid:image002.png@01DCB880.5B31D770] Cupra",
       "date": "2026-03-23T08:35:51.000Z",
-      "hours_old": 20.9,
+      "hours_old": 21,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 20.4,
+      "hours_old": 20.5,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Re: Proposition commerciale Clio DCI",
       "snippet": "Bonjour, Des nouvelles svp ? Merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Dre",
       "date": "2026-03-23T09:04:47.000Z",
-      "hours_old": 20.4,
+      "hours_old": 20.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "RENAULT TRAFIC L2H1 2.0 DCI 150 CH EDC CAB APPRO 6 PL de 12/2025 avec 181 kms à 32 990€ HT",
       "snippet": "Bonjour, Un Renault Trafic Cabine approfondie 6 places en BOITE AUTO ! RENAULT TRAFIC L2H1 CAB APPRO 6 PLACES 2.0 DCI 150 CH EDC De 12/2025 181 Kms",
       "date": "2026-03-23T09:24:14.000Z",
-      "hours_old": 20.1,
+      "hours_old": 20.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "Liste VO Exclusive MASSOUTRE du 23.03.2026",
       "snippet": "L'email ne s'affiche pas correctement ? *Cliquez-ici* <https://clicks.messengeo.net?i=cd13ed9c8c552810205cf014f60aa4be&c=cmYuZXNhZWxmQHhlbGE6OjUzMjIyMjYzNzM=> Découvrez vite no",
       "date": "2026-03-23T10:21:59.000Z",
-      "hours_old": 19.1,
+      "hours_old": 19.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous vous confirmons la bonne réception de la facture. Un virement a bien été enregistré, il sera validé lors de notre prochaine campagne de virement. Nous reston",
       "date": "2026-03-23T10:29:18.000Z",
-      "hours_old": 19,
+      "hours_old": 19.1,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "PEUGEOT EXPERT CAXL 2.0 BlueHDi 180ch EAT8",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/4yhxrj4sZ1_w) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-23T10:59:21.000Z",
-      "hours_old": 18.5,
+      "hours_old": 18.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,29 @@
       "subject": "Message from KM_C258",
       "snippet": "",
       "date": "2026-03-23T13:20:22.000Z",
-      "hours_old": 16.2,
+      "hours_old": 16.3,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d00829244ad5d6",
+      "from": "Steeven <steeven@activ-automobiles.com>",
+      "subject": "RE: Parc",
+      "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
+      "date": "2026-03-23T14:00:40.000Z",
+      "hours_old": 15.6,
+      "label": "ajouter au dash",
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d1afd68525c91b",
+      "from": "Spark <spark@readdle.com>",
+      "subject": "New email account login in Spark",
+      "snippet": "Spark Mail Your email address - *alex@flease.fr* - was used to login in Spark. ------------------------------ *iPhone 13, iOS 26.30* France 46.218.54.73 Smart. Focused. Emai",
+      "date": "2026-03-23T13:58:27.000Z",
+      "hours_old": 15.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -257,34 +279,12 @@
       "score": 8
     },
     {
-      "id": "19d00829244ad5d6",
-      "from": "Steeven <steeven@activ-automobiles.com>",
-      "subject": "RE: Parc",
-      "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
-      "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 15.5,
-      "label": "ajouter au dash",
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
-      "id": "19d1afd68525c91b",
-      "from": "Spark <spark@readdle.com>",
-      "subject": "New email account login in Spark",
-      "snippet": "Spark Mail Your email address - *alex@flease.fr* - was used to login in Spark. ------------------------------ *iPhone 13, iOS 26.30* France 46.218.54.73 Smart. Focused. Emai",
-      "date": "2026-03-23T13:58:27.000Z",
-      "hours_old": 15.5,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19d1b4be889808ae",
       "from": "Matthieu BRANDUCCI <matthieu.branducci@moureyautomobiles.com>",
       "subject": "🚌NISSAN PRIMASTAR⭐8 & 9 PLACES⭐MOUREY APPRO",
       "snippet": ">>> NISSAN PRIMASTAR L1H1 2,8T DCI 150cv MT TEKNA. PRIX H.T. : € 23.700 EQUIPEMENT & OPTIONS : GPS, Jantes Alu 17\", Nissan Connect, Climatisation, Régulateur limiteur de vites",
       "date": "2026-03-23T15:24:01.000Z",
-      "hours_old": 14.1,
+      "hours_old": 14.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "FRIGO CITROEN BERLINGO M 1.5 HDI 100CH de 10/2021 avec 43 635 Kms à 18 690€ HT",
       "snippet": "Un Berlingo FRIGO avec seulement 43 635 KMS ! CITROEN BERLINGO M FRIGORIFIQUE GROUPE CARRIER 1.5 HDI 100CH Version : DRIVER De 10/2021 43 635 Kms",
       "date": "2026-03-23T15:35:10.000Z",
-      "hours_old": 13.9,
+      "hours_old": 14,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -317,21 +317,10 @@
       "subject": "OFFRE SPECIALE VO LINK des remises jusqu'à 1.500€ / VO",
       "snippet": "Bonjour, Vous trouverez ci-dessous notre OFFRE SPECIALE !! Les VO sont tous dispos de suite 😉 N’hésitez pas à me contacter pour plus d’infos 😊 Etat du VO Marque",
       "date": "2026-03-23T16:19:02.000Z",
-      "hours_old": 13.2,
+      "hours_old": 13.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
-    },
-    {
-      "id": "19d1a0d1cc06470a",
-      "from": "Alex Guichard <alex@flease.fr>",
-      "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
-      "snippet": "Bonsoir Ingrid, Je n’ai pas pu vous répondre avant je suis désolé.. Mon service financier me demande à ce que les véhicules soient immatriculés sur notre filiale (Flease Flee",
-      "date": "2026-03-23T18:22:23.000Z",
-      "hours_old": 11.1,
-      "label": "A traiter",
-      "category": "label",
-      "score": 7
     },
     {
       "id": "19d1bc26159360eb",
@@ -342,7 +331,18 @@
       "hours_old": 12,
       "label": null,
       "category": "sans_reponse",
-      "score": 6
+      "score": 8
+    },
+    {
+      "id": "19d1a0d1cc06470a",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
+      "snippet": "Bonsoir Ingrid, Je n’ai pas pu vous répondre avant je suis désolé.. Mon service financier me demande à ce que les véhicules soient immatriculés sur notre filiale (Flease Flee",
+      "date": "2026-03-23T18:22:23.000Z",
+      "hours_old": 11.2,
+      "label": "A traiter",
+      "category": "label",
+      "score": 7
     },
     {
       "id": "19d1bd217d7fc155",
@@ -350,7 +350,7 @@
       "subject": "[M-47238] - [he272bc (VR7ARHPY3SL026708)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/Cac5NZdg_8GLfsDn07Ckq5eY0DxsCmeLdZUFt5kfQP2HHocepS2aUzSVs4CJyHAMKARBSzuGBtSkU8hePmLJYZdBG4LY5E6Tpx6Bf0PuOycoBKsl4CUnTDnV",
       "date": "2026-03-23T17:50:45.000Z",
-      "hours_old": 11.7,
+      "hours_old": 11.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -361,18 +361,7 @@
       "subject": "[M-47237] - [he893nj (VR7BAHPY5SE052114)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/_o-MwDwiJ70dj7zov91KTX-ZkhXslqxl6lay739aKxOhMiyysTfqHGiTGxEA48MXwUaJ18tIGDt8IhgTopWZP4z4X06ioByq_8IIJXJ-JY7dLfmIY5Vg-COy",
       "date": "2026-03-23T17:49:13.000Z",
-      "hours_old": 11.7,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 6
-    },
-    {
-      "id": "19d1bd838705e959",
-      "from": "Support My Express Driver <support@myexpressdriver.com>",
-      "subject": "[M-47244] - [he144qw (VR3USHPY7SJ726391)] - My Express Driver - Validation des horaires de livraison",
-      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/6-k65Gzcm6YMut3ILkulo4k6TZ_Z0-Xygwlw-Yi1nVpboOtRt1wcIV9MbV-iab8bfi9-d_3GCS0egIf-_4_BUuYMVX1h1Ah05Xy547dK9Gf4ko4VNHy0hwmgI-l",
-      "date": "2026-03-23T17:57:27.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -383,7 +372,7 @@
       "subject": "[M-47243] - [he321qh (VR7BAHPY1SE049811)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/Hrbh_L8XRUTns4nthnwKCFIAWIZ2z85a_V2uo306haIWFMA-ny1QVeVmY0On8FO_H5qyXyhszz7SuPhQa6ECIViqH3P_QpLeNAtdKWw-2dRN9NefpHWeVRMFVAc",
       "date": "2026-03-23T17:56:32.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -394,7 +383,7 @@
       "subject": "[M-47242] - [he455ed (VR7BAHPY5SE042358)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/k11k9qOKDXZmlv-ZR1yP6IJJhkiQxarm6nUFVSYIPWbkjGLh5VUgMRJ0hk7tsnxgB-mgBOkMaBeJtrjhFJYSk9Dqp2I6RhDem2SxQqhr5uH8js26wqAg-fVX",
       "date": "2026-03-23T17:55:42.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -405,7 +394,7 @@
       "subject": "[M-47241] - [hd652kp (VR7ARHPY1SL011849)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/fgY5jfuZWtnDrC8Yc94kAHNBqeCx2ZFBd6KWPLZ2Hk8rH3r45TK2q9cIPJGlyFz41xVXVrrf9dXq45rT_W0zdO7x9cQWyXNuI6NMpR8KXX4YsaPHHeYpA3n6",
       "date": "2026-03-23T17:54:39.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -416,7 +405,7 @@
       "subject": "[M-47240] - [he125qw (VR3USHPY9SJ726778)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/zn3dKo2KghJ9hksiyY499mHIJrGdwgxl_xJUsJ8qSGF7P85EkCpXsBKqo6OgiluUxfY2XzV_ptf04lG824mI2rxz4HCJtb1Fr0ch2woE7nrrOZ6iYFTZ8b3_pRl",
       "date": "2026-03-23T17:53:45.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -427,7 +416,7 @@
       "subject": "[M-47238] - [HE272BC] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/rxW-wKfaM4tR-tvmLWHesUH1exduBPZNP5Z1G4Aq-QLXeCEdAZz411OpgKLqLjs5fWjPSsjzFSj1iysskIG_4l9HdC-8HATokg3d_kr_wNjg87bmcZAcEMp2",
       "date": "2026-03-23T17:53:20.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -438,7 +427,18 @@
       "subject": "[M-47239] - [HE042SX] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/3Eew2p-UlEV1KWor4a_GhjKQp1pubOzOd34MfvP0pILiGUPq66hjEFCn0CYeoIO_PK6W-gha2MtL3N_FdSztRxtSyhActaPH6htPwWc9GDOqNreBE-ybbi2U",
       "date": "2026-03-23T17:52:51.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 6
+    },
+    {
+      "id": "19d1bd330e0e4c54",
+      "from": "Support My Express Driver <support@myexpressdriver.com>",
+      "subject": "[M-47239] - [he042sx (VR3USHPY9SJ698979)] - My Express Driver - Validation des horaires de livraison",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/X8ZORHj8jAuHXzz_9Y0qWbdHcJlIDF7R69a2SAnojtR4S2vapSZL_KDxjpChHO9VkaK88OhWiTaE9rS3VyAvw-oYABW8unJzDNflsDQq77zpx8LurO88J1tx",
+      "date": "2026-03-23T17:51:56.000Z",
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -447,8 +447,8 @@
   "summary": {
     "total": 40,
     "critical": 1,
-    "high": 29,
-    "medium": 10,
+    "high": 30,
+    "medium": 9,
     "low": 0
   }
 }
