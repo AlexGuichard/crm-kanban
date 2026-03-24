@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T20:00:48.916Z",
+  "generated_at": "2026-03-24T20:01:24.533Z",
   "is_morning": false,
   "emails": [
     {
@@ -108,7 +108,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 34.9,
+      "hours_old": 35,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "[M-47247] - [HE360RW] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/KmyeyK6AjEKQ6olkDh7GQahuApveVDlniB3O4iqYSIoNgGwfM7KM8evBcR95tCGgiUdO2N-QJYmelXJxYHYExMiYU1C7rO8eunDWDbE25nFMEThLp6afbxwdhUt",
       "date": "2026-03-24T00:10:08.000Z",
-      "hours_old": 19.8,
+      "hours_old": 19.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -427,7 +427,7 @@
       "subject": "RENAULT TRAFIC L1H1 2.0 DCI 130CH de 10/2022 avec 67 621 Kms à 15 290€ HT",
       "snippet": "UN RENAULT TRAFIC L1H1 AVEC KIT BOIS !!! RENAULT TRAFIC L1H1 2.0 DCI 130CH Version : CONFORT De 10/2022 67 621 Kms Couleur : BLANC *K",
       "date": "2026-03-24T14:40:23.000Z",
-      "hours_old": 5.3,
+      "hours_old": 5.4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
