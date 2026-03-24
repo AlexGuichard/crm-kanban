@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T20:40:45.355Z",
+  "generated_at": "2026-03-24T20:41:26.617Z",
   "is_morning": false,
   "emails": [
     {
@@ -53,7 +53,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 104.7,
+      "hours_old": 104.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "[cid:image001.png@01DCBB7B.38858C00] Xavier LE GAL Conseiller Commercial RENAULT edenauto RENAULT MURET 254 avenue des pyrénées 31 600 MURET 05 34 46 34 95 06 86 42 53 6",
       "date": "2026-03-24T09:44:44.000Z",
-      "hours_old": 10.9,
+      "hours_old": 11,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Vous trouverez en PJ les documents pour le 2ème T-ROC, Pouvez-vous me renvoyer les CERFA signés svp ? Merci d’avance, Belle journée [cid:image001.jpg@01DCBB",
       "date": "2026-03-24T14:38:17.000Z",
-      "hours_old": 6,
+      "hours_old": 6.1,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -262,7 +262,7 @@
       "subject": "[M-47116] - [gz434xr (WVWZZZCD7RW015122)] - My Express Driver - Validation des horaires de enlevement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/FWBi9JO9ilYIMFqHpc0STBFegX8uV6_q5gineJ5ZFNbYnz25F2i4rrcwYuNuBEg15BtTtqfdoQWBGnIVOe6KcTI8H0G4NK6bBcb6M-Oa6N6SH3akttXgn6xn",
       "date": "2026-03-24T09:26:46.000Z",
-      "hours_old": 11.2,
+      "hours_old": 11.3,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -279,23 +279,12 @@
       "score": 6
     },
     {
-      "id": "19d1ee9dc30997ba",
-      "from": "Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com>",
-      "subject": "Fwd: Trajet (HD979LK - CITROEN C5 AIRCROSS)",
-      "snippet": "Forwarded Conversation Subject: Trajet (HD979LK - CITROEN C5 AIRCROSS) ------------------------ De : Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com> Date: mar. 24 mars 202",
-      "date": "2026-03-24T09:40:37.000Z",
-      "hours_old": 11,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 6
-    },
-    {
       "id": "19d1f694683919b4",
       "from": "<contact@label-auto.fr>",
       "subject": "84 VU, 2 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour Voici notre liste stock à jour du Mardi… Bonne réception, Cordialement Retrouvez notre stock <https://www.label-auto.com/610/> ici",
       "date": "2026-03-24T09:44:05.000Z",
-      "hours_old": 10.9,
+      "hours_old": 11,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -306,7 +295,18 @@
       "subject": "[M-47116] - [GZ434XR] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/dguH2DWlUdjDLmKGmsJg4lkMai56Yeh_M33YelZ3Sxdn05NhfARa7kdMuu_KQObFr2JZW1rafW9xvJ64grW8YPlIHjbrqLiRWZl6Y4ISc5W2RHpglz5Qvr8J",
       "date": "2026-03-24T09:44:40.000Z",
-      "hours_old": 10.9,
+      "hours_old": 11,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 6
+    },
+    {
+      "id": "19d1ee9dc30997ba",
+      "from": "Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com>",
+      "subject": "Fwd: Trajet (HD979LK - CITROEN C5 AIRCROSS)",
+      "snippet": "Forwarded Conversation Subject: Trajet (HD979LK - CITROEN C5 AIRCROSS) ------------------------ De : Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com> Date: mar. 24 mars 202",
+      "date": "2026-03-24T09:40:37.000Z",
+      "hours_old": 11,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -339,7 +339,7 @@
       "subject": "Yaris Cross Dynamique + 1,5 Hybrid 116 CVT",
       "snippet": "Bonjour, Celles-ci sont disponibles la semaine prochaine. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg km Dommages Couleur Prix HTVA JTDKBABB20A498879",
       "date": "2026-03-24T10:44:25.000Z",
-      "hours_old": 9.9,
+      "hours_old": 10,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -438,7 +438,7 @@
       "subject": "3008 GT 1.2 Hybrid 145 e-DCS6",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 3 semaines. N’hésitez pas s’il y a des questions : [cid:image001.png@01DCBBAA.F48BF680] [cid:image002.png@01DCBBAA.F48BF680] MMT",
       "date": "2026-03-24T15:26:25.000Z",
-      "hours_old": 5.2,
+      "hours_old": 5.3,
       "label": null,
       "category": "sans_reponse",
       "score": 4
