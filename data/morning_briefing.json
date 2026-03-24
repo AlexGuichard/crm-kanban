@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T19:36:51.148Z",
+  "generated_at": "2026-03-24T19:37:19.461Z",
   "is_morning": false,
   "emails": [
     {
@@ -108,7 +108,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 34.5,
+      "hours_old": 34.6,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "[M-47247] - [HE360RW] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/KmyeyK6AjEKQ6olkDh7GQahuApveVDlniB3O4iqYSIoNgGwfM7KM8evBcR95tCGgiUdO2N-QJYmelXJxYHYExMiYU1C7rO8eunDWDbE25nFMEThLp6afbxwdhUt",
       "date": "2026-03-24T00:10:08.000Z",
-      "hours_old": 19.4,
+      "hours_old": 19.5,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -361,7 +361,7 @@
       "subject": "[] - [GZ434XR] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/t0TfNy_GqDCGWi_TMijjfNw43J8XRjThnjRfnygqOK2yrg1ipiYow_cmKxQ5Q9yxqCR7Q2ULkpZz8sLHqgm29qTW0T5ZDs69GMUAy_-iFUVAmFhRTc2b2gRy",
       "date": "2026-03-24T11:15:55.000Z",
-      "hours_old": 8.3,
+      "hours_old": 8.4,
       "label": null,
       "category": "sans_reponse",
       "score": 6
