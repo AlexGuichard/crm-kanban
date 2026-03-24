@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T19:37:19.461Z",
+  "generated_at": "2026-03-24T19:37:31.481Z",
   "is_morning": false,
   "emails": [
     {
@@ -31,7 +31,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 130.7,
+      "hours_old": 130.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -279,6 +279,17 @@
       "score": 6
     },
     {
+      "id": "19d1ee9dc30997ba",
+      "from": "Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com>",
+      "subject": "Fwd: Trajet (HD979LK - CITROEN C5 AIRCROSS)",
+      "snippet": "Forwarded Conversation Subject: Trajet (HD979LK - CITROEN C5 AIRCROSS) ------------------------ De : Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com> Date: mar. 24 mars 202",
+      "date": "2026-03-24T09:40:37.000Z",
+      "hours_old": 10,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 6
+    },
+    {
       "id": "19d1f694683919b4",
       "from": "<contact@label-auto.fr>",
       "subject": "84 VU, 2 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
@@ -295,17 +306,6 @@
       "subject": "[M-47116] - [GZ434XR] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/dguH2DWlUdjDLmKGmsJg4lkMai56Yeh_M33YelZ3Sxdn05NhfARa7kdMuu_KQObFr2JZW1rafW9xvJ64grW8YPlIHjbrqLiRWZl6Y4ISc5W2RHpglz5Qvr8J",
       "date": "2026-03-24T09:44:40.000Z",
-      "hours_old": 9.9,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 6
-    },
-    {
-      "id": "19d1ee9dc30997ba",
-      "from": "Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com>",
-      "subject": "Fwd: Trajet (HD979LK - CITROEN C5 AIRCROSS)",
-      "snippet": "Forwarded Conversation Subject: Trajet (HD979LK - CITROEN C5 AIRCROSS) ------------------------ De : Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com> Date: mar. 24 mars 202",
-      "date": "2026-03-24T09:40:37.000Z",
       "hours_old": 9.9,
       "label": null,
       "category": "sans_reponse",
@@ -427,7 +427,7 @@
       "subject": "RENAULT TRAFIC L1H1 2.0 DCI 130CH de 10/2022 avec 67 621 Kms à 15 290€ HT",
       "snippet": "UN RENAULT TRAFIC L1H1 AVEC KIT BOIS !!! RENAULT TRAFIC L1H1 2.0 DCI 130CH Version : CONFORT De 10/2022 67 621 Kms Couleur : BLANC *K",
       "date": "2026-03-24T14:40:23.000Z",
-      "hours_old": 4.9,
+      "hours_old": 5,
       "label": null,
       "category": "sans_reponse",
       "score": 4
