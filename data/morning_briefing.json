@@ -1,6 +1,6 @@
 {
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T20:20:50.509Z",
+  "generated_at": "2026-03-24T20:21:27.931Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 323.9,
+      "hours_old": 324,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 102.9,
+      "hours_old": 103,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 97.2,
+      "hours_old": 97.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 30.3,
+      "hours_old": 30.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "TR: GS330CF/TRAFIC",
       "snippet": "Bonjour Mr GUICHARD, Vous avez dû recevoir à l’instant la facture par mail via norely@jeanlain.com<mailto:norely@jeanlain.com> Dans l’attente de votre règlement Excellente j",
       "date": "2026-03-24T10:30:37.000Z",
-      "hours_old": 9.8,
+      "hours_old": 9.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "Re: BC",
       "snippet": "Hello Steeven, Plusieurs problèmes de récupération sur les parcs. « le vh est HS impossible de le mette à disposition pour votre convoyeur veuillez prévenir votre client et",
       "date": "2026-03-24T14:24:31.000Z",
-      "hours_old": 5.9,
+      "hours_old": 6,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -405,7 +405,7 @@
       "subject": "Fwd: Trajet (HE042SX - PEUGEOT 2008 II)",
       "snippet": "Bonjour, Ci dessous mon échange de mail avec le parc BTV Toulouse qui m'annonce que le véhicule est HS. Dans l'attente de votre retour. Cordialement, Forwarded Conversat",
       "date": "2026-03-24T14:18:22.000Z",
-      "hours_old": 6,
+      "hours_old": 6.1,
       "label": null,
       "category": "sans_reponse",
       "score": 6
