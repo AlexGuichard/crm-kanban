@@ -1,6 +1,6 @@
 {
   "date": "2026-03-25",
-  "generated_at": "2026-03-25T05:15:45.603Z",
+  "generated_at": "2026-03-25T05:20:45.313Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 324.7,
+      "hours_old": 324.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Bonjour Alex, Ci-joint le devis à me renvoyer tamponné/signé pour la commande de 10 kits supplémentaires s'il te plait. Merci d'avance ! Bonne journée Cordialement, Ni",
       "date": "2026-03-19T08:52:42.000Z",
-      "hours_old": 140.4,
+      "hours_old": 140.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 140,
+      "hours_old": 140.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "Re: Propositions commerciales",
       "snippet": "Avec la PJ c’est mieux ... Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Caluire-et-Cuire",
       "date": "2026-03-20T11:56:52.000Z",
-      "hours_old": 113.3,
+      "hours_old": 113.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "RE: livraison golf",
       "snippet": "Voici tous les documents à tamponner, signer et me retourner. Nous nous occuperons de dater les documents le jour de la livraison. Nous fournirons également tous les documents or",
       "date": "2026-03-20T12:23:16.000Z",
-      "hours_old": 112.9,
+      "hours_old": 113,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 109.9,
+      "hours_old": 110,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 44.2,
+      "hours_old": 44.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 43.5,
+      "hours_old": 43.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "Re: TTRM AUTO : IMMAT",
       "snippet": "Bonjour, Nous vous confirmons la bonne réception de la facture. Un virement a bien été enregistré, il sera validé lors de notre prochaine campagne de virement. Nous reston",
       "date": "2026-03-23T10:29:18.000Z",
-      "hours_old": 42.8,
+      "hours_old": 42.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -147,6 +147,17 @@
       "score": 8
     },
     {
+      "id": "19d1a0d1cc06470a",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
+      "snippet": "Bonjour, Aucun problème pour les factures, c’est uniquement pour les CG. Toutes nos CG sont sur la filiale : Flease Fleet Merci beaucoup Cordialement, Alex Guichard - Intern",
+      "date": "2026-03-24T09:07:11.000Z",
+      "hours_old": 20.2,
+      "label": "A traiter",
+      "category": "label",
+      "score": 8
+    },
+    {
       "id": "19d1be37b5e5c8da",
       "from": "\"BTV, Accueil\" <accueil.btv@gcatrans.com>",
       "subject": "RE: Enlevement véhicules My Express Driver",
@@ -158,23 +169,12 @@
       "score": 8
     },
     {
-      "id": "19d1a0d1cc06470a",
-      "from": "Alex Guichard <alex@flease.fr>",
-      "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
-      "snippet": "Bonjour, Aucun problème pour les factures, c’est uniquement pour les CG. Toutes nos CG sont sur la filiale : Flease Fleet Merci beaucoup Cordialement, Alex Guichard - Intern",
-      "date": "2026-03-24T09:07:11.000Z",
-      "hours_old": 20.1,
-      "label": "A traiter",
-      "category": "label",
-      "score": 8
-    },
-    {
       "id": "19d1f2b0625175c7",
       "from": "Support My Express Driver <support@myexpressdriver.com>",
       "subject": "[M-47116] - [gz434xr (WVWZZZCD7RW015122)] - My Express Driver - Validation des horaires de enlevement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/FWBi9JO9ilYIMFqHpc0STBFegX8uV6_q5gineJ5ZFNbYnz25F2i4rrcwYuNuBEg15BtTtqfdoQWBGnIVOe6KcTI8H0G4NK6bBcb6M-Oa6N6SH3akttXgn6xn",
       "date": "2026-03-24T09:26:46.000Z",
-      "hours_old": 19.8,
+      "hours_old": 19.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "LEXON - 4 x Skoda Kamiq 1.0TSi DSG Selection - 2025",
       "snippet": "Bonjour, Les prochaines unités sont en stock, toutes les photo’s ici joint; [IMG_6962.jpeg][IMG_6964.jpeg] PRIX 16.995€ htva TMBGR6NW8S3059352 Skoda Kamiq 1.0TSI 115",
       "date": "2026-03-24T09:35:33.000Z",
-      "hours_old": 19.7,
+      "hours_old": 19.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "Fwd: Trajet (HD979LK - CITROEN C5 AIRCROSS)",
       "snippet": "Forwarded Conversation Subject: Trajet (HD979LK - CITROEN C5 AIRCROSS) ------------------------ De : Hugo Sama ruiz <hugo.samaruiz@myexpressdriver.com> Date: mar. 24 mars 202",
       "date": "2026-03-24T09:40:37.000Z",
-      "hours_old": 19.6,
+      "hours_old": 19.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "84 VU, 2 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour Voici notre liste stock à jour du Mardi… Bonne réception, Cordialement Retrouvez notre stock <https://www.label-auto.com/610/> ici",
       "date": "2026-03-24T09:44:05.000Z",
-      "hours_old": 19.5,
+      "hours_old": 19.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "[cid:image001.png@01DCBB7B.38858C00] Xavier LE GAL Conseiller Commercial RENAULT edenauto RENAULT MURET 254 avenue des pyrénées 31 600 MURET 05 34 46 34 95 06 86 42 53 6",
       "date": "2026-03-24T09:44:44.000Z",
-      "hours_old": 19.5,
+      "hours_old": 19.6,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "[M-47116] - [GZ434XR] - My Express Driver - Un transport a été planifié depuis votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/dguH2DWlUdjDLmKGmsJg4lkMai56Yeh_M33YelZ3Sxdn05NhfARa7kdMuu_KQObFr2JZW1rafW9xvJ64grW8YPlIHjbrqLiRWZl6Y4ISc5W2RHpglz5Qvr8J",
       "date": "2026-03-24T09:44:40.000Z",
-      "hours_old": 19.5,
+      "hours_old": 19.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "TR: Pièce jointe",
       "snippet": "Hello Alex, Peux-tu me renvoyer ces documents tamponnés et signés s’il te plait et aussi m’envoyer les attestations d’assurances pour les deux véhicules livrés aujourd’hui. J",
       "date": "2026-03-24T09:53:02.000Z",
-      "hours_old": 19.4,
+      "hours_old": 19.5,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "Jean Lain facture N°867336",
       "snippet": "SOCIETE FLEASE Nous vous remercions de trouver ci-joint votre facture N°867336. Cordialement, Jean Lain Ce mail vous a été envoyé depuis une adresse ne pouvant recevoir",
       "date": "2026-03-24T10:20:54.000Z",
-      "hours_old": 18.9,
+      "hours_old": 19,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "Yaris Cross Dynamique + 1,5 Hybrid 116 CVT",
       "snippet": "Bonjour, Celles-ci sont disponibles la semaine prochaine. N’hésitez pas s’il y a des questions : Chassis MMT 1st Reg km Dommages Couleur Prix HTVA JTDKBABB20A498879",
       "date": "2026-03-24T10:44:25.000Z",
-      "hours_old": 18.5,
+      "hours_old": 18.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "Confirmer votre adresse e-mail sur Slack",
       "snippet": "Confirmez votre adresse e-mail pour commencer dans Slack. Quand vous aurez confirmé que alex@flease.fr est votre adresse e-mail, nous vous aiderons à trouver vos espaces de trav",
       "date": "2026-03-24T10:59:35.000Z",
-      "hours_old": 18.3,
+      "hours_old": 18.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -306,7 +306,7 @@
       "subject": "[] - [GZ434XR] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/t0TfNy_GqDCGWi_TMijjfNw43J8XRjThnjRfnygqOK2yrg1ipiYow_cmKxQ5Q9yxqCR7Q2ULkpZz8sLHqgm29qTW0T5ZDs69GMUAy_-iFUVAmFhRTc2b2gRy",
       "date": "2026-03-24T11:15:55.000Z",
-      "hours_old": 18,
+      "hours_old": 18.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -317,7 +317,7 @@
       "subject": "RE: Enlevement véhicules My Express Driver",
       "snippet": "Bonjour, Si l’enlèvement se fait par un transporteur, il est nécessaire de prendre rendez-vous sur la plateforme dédiée, Planning transporteur : gca2<https://gca2.espacerende",
       "date": "2026-03-24T12:13:47.000Z",
-      "hours_old": 17,
+      "hours_old": 17.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -328,7 +328,7 @@
       "subject": "TR: LIVRAISON / GZ-434-XR",
       "snippet": "Tu trouveras ci-joint tous les documents de vente ainsi que la facture de la GOLF GZ-434-XR Je t’enverrai les autres documents de l’autre golf quand tu auras signé et tamponné les",
       "date": "2026-03-24T12:36:48.000Z",
-      "hours_old": 16.6,
+      "hours_old": 16.7,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -350,7 +350,7 @@
       "subject": "[M-47246] - [he014lx (VR3USHPY1SJ725771)] - My Express Driver - Validation des horaires de livraison",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/IkgxQSnApefp2bIyxGGyjVrl5KIhGKdRLvsDv0kSOu9m2bMBf7BwCEIO3kdGpdpwKropUMBKxOGAD0VganM8cqI-VfbA-s5hmrIMKaV45MDCIVRjkatkvfsTT9k",
       "date": "2026-03-24T14:06:56.000Z",
-      "hours_old": 15.1,
+      "hours_old": 15.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -394,7 +394,7 @@
       "subject": "RENAULT TRAFIC L1H1 2.0 DCI 130CH de 10/2022 avec 67 621 Kms à 15 290€ HT",
       "snippet": "UN RENAULT TRAFIC L1H1 AVEC KIT BOIS !!! RENAULT TRAFIC L1H1 2.0 DCI 130CH Version : CONFORT De 10/2022 67 621 Kms Couleur : BLANC *K",
       "date": "2026-03-24T14:40:23.000Z",
-      "hours_old": 14.6,
+      "hours_old": 14.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -405,7 +405,7 @@
       "subject": "RE: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Vous trouverez en PJ les documents pour le 2ème T-ROC, Pouvez-vous me renvoyer les CERFA signés svp ? Merci d’avance, Belle journée [cid:image001.jpg@01DCBB",
       "date": "2026-03-24T14:38:17.000Z",
-      "hours_old": 14.6,
+      "hours_old": 14.7,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -416,7 +416,7 @@
       "subject": "3008 GT 1.2 Hybrid 145 e-DCS6",
       "snippet": "Bonjour, Celles-ci sont disponibles ici 3 semaines. N’hésitez pas s’il y a des questions : [cid:image001.png@01DCBBAA.F48BF680] [cid:image002.png@01DCBBAA.F48BF680] MMT",
       "date": "2026-03-24T15:26:25.000Z",
-      "hours_old": 13.8,
+      "hours_old": 13.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -427,7 +427,7 @@
       "subject": "[M-47244] - [HE144QW] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/J-NOtape1W8Z58-Ed22OTROz03826qs3t3JOanmXueusF4gYcq3JPPohH1xWj-mh84P1h6TUEQBwlsWFVdrwkIzmZxrQnp5NQXDJX5VcZV_Ol_9puPShrWlR",
       "date": "2026-03-24T15:34:43.000Z",
-      "hours_old": 13.7,
+      "hours_old": 13.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -438,7 +438,7 @@
       "subject": "[M-47241] - [HD652KP] - My Express Driver -Un transport a été planifié vers votre établissement",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/kqis0J0aoi0q7h1h8ZM0JYncerB-0Pt1etent-K5s0Su0-bmDAOw3EtJFyACogq7Es0HRdgW5V5k4qwQWUYol1-KE3EjhgDkaaJtqQTeZRNvTahYETCqX2w8",
       "date": "2026-03-24T15:35:17.000Z",
-      "hours_old": 13.7,
+      "hours_old": 13.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
