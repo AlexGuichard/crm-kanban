@@ -1,6 +1,6 @@
 {
   "date": "2026-03-26",
-  "generated_at": "2026-03-26T18:50:49.591Z",
+  "generated_at": "2026-03-26T18:55:49.553Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 370.4,
+      "hours_old": 370.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 362.3,
+      "hours_old": 362.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 177.6,
+      "hours_old": 177.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 149.4,
+      "hours_old": 149.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 147.5,
+      "hours_old": 147.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 143.7,
+      "hours_old": 143.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 81.8,
+      "hours_old": 81.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 81.1,
+      "hours_old": 81.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 76.8,
+      "hours_old": 76.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "Re: Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Salut Nico, Et voici en PJ le bdc signé Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-25T10:03:57.000Z",
-      "hours_old": 32.8,
+      "hours_old": 32.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "LOT",
       "snippet": "Bon aprem [cid:da78bebd-a497-46c9-87b1-7a8d458729db]",
       "date": "2026-03-25T13:58:17.000Z",
-      "hours_old": 28.9,
+      "hours_old": 29,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonjour Alex, Je vous renvoie un bon de commande car je me suis trompé en entrant le prix de vente, c’est 16450€ et non 15450€, désolé pour le contretemps. Pouvez-vous me renvo",
       "date": "2026-03-26T15:18:58.000Z",
-      "hours_old": 3.5,
+      "hours_old": 3.6,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
       "snippet": "Je t'avais pas appliqué la remise marchand, ci-joint le nouveau BDC. Cdt TR Le jeu. 26 mars 2026 à 15:50, Thibault Rousset < thibault.rousset@ttrmauto.com> a écrit :",
       "date": "2026-03-26T14:51:19.000Z",
-      "hours_old": 4,
+      "hours_old": 4.1,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 7
@@ -185,7 +185,7 @@
       "subject": "[] - [HE360RW] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/Gns_dJGAimr4vIwZSEKnn3b8MYLnMRwBpc5sblGvilHk0szVUzplnqP2UZIn-cOZMQVNqpZdP6vFMljEFpY8HHnDkHY290kNDFristiRDhGat_ISQfkraJoA",
       "date": "2026-03-26T07:13:25.000Z",
-      "hours_old": 11.6,
+      "hours_old": 11.7,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -196,7 +196,7 @@
       "subject": "[] - [HE893NJ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/cdhjrWUPa0Lszo1HS32NgKVL5y1dVrr1yZq_7stV5kmrLMlRXNbZifQ7iHeVmVUm-c1jC00Ci8L8CU5SwFhr7TAbVsoC4oXG98iH08y8AOqByxCAy9aFWCHj",
       "date": "2026-03-26T07:19:07.000Z",
-      "hours_old": 11.5,
+      "hours_old": 11.6,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -207,7 +207,7 @@
       "subject": " 🚗 Nouveau catalogue VO et VN 🚗",
       "snippet": "",
       "date": "2026-03-26T08:07:31.000Z",
-      "hours_old": 10.7,
+      "hours_old": 10.8,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -218,7 +218,18 @@
       "subject": "IVECO DAILY 3T5 BENNE + COFFRE RJ 3.0 160CH de 02/2023 avec 50 536 Kms à 29 990€ HT",
       "snippet": "Une Benne coffre de 3 litres en roues jumelées ! IVECO DAILY 3T5 BENNE + COFFRE ROUES JUMELEES 35C16 160CH De 02/2023 50 536 Kms Couleur : BLANC",
       "date": "2026-03-26T09:31:18.000Z",
-      "hours_old": 9.3,
+      "hours_old": 9.4,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 6
+    },
+    {
+      "id": "19d29cdd1a061806",
+      "from": "\"Clément Comaille\" <clement.comaille@usednext.lu>",
+      "subject": "BMW M8 Competition 625cv",
+      "snippet": "Bonjour à tous, Voici une très belle BMW M8 4.4 competition 625cv de stock : 03/2021 21 500km Full historique Dégât 200€ 258g de CO2 (Malus Fr 17 000€) Prix : 81 900€ TT",
+      "date": "2026-03-26T10:59:59.000Z",
+      "hours_old": 7.9,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -235,23 +246,12 @@
       "score": 6
     },
     {
-      "id": "19d29cdd1a061806",
-      "from": "\"Clément Comaille\" <clement.comaille@usednext.lu>",
-      "subject": "BMW M8 Competition 625cv",
-      "snippet": "Bonjour à tous, Voici une très belle BMW M8 4.4 competition 625cv de stock : 03/2021 21 500km Full historique Dégât 200€ 258g de CO2 (Malus Fr 17 000€) Prix : 81 900€ TT",
-      "date": "2026-03-26T10:59:59.000Z",
-      "hours_old": 7.8,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 6
-    },
-    {
       "id": "19d29e37201fe422",
       "from": "bdc-lms-systeminfo@cmlead.mercedes-benz.com",
       "subject": "Ihre Anfrage bei der Mercedes-Benz Assenheimer + Mulfinger GmbH & Co. KG (Lead #121324281)",
       "snippet": "Sehr geehrte/r Herr/Frau GUICHARD, vielen Dank für Ihre Anfrage über Mobile.de. Gerne bestätigen wir Ihnen hiermit den Eingang Ihrer Anfrage beim Mercedes-Benz Händler Assenh",
       "date": "2026-03-26T11:24:24.000Z",
-      "hours_old": 7.4,
+      "hours_old": 7.5,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -262,7 +262,7 @@
       "subject": "LEXON - 4 x BMW 120 M Sport  - TOIT PANORAMIQUE / DRIVING ASSISTANT PLUS / PACK HIVER",
       "snippet": "Bonjour, Les prochaines unités sont disponible, toutes les photo’s ici joint; PRIX 26.495€ htva [d9016ab1-023e-49e3-a10c-70bf23ed37ee.JPG] [96710718-169a-45e1-8e46-cb78d7",
       "date": "2026-03-26T13:03:56.000Z",
-      "hours_old": 5.8,
+      "hours_old": 5.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -273,7 +273,7 @@
       "subject": "LEXON - 2 x Skoda Kamiq 1.0TSI DSG 115 Selection - 2025",
       "snippet": "Bonjour, Les prochaines unités sont en stock, n’hésitez pas si il y a des questions; [cid:image006.png@01DCBD1B.0B0054D0][cid:image007.png@01DCBD1B.0B0054D0] PRIX 16.995€",
       "date": "2026-03-26T13:16:27.000Z",
-      "hours_old": 5.6,
+      "hours_old": 5.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -284,7 +284,7 @@
       "subject": "LEXON - 5 x BMW 120 M Sport  - DRIVING ASSISTANT PLUS / PACK HIVER",
       "snippet": "Bonjour, Les prochaines unités sont en stock, toutes les photo’s ici joint; PRIJS 25.250€ ex btw [d9016ab1-023e-49e3-a10c-70bf23ed37ee.JPG] [96710718-169a-45e1-8e46-cb78d",
       "date": "2026-03-26T13:13:32.000Z",
-      "hours_old": 5.6,
+      "hours_old": 5.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -295,7 +295,7 @@
       "subject": "TR: Candidature Gestionnaire Administratif - Riou Jérémie",
       "snippet": "[Capture d’eìcran 2025-08-20 aÌ 21.23.08.png] De : jérémie riou <jeremieriou18@gmail.com> Date : jeudi, 26 mars 2026 à 14:11 À : juliette@flease.fr <juliette@flease.fr> O",
       "date": "2026-03-26T13:18:08.000Z",
-      "hours_old": 5.5,
+      "hours_old": 5.6,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -306,7 +306,7 @@
       "subject": "[] - [HE272BC] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/tUk2u9GeQds0mziQFKwY1LbGru7Z5QUyZfM0I1jNh5Qx1KXg2DDFM-PMZnhCKbeIGakERqlgKzPAfG7d4HRjrGRFJrUD6UTBV5UhKhO2VAe3hsM8mRERQ1Wb",
       "date": "2026-03-26T14:42:40.000Z",
-      "hours_old": 4.1,
+      "hours_old": 4.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -317,7 +317,7 @@
       "subject": "new: MG3_ MG ZS_MG4",
       "snippet": "Hello, please see our current offer for new 14X MG3 HYBRID+ LUXURY * 1.reg. - 2026 * KM - 0km * colors: mix * price - 16.300EURO 14X ZS LUXURY HYBRID+ * 1.reg. -",
       "date": "2026-03-26T15:04:16.000Z",
-      "hours_old": 3.8,
+      "hours_old": 3.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -328,7 +328,7 @@
       "subject": "Livraison",
       "snippet": "Re Bonjour, La Clio sera prête a partir de vendredi prochain 03/04. Cordialement [cid:image001.png@01DCBD3D.426C97E0] Xavier LE GAL Conseiller Commercial RENAULT edena",
       "date": "2026-03-26T15:26:12.000Z",
-      "hours_old": 3.4,
+      "hours_old": 3.5,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -339,7 +339,7 @@
       "subject": "RENAULT TRAFIC L2H1 2.0 DCI 150CH 9 places du 12/2022 avec 75 617 kms à 21 990 € HT",
       "snippet": "L’utilitaire idéal pour la location. Disponible dès maintenant ! RENAULT TRAFIC III L2H1 9 Places Combi Zen 2.0 DCI 150CH Couleur : Gris foncé De 12/",
       "date": "2026-03-26T15:46:44.000Z",
-      "hours_old": 3.1,
+      "hours_old": 3.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -350,7 +350,7 @@
       "subject": "Re: Inscription plateforme GIS@WEB",
       "snippet": "Messieurs, Ci-joint le doc ainsi que les pièces demandées. Bonne fin de journée, Vincent [portrait] [flease logo] Vincent Dreyfus - Co-fondateur 887 chemin Pierre",
       "date": "2026-03-26T16:43:03.000Z",
-      "hours_old": 2.1,
+      "hours_old": 2.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -361,7 +361,7 @@
       "subject": "Re: Commande Tiguan",
       "snippet": "Bonjour Alex, Vous trouverez ci-joint une copie des documents. La facture sera émise demain. Ne contactez pas Cloé pour tout ce qui est lié au commerce, elle ne gère pas cel",
       "date": "2026-03-26T16:49:00.000Z",
-      "hours_old": 2,
+      "hours_old": 2.1,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -372,7 +372,7 @@
       "subject": "Used Nissan Primastar 150 MT 8 seats",
       "snippet": "Dear customers, Available in 10 days, COC included Location : Luxembourg **50x Nissan Primastar L1H1 DCI 150 MT Tekna** 1st reg : 01/2025 Km : 20.500 (ave",
       "date": "2026-03-26T17:20:16.000Z",
-      "hours_old": 1.5,
+      "hours_old": 1.6,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -383,7 +383,7 @@
       "subject": "2x used Nissan Juke DIG-T 114 N-Connecta",
       "snippet": "Dear customers, Available in 10 days, COC included Location : Luxembourg **2x Nissan Juke 1.0 DIG-T 114 N-Connecta** 1st reg : 01/2025 Km : 20.500 (averag",
       "date": "2026-03-26T17:44:40.000Z",
-      "hours_old": 1.1,
+      "hours_old": 1.2,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -394,7 +394,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 556.8,
+      "hours_old": 556.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -405,7 +405,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (2ce7893)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 9.0 seconds Finished: 2026-03-26 07:17:41 UTC",
       "date": "2026-03-26T07:18:01.000Z",
-      "hours_old": 11.5,
+      "hours_old": 11.6,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -416,7 +416,7 @@
       "subject": "Vos négociations commerciales sont-elles réellement sécurisées et valorisées ?",
       "snippet": "https://irfd.eu/ https://irfd.eu/ Se former n'a jamais été aussi simple. [ https://irfd.eu/ ] https://irfd.eu/ Inscrivez vous dès maintenant ! [ https://irfd.eu/ ] https",
       "date": "2026-03-26T07:50:12.000Z",
-      "hours_old": 11,
+      "hours_old": 11.1,
       "label": null,
       "category": "sans_reponse",
       "score": 1
