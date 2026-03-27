@@ -1,6 +1,6 @@
 {
   "date": "2026-03-27",
-  "generated_at": "2026-03-27T13:25:45.735Z",
+  "generated_at": "2026-03-27T13:30:45.434Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 389,
+      "hours_old": 389.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 380.9,
+      "hours_old": 381,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 196.2,
+      "hours_old": 196.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 168,
+      "hours_old": 168.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 166.1,
+      "hours_old": 166.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 162.3,
+      "hours_old": 162.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 99.7,
+      "hours_old": 99.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 95.4,
+      "hours_old": 95.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Et voici les docs signés. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Cal",
       "date": "2026-03-25T09:35:48.000Z",
-      "hours_old": 51.8,
+      "hours_old": 51.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "[] - [HE272BC] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/tUk2u9GeQds0mziQFKwY1LbGru7Z5QUyZfM0I1jNh5Qx1KXg2DDFM-PMZnhCKbeIGakERqlgKzPAfG7d4HRjrGRFJrUD6UTBV5UhKhO2VAe3hsM8mRERQ1Wb",
       "date": "2026-03-26T14:42:40.000Z",
-      "hours_old": 22.7,
+      "hours_old": 22.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
       "snippet": "Je t'avais pas appliqué la remise marchand, ci-joint le nouveau BDC. Cdt TR Le jeu. 26 mars 2026 à 15:50, Thibault Rousset < thibault.rousset@ttrmauto.com> a écrit :",
       "date": "2026-03-26T14:51:19.000Z",
-      "hours_old": 22.6,
+      "hours_old": 22.7,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonjour Alex, Je vous renvoie un bon de commande car je me suis trompé en entrant le prix de vente, c’est 16450€ et non 15450€, désolé pour le contretemps. Pouvez-vous me renvo",
       "date": "2026-03-26T15:18:58.000Z",
-      "hours_old": 22.1,
+      "hours_old": 22.2,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Livraison",
       "snippet": "Re Bonjour, La Clio sera prête a partir de vendredi prochain 03/04. Cordialement [cid:image001.png@01DCBD3D.426C97E0] Xavier LE GAL Conseiller Commercial RENAULT edena",
       "date": "2026-03-26T15:26:12.000Z",
-      "hours_old": 22,
+      "hours_old": 22.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "Used Nissan Primastar 150 MT 8 seats",
       "snippet": "Dear customers, Available in 10 days, COC included Location : Luxembourg **50x Nissan Primastar L1H1 DCI 150 MT Tekna** 1st reg : 01/2025 Km : 20.500 (ave",
       "date": "2026-03-26T17:20:16.000Z",
-      "hours_old": 20.1,
+      "hours_old": 20.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "2x used Nissan Juke DIG-T 114 N-Connecta",
       "snippet": "Dear customers, Available in 10 days, COC included Location : Luxembourg **2x Nissan Juke 1.0 DIG-T 114 N-Connecta** 1st reg : 01/2025 Km : 20.500 (averag",
       "date": "2026-03-26T17:44:40.000Z",
-      "hours_old": 19.7,
+      "hours_old": 19.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "ATTESTATION TRAFIC GP555VY",
       "snippet": "Bonjour, Dans le cadre de l'annulation de la vente du Renault Trafic immatriculé GP-555-VY, pourriez-vous svp nous retourner le document ci-joint tamponné et signé? Merci d'a",
       "date": "2026-03-27T08:20:03.000Z",
-      "hours_old": 5.1,
+      "hours_old": 5.2,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Voici les derniers documents à nous retourner signés. Les immatriculations ont été faites ce jour, vous allez les recevoir d'ici une dizaine de jours. Bien cordial",
       "date": "2026-03-27T09:19:25.000Z",
-      "hours_old": 4.1,
+      "hours_old": 4.2,
       "label": "A traiter",
       "category": "sans_reponse",
       "score": 8
@@ -251,7 +251,7 @@
       "subject": "Re: BC",
       "snippet": "Steeven, La HD-979-LK le parc de Miramas indique qu’elle n’est pas chez eux. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www",
       "date": "2026-03-27T10:05:55.000Z",
-      "hours_old": 3.3,
+      "hours_old": 3.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "Réponse automatique : Inscription plateforme GIS@WEB",
       "snippet": "Bonjour, Je suis absent aujourd’hui en avec un accès limité à mes emails. Pour toute urgence, vous pouvez contacter Marc Allanic en cas d'urgence Marc.Allanic@vwfs.com",
       "date": "2026-03-27T09:07:20.000Z",
-      "hours_old": 4.3,
+      "hours_old": 4.4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -273,7 +273,7 @@
       "subject": "MIX : Nissan , Skoda, Peugeot, Kia, Tiguan, Toyota,Hyundai,Mercedes, Omoda",
       "snippet": "",
       "date": "2026-03-27T09:18:41.000Z",
-      "hours_old": 4.1,
+      "hours_old": 4.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -284,7 +284,7 @@
       "subject": "Fwd: 🗣️€ 13.000 - C4 HYBRID - 2025⭐MOUREY APPRO",
       "snippet": "[image: image001.png] [image: image002.png] *Vincent Dreyfus* - Co-fondateur 887 chemin Pierre Drevet 69300 Caluire et Cuire, France Tel: 06.27.59.22.09 <+33627592209>",
       "date": "2026-03-27T10:20:16.000Z",
-      "hours_old": 3.1,
+      "hours_old": 3.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -295,7 +295,7 @@
       "subject": "EP Véhicules --> Promo Du Jour --> 1 000 € de Remise !",
       "snippet": "Bonjour, Offre Du Jour ! 1 000 € de remise ! Disponible Rodange prêt à partir ! COC fournis ! Nouveau prix = prix départ Rodange ! modele type cv km couleur co2",
       "date": "2026-03-27T10:30:03.000Z",
-      "hours_old": 2.9,
+      "hours_old": 3,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -328,7 +328,7 @@
       "subject": "Corolla TS Team Deutschland 1.8 Hybrid 140 CVT",
       "snippet": "Bonjour, Celle-ci est disponible la semaine prochaine. N’hésitez pas s’il y a des questions : Corolla TS Team D. 1.8 Hybrid 140 CVT + Tech Pack + Winterpack Véhicule neuf:",
       "date": "2026-03-27T11:41:44.000Z",
-      "hours_old": 1.7,
+      "hours_old": 1.8,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -339,7 +339,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 575.4,
+      "hours_old": 575.5,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -350,7 +350,7 @@
       "subject": "R: Message from KM_C258",
       "snippet": "Hi Alex, here is the list of the cars. Price per car 11.900 Euro Model Version Color First Reg km CLIO 5 EVOLUTION TCE 90 Etoile 05/08/202",
       "date": "2026-03-26T14:56:50.000Z",
-      "hours_old": 22.5,
+      "hours_old": 22.6,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -361,7 +361,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (eca5c36)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 8.0 seconds Finished: 2026-03-27 07:16:50 UTC",
       "date": "2026-03-27T07:17:11.000Z",
-      "hours_old": 6.1,
+      "hours_old": 6.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -372,7 +372,7 @@
       "subject": "What’s the $ value of NetSuite ERP to you?",
       "snippet": "View Online <http://app.oracle.netsuite.com/e/es?s=1439730185&e=6152040&elqTrackId=e181c2f8ce36451bab0fa73603a6a119&elq=76dea96ded6c4c18a526ecfdf66f153d&elqaid=48836&elqat=1&el",
       "date": "2026-03-27T08:01:03.000Z",
-      "hours_old": 5.4,
+      "hours_old": 5.5,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -394,7 +394,7 @@
       "subject": "Invitation: Point tech - ven. 3 avr. 2026 2pm - 4pm (UTC+2) (Alex Guichard)",
       "snippet": "Point tech vendredi 3 avr. 2026 ⋅ 2pm – 4pm Heure d’Europe centrale - Paris Participer avec Google Meet https://meet.google.com/bic-mwwr-add?hs=224 Participer par tél",
       "date": "2026-03-27T12:54:25.000Z",
-      "hours_old": 0.5,
+      "hours_old": 0.6,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -405,7 +405,7 @@
       "subject": "Friday? Try something new!",
       "snippet": "Try this prompt in Warp to save hours of time every single day. Flip Around Friday Hi there, Every Friday at Warp, we challenge ourselves to try new things and expe",
       "date": "2026-03-27T13:01:37.000Z",
-      "hours_old": 0.4,
+      "hours_old": 0.5,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -416,6 +416,17 @@
       "subject": "L' ACTu stock du vendredi 🚗",
       "snippet": "Comme chaque vendredi, retrouvez notre **stock mis à jour** : véhicules occasions & 0 km, disponibles immédiatement. **Marques disponibles cette semaine :** BMW – Citroen – C",
       "date": "2026-03-27T13:18:34.000Z",
+      "hours_old": 0.2,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 1
+    },
+    {
+      "id": "19d2f791f8309da1",
+      "from": "Axel Van Uffelen <marchands@ttrmauto.com>",
+      "subject": "TTRM AUTO : DS 7 Étoile HDi 130 suréquipé",
+      "snippet": "Bonjour, Vous trouverez ci-dessous une offre de DS7 : Modèle KM Couleur MEC Prix TTC Options DS 7 ÉTOILE 1.5 BlueHDi 130 EAT 8 17 697 vol de nuit 3/2025 28 900 € Tech absol",
+      "date": "2026-03-27T13:23:59.000Z",
       "hours_old": 0.1,
       "label": null,
       "category": "sans_reponse",
@@ -423,10 +434,10 @@
     }
   ],
   "summary": {
-    "total": 38,
+    "total": 39,
     "critical": 0,
     "high": 23,
     "medium": 0,
-    "low": 15
+    "low": 16
   }
 }
