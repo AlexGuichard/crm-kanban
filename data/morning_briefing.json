@@ -1,6 +1,6 @@
 {
   "date": "2026-03-29",
-  "generated_at": "2026-03-29T17:55:45.445Z",
+  "generated_at": "2026-03-29T18:00:45.611Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 441.5,
+      "hours_old": 441.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 433.4,
+      "hours_old": 433.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Alex, Tu trouveras en PJ le devis pour la commande des 2 Clio E-TECH Hybrides. Après vérification je ne pourrai pas anticiper la commande avant de savoir si les voitures sont",
       "date": "2026-03-19T09:13:29.000Z",
-      "hours_old": 248.7,
+      "hours_old": 248.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 220.5,
+      "hours_old": 220.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 218.6,
+      "hours_old": 218.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 214.8,
+      "hours_old": 214.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 152.2,
+      "hours_old": 152.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 147.9,
+      "hours_old": 148,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "Re: DOCUMENTS T-ROC WVGZZZA14SV030659",
       "snippet": "Bonjour, Et voici les docs signés. Cordialement, Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300 Cal",
       "date": "2026-03-25T09:35:48.000Z",
-      "hours_old": 104.3,
+      "hours_old": 104.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
       "snippet": "Je t'avais pas appliqué la remise marchand, ci-joint le nouveau BDC. Cdt TR Le jeu. 26 mars 2026 à 15:50, Thibault Rousset < thibault.rousset@ttrmauto.com> a écrit :",
       "date": "2026-03-26T14:51:19.000Z",
-      "hours_old": 75.1,
+      "hours_old": 75.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonjour Alex, Je vous renvoie un bon de commande car je me suis trompé en entrant le prix de vente, c’est 16450€ et non 15450€, désolé pour le contretemps. Pouvez-vous me renvo",
       "date": "2026-03-26T15:18:58.000Z",
-      "hours_old": 74.6,
+      "hours_old": 74.7,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "ATTESTATION TRAFIC GP555VY",
       "snippet": "Bonjour, Dans le cadre de l'annulation de la vente du Renault Trafic immatriculé GP-555-VY, pourriez-vous svp nous retourner le document ci-joint tamponné et signé? Merci d'a",
       "date": "2026-03-27T08:20:03.000Z",
-      "hours_old": 57.6,
+      "hours_old": 57.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Voici les derniers documents à nous retourner signés. Les immatriculations ont été faites ce jour, vous allez les recevoir d'ici une dizaine de jours. Bien cordial",
       "date": "2026-03-27T09:19:25.000Z",
-      "hours_old": 56.6,
+      "hours_old": 56.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Re: BC",
       "snippet": "Steeven, La HD-979-LK le parc de Miramas indique qu’elle n’est pas chez eux.. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www",
       "date": "2026-03-27T14:41:43.000Z",
-      "hours_old": 51.2,
+      "hours_old": 51.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "[] - [GV264ZA] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/m_ZFF7lNIJBfmzEntlZapfG4GXxGSFEzTDSu72cOv6LP4g7OZh8mSyw5q_6K24rYWr2rCbymy2c0yg9d1sHjiO70EF4mXTVElJ6eJdycpr8t6PQNtauD-NEi",
       "date": "2026-03-28T22:26:22.000Z",
-      "hours_old": 19.5,
+      "hours_old": 19.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "[] - [HE360RW] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/kO1fnsTKmbl4eW14QV-iZ1Wg34H_oIh166az_sshvoBf85t0BCxqx2ibb2EU0Au09okGrtJNRFPytvz2jh9fcDCudHRkHiA5xY9et3WBtx-A5FqIcmRdpVR7",
       "date": "2026-03-28T22:49:35.000Z",
-      "hours_old": 19.1,
+      "hours_old": 19.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,7 +218,7 @@
       "subject": "[] - [GV020MY] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/Cjg-8yy_977UsNTceAPu04Vlps5mVwaVhfcO_BXKk2fxPPhQ4EnANXAtjnVQYmhzIfvSDL2igEoETVrTb4VM3NN1huT9SYrFFq49nkwvZijf6QWuxZbcaFJ8",
       "date": "2026-03-28T22:47:27.000Z",
-      "hours_old": 19.1,
+      "hours_old": 19.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -229,7 +229,7 @@
       "subject": "[] - [HE272BC] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/XxIXkGgK_N-St2Y-o3F7HlRh3DpAiP4zS8fWY9QKrL_UVcfTPZ9QaZEvQ3i8RaDgmBVQUNONa8xz9eexOeP39HGVySzQQ0k6XnjF-upyyLLDR0jdJhkUHI7g",
       "date": "2026-03-28T22:47:18.000Z",
-      "hours_old": 19.1,
+      "hours_old": 19.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -240,7 +240,7 @@
       "subject": "[] - [GX386KV] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/dSYzGJrfiOIC7N6INNcUd-YI000r65NAiZK7fPxk_En-vhs8QP505Yif1-zZlGOjl0_EWDTRnPvXuhTdQ-C2qn0lwLo6ReJFihC9KzKfH_NfMT1bQrytIjdb",
       "date": "2026-03-28T22:57:47.000Z",
-      "hours_old": 19,
+      "hours_old": 19.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -251,7 +251,7 @@
       "subject": "[] - [GX364KV] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/H_c-o0DKgRcsDdSSGoFW_KS_4EPEM8ffD-brdpB-89dnHsLBrPgVG35xU0CNxDTlVVKEBG9oEGcm8h-Zx4phyzwpzH3fdXjBPXDAVJrTA9vtvth2iUlInvVP",
       "date": "2026-03-28T22:56:00.000Z",
-      "hours_old": 19,
+      "hours_old": 19.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "[] - [GX531WM] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/z7SV4_jzTEW4KJeF5ezJEOFjSj74lgf4Dbxlkwhwjjx8AEg-X1baXViUJk0ctCp1k9BtzbQ-X4_Z4niDnNB8tXy6S7owHCOvpVbTB47ZZspb4F1Oqz2CHlxI",
       "date": "2026-03-28T23:03:12.000Z",
-      "hours_old": 18.9,
+      "hours_old": 19,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -273,7 +273,7 @@
       "subject": "[] - [GX350KV] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/xESL-DVCWYDL9YTQ7_uZLlblvzpgHLsOL5dHra4pnmcvO5TI2XgRE8e2hbM45EniiDxN4r-Rai5TRsoHAN9M8Qf0iocAmm5QW3qiUrOJ7OBx1FtV_W6wkT7vHao",
       "date": "2026-03-28T22:59:41.000Z",
-      "hours_old": 18.9,
+      "hours_old": 19,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "[] - [GX360RL] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/LVyo_et6HCRCfGeh9M-7pbb3Lr1JXFa29GTGUJ5ThQdBgd3JZZo5MZogXSOqLAE7dXz7GFPc-msuTGlq4h9v2KXIWquRqZkTbkHMiZ7kwXjAcd6MI-WL13P7",
       "date": "2026-03-29T00:14:35.000Z",
-      "hours_old": 17.7,
+      "hours_old": 17.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "[] - [GP863CV] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/Zc-AlAfSJtdJyHZ2uuyLmxpgt6cq8sDVj5NQHA2OsuFGyvx1Md4E20Z-IZRifOdqgN0eOZ7btbCRxSt7-1s5Kq1HYseraIMTZoK43gU4C-ncuO2XM99eMqNY",
       "date": "2026-03-29T00:35:29.000Z",
-      "hours_old": 17.3,
+      "hours_old": 17.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -306,7 +306,29 @@
       "subject": "[] - [GP251WA] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/_tV_9hXsPv5qVmv1OZ7TO-QJlaMHjcxED-DcwrxRkxYtRk18zy_nfG7FPirCpWLcXOV1NWJCaTtww3JR5RCoPT7f7h9FlD4ccYgtOK0i18KEJUAKVxAddaEk",
       "date": "2026-03-29T01:07:13.000Z",
-      "hours_old": 16.8,
+      "hours_old": 16.9,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d3731ba3ad2806",
+      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
+      "subject": "[] - [GP834SQ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
+      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/hcw0A1f5m08KLG2UT5zvpdDZ1RWCCwO7ur2TfD5b6o8P3oMqk6tTExeKx71RxI-1Ua8Cdrrg05RzrH_sUCMWMCnNXSgNuLADAHRXuC9Z9XAW-4Pk7e6f28BR",
+      "date": "2026-03-29T01:24:58.000Z",
+      "hours_old": 16.6,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d3730a810d6a40",
+      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
+      "subject": "[] - [GP010FK] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
+      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/_zyqPEPkrmf3JjVr5YDzo5wQRESEftCWQfiqvdQS9VHqghQKzXZ-gvSamXox5XPo4_lnG7dH89t9eX0HC4Kb_me-_SwNn4AR-oAYHh5lf5yRXwUBRAYX8cyCLDM",
+      "date": "2026-03-29T01:23:58.000Z",
+      "hours_old": 16.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -345,33 +367,22 @@
       "score": 8
     },
     {
-      "id": "19d3731ba3ad2806",
-      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
-      "subject": "[] - [GP834SQ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
-      "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/hcw0A1f5m08KLG2UT5zvpdDZ1RWCCwO7ur2TfD5b6o8P3oMqk6tTExeKx71RxI-1Ua8Cdrrg05RzrH_sUCMWMCnNXSgNuLADAHRXuC9Z9XAW-4Pk7e6f28BR",
-      "date": "2026-03-29T01:24:58.000Z",
-      "hours_old": 16.5,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
-      "id": "19d3730a810d6a40",
-      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
-      "subject": "[] - [GP010FK] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
-      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/_zyqPEPkrmf3JjVr5YDzo5wQRESEftCWQfiqvdQS9VHqghQKzXZ-gvSamXox5XPo4_lnG7dH89t9eX0HC4Kb_me-_SwNn4AR-oAYHh5lf5yRXwUBRAYX8cyCLDM",
-      "date": "2026-03-29T01:23:58.000Z",
-      "hours_old": 16.5,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19d3759dddb857a6",
       "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
       "subject": "[] - [GP787ZQ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/JzpD-fIfdYP8qW49MdEugfoQVvPcsxileZO0wBVnOrh1RZOXvNSVh_ppgr_gRsVlTCUB_YIgfQJIdvurl3t5Upiuk_byymOFr2Xc8SZxQ0zM3Xvu14MVeXVr",
       "date": "2026-03-29T02:08:48.000Z",
+      "hours_old": 15.9,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d375be2ffad52b",
+      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
+      "subject": "[] - [ZZ000ZZ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
+      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/6FoRW63HBG6avnD4tCLUpfZjCazszAYieY0pq5nI8_JbygBEHb5XYiRyaegpSUlJMtuY99tf9WlZ3w1mOgtBhUvoK9bB7Ffl_7k7g8ovEPfHjlYWvkmaFuEuyz7",
+      "date": "2026-03-29T02:11:00.000Z",
       "hours_old": 15.8,
       "label": null,
       "category": "sans_reponse",
@@ -389,23 +400,12 @@
       "score": 8
     },
     {
-      "id": "19d375be2ffad52b",
-      "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
-      "subject": "[] - [ZZ000ZZ] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
-      "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/6FoRW63HBG6avnD4tCLUpfZjCazszAYieY0pq5nI8_JbygBEHb5XYiRyaegpSUlJMtuY99tf9WlZ3w1mOgtBhUvoK9bB7Ffl_7k7g8ovEPfHjlYWvkmaFuEuyz7",
-      "date": "2026-03-29T02:11:00.000Z",
-      "hours_old": 15.7,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19d37697ad82452e",
       "from": "noreply My Express Driver <noreply@myexpressdriver.com>",
       "subject": "[] - [GV653JX] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/XyAnREsKUMP8SYEtcesa6fC9r5wHuhTz6N9x-WZgHHs-AVloPns_qb8vcrzbTO5R2qRG9AwajHjquL5zwP71VcZavk2I_DU2MZ9xVWFnoO7V8a4scO01n51m",
       "date": "2026-03-29T02:25:52.000Z",
-      "hours_old": 15.5,
+      "hours_old": 15.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -416,7 +416,7 @@
       "subject": "[] - [GV749PB] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.af.d.sendibt2.com/tr/mr/Vo2EL7h3l5QG0fmR8AfGYMxHJu_nJnEe5-yhE6n3Ymxx6EYrUsbL7WOACpiiYvSvdT06GUGA5TaRQhRhXCTdp5PuJLuLsLE6NxcFwXeIabuzfR-pYKihE5d_",
       "date": "2026-03-29T02:24:40.000Z",
-      "hours_old": 15.5,
+      "hours_old": 15.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -427,7 +427,7 @@
       "subject": "[] - [GW841HG] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/siV5NbO4LjNoKdYPOJ3gU9BXAfa0MWfE_MXPC42HXWhHhomXLN9kaWkULyuhdCWZPx7I36gxF3jhP_vK8U-W3oP_1v00_QVvzIqC7ZmjM-OhNtZTrF_dLXiP",
       "date": "2026-03-29T02:41:20.000Z",
-      "hours_old": 15.2,
+      "hours_old": 15.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -438,7 +438,7 @@
       "subject": "[] - [GV692ZC] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.bh.d.sendibt3.com/tr/mr/QH_apxJvU2OKVrXMx9RMfhyWt-AWKWtiBI6x96u2QDmZ2l_bTuY7JYWqVVDcqF1apGPWJ6lQi1nyzSulPTFp3Qu6A8rn7jsSiXcOWvEznCGThLUB-ZKwsOE7",
       "date": "2026-03-29T02:53:06.000Z",
-      "hours_old": 15,
+      "hours_old": 15.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
