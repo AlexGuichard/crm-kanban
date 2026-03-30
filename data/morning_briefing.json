@@ -1,6 +1,6 @@
 {
   "date": "2026-03-30",
-  "generated_at": "2026-03-30T08:50:45.809Z",
+  "generated_at": "2026-03-30T08:55:45.285Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 456.4,
+      "hours_old": 456.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 448.3,
+      "hours_old": 448.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 235.4,
+      "hours_old": 235.5,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 233.5,
+      "hours_old": 233.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 229.7,
+      "hours_old": 229.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 167.8,
+      "hours_old": 167.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Alex, Comme discuté ci-joint mon offre Citroën c3 max vo. PRIX AFFICHE : 14.600 € TTC à négocier selon quantité. Dis-moi ce que tu en penses. merci Cordiale",
       "date": "2026-03-23T09:45:29.000Z",
-      "hours_old": 167.1,
+      "hours_old": 167.2,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 162.8,
+      "hours_old": 162.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "Re: Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Salut Nico, Et voici en PJ le bdc signé Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-25T10:03:57.000Z",
-      "hours_old": 118.8,
+      "hours_old": 118.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -108,19 +108,8 @@
       "subject": "LOT",
       "snippet": "Bon aprem [cid:da78bebd-a497-46c9-87b1-7a8d458729db]",
       "date": "2026-03-25T13:58:17.000Z",
-      "hours_old": 114.9,
+      "hours_old": 115,
       "label": "ajouter au dash",
-      "category": "label",
-      "score": 8
-    },
-    {
-      "id": "19d2aa03194524cd",
-      "from": "Thibault Rousset <thibault.rousset@ttrmauto.com>",
-      "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
-      "snippet": "Je t'avais pas appliqué la remise marchand, ci-joint le nouveau BDC. Cdt TR Le jeu. 26 mars 2026 à 15:50, Thibault Rousset < thibault.rousset@ttrmauto.com> a écrit :",
-      "date": "2026-03-26T14:51:19.000Z",
-      "hours_old": 90,
-      "label": "A traiter",
       "category": "label",
       "score": 8
     },
@@ -130,7 +119,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonjour Alex, Je vous renvoie un bon de commande car je me suis trompé en entrant le prix de vente, c’est 16450€ et non 15450€, désolé pour le contretemps. Pouvez-vous me renvo",
       "date": "2026-03-26T15:18:58.000Z",
-      "hours_old": 89.5,
+      "hours_old": 89.6,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -141,7 +130,7 @@
       "subject": "ATTESTATION TRAFIC GP555VY",
       "snippet": "Bonjour, Dans le cadre de l'annulation de la vente du Renault Trafic immatriculé GP-555-VY, pourriez-vous svp nous retourner le document ci-joint tamponné et signé? Merci d'a",
       "date": "2026-03-27T08:20:03.000Z",
-      "hours_old": 72.5,
+      "hours_old": 72.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -152,7 +141,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Voici les derniers documents à nous retourner signés. Les immatriculations ont été faites ce jour, vous allez les recevoir d'ici une dizaine de jours. Bien cordial",
       "date": "2026-03-27T09:19:25.000Z",
-      "hours_old": 71.5,
+      "hours_old": 71.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -174,7 +163,7 @@
       "subject": "RE: Besoins",
       "snippet": "Alex, Veuillez trouver ci-joint le bon de commande à me renvoyer svp tamponné et signé ainsi que la demande de mandat d’immatriculation. Vous trouverez également le RIB afin",
       "date": "2026-03-27T16:40:16.000Z",
-      "hours_old": 64.2,
+      "hours_old": 64.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -185,7 +174,7 @@
       "subject": "Mail automatique",
       "snippet": "Hello Titouan, J’espère que tu vas bien. Je pense qu’il y a un problème avec notre compte car j’ai reçu 115 mails automatique ce week-end. Peux-tu checker et me dire stp ?",
       "date": "2026-03-30T07:13:22.000Z",
-      "hours_old": 1.6,
+      "hours_old": 1.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,8 +185,19 @@
       "subject": "Re: Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Salut Nico, Tu peux en rajouter un troisième stp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Dre",
       "date": "2026-03-30T08:44:52.000Z",
-      "hours_old": 0.1,
+      "hours_old": 0.2,
       "label": "A traiter",
+      "category": "label",
+      "score": 7
+    },
+    {
+      "id": "19d2aa03194524cd",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
+      "snippet": "Bonjour Thibault, Et voici le bdc signé. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 6",
+      "date": "2026-03-30T08:53:13.000Z",
+      "hours_old": 0,
+      "label": "ajouter au dash",
       "category": "label",
       "score": 7
     },
@@ -218,7 +218,7 @@
       "subject": "RENAULT TRAFICL2H1 3000 2.0 dCi 150ch Advance",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/swV3SkOe2h6I) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-30T07:30:31.000Z",
-      "hours_old": 1.3,
+      "hours_old": 1.4,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -229,7 +229,7 @@
       "subject": "X2 CITROEN BERLINGO M 1.5 HDI 100CH à partir de 8 990€ HT",
       "snippet": "Bonjour, pour bien commencer la semaine X2 Citroen Berlingo M C8237 CITROËN BERLINGO M 650 KG 1.5 HDI 100 CH DRIVER 2 PL + CARPLAY + REGUL + CAM + CLIM + TE",
       "date": "2026-03-30T08:22:39.000Z",
-      "hours_old": 0.5,
+      "hours_old": 0.6,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -246,12 +246,34 @@
       "score": 2
     },
     {
+      "id": "19d29ea756aad912",
+      "from": "\"Zank, Robert\" <r.zank@assenheimer-mulfinger.de>",
+      "subject": "AW: [UNKNOWN SENDER] Re: Ihre Anfrage bei Mercedes-Benz Vertragspartner Assenheimer + Mulfinger GmbH & Co. KG (Lead #121324281)",
+      "snippet": "Hi Alex https://suchen.mobile.de/fahrzeuge/details.html?id=449520615&isSearchRequest=true BR Robert Von: Alex Guichard <alex@flease.fr> Gesendet: Montag, 30. März 20",
+      "date": "2026-03-30T08:52:21.000Z",
+      "hours_old": 0.1,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 2
+    },
+    {
+      "id": "19d3df040cdbe73d",
+      "from": "Lauryn LAHITTE <l.lahitte@autobuy.fr>",
+      "subject": "FACTURE AUTOBUY GV-078-RL",
+      "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
+      "date": "2026-03-30T08:50:44.000Z",
+      "hours_old": 0.1,
+      "label": null,
+      "category": "sans_reponse",
+      "score": 2
+    },
+    {
       "id": "19d3de3de8fdcef4",
       "from": "no-reply@flease.fr",
       "subject": "Message from KM_C258",
       "snippet": "",
       "date": "2026-03-30T08:57:49.000Z",
-      "hours_old": -0.1,
+      "hours_old": 0,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -262,7 +284,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 642.8,
+      "hours_old": 642.9,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -273,7 +295,7 @@
       "subject": "[AlexGuichard/crm-kanban] Run failed: Briefing Matinal - main (44031c1)",
       "snippet": "[AlexGuichard/crm-kanban] Briefing Matinal workflow run Repository: AlexGuichard/crm-kanban Workflow: Briefing Matinal Duration: 8.0 seconds Finished: 2026-03-30 07:51:37 UTC",
       "date": "2026-03-30T07:51:57.000Z",
-      "hours_old": 1,
+      "hours_old": 1.1,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -284,7 +306,7 @@
       "subject": "TTRM AUTO : Liste de VO / VN complète",
       "snippet": "Bonjour, Vous trouverez ci-dessous mon offre complète de véhicules : Modèle KM Couleur MEC Prix TTC Options Fre RENAULT Captur Techno 160 E-tech 1.8 10 Gris rafale 2025 25",
       "date": "2026-03-30T08:04:12.000Z",
-      "hours_old": 0.8,
+      "hours_old": 0.9,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -295,17 +317,17 @@
       "subject": "R: Message from KM_C258",
       "snippet": "Hi Alex, it is black is called Black etoile. Best, Matteo Da: Alex Guichard <alex@flease.fr> Inviato: lunedì 30 marzo 2026 10:10 A: Matteo Auto Zago <m.sal",
       "date": "2026-03-30T08:22:13.000Z",
-      "hours_old": 0.5,
+      "hours_old": 0.6,
       "label": null,
       "category": "sans_reponse",
       "score": 1
     }
   ],
   "summary": {
-    "total": 27,
+    "total": 29,
     "critical": 0,
     "high": 18,
     "medium": 1,
-    "low": 8
+    "low": 10
   }
 }
