@@ -1,38 +1,6 @@
 {
   "vehicles": [
     {
-      "id": "5a7846c5-087c-424d-8665-4ade7ff28e8b",
-      "url_annonce": "https://www.lacentrale.fr/auto-occasion-annonce-69118112458.html",
-      "source": "La Centrale",
-      "marque": "RENAULT AUSTRAL",
-      "modele": "Austral",
-      "annee": 2024,
-      "km": 20873,
-      "prix_demande": 30990,
-      "carburant": "Hybride essence électrique",
-      "boite": "Automatique",
-      "couleur": "Bleu rqh  noir gne",
-      "localisation": "35600 REDON",
-      "fournisseur_nom": "",
-      "photo": "https://www.lacentrale.fr/static/fragment-header-footer/media/icon-promoneuve.ccc70175.svg",
-      "titre": "Annonce Renault austral e-tech hybrid 200 techno esprit alpine 2024 HYBRIDE_ESSENCE_ELECTRIQUE occasion - Ille-et-Vilaine 35",
-      "column": "sourcing",
-      "sub_stage": "a_contacter",
-      "priority": 3,
-      "documents": {
-        "carte_grise": false,
-        "facture_achat": false,
-        "certificat_cession": false
-      },
-      "created_at": "2026-03-31T15:57:15",
-      "historique": [
-        {
-          "date": "2026-03-31",
-          "action": "Importé depuis La Centrale"
-        }
-      ]
-    },
-    {
       "id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
       "lbc_id": "3110744642",
       "url_annonce": "https://www.leboncoin.fr/ad/voitures/3110744642",
