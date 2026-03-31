@@ -17,7 +17,7 @@
       "photo": "https://pictures.lacentrale.fr/classifieds/E118112458_STANDARD_0.jpg?format=webp&lastUpdated=1774853127&size=92x69&signature=699d06ad87c373562d8b0d811407990d208483ededef416e39532163",
       "titre": "Annonce Renault austral e-tech hybrid 200 techno esprit alpine 2024 HYBRIDE_ESSENCE_ELECTRIQUE occasion - Ille-et-Vilaine 35",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "contacte",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -29,6 +29,10 @@
         {
           "date": "2026-03-31",
           "action": "Importé depuis La Centrale"
+        },
+        {
+          "date": "2026-03-31",
+          "action": "Sourcing : a_contacter → contacte"
         }
       ]
     },
