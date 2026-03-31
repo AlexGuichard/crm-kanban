@@ -258,7 +258,7 @@
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/3d/c9/28/3dc928733da1defd4d71acd5a9949811ef9dbec8.jpg?rule=ad-large",
       "titre": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6",
       "description": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6 crossover, suv, bleu, 7 cv, 5 portes, première mise en circulation le 02/06/2024, garantie 12 mois.\n\n7 places, longueur : 1,00 mètre(s), poids en charge : 1 kg\n\nOPTIONS ET ÉQUIPEMENTS :\nCouleur :\n  - PEINTURE METALLISEE\n\nAutres équipements et informations",
-      "column": "sourcing",
+      "column": "deal_perdu",
       "sub_stage": "contacte",
       "urgence": "urg_3",
       "created_at": "2026-03-13T10:08:25",
@@ -274,6 +274,10 @@
         {
           "date": "2026-03-13",
           "action": "Sourcing : a_contacter → contacte"
+        },
+        {
+          "date": "2026-03-31",
+          "action": "Deal perdu"
         }
       ],
       "vin": "",
@@ -281,7 +285,8 @@
       "prix_negocie": "",
       "fournisseur_email": "",
       "commentaire": "Ayvens, mail envoyé à Angel en att de son retour",
-      "priority": 3
+      "priority": 3,
+      "deal_lost_reason": null
     },
     {
       "id": "88f74eeb-b188-4367-8540-b190e482d7a7",
