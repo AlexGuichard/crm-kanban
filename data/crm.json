@@ -1,6 +1,38 @@
 {
   "vehicles": [
     {
+      "id": "36177d85-6f1a-451e-9a02-90537e40f233",
+      "url_annonce": "https://www.lacentrale.fr/auto-occasion-annonce-69118112458.html",
+      "source": "La Centrale",
+      "marque": "RENAULT AUSTRAL",
+      "modele": "Austral",
+      "annee": 2024,
+      "km": 20873,
+      "prix_demande": 30990,
+      "carburant": "Hybride essence électrique",
+      "boite": "Automatique",
+      "couleur": "Bleu rqh  noir gne",
+      "localisation": "35600 REDON",
+      "fournisseur_nom": "",
+      "photo": "",
+      "titre": "Annonce Renault austral e-tech hybrid 200 techno esprit alpine 2024 HYBRIDE_ESSENCE_ELECTRIQUE occasion - Ille-et-Vilaine 35",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "priority": 3,
+      "documents": {
+        "carte_grise": false,
+        "facture_achat": false,
+        "certificat_cession": false
+      },
+      "created_at": "2026-03-31T15:47:22",
+      "historique": [
+        {
+          "date": "2026-03-31",
+          "action": "Importé depuis La Centrale"
+        }
+      ]
+    },
+    {
       "id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
       "lbc_id": "3110744642",
       "url_annonce": "https://www.leboncoin.fr/ad/voitures/3110744642",
@@ -20,7 +52,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/38/ef/f1/38eff13522233672ad094ec9e53bbf57e0f155b4.jpg?rule=ad-large",
       "titre": "Renault Clio Blue dCi 100 ch GSR2 Evolution",
-      "description": "Renault Clio Blue dCi 100 ch GSR2 Evolution berline, noir, 5 cv, 5 portes, première mise en circulation le 21/11/2024, garantie 12 mois.\n\nPrix TTC : 17 450,00 €\nPrix HT : 14 541,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  Prédisp",
+      "description": "Renault Clio Blue dCi 100 ch GSR2 Evolution berline, noir, 5 cv, 5 portes, premiÃ¨re mise en circulation le 21/11/2024, garantie 12 mois.\n\nPrix TTC : 17 450,00 â¬\nPrix HT : 14 541,00 â¬\nLa TVA est rÃ©cupÃ©rable sur ce vÃ©hicule.\n\n5 places\n\nOPTIONS ET ÃQUIPEMENTS :\nAudio - TÃ©lÃ©communications :\n  -  PrÃ©disp",
       "column": "deal_perdu",
       "sub_stage": null,
       "urgence": "urg_3",
@@ -28,11 +60,11 @@
       "historique": [
         {
           "date": "2026-03-12",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-12",
-          "action": "Passé en À Payer"
+          "action": "PassÃ© en Ã Payer"
         },
         {
           "date": "2026-03-12",
@@ -40,19 +72,19 @@
         },
         {
           "date": "2026-03-12",
-          "action": "Livraison confirmée"
+          "action": "Livraison confirmÃ©e"
         },
         {
           "date": "2026-03-12",
-          "action": "Déplacé: sourcing → a_payer"
+          "action": "DÃ©placÃ©: sourcing â a_payer"
         },
         {
           "date": "2026-03-12",
-          "action": "Déplacé: a_payer → sourcing"
+          "action": "DÃ©placÃ©: a_payer â sourcing"
         },
         {
           "date": "2026-03-12",
-          "action": "Déplacé: sourcing → a_payer"
+          "action": "DÃ©placÃ©: sourcing â a_payer"
         },
         {
           "date": "2026-03-12",
@@ -60,35 +92,35 @@
         },
         {
           "date": "2026-03-12",
-          "action": "Déplacé: en_transport → livre"
+          "action": "DÃ©placÃ©: en_transport â livre"
         },
         {
           "date": "2026-03-12",
-          "action": "Déplacé: livre → sourcing"
+          "action": "DÃ©placÃ©: livre â sourcing"
         },
         {
           "date": "2026-03-12",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-12",
-          "action": "Sourcing : contacte → negociation"
+          "action": "Sourcing : contacte â negociation"
         },
         {
           "date": "2026-03-12",
-          "action": "Sourcing : negociation → BC Signé"
+          "action": "Sourcing : negociation â BC SignÃ©"
         },
         {
           "date": "2026-03-12",
-          "action": "Sourcing : bc_signe → negociation"
+          "action": "Sourcing : bc_signe â negociation"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-31",
-          "action": "Déplacé: sourcing → deal_perdu"
+          "action": "DÃ©placÃ©: sourcing â deal_perdu"
         }
       ],
       "transport_methode": "camion",
@@ -99,7 +131,7 @@
       "vin": "",
       "immatriculation": "",
       "prix_negocie": "",
-      "commentaire": "x1 clio 16 000€ \nx1 Clio 17 500€\nCG à ajouter",
+      "commentaire": "x1 clio 16 000â¬ \nx1 Clio 17 500â¬\nCG Ã  ajouter",
       "priority": 3
     },
     {
@@ -122,7 +154,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/8d/c6/a3/8dc6a34faac79427e95f01c777cb42b72f9d6176.jpg?rule=ad-large",
       "titre": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 Life Plus",
-      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 Life Plus tout-terrain, gris, 7 cv, 5 portes, première mise en circulation le 07/05/2024, garantie 12 mois.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  App-Connect sans fil\n  -  Ecran tactile 12\n  -  Service d'appel d'urgence e-Call\n  -",
+      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 Life Plus tout-terrain, gris, 7 cv, 5 portes, premiÃ¨re mise en circulation le 07/05/2024, garantie 12 mois.\n\n5 places\n\nOPTIONS ET ÃQUIPEMENTS :\nAudio - TÃ©lÃ©communications :\n  -  App-Connect sans fil\n  -  Ecran tactile 12\n  -  Service d'appel d'urgence e-Call\n  -",
       "column": "deal_perdu",
       "sub_stage": "contacte",
       "urgence": "urg_3",
@@ -130,35 +162,35 @@
       "historique": [
         {
           "date": "2026-03-13",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-13",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Déplacé: sourcing → a_payer"
+          "action": "DÃ©placÃ©: sourcing â a_payer"
         },
         {
           "date": "2026-03-13",
-          "action": "Déplacé: a_payer → sourcing"
+          "action": "DÃ©placÃ©: a_payer â sourcing"
         },
         {
           "date": "2026-03-13",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-31",
@@ -197,13 +229,13 @@
       "carburant": "Essence",
       "boite": "Automatique",
       "couleur": "Gris",
-      "localisation": "Mâcon (71)",
+      "localisation": "MÃ¢con (71)",
       "fournisseur_nom": "VOLKSWAGEN SEAT SKODA MACON - SUMA",
       "fournisseur_tel": "",
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/ce/e6/90/cee6903db8c2928e834316a1e8cff496b602c61d.jpg?rule=ad-large",
       "titre": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 VW Edition",
-      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 VW Edition tout-terrain, gris, 7 cv, 5 portes, couleur intérieure : noir, première mise en circulation le 26/09/2024, garantie 32 mois.\n\n5 places, longueur : 4 539,00 mètre(s), poids en charge : 1598 kg, carnet d'entretien\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Téléc",
+      "description": "Volkswagen Tiguan 1.5 eTSI 130ch DSG7 VW Edition tout-terrain, gris, 7 cv, 5 portes, couleur intÃ©rieure : noir, premiÃ¨re mise en circulation le 26/09/2024, garantie 32 mois.\n\n5 places, longueur : 4 539,00 mÃ¨tre(s), poids en charge : 1598 kg, carnet d'entretien\n\nOPTIONS ET ÃQUIPEMENTS :\nAudio - TÃ©lÃ©c",
       "column": "archive",
       "sub_stage": null,
       "urgence": "urg_3",
@@ -211,27 +243,27 @@
       "historique": [
         {
           "date": "2026-03-13",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Déplacé: sourcing → archive"
+          "action": "DÃ©placÃ©: sourcing â archive"
         },
         {
           "date": "2026-03-13",
-          "action": "Déplacé: archive → deal_perdu"
+          "action": "DÃ©placÃ©: archive â deal_perdu"
         },
         {
           "date": "2026-03-16",
-          "action": "Déplacé: deal_perdu → archive"
+          "action": "DÃ©placÃ©: deal_perdu â archive"
         }
       ],
       "vin": "",
@@ -255,13 +287,13 @@
       "carburant": "Essence",
       "boite": "Automatique",
       "couleur": "Bleu",
-      "localisation": "Décines-Charpieu (69)",
+      "localisation": "DÃ©cines-Charpieu (69)",
       "fournisseur_nom": "Ayvens ON LINE",
       "fournisseur_tel": "",
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/3d/c9/28/3dc928733da1defd4d71acd5a9949811ef9dbec8.jpg?rule=ad-large",
       "titre": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6",
-      "description": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6 crossover, suv, bleu, 7 cv, 5 portes, première mise en circulation le 02/06/2024, garantie 12 mois.\n\n7 places, longueur : 1,00 mètre(s), poids en charge : 1 kg\n\nOPTIONS ET ÉQUIPEMENTS :\nCouleur :\n  - PEINTURE METALLISEE\n\nAutres équipements et informations",
+      "description": "Peugeot 5008 Hybrid 136ch Allure Pack e-DCS6 crossover, suv, bleu, 7 cv, 5 portes, premiÃ¨re mise en circulation le 02/06/2024, garantie 12 mois.\n\n7 places, longueur : 1,00 mÃ¨tre(s), poids en charge : 1 kg\n\nOPTIONS ET ÃQUIPEMENTS :\nCouleur :\n  - PEINTURE METALLISEE\n\nAutres Ã©quipements et informations",
       "column": "deal_perdu",
       "sub_stage": "contacte",
       "urgence": "urg_3",
@@ -269,15 +301,15 @@
       "historique": [
         {
           "date": "2026-03-13",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-13",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-13",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-31",
@@ -288,7 +320,7 @@
       "immatriculation": "",
       "prix_negocie": "",
       "fournisseur_email": "",
-      "commentaire": "Ayvens, mail envoyé à Angel en att de son retour",
+      "commentaire": "Ayvens, mail envoyÃ© Ã  Angel en att de son retour",
       "priority": 3,
       "deal_lost_reason": null
     },
@@ -312,7 +344,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/30/39/53/303953f2e7c96dd7b7f7d6498341c439e0975381.jpg?rule=ad-large",
       "titre": "Volkswagen Tiguan 1.5 eTSI 131ch DSG7 Life Plus",
-      "description": "Volkswagen Tiguan 1.5 eTSI 131ch DSG7 Life Plus tout-terrain, bleu, 7 cv, 5 portes, couleur intérieure : noir, première mise en circulation le 06/11/2024, première main, garantie 44 mois.\n\nPrix TTC : 33 990,00 €\nPrix HT : 28 325,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places, longueur : 4 53",
+      "description": "Volkswagen Tiguan 1.5 eTSI 131ch DSG7 Life Plus tout-terrain, bleu, 7 cv, 5 portes, couleur intÃ©rieure : noir, premiÃ¨re mise en circulation le 06/11/2024, premiÃ¨re main, garantie 44 mois.\n\nPrix TTC : 33 990,00 â¬\nPrix HT : 28 325,00 â¬\nLa TVA est rÃ©cupÃ©rable sur ce vÃ©hicule.\n\n5 places, longueur : 4 53",
       "column": "deal_perdu",
       "sub_stage": null,
       "priority": 3,
@@ -325,15 +357,15 @@
       "historique": [
         {
           "date": "2026-03-16",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-16",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-31",
-          "action": "Déplacé: sourcing → deal_perdu"
+          "action": "DÃ©placÃ©: sourcing â deal_perdu"
         }
       ],
       "commentaires": []
@@ -358,7 +390,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/38/87/c4/3887c414b41985f71e00b435ce75465f61b43a80.jpg?rule=ad-large",
       "titre": "Nissan Qashqai e-POWER 190ch Business Edition 2022",
-      "description": "Nissan Qashqai e-POWER 190ch Business Edition 2022, (S.U.V.), Noir Métallisé, 8cv, 5 portes, mise en circulation le 17-05-2024, première main, garantie 24 mois (Constructeur), garantie constructeur.\n\n5 places, longueur : 4,42 mètres, poids en charge 2180 Kg,\nboîte de vitesse : automatique\n\nOPTIONS E",
+      "description": "Nissan Qashqai e-POWER 190ch Business Edition 2022, (S.U.V.), Noir MÃ©tallisÃ©, 8cv, 5 portes, mise en circulation le 17-05-2024, premiÃ¨re main, garantie 24 mois (Constructeur), garantie constructeur.\n\n5 places, longueur : 4,42 mÃ¨tres, poids en charge 2180 Kg,\nboÃ®te de vitesse : automatique\n\nOPTIONS E",
       "column": "deal_perdu",
       "sub_stage": null,
       "priority": 3,
@@ -371,15 +403,15 @@
       "historique": [
         {
           "date": "2026-03-16",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-16",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-31",
-          "action": "Déplacé: sourcing → deal_perdu"
+          "action": "DÃ©placÃ©: sourcing â deal_perdu"
         }
       ],
       "commentaires": []
@@ -404,7 +436,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/d6/4b/7d/d64b7deb01cd267a710a8d49521eb66880e34f4d.jpg?rule=ad-large",
       "titre": "Renault Clio Blue dCi 100 Evolution",
-      "description": "Renault Clio Blue dCi 100 Evolution berline, blanc, 5 cv, 5 portes, première mise en circulation le 29/11/2024, garantie 12 mois.\n\nPrix TTC : 16 450,00 €\nPrix HT : 13 708,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - radio numérique",
+      "description": "Renault Clio Blue dCi 100 Evolution berline, blanc, 5 cv, 5 portes, premiÃ¨re mise en circulation le 29/11/2024, garantie 12 mois.\n\nPrix TTC : 16 450,00 â¬\nPrix HT : 13 708,00 â¬\nLa TVA est rÃ©cupÃ©rable sur ce vÃ©hicule.\n\n5 places\n\nOPTIONS ET ÃQUIPEMENTS :\nAudio - TÃ©lÃ©communications :\n  - radio numÃ©rique",
       "column": "deal_perdu",
       "sub_stage": null,
       "priority": 3,
@@ -417,15 +449,15 @@
       "historique": [
         {
           "date": "2026-03-16",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-16",
-          "action": "Sourcing : a_contacter → contacte"
+          "action": "Sourcing : a_contacter â contacte"
         },
         {
           "date": "2026-03-31",
-          "action": "Déplacé: sourcing → deal_perdu"
+          "action": "DÃ©placÃ©: sourcing â deal_perdu"
         }
       ],
       "commentaires": [
@@ -456,7 +488,7 @@
       "fournisseur_type": "pro",
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/bb/e7/f7/bbe7f7503593619b408365eee896a4419c2ddf65.jpg?rule=ad-large",
       "titre": "Renault Express VAN BLUE DCI 95 22 CONFORT",
-      "description": "Renault Express VAN BLUE DCI 95 22 CONFORT camionnette, blanc, 5 cv, 5 portes, première mise en circulation le 26/03/2024, garantie 12 mois.\nboîte de vitesse : manuelle\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - Bluetooth\n\nConduite :\n  - limiteur de vitesse\n  - régulateur de vitesse\n",
+      "description": "Renault Express VAN BLUE DCI 95 22 CONFORT camionnette, blanc, 5 cv, 5 portes, premiÃ¨re mise en circulation le 26/03/2024, garantie 12 mois.\nboÃ®te de vitesse : manuelle\n\nOPTIONS ET ÃQUIPEMENTS :\nAudio - TÃ©lÃ©communications :\n  - Bluetooth\n\nConduite :\n  - limiteur de vitesse\n  - rÃ©gulateur de vitesse\n",
       "column": "sourcing",
       "sub_stage": "negociation",
       "priority": 3,
@@ -469,15 +501,15 @@
       "historique": [
         {
           "date": "2026-03-31",
-          "action": "Importé depuis LBC"
+          "action": "ImportÃ© depuis LBC"
         },
         {
           "date": "2026-03-31",
-          "action": "Informations modifiées"
+          "action": "Informations modifiÃ©es"
         },
         {
           "date": "2026-03-31",
-          "action": "Sourcing : a_contacter → negociation"
+          "action": "Sourcing : a_contacter â negociation"
         }
       ],
       "commentaires": [
@@ -498,7 +530,7 @@
     {
       "id": "mmnj2d4c5io5",
       "column": "termine",
-      "title": "Demander les papiers — Renault Clio",
+      "title": "Demander les papiers â Renault Clio",
       "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
       "priority": 1,
       "due_date": "2026-03-12",
@@ -532,7 +564,7 @@
     {
       "id": "mmp4ghw6wv6b",
       "column": "termine",
-      "title": "Demander les papiers — Volkswagen Tiguan",
+      "title": "Demander les papiers â Volkswagen Tiguan",
       "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
       "priority": 1,
       "due_date": "2026-03-13",
@@ -545,8 +577,8 @@
       "id": "mmt7q0yi4wnj",
       "created_at": "2026-03-16",
       "auto_generated": false,
-      "title": "Répondre email fauvet (gemy)",
-      "description": "Bcp de docs à signer/Tamponner",
+      "title": "RÃ©pondre email fauvet (gemy)",
+      "description": "Bcp de docs Ã  signer/Tamponner",
       "priority": 1,
       "due_date": "2026-03-17",
       "due_time": "",
