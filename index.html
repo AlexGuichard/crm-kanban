@@ -1415,7 +1415,9 @@ function renderEmailsView() {
         <div class="email-subject">${subj}</div>
         ${summary ? `<div class="email-snippet">${summary}</div>` : ''}
         <div class="email-actions">
-          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="openEmailMimestream('${esc(e.id||'')}','${esc((e.subject||'').replace(/'/g,"\\'"))}','${esc((e.from||'').replace(/'/g,"\\'"))}');event.stopPropagation()">✉️ Ouvrir</button>
+          <a class="btn btn-ghost btn-sm" style="font-size:11px;text-decoration:none"
+            href="mimestream://search?q=${encodeURIComponent((e.subject||'').slice(0,120))}"
+            onclick="event.stopPropagation()">✉️ Ouvrir dans Mimestream</a>
           ${!e.replied ? `<button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id||'')}')">✅ Traité</button>` : ''}
         </div>
       </div>
