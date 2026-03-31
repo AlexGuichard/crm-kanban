@@ -608,6 +608,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
         <button class="tvt-btn" id="tvt-list" onclick="setTasksView('list')" title="Vue Liste">≡ Liste</button>
       </div>
     </div>
+    <button class="btn btn-ghost btn-sm" onclick="openModal('ovImgImport')" title="Importer une liste depuis une photo">📷 Importer liste</button>
     <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Tâche</button>
   </div>
   <div class="tasks-view-layout">
@@ -679,12 +680,10 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
     <!-- Section LBC (cachée par défaut) -->
     <div id="vLBCSection" style="display:none;padding:0 4px">
-      <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne).</p>
-      <textarea id="lbcUrls" rows="5" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);color:var(--text);resize:vertical"></textarea>
-      <div id="lbcStatus" style="margin-top:10px;font-size:13px;display:none"></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Colle une ou plusieurs URLs LeBonCoin, une par ligne.<br>La progression du scraping s'affichera dans une fenêtre dédiée.</p>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
         <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
-        <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">Importer</button>
+        <button class="btn btn-primary" onclick="closeModal('ovVehicle');openLBCModal()">🔗 Ouvrir l'import LBC →</button>
       </div>
     </div>
 
@@ -893,8 +892,9 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <button class="close-btn" onclick="closeModal('ovSettings')">×</button>
     </div>
     <div class="form-group"><label class="form-label">Token GitHub (ghp_…)</label><input class="form-input" id="sToken" type="password" placeholder="ghp_…"></div>
-    <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/flease-crm"></div>
+    <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/crm-kanban"></div>
     <div class="form-group"><label class="form-label">Email alertes</label><input class="form-input" id="sEmail" placeholder="alex@flease.fr" type="email"></div>
+    <div class="form-group"><label class="form-label">Clé Anthropic (import photo → tâches)</label><input class="form-input" id="sAnthropicKey" type="password" placeholder="sk-ant-…"><div style="font-size:11px;color:var(--text-muted);margin-top:4px">Stockée uniquement sur cet appareil, jamais envoyée à GitHub.</div></div>
     <div class="form-group"><label class="form-label">Rappel après (jours sans mouvement)</label><input class="form-input" id="sReminder" type="number" value="3" min="1" max="30"></div>
     <div class="form-group" style="display:flex;align-items:center;gap:10px">
       <input type="checkbox" id="sArchive" style="width:16px;height:16px">
@@ -912,6 +912,62 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('ovSettings')">Annuler</button>
       <button class="btn btn-primary" onclick="saveSettings()">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RAPPEL -->
+<div class="overlay" id="ovReminder" onclick="overlayClick(event,'ovReminder')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">📱 Envoyer dans Rappels</div>
+      <button class="close-btn" onclick="closeModal('ovReminder')">×</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Titre</label>
+      <input class="form-input" id="reminderTitle" readonly style="background:var(--bg);color:var(--text-muted)">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" id="reminderDate" type="date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Heure</label>
+        <input class="form-input" id="reminderTime" type="time">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Note (optionnel)</label>
+      <input class="form-input" id="reminderNotes" placeholder="Contexte, détails…">
+    </div>
+    <div id="reminderBridgeStatus" style="font-size:12px;margin-bottom:8px;display:none"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovReminder')">Annuler</button>
+      <button class="btn btn-primary" onclick="confirmSendReminder()">📱 Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IMPORT PHOTO → TÂCHES -->
+<div class="overlay" id="ovImgImport" onclick="overlayClick(event,'ovImgImport')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div class="modal-title">📷 Importer une liste de véhicules</div>
+      <button class="close-btn" onclick="closeModal('ovImgImport')">×</button>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Prends un screenshot de ta liste de véhicules à acheter. Claude va extraire les véhicules et créer les tâches automatiquement.</p>
+    <div id="imgDropZone" onclick="document.getElementById('imgFileInput').click()"
+      style="border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all 0.15s;font-size:13px;color:var(--text-muted)">
+      <div style="font-size:32px;margin-bottom:8px">📷</div>
+      Clique ou glisse une image ici
+      <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="handleImgFile(this.files[0])">
+    </div>
+    <div id="imgPreview" style="display:none;margin-top:12px"></div>
+    <div id="imgStatus" style="margin-top:12px;font-size:13px;display:none"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('ovImgImport')">Annuler</button>
+      <button class="btn btn-primary" id="imgImportBtn" onclick="runImgImport()" style="display:none">✨ Créer les tâches</button>
     </div>
   </div>
 </div>
@@ -1289,112 +1345,129 @@ function renderEmailsView() {
   const countEl = document.getElementById('emailCount');
   if (!filtersEl || !listEl) return;
 
-  const emails = (b && b.emails) ? b.emails.filter(e => !dismissedEmails.includes(e.id)) : [];
+  if (!b) {
+    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8">
+      <div style="font-size:28px;margin-bottom:8px">📬</div>
+      <div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div>
+      <div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.</div>
+      <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing()">⟳ Charger maintenant</button>
+    </div>`;
+    return;
+  }
 
-  // Filtres
+  const allEmails = (b.emails || []).filter(e => !dismissedEmails.includes(e.id));
+
   const filters = [
-    { key:'all', label:'Tous' },
-    { key:'critical', label:'🔴 Critiques (9-10)' },
-    { key:'important', label:'🟠 Importants (7-8)' },
-    { key:'a_traiter', label:'A traiter' },
-    { key:'bdc', label:'BDC à signer' },
-    { key:'dash', label:'Ajouter au dash' },
-    { key:'sans_reponse', label:'Sans réponse' },
+    { key:'all',      label:'Tous' },
+    { key:'critical', label:'🔴 Critiques' },
+    { key:'high',     label:'🟠 Importants' },
+    { key:'replied',  label:'✅ Répondus' },
+    { key:'waiting',  label:'⏳ Réponse att.' },
   ];
   filtersEl.innerHTML = filters.map(f =>
     `<button class="email-filter-btn ${emailFilter===f.key?'active':''}" onclick="setEmailFilter('${f.key}')">${f.label}</button>`
   ).join('');
 
-  // Filtre actif
-  let filtered = emails;
-  if (emailFilter === 'critical') filtered = emails.filter(e => e.score >= 9);
-  else if (emailFilter === 'important') filtered = emails.filter(e => e.score >= 7 && e.score < 9);
-  else if (emailFilter === 'a_traiter') filtered = emails.filter(e => e.label === 'A traiter');
-  else if (emailFilter === 'bdc') filtered = emails.filter(e => e.label === 'BDC a signer');
-  else if (emailFilter === 'dash') filtered = emails.filter(e => e.label === 'ajouter au dash');
-  else if (emailFilter === 'sans_reponse') filtered = emails.filter(e => e.category === 'sans_reponse');
+  let filtered = allEmails;
+  if (emailFilter === 'critical') filtered = allEmails.filter(e => e.priority === 'critical' && !e.replied);
+  else if (emailFilter === 'high') filtered = allEmails.filter(e => e.priority === 'high' && !e.replied);
+  else if (emailFilter === 'replied') filtered = allEmails.filter(e => e.replied);
+  else if (emailFilter === 'waiting') filtered = allEmails.filter(e => e.needs_reply && !e.replied);
 
-  countEl.textContent = `${filtered.length} email${filtered.length>1?'s':''} ${b ? '· Mis à jour ' + new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : ''}`;
+  const updatedAt = b.generated_at ? new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : '';
+  countEl.textContent = `${filtered.length} email${filtered.length!==1?'s':''} · mis à jour ${updatedAt}`;
 
-  if (!b) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8"><div style="font-size:28px;margin-bottom:8px">📬</div><div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div><div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.<br>Si cela persiste, vérifie que le script Google Apps est actif.</div><button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing().then(()=>renderEmailsView())">⟳ Charger maintenant</button></div>`; return; }
-  if (!filtered.length) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`; return; }
+  if (!filtered.length) {
+    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`;
+    return;
+  }
 
-  listEl.innerHTML = filtered.map(e => {
-    const sc = e.score || 0;
-    const scoreColor = sc>=9?'#dc2626':sc>=7?'#f97316':sc>=5?'#eab308':'#6b7280';
-    const scoreBg   = sc>=9?'#fef2f2':sc>=7?'#fff7ed':sc>=5?'#fefce8':'#f3f4f6';
-    const labelHtml = e.label
-      ? `<span class="email-label">${esc(e.label)}</span>`
-      : (e.category==='sans_reponse' ? `<span class="email-label sans-reponse">sans réponse</span>` : '');
-    const age = e.hours_old != null ? (e.hours_old < 1 ? 'il y a moins d\'1h' : `il y a ${Math.round(e.hours_old)}h`) : '';
-    const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${e.id}`;
-    const sender = (e.from||'').replace(/<.*>/,'').trim();
-    return `<div class="email-row" id="email-${esc(e.id)}">
-      <div class="email-score" style="background:${scoreBg};color:${scoreColor}">${sc}</div>
+  // Séparer : à traiter vs déjà répondus
+  const toHandle = filtered.filter(e => !e.replied);
+  const done     = filtered.filter(e => e.replied);
+
+  const PRIORITY_STYLE = {
+    critical: { icon:'🔴', color:'#dc2626', bg:'#fef2f2', label:'Critique' },
+    high:     { icon:'🟠', color:'#f97316', bg:'#fff7ed', label:'Important' },
+    medium:   { icon:'🟡', color:'#d97706', bg:'#fefce8', label:'Moyen' },
+    low:      { icon:'⚪', color:'#6b7280', bg:'#f3f4f6', label:'Info' },
+  };
+
+  const renderEmail = e => {
+    const ps = PRIORITY_STYLE[e.priority] || PRIORITY_STYLE.low;
+    const senderName = e.from_name || (e.from||'').split('@')[0];
+    const repliedBadge = e.replied
+      ? `<span style="font-size:10px;background:#dcfce7;color:#16a34a;border-radius:20px;padding:2px 8px;font-weight:700">✓ Répondu</span>`
+      : (e.needs_reply
+        ? `<span style="font-size:10px;background:#fff7ed;color:#f97316;border-radius:20px;padding:2px 8px;font-weight:700">⏳ Réponse attendue</span>`
+        : '');
+    const dateDisplay = e.date_display || '';
+    const subj = esc((e.subject||'').slice(0,75));
+    const summary = esc((e.summary||'').slice(0,120));
+    return `<div class="email-row${e.replied?' dismissed':''}" id="email-${esc(e.id||'')}">
+      <div class="email-score" style="background:${ps.bg};color:${ps.color};font-size:11px;width:auto;padding:0 6px">${ps.icon}</div>
       <div class="email-body">
-        <div class="email-subject">${esc((e.subject||'').slice(0,80))}${(e.subject||'').length>80?'…':''}</div>
-        <div class="email-meta">
-          <span>${esc(sender.slice(0,40))}</span>
-          ${age ? `<span>· ${age}</span>` : ''}
-          ${labelHtml}
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:12px;font-weight:700;color:var(--text)">${esc(senderName)}</span>
+          <span style="font-size:11px;color:var(--text-muted)">${dateDisplay}</span>
+          ${repliedBadge}
         </div>
-        ${e.snippet ? `<div class="email-snippet">${esc(e.snippet)}</div>` : ''}
+        <div class="email-subject">${subj}</div>
+        ${summary ? `<div class="email-snippet">${summary}</div>` : ''}
         <div class="email-actions">
-          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="openEmailMimestream('${esc(e.id)}','${esc((e.subject||'').replace(/'/g,"\\'"))}','${esc((e.from||'').replace(/'/g,"\\'"))}');event.stopPropagation()">✉️ Ouvrir</button>
-          <button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id)}')">✅ Traité</button>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="openEmailMimestream('${esc(e.id||'')}','${esc((e.subject||'').replace(/'/g,"\\'"))}','${esc((e.from||'').replace(/'/g,"\\'"))}');event.stopPropagation()">✉️ Ouvrir</button>
+          ${!e.replied ? `<button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id||'')}')">✅ Traité</button>` : ''}
         </div>
       </div>
     </div>`;
-  }).join('');
+  };
+
+  let html = '';
+  if (toHandle.length) {
+    html += toHandle.map(renderEmail).join('');
+  }
+  if (done.length && emailFilter !== 'waiting' && emailFilter !== 'critical' && emailFilter !== 'high') {
+    html += `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:14px 4px 6px">✅ Déjà répondus (${done.length})</div>`;
+    html += done.map(renderEmail).join('');
+  }
+  listEl.innerHTML = html || `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email</div>`;
 }
 
 function setEmailFilter(f) { emailFilter = f; renderEmailsView(); }
 
 function generateEmailActions(emails) {
   if (!emails.length) return `<div class="bp-empty">✅ Aucun email à traiter</div>`;
-  const actions = [];
 
-  // BDC à signer
-  const bdc = emails.filter(e => e.label === 'BDC a signer');
-  if (bdc.length) actions.push({ priority: 9, icon: '✍️', text: `Signer ${bdc.length} BDC en attente`, emails: bdc });
+  // Emails non répondus uniquement, triés par priorité
+  const unreplied = emails.filter(e => !e.replied);
+  const critical  = unreplied.filter(e => e.priority === 'critical');
+  const waiting   = unreplied.filter(e => e.needs_reply);
+  const high      = unreplied.filter(e => e.priority === 'high' && !e.needs_reply);
 
-  // Factures / impayés
-  const factures = emails.filter(e => e.score === 10 && /facture|impay|relance/i.test(e.subject));
-  if (factures.length) actions.push({ priority: 10, icon: '🚨', text: `${factures.length} facture${factures.length>1?'s':''} impayée${factures.length>1?'s':''} à traiter`, emails: factures });
-
-  // Sans réponse depuis +12h
-  const noReply = emails.filter(e => e.category === 'sans_reponse' && e.hours_old > 12);
-  if (noReply.length) actions.push({ priority: 8, icon: '⏰', text: `${noReply.length} email${noReply.length>1?'s':''} sans réponse depuis +12h`, emails: noReply });
-
-  // A traiter
-  const aTraiter = emails.filter(e => e.label === 'A traiter');
-  if (aTraiter.length) actions.push({ priority: 7, icon: '📋', text: `${aTraiter.length} email${aTraiter.length>1?'s':''} labellisé "A traiter"`, emails: aTraiter });
-
-  // Critiques restants
-  const autresCritiques = emails.filter(e => e.score >= 9 && !bdc.includes(e) && !factures.includes(e));
-  if (autresCritiques.length) actions.push({ priority: 9, icon: '🔴', text: `${autresCritiques.length} email${autresCritiques.length>1?'s':''} urgent${autresCritiques.length>1?'s':''} à traiter`, emails: autresCritiques });
-
-  // Ajouter au dash
-  const dash = emails.filter(e => e.label === 'ajouter au dash');
-  if (dash.length) actions.push({ priority: 5, icon: '📊', text: `${dash.length} email${dash.length>1?'s':''} à ajouter au dashboard`, emails: dash });
-
-  if (!actions.length) {
-    const top = emails.filter(e => e.score >= 7).slice(0, 3);
-    top.forEach(e => actions.push({ priority: e.score, icon: '📬', text: (e.subject||'').slice(0, 45), emails: [e] }));
+  if (!unreplied.length) {
+    return `<div class="bp-empty" style="color:var(--urg-done)">✅ Tous les emails ont été traités !</div>`;
   }
 
-  actions.sort((a, b) => b.priority - a.priority);
+  const actions = [];
+  if (critical.length) actions.push({ icon:'🔴', text:`${critical.length} email${critical.length>1?'s':''} critique${critical.length>1?'s':''} sans réponse`, emails: critical });
+  if (waiting.length)  actions.push({ icon:'⏳', text:`${waiting.length} email${waiting.length>1?'s':''} attend${waiting.length>1?'ent':''} une réponse`, emails: waiting });
+  if (high.length)     actions.push({ icon:'🟠', text:`${high.length} email${high.length>1?'s':''} important${high.length>1?'s':''}`, emails: high });
 
-  return actions.slice(0, 5).map((a, i) => {
-    const firstEmail = a.emails.length === 1 ? a.emails[0] : null;
-    return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)">
+  if (!actions.length && unreplied.length) {
+    actions.push({ icon:'📬', text:`${unreplied.length} email${unreplied.length>1?'s':''} non traité${unreplied.length>1?'s':''}`, emails: unreplied });
+  }
+
+  return actions.slice(0,4).map((a, i) => {
+    const first = a.emails[0];
+    return `<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)">
       <span style="font-size:13px;flex-shrink:0">${a.icon}</span>
       <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:600;line-height:1.3">${i+1}. ${esc(a.text)}</div>
-        ${firstEmail ? `<button onclick="openEmailMimestream('${esc(firstEmail.id)}','${esc((firstEmail.subject||'').replace(/'/g,"\\'"))}','${esc((firstEmail.from||'').replace(/'/g,"\\'"))}')" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--primary);padding:0;font-family:inherit">Ouvrir →</button>` : `<span style="font-size:10px;color:var(--text-muted)">${a.emails.length} emails</span>`}
+        <div style="font-size:12px;font-weight:700;line-height:1.3">${esc(a.text)}</div>
+        ${first ? `<div style="font-size:11px;color:var(--text-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc((first.from_name||first.from||'').slice(0,30))} — ${esc((first.subject||'').slice(0,35))}</div>` : ''}
+        ${first ? `<button onclick="openEmailMimestream('${esc(first.id||'')}','${esc((first.subject||'').replace(/'/g,"\\'"))}','${esc((first.from||'').replace(/'/g,"\\'"))}')" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--primary);padding:0;font-family:inherit;margin-top:2px">Ouvrir →</button>` : ''}
       </div>
     </div>`;
-  }).join('');
+  }).join('') + `<div style="margin-top:8px"><button class="btn btn-ghost btn-sm" style="width:100%;font-size:11px" onclick="showView('emails',document.getElementById('tabEmails'))">Voir tous les emails →</button></div>`;
 }
 
 function openEmailMimestream(threadId, subject, from) {
@@ -1962,12 +2035,19 @@ function switchVTab(tab) {
   document.getElementById('vFormSection').style.display = isLBC ? 'none' : 'block';
   document.getElementById('vTabManuel').className = isLBC ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
   document.getElementById('vTabLBC').className = isLBC ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
-  if (isLBC) {
-    document.getElementById('lbcUrls').value = '';
-    document.getElementById('lbcStatus').style.display = 'none';
-    document.getElementById('lbcImportBtn').disabled = false;
-    document.getElementById('lbcImportBtn').textContent = 'Importer';
-  }
+}
+
+function openLBCModal() {
+  const wrap = document.getElementById('lbcProgressWrap');
+  if (wrap) { wrap.classList.remove('visible'); }
+  const res = document.getElementById('lbcResult');
+  if (res) { res.style.display = 'none'; }
+  const fill = document.getElementById('lbcProgressFill');
+  if (fill) { fill.style.width = '0%'; }
+  const btn = document.getElementById('lbcImportBtn');
+  if (btn) { btn.disabled = false; btn.textContent = '🔗 Importer'; btn.onclick = triggerLBCImport; }
+  document.getElementById('lbcUrls').value = '';
+  openModal('ovLBC');
 }
 
 function openAddVehicle(col) {
@@ -2485,35 +2565,148 @@ function deleteTask(id) {
 // ============================================================
 // SHARE TO REMINDERS (iOS Rappels / Web Share API)
 // ============================================================
-async function shareTask(id) {
+let _reminderTaskId = null;
+
+function shareTask(id) {
   const t = id ? S.tasks.find(x=>x.id===id) : null;
   if (!t) return;
+  _reminderTaskId = id;
+  document.getElementById('reminderTitle').value = t.title;
+  document.getElementById('reminderDate').value = t.due_date || '';
+  document.getElementById('reminderTime').value = t.due_time || '';
+  document.getElementById('reminderNotes').value = t.description || '';
+  const st = document.getElementById('reminderBridgeStatus');
+  st.style.display = 'none';
+  openModal('ovReminder');
+}
 
-  // Construire le texte du rappel
-  const urgLabels = { 1:'🔴 Très urgent', 2:'🟠 Urgent', 3:'Normal' };
-  const lines = [t.title];
-  if (t.description) lines.push(t.description);
-  if (t.due_date) lines.push(`Échéance : ${fmtD(t.due_date)}${t.due_time ? ' à ' + t.due_time : ''}`);
-  if (t.priority && t.priority !== 3) lines.push(urgLabels[t.priority] || '');
-  const shareText = lines.filter(Boolean).join('\n');
+async function confirmSendReminder() {
+  const title = document.getElementById('reminderTitle').value;
+  const date  = document.getElementById('reminderDate').value;
+  const time  = document.getElementById('reminderTime').value;
+  const notes = document.getElementById('reminderNotes').value;
+  const st    = document.getElementById('reminderBridgeStatus');
 
-  // Web Share API — ouvre la feuille de partage native iOS
+  // ① Essayer le bridge local (port 9878)
+  const params = new URLSearchParams({ title, notes, date, time });
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 1500);
+    const r = await fetch(`http://localhost:9878/remind?${params}`, { signal: ctrl.signal, mode: 'no-cors' });
+    clearTimeout(timer);
+    st.style.display = 'block';
+    st.style.color = 'var(--urg-done)';
+    st.textContent = '✅ Rappel créé dans l\'app Rappels !';
+    setTimeout(() => closeModal('ovReminder'), 1400);
+    return;
+  } catch(e) { /* bridge non dispo */ }
+
+  // ② Web Share API (iOS natif)
+  const shareText = [title, notes, date ? `Échéance : ${date}${time ? ' à ' + time : ''}` : ''].filter(Boolean).join('\n');
   if (navigator.share) {
     try {
-      await navigator.share({ title: t.title, text: shareText });
+      await navigator.share({ title, text: shareText });
+      closeModal('ovReminder');
       return;
-    } catch(e) {
-      if (e.name === 'AbortError') return; // user cancelled
-    }
+    } catch(e) { if (e.name === 'AbortError') { closeModal('ovReminder'); return; } }
   }
 
-  // Fallback desktop : copier dans le presse-papier
+  // ③ Fallback : copier dans le presse-papier
+  try { await navigator.clipboard.writeText(shareText); } catch(e) {}
+  st.style.display = 'block';
+  st.style.color = 'var(--text-muted)';
+  st.textContent = '📋 Copié ! Colle dans l\'app Rappels. (Lance le bridge pour automatiser)';
+}
+
+// ── Import photo → tâches ─────────────────────────────────────────────────
+
+let _imgBase64 = null, _imgType = null;
+
+function handleImgFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    _imgBase64 = dataUrl.split(',')[1];
+    _imgType   = file.type || 'image/jpeg';
+    const prev = document.getElementById('imgPreview');
+    prev.style.display = 'block';
+    prev.innerHTML = `<img src="${dataUrl}" style="width:100%;border-radius:8px;max-height:200px;object-fit:contain">`;
+    document.getElementById('imgImportBtn').style.display = 'inline-flex';
+    const st = document.getElementById('imgStatus');
+    st.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function runImgImport() {
+  const key = localStorage.getItem('anthropic_key');
+  if (!key) {
+    showToast('⚙️ Configure ta clé Anthropic dans Paramètres');
+    return;
+  }
+  if (!_imgBase64) return;
+
+  const btn = document.getElementById('imgImportBtn');
+  btn.disabled = true; btn.textContent = '⏳ Analyse en cours…';
+  const st = document.getElementById('imgStatus');
+  st.style.display = 'block'; st.style.color = 'var(--text-muted)';
+  st.textContent = 'Claude analyse l\'image…';
+
   try {
-    await navigator.clipboard.writeText(shareText);
-    showToast('✅ Copié ! Collez dans l\'app Rappels.');
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-calls': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: _imgType, data: _imgBase64 } },
+            { type: 'text', text: 'Cette image contient une liste de véhicules à acheter. Extrais chaque véhicule et retourne UNIQUEMENT un JSON array, rien d\'autre. Format: [{"marque":"Renault","modele":"Clio","annee":"2023","km":"25000","prix":"15000","notes":""}]. Si un champ est absent mets "". Maximum 20 véhicules.' }
+          ]
+        }]
+      })
+    });
+
+    if (!resp.ok) throw new Error(`API ${resp.status}`);
+    const data = await resp.json();
+    const text = data.content?.[0]?.text || '';
+
+    // Extraire le JSON
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('Pas de liste détectée');
+    const vehicles = JSON.parse(match[0]);
+
+    if (!vehicles.length) throw new Error('Aucun véhicule trouvé');
+
+    // Créer une tâche par véhicule
+    let created = 0;
+    for (const v of vehicles) {
+      const label = [v.marque, v.modele, v.annee].filter(Boolean).join(' ');
+      const notes = [v.km ? v.km+' km' : '', v.prix ? v.prix+' €' : '', v.notes].filter(Boolean).join(' — ');
+      S.tasks.push({ id: uid(), created_at: today(), auto_generated: false,
+        title: `🚗 Acheter ${label}`, description: notes,
+        priority: 3, column: 'a_faire', due_date: '', due_time: '' });
+      created++;
+    }
+
+    render(); saveToGH();
+    st.style.color = 'var(--urg-done)';
+    st.textContent = `✅ ${created} tâche(s) créée(s) !`;
+    btn.textContent = '✅ Créées';
+    setTimeout(() => closeModal('ovImgImport'), 1600);
+
   } catch(e) {
-    // Dernier recours : prompt
-    prompt('Copiez ce texte dans Rappels :', shareText);
+    st.style.color = 'var(--urg-1)';
+    st.textContent = `❌ Erreur : ${e.message}`;
+    btn.disabled = false; btn.textContent = '✨ Réessayer';
   }
 }
 
@@ -2834,6 +3027,7 @@ function openSettings() {
   document.getElementById('sToken').value = S.settings.github_token || localStorage.getItem('gh_token')||'';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
   document.getElementById('sEmail').value = S.settings.email||'';
+  document.getElementById('sAnthropicKey').value = localStorage.getItem('anthropic_key')||'';
   document.getElementById('sReminder').value = S.settings.reminder_days||3;
   document.getElementById('sArchive').checked = S.settings.show_archive||false;
   document.getElementById('sDarkMode').checked = S.settings.dark_mode || localStorage.getItem('dark_mode')==='1' || false;
@@ -2847,6 +3041,10 @@ function saveSettings() {
   S.settings.email = document.getElementById('sEmail').value.trim();
   S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
   S.settings.show_archive = document.getElementById('sArchive').checked;
+  // Clé Anthropic — stockée uniquement en localStorage, jamais envoyée à GitHub
+  const ak = document.getElementById('sAnthropicKey').value.trim();
+  if (ak) localStorage.setItem('anthropic_key', ak);
+  else localStorage.removeItem('anthropic_key');
   const dm = document.getElementById('sDarkMode').checked;
   S.settings.dark_mode = dm;
   localStorage.setItem('dark_mode', dm ? '1' : '0');
