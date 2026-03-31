@@ -73,33 +73,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .view.active { display: block; }
 
 /* BOARD */
-.board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; min-height: calc(100vh - 130px); }
-.column { min-width: 256px; max-width: 272px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; max-height: calc(100vh - 140px); flex-shrink: 0; }
-.column-header { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; border-radius: var(--radius) var(--radius) 0 0; background: var(--surface); }
-.col-title { font-weight: 700; font-size: 13px; flex: 1; }
-.col-count { background: var(--bg); color: var(--text-muted); padding: 2px 7px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-.col-price { font-size: 11px; color: var(--primary); font-weight: 600; }
-.column-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex: 1; }
+.board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; min-height: calc(100vh - 130px); }
+.column { min-width: 260px; max-width: 280px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; max-height: calc(100vh - 140px); flex-shrink: 0; overflow: hidden; }
+.column-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--surface); }
+.col-title { font-weight: 800; font-size: 13px; flex: 1; letter-spacing: -0.2px; }
+.col-count { background: var(--bg); color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 800; min-width: 24px; text-align: center; }
+.col-price { font-size: 11px; color: var(--primary); font-weight: 700; opacity: 0.8; }
+.column-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex: 1; }
 .column-body.drag-over { background: rgba(29,32,78,0.04); }
-.col-add { padding: 6px; border-top: 1px solid var(--border); }
-.col-add button { width: 100%; padding: 6px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.col-add { padding: 8px; border-top: 1px solid var(--border); }
+.col-add button { width: 100%; padding: 8px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
 .col-add button:hover { border-color: var(--primary); color: var(--primary); background: rgba(29,32,78,0.04); }
 
+/* COLUMN COLOR ACCENTS */
+.column-accent-sourcing { border-top: 3px solid #1d204e; }
+.column-accent-a_payer { border-top: 3px solid #f59e0b; }
+.column-accent-en_transport { border-top: 3px solid #8b5cf6; }
+.column-accent-livre { border-top: 3px solid #16a34a; }
+.column-accent-archive { border-top: 3px solid #6b7280; }
+
 /* SOURCING SUB-TABS */
-.sourcing-subtabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
-.ss-tab { flex: 1; padding: 5px 2px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.12s; line-height: 1.3; }
-.ss-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--surface); }
-.ss-tab.ss-tab-drop { background: rgba(61,85,240,0.12); border-bottom-color: var(--accent); color: var(--accent); transform: scale(1.04); }
-.ss-tab-count { display: block; font-size: 11px; font-weight: 700; color: inherit; }
+.sourcing-subtabs { display: flex; gap: 2px; padding: 6px 8px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.ss-tab { flex: 1; padding: 6px 4px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-radius: 6px; border: none; border-bottom: none; transition: all 0.15s; line-height: 1.3; }
+.ss-tab:hover { background: rgba(29,32,78,0.05); }
+.ss-tab.active { color: var(--primary); background: var(--surface); box-shadow: 0 1px 3px rgba(29,32,78,0.08); }
+.ss-tab.ss-tab-drop { background: rgba(61,85,240,0.12); color: var(--accent); transform: scale(1.04); }
+.ss-tab-count { display: block; font-size: 11px; font-weight: 800; color: inherit; }
 
 /* CARDS */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; position: relative; border-left: 3px solid var(--border); user-select: none; }
-.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 13px; cursor: pointer; transition: box-shadow 0.18s, transform 0.12s; position: relative; border-left: 3px solid var(--border); user-select: none; }
+.card:hover { box-shadow: 0 4px 16px rgba(29,32,78,0.1), 0 1px 4px rgba(29,32,78,0.06); transform: translateY(-2px); }
 .card.urg-1 { border-left-color: var(--urg-1); }
 .card.urg-2 { border-left-color: var(--urg-2); }
 .card.urg-3 { border-left-color: var(--urg-3); }
 .card.urg-done { border-left-color: var(--urg-done); }
-.card-title { font-weight: 700; font-size: 13px; line-height: 1.3; margin-bottom: 4px; }
+
+/* Card layout */
+.card-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
+.card-title { font-weight: 800; font-size: 14px; line-height: 1.25; color: var(--text); flex: 1; }
+.card-price-badge { background: rgba(29,32,78,0.07); color: var(--primary); font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+.card-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; line-height: 1.4; }
+.card-concession { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.7; }
+.card-bottom-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px; }
 .card-sub { font-size: 11px; color: var(--text-muted); }
 .tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
 .tag { padding: 2px 6px; border-radius: 5px; font-size: 10px; font-weight: 600; background: var(--bg); color: var(--text-muted); }
@@ -108,47 +123,39 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .tag-red { background: rgba(232,41,74,0.1); color: var(--urg-1); }
 .tag-orange { background: rgba(232,122,0,0.1); color: var(--urg-2); }
 
-/* SUB-STAGE BAR */
+/* SUB-STAGE BAR (kept for compat) */
 .ss-bar { display: flex; gap: 2px; margin-top: 6px; }
 .ss-step { flex: 1; height: 3px; border-radius: 2px; background: var(--border); }
 .ss-step.done { background: var(--lime); }
 .ss-step.active { background: var(--primary); }
 .ss-label { font-size: 10px; color: var(--primary); font-weight: 600; margin-top: 3px; }
 
-/* CARD HEADER ROW */
-.card-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
-.card-header-row .card-title { margin-bottom: 0; flex: 1; }
-
-/* SS BADGE (replaces ss-bar on card) */
-.ss-badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-top: 5px; }
+/* SS BADGE */
+.ss-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
 
 /* FRESHNESS BADGE */
-.freshness-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 8px; font-size: 9px; font-weight: 700; background: var(--bg); color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.freshness-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600; background: var(--bg); color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
 .freshness-badge.fresh { background: rgba(22,163,74,0.1); color: var(--urg-done); }
-.freshness-badge.stale { background: rgba(232,122,0,0.1); color: var(--urg-2); }
+.freshness-badge.stale { background: rgba(232,122,0,0.12); color: var(--urg-2); }
 
 /* NEXT ACTION */
-.next-action { font-size: 10px; color: var(--text-muted); margin-top: 5px; font-style: italic; }
+.next-action { font-size: 10px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
 
 /* DOCS BADGES */
 .doc-badges { display: flex; gap: 3px; margin-top: 6px; }
 .doc-badge { width: 22px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
 .doc-badge.ok { background: rgba(22,163,74,0.12); color: #16a34a; border-color: rgba(22,163,74,0.3); }
 .doc-badge.ko { background: rgba(232,41,74,0.08); color: var(--urg-1); border-color: rgba(232,41,74,0.3); }
-.doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 600; margin-top: 3px; }
+.doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
 
 /* CARD SIZE VARIANTS */
-body.card-compact .card { padding: 5px 8px; }
-body.card-compact .card-title { font-size: 12px; margin-bottom: 2px; }
-body.card-compact .card-sub { font-size: 10px; }
-body.card-compact .tags { margin-top: 3px; }
-body.card-compact .ss-bar { margin-top: 3px; }
-body.card-compact .doc-badges { margin-top: 3px; }
+body.card-compact .card { padding: 8px 10px; }
+body.card-compact .card-title { font-size: 12px; }
+body.card-compact .card-concession { display: none; }
+body.card-compact .next-action { display: none; }
 body.card-compact .card-actions { display: none; }
-body.card-large .card { padding: 13px 15px; }
-body.card-large .card-title { font-size: 14px; margin-bottom: 6px; }
-body.card-large .card-sub { font-size: 12px; }
-body.card-large .tags { margin-top: 7px; gap: 4px; }
+body.card-large .card { padding: 15px 16px; }
+body.card-large .card-title { font-size: 15px; }
 
 /* CARD SIZE BUTTON */
 .card-size-btn { position: fixed; bottom: 18px; right: 20px; z-index: 200; background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 12px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow); transition: all 0.15s; }
@@ -162,6 +169,15 @@ body.card-large .tags { margin-top: 7px; gap: 4px; }
 /* LOT CARD */
 .lot-card { background: linear-gradient(135deg, rgba(29,32,78,0.05) 0%, rgba(29,32,78,0.02) 100%); }
 .lot-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--primary); color: white; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-bottom: 5px; }
+
+/* MOBILE BOTTOM NAV */
+.mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); z-index: 300; padding: 4px 0 calc(4px + env(safe-area-inset-bottom)); }
+.mobile-bottom-nav .nav-items { display: flex; justify-content: space-around; align-items: center; }
+.mobile-bottom-nav .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; border: none; background: none; font-family: inherit; cursor: pointer; color: var(--text-muted); transition: color 0.15s; border-radius: 8px; font-size: 10px; font-weight: 600; }
+.mobile-bottom-nav .nav-item .nav-icon { font-size: 20px; line-height: 1; }
+.mobile-bottom-nav .nav-item.active { color: var(--primary); }
+.mobile-bottom-nav .nav-item.active .nav-icon { transform: scale(1.1); }
+body.dark-mode .mobile-bottom-nav { background: #0f1128; border-top-color: #1e2148; }
 
 /* DEAL PERDU column */
 .column-deal-perdu { min-width: 200px; max-width: 216px; border-top: 3px solid var(--urg-1); }
@@ -400,27 +416,31 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
    RESPONSIVE — MOBILE (≤640px) — iPhone Safari
    ============================================================ */
 @media (max-width: 640px) {
-  /* Header compact */
-  .header { padding: 0 10px; gap: 8px; height: 50px; }
-  .logo { font-size: 15px; }
-  .tab-btn { padding: 5px 9px; font-size: 11px; }
-  .search-wrap { display: none; }           /* Recherche masquée sur mobile */
-  .sync-badge { display: none; }            /* Badge sync masqué */
+  /* Header : masquer tabs, garder logo + actions */
+  .header { padding: 0 12px; gap: 8px; height: 48px; padding-top: env(safe-area-inset-top); }
+  .header .tabs { display: none; }
+  .logo { font-size: 16px; }
+  .search-wrap { display: none; }
+  .sync-badge { display: none; }
   .btn-icon:not(#notifBtn) { display: none; }
+
+  /* Bottom nav visible */
+  .mobile-bottom-nav { display: block; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 
   /* Vues */
   .view { padding: 10px; }
 
-  /* Kanban : scroll horizontal natif */
-  .board { gap: 8px; padding-bottom: 16px; min-height: calc(100vh - 120px); }
-  .column { min-width: 200px; max-width: 210px; max-height: calc(100vh - 130px); }
-  .card { padding: 10px; }
+  /* Kanban mobile : colonnes plus étroites, scroll fluide */
+  .board { gap: 8px; padding-bottom: 8px; min-height: calc(100vh - 140px); -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  .column { min-width: 82vw; max-width: 84vw; max-height: calc(100vh - 150px); scroll-snap-align: center; border-radius: 14px; }
+  .card { padding: 11px 12px; border-radius: 10px; }
 
   /* Tâches layout : sidebar sous le kanban */
   .tasks-view-layout { flex-direction: column; }
   .tasks-layout-main { width: 100%; overflow-x: auto; }
-  .tasks-board { min-height: 60vh; }
-  .tasks-board .column { min-width: 180px; max-width: 190px; }
+  .tasks-board { min-height: 50vh; }
+  .tasks-board .column { min-width: 78vw; max-width: 80vw; scroll-snap-align: center; }
   .briefing-panel-sidebar {
     width: 100% !important;
     min-width: unset !important;
@@ -431,7 +451,7 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
   }
   .bp-card { flex: 1 1 calc(50% - 4px); min-width: 150px; }
 
-  /* Achats layout : idem */
+  /* Achats layout */
   #view-achats .tasks-view-layout { flex-direction: column; }
   #view-achats .briefing-panel-sidebar {
     width: 100% !important;
@@ -439,10 +459,10 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
     position: static;
   }
 
-  /* Modales plein écran */
-  .modal-overlay { align-items: flex-end; padding: 0; }
+  /* Modales : bottom sheet style */
+  .overlay { align-items: flex-end; padding: 0; }
   .modal { max-width: 100% !important; width: 100% !important; max-height: 92vh;
-           border-radius: 18px 18px 0 0; overflow-y: auto; }
+           border-radius: 18px 18px 0 0; overflow-y: auto; padding: 20px 16px; }
 
   /* Formulaires */
   .form-row { grid-template-columns: 1fr; }
@@ -453,9 +473,11 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
   .tl-row { flex-wrap: wrap; }
   .tl-desc { display: block; white-space: normal; font-size: 11px; }
 
-  /* safe area iOS */
-  .header { padding-top: env(safe-area-inset-top); }
-  body { padding-bottom: env(safe-area-inset-bottom); }
+  /* Card size button repositionné au-dessus du bottom nav */
+  .card-size-btn { bottom: calc(72px + env(safe-area-inset-bottom)); }
+
+  /* Sidebar resize handle disabled on mobile */
+  .sidebar-resize-handle { display: none; }
 }
 
 /* ============================================================
@@ -474,6 +496,10 @@ body.dark-mode {
 }
 body.dark-mode .header { background: #080a18; border-bottom-color: rgba(255,255,255,0.06); }
 body.dark-mode .card { background: var(--surface); border-color: var(--border); }
+body.dark-mode .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 1px 4px rgba(0,0,0,0.2); }
+body.dark-mode .card-price-badge { background: rgba(77,106,255,0.15); color: #7e9aff; }
+body.dark-mode .card-meta { color: var(--text-muted); }
+body.dark-mode .card-concession { color: var(--text-muted); opacity: 0.6; }
 body.dark-mode .column { background: #10132a; border-color: var(--border); }
 body.dark-mode .column-header { background: #10132a; }
 body.dark-mode .col-count { background: rgba(255,255,255,0.07); }
@@ -541,6 +567,16 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <button class="btn btn-icon btn-ghost" onclick="openSettings()" title="Paramètres">⚙️</button>
   </div>
 </header>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav" id="mobileNav">
+  <div class="nav-items">
+    <button class="nav-item active" onclick="showView('achats',this)" data-view="achats"><span class="nav-icon">🚗</span>Achats</button>
+    <button class="nav-item" onclick="showView('taches',this)" data-view="taches"><span class="nav-icon">✅</span>Tâches</button>
+    <button class="nav-item" onclick="showView('emails',this)" data-view="emails"><span class="nav-icon">📬</span>Emails</button>
+    <button class="nav-item" onclick="showView('dashboard',this)" data-view="dashboard"><span class="nav-icon">📊</span>Dashboard</button>
+  </div>
+</nav>
 
 <!-- BRIEFING PANEL -->
 <div class="briefing-panel" id="briefingPanel">
@@ -1226,7 +1262,7 @@ function renderCol(col) {
   const allV = vehicles.length + lots.length;
   const totalPrix = vehicles.reduce((s,v)=>s+(Number(v.prix_negocie)||Number(v.prix_demande)||0), 0);
 
-  const extraClass = col.key === 'deal_perdu' ? ' column-deal-perdu' : '';
+  const extraClass = (col.key === 'deal_perdu' ? ' column-deal-perdu' : '') + ` column-accent-${col.key}`;
   return `<div class="column${extraClass}">
     <div class="column-header">
       <span class="col-title">${col.label}</span>
@@ -1415,95 +1451,102 @@ function vehicleCard(v) {
   const price = v.prix_negocie || v.prix_demande;
   const showDocs = docsVisible(v);
   const missD = hasMissingDocs(v);
+  const isMatch = searchQ && matchV(v);
+  const dragAttrs = `draggable="true"
+    ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
+    ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+    onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')"`;
 
-  // === DEAL PERDU : fiche minimaliste ===
+  // === DEAL PERDU : carte minimaliste ===
   if (v.column === 'deal_perdu') {
-    const isMatch = searchQ && matchV(v);
-    return `<div class="card ${urg}${isMatch?' search-match':''}" draggable="true"
-      style="border-left-color:var(--urg-1);opacity:0.8"
-      ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
-      ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
-      onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')">
-      <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
-      <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
-      <div class="tags">
-        ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
-        ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
+    return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
+      style="border-left-color:var(--urg-1);opacity:0.75">
+      <div class="card-btn-group">
+        <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+      </div>
+      <div class="card-header-row">
+        <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+        ${price ? `<span class="card-price-badge">${fmtN(price)}</span>` : ''}
       </div>
       ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : '<div class="deal-lost-reason" style="color:var(--text-muted)">Raison non précisée</div>'}
     </div>`;
   }
 
-  // === Bordure gauche colorée par sous-étape (sourcing) ===
+  // === Bordure gauche colorée par sous-étape ===
   const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', negociation:'var(--urg-2)', bc_signe:'var(--urg-done)' };
   const SS_BADGE  = {
     a_contacter: { label:'À contacter', color:'var(--text-muted)', bg:'var(--bg)' },
-    contacte:    { label:'Contacté',    color:'var(--accent)',     bg:'rgba(61,85,240,0.09)' },
-    negociation: { label:'Négociation', color:'var(--urg-2)',      bg:'rgba(232,122,0,0.1)' },
-    bc_signe:    { label:'BC Signé ✓',  color:'var(--urg-done)',   bg:'rgba(22,163,74,0.1)' }
+    contacte:    { label:'Contacté',    color:'#3d55f0',          bg:'rgba(61,85,240,0.09)' },
+    negociation: { label:'Négociation', color:'#d97706',          bg:'rgba(217,119,6,0.1)' },
+    bc_signe:    { label:'BC Signé ✓',  color:'#16a34a',          bg:'rgba(22,163,74,0.1)' }
   };
   const ssKey = v.sub_stage || 'a_contacter';
   const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
+
+  // === Fraîcheur ===
+  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
+  let freshnessHtml = '';
+  if (lastDate) {
+    const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
+    const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
+    const txt = days === 0 ? "Aujourd'hui" : days === 1 ? 'Hier' : `il y a ${days}j`;
+    freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
+  }
+
+  // === Méta (1 ligne) ===
+  const metaParts = [v.annee, v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '', v.carburant].filter(Boolean);
+  const metaHtml = metaParts.length ? `<div class="card-meta">${metaParts.join(' · ')}</div>` : '';
+
+  // === Concession ===
+  const conc = v.concessionnaire || v.vendeur || '';
+  const concHtml = conc ? `<div class="card-concession">${hl(esc(conc), searchQ)}</div>` : '';
+
+  // === Badge sous-étape (sourcing) ===
   const ssBadgeInfo = v.column === 'sourcing' ? (SS_BADGE[ssKey] || SS_BADGE.a_contacter) : null;
   const ssBadgeHtml = ssBadgeInfo
     ? `<span class="ss-badge" style="background:${ssBadgeInfo.bg};color:${ssBadgeInfo.color}">${ssBadgeInfo.label}</span>`
     : '';
 
-  // === Indicateur de fraîcheur ===
-  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
-  let freshnessHtml = '';
-  if (lastDate) {
-    const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
-    if (days === 0)      freshnessHtml = `<span class="freshness-badge fresh">Aujourd'hui</span>`;
-    else if (days === 1) freshnessHtml = `<span class="freshness-badge">Hier</span>`;
-    else if (days >= 5)  freshnessHtml = `<span class="freshness-badge stale">il y a ${days}j</span>`;
-    else                 freshnessHtml = `<span class="freshness-badge">il y a ${days}j</span>`;
-  }
-
   // === Prochaine action ===
   const NEXT_ACTIONS = {
     sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', negociation:'🤝 En négociation', bc_signe:'💳 Passer en paiement' },
-    a_payer:'💳 En attente de paiement', en_transport:'🚛 Suivre le transport', livre:'✅ Livré — à archiver'
+    a_payer:'💳 Attente paiement', en_transport:'🚛 En transport', livre:'✅ Livré'
   };
   let nextAction = '';
   if (v.column === 'sourcing') nextAction = NEXT_ACTIONS.sourcing[ssKey] || '';
   else if (NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
   const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
 
-  // === Avertissement docs ===
+  // === Docs warning ===
   const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
-    ? `<div class="doc-warn">⚠️ Documents manquants</div>` : '';
+    ? `<div class="doc-warn">⚠️ Docs manquants</div>` : '';
 
-  // === Bouton action principale ===
+  // === Bouton action rapide ===
   let actions = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
     actions = `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}',event)">→ À Payer</button>`;
   else if (v.column === 'a_payer')
     actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
   else if (v.column === 'en_transport')
-    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Confirmé livré</button>`;
+    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
   else if (v.column === 'livre')
     actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
 
-  const isMatch = searchQ && matchV(v);
-  return `<div class="card ${urg}${isMatch?' search-match':''}" draggable="true"
-    style="border-left-color:${borderColor}"
-    ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
-    ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
-    onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')">
-    <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+  return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
+    style="border-left-color:${borderColor}">
+    <div class="card-btn-group">
+      <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+    </div>
     <div class="card-header-row">
       <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+      ${price ? `<span class="card-price-badge">${fmtN(price)}</span>` : ''}
+    </div>
+    ${metaHtml}
+    ${concHtml}
+    <div class="card-bottom-row">
+      <div>${ssBadgeHtml}${nextActionHtml}</div>
       ${freshnessHtml}
     </div>
-    <div class="tags">
-      ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
-      ${v.km ? `<span class="tag">${Number(v.km).toLocaleString('fr-FR')} km</span>` : ''}
-      ${v.carburant ? `<span class="tag">${hl(v.carburant, searchQ)}</span>` : ''}
-      ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
-    </div>
-    ${ssBadgeHtml}
-    ${nextActionHtml}
     ${docWarn}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
   </div>`;
@@ -1869,7 +1912,16 @@ function showView(id, btn) {
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  if (btn) btn.classList.add('active');
+  if (btn && btn.classList.contains('tab-btn')) btn.classList.add('active');
+  // Sync header tabs
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.textContent.toLowerCase().includes(id === 'achats' ? 'achat' : id === 'taches' ? 'tâche' : id === 'emails' ? 'email' : 'dashboard'))
+      b.classList.add('active');
+  });
+  // Sync mobile bottom nav
+  document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.view === id);
+  });
   if (id === 'dashboard') renderDashboard();
   if (id === 'emails') {
     renderEmailsView();
