@@ -1,6 +1,6 @@
 {
   "date": "2026-03-31",
-  "generated_at": "2026-03-31T14:15:46.212Z",
+  "generated_at": "2026-03-31T14:20:45.812Z",
   "is_morning": false,
   "emails": [
     {
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 477.7,
+      "hours_old": 477.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 197.2,
+      "hours_old": 197.3,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "Re: Devis Gruau Lyon 10 Clio VPVU diesel ou essence simple",
       "snippet": "Salut Nico, Et voici en PJ le bdc signé Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 69300",
       "date": "2026-03-25T10:03:57.000Z",
-      "hours_old": 148.2,
+      "hours_old": 148.3,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -86,7 +86,7 @@
       "subject": "LOT",
       "snippet": "Bon aprem [cid:da78bebd-a497-46c9-87b1-7a8d458729db]",
       "date": "2026-03-25T13:58:17.000Z",
-      "hours_old": 144.3,
+      "hours_old": 144.4,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "Re: Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Salut Nico, Tu peux en rajouter un troisième stp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Dre",
       "date": "2026-03-30T08:44:52.000Z",
-      "hours_old": 29.5,
+      "hours_old": 29.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "Re: Besoins",
       "snippet": "Bonjour Stephane, En PJ les docs signés. Bonne vacances Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin",
       "date": "2026-03-30T09:16:54.000Z",
-      "hours_old": 29,
+      "hours_old": 29.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "Re: OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Matthieu, Le chassis concerné : VF7SXHMRVRT044400 Si possible d’avoir la facture, merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 1",
       "date": "2026-03-30T14:14:04.000Z",
-      "hours_old": 24,
+      "hours_old": 24.1,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "A Saisir sur Parc : Porsche 911 Coupé (991) Carrera GTS PDK + Toit Ouvrant + Pack Intérieur Cuir à 104 990 € TTC Chez VO-LINK",
       "snippet": "PORSCHE 911 COUPE (991) CARRERA GTS PDK Prix de Vente : 104 990 € Devis : 100 € 1° MEC = 04/12/2015 KMS : 81 933 Couleur = Gris Quartz Metal *Prix TTC Au départ de LYON",
       "date": "2026-03-30T14:20:42.000Z",
-      "hours_old": 23.9,
+      "hours_old": 24,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "GTC29N ID.BUZZ 5-sits, EXPORT, ASAP deal!",
       "snippet": "Med vänlig hälsning / Best regards Jon Halef Säljare Begagnat [cid:image001.png@01DCC062.21C4B5E0] Volkswagen Hammarby Sjöstad Hammarby Fabriksväg 45 Tel: 08-503 33",
       "date": "2026-03-30T14:27:43.000Z",
-      "hours_old": 23.8,
+      "hours_old": 23.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "NEW OPEL VIVARO XL 2.0 HDI 145CH EAT-8 de 10/2025 avec 10 kms à 23 390 € HT",
       "snippet": "Le plus long de la gamme VIVARO en BVA ! NEW OPEL VIVARO Taille XL 3 Places EAT-8 2.0 HDI 145CH Couleur : Blanc Banquise De 10/2025 10 kms",
       "date": "2026-03-30T15:08:10.000Z",
-      "hours_old": 23.1,
+      "hours_old": 23.2,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "€ 12.400🛞C4 PLUS 130 EAT8🛞2025🛞MOUREY APPRO",
       "snippet": ">>> CITROEN C4 PURETECH 130 EAT8 PLUS. EQUIPEMENTS & OPTIONS : PACK Navigation Mirror Link Clim Auto Caméra Radar Arrière Régulateur / Limiteur Vitesse COULEUR : Okeni",
       "date": "2026-03-30T15:59:22.000Z",
-      "hours_old": 22.3,
+      "hours_old": 22.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Offre 1x Ford Ranger MS-RT 3.0 EcoBlue 240ch 4WD",
       "snippet": "Dear customer, Available in 2 weeks, **1x Ford Ranger MS-RT 3.0 EcoBlue 240ch 4WD double cabine** Km : 10 Fuel : gasoline Automatic gearbox **",
       "date": "2026-03-30T18:01:25.000Z",
-      "hours_old": 20.2,
+      "hours_old": 20.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -196,7 +196,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Merci de votre retour Cordialement Le mar. 31 mars 2026 à 10:26, Alex Guichard <alex@flease.fr> a écrit : > Bonjour, > > Et voici les docs signés. > > Cordia",
       "date": "2026-03-31T09:55:32.000Z",
-      "hours_old": 4.3,
+      "hours_old": 4.4,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -207,7 +207,7 @@
       "subject": "RE: ATTESTATION TRAFIC GP555VY",
       "snippet": "Bonjour, Veuillez trouver en pièce jointe les 2 avoirs demandés. Cordialement, Maud BERRY ASSISTANTE COMMERCIALE maud.berry@autobernard.com LOCATRANS TRANSVERSE 519 AV",
       "date": "2026-03-31T10:31:23.000Z",
-      "hours_old": 3.7,
+      "hours_old": 3.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -218,10 +218,21 @@
       "subject": "RE: BC",
       "snippet": "Bonjour, Ci-joint les copies de CG Cordialement Dorine ACTIV' AUTOMOBILES 12 Rue du Saintois 54520 LAXOU-LA-SAPINIERE 03.83.97.97.97 _______________________",
       "date": "2026-03-31T14:07:29.000Z",
-      "hours_old": 0.1,
+      "hours_old": 0.2,
       "label": "ajouter au dash",
       "category": "sans_reponse",
       "score": 8
+    },
+    {
+      "id": "19d42edb516a49c5",
+      "from": "Ilyes Rahiel <ilyes@flease.fr>",
+      "subject": "Fwd: SEAT LEON / SEAT LEON BREAK",
+      "snippet": "---------- Forwarded message --------- De : Ilyes Rahiel <ilyes@flease.fr> Date: mar. 31 mars 2026 à 09:14 Subject: Fwd: SEAT LEON / SEAT LEON BREAK To: Constantin Eliard <cons",
+      "date": "2026-03-31T08:05:50.000Z",
+      "hours_old": 6.3,
+      "label": "A traiter",
+      "category": "sans_reponse",
+      "score": 7
     },
     {
       "id": "19d42edceaaba31e",
@@ -235,23 +246,12 @@
       "score": 7
     },
     {
-      "id": "19d42edb516a49c5",
-      "from": "Ilyes Rahiel <ilyes@flease.fr>",
-      "subject": "Fwd: SEAT LEON / SEAT LEON BREAK",
-      "snippet": "---------- Forwarded message --------- De : Ilyes Rahiel <ilyes@flease.fr> Date: mar. 31 mars 2026 à 09:14 Subject: Fwd: SEAT LEON / SEAT LEON BREAK To: Constantin Eliard <cons",
-      "date": "2026-03-31T08:05:50.000Z",
-      "hours_old": 6.2,
-      "label": "A traiter",
-      "category": "sans_reponse",
-      "score": 7
-    },
-    {
       "id": "19d42b837e7a6e9d",
       "from": "\"Adrien Bernabé - EP Véhicules\" <adrien.bernabe@ep-vehicules.lu>",
       "subject": "EP Véhicules --> Stock à Jour !!! 400 véhicules...",
       "snippet": "Bonjour, 2 fichiers excel ! Prix départ Rodange Frais vo à déduire COC fournis Bonne réception, [cid:image001.png@01DCC0ED.55C30AA0] Adrien BERNABE 408 Route de Lon",
       "date": "2026-03-31T07:07:39.000Z",
-      "hours_old": 7.1,
+      "hours_old": 7.2,
       "label": null,
       "category": "sans_reponse",
       "score": 6
@@ -262,7 +262,7 @@
       "subject": "LEXON - 2 x Skoda Karoq 1.5TSi 150pk Selection   - 2025    CAMERA / ACC / KESSY / PDC V + A",
       "snippet": "Bonjour, Les prochaines unités sont disponible, n’hésitez pas si il y a des questions; PRIX 22.495€ htva [IMG_6404.jpeg] [IMG_6413.jpeg] TMBJR7NU1S5059532 Skoda K",
       "date": "2026-03-31T08:32:35.000Z",
-      "hours_old": 5.7,
+      "hours_old": 5.8,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -273,7 +273,7 @@
       "subject": "79 VU, 4 MINIBUS, 1 TPMR et 1 CAMPING CAR CHEZ LABEL AUTO LE MANS",
       "snippet": "Bonjour Voici notre liste stock à jour du Mardi… Bonne réception, Cordialement Retrouvez notre stock <https://www.label-auto.com/610/> ici",
       "date": "2026-03-31T08:38:19.000Z",
-      "hours_old": 5.6,
+      "hours_old": 5.7,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -317,7 +317,7 @@
       "subject": "new: Jeacoo 7",
       "snippet": "Hello, please see our current offer for new: 14X JEACOO 7 EXCLUSIVE 1.6 T-GDI AWD * 1.reg. - no * KM - 0km * colors: mix * price - 22.500EURO Stock cars. If you",
       "date": "2026-03-31T09:26:15.000Z",
-      "hours_old": 4.8,
+      "hours_old": 4.9,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -328,7 +328,7 @@
       "subject": "used: 2x Audi Q2 2023",
       "snippet": "Hello, please see our current offer for USED 2X AUDI Q2 ADVANCED 35 TFSI 7-K, S TRONIC (110KW / 150HP) * 1.reg. - 10.05.2023 * KM - 58.798km and 56.536km * colors: Myt",
       "date": "2026-03-31T10:02:51.000Z",
-      "hours_old": 4.2,
+      "hours_old": 4.3,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -339,7 +339,7 @@
       "subject": "[GitHub] Your fine-grained personal access token is about to expire",
       "snippet": "Hi AlexGuichard, We noticed your fine-grained personal access token \"Flease Interface\", will expire in 1 day. If this token is still needed, visit https://github.com/settings",
       "date": "2026-03-31T10:10:51.000Z",
-      "hours_old": 4.1,
+      "hours_old": 4.2,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -372,7 +372,7 @@
       "subject": "MIX New Package ( Audi / Ford / Kia/ Peugeot/ Hyundai / BYD and much more",
       "snippet": "",
       "date": "2026-03-31T11:55:59.000Z",
-      "hours_old": 2.3,
+      "hours_old": 2.4,
       "label": null,
       "category": "sans_reponse",
       "score": 4
@@ -383,10 +383,10 @@
       "subject": "5x FIAT SCUDO FG XL BLUEHDI 145/180cv EAT8 à prix FOUS ! jusqu'à 1.300€ de remise à l'unité",
       "snippet": "Bonjour, Vous trouverez ci-dessous notre offre de FIAT SCUDO à PRIX PROMO !! DISPOS DE SUITE avec TVA récupérable 😉 Marque Modèle Version 1 ere Mc Couleur",
       "date": "2026-03-31T12:18:55.000Z",
-      "hours_old": 1.9,
+      "hours_old": 2,
       "label": null,
       "category": "sans_reponse",
-      "score": 2
+      "score": 4
     },
     {
       "id": "19d441eeeb390834",
@@ -394,7 +394,7 @@
       "subject": "(N'FCP-12047-PLU)- Votre Commande !",
       "snippet": "Votre Commande Pluxee ! Bonjour, Votre commande N'FCP-12047-PLU a ete validee et votre compte est maintenant debite. Veuillez trouver en piece jointe la facture corresp",
       "date": "2026-03-31T13:39:27.000Z",
-      "hours_old": 0.6,
+      "hours_old": 0.7,
       "label": null,
       "category": "sans_reponse",
       "score": 2
@@ -405,7 +405,7 @@
       "subject": "Nouvelle(s) voiture(s) en vente",
       "snippet": "$title [image: Car Market] <https://syxiz.mjt.lu/lnk/CAAACG7d8nsAAc6c4dwABAAF59cAAYKKTxMAAAAAADCjOgBpy1bN4cNTGJA_Q3WUrOsrpn9MBwAsedE/1/V3Futrd8yMYnqat0IV38mQ/aHR0cDovL2Nhci1tYXJ",
       "date": "2026-03-31T05:08:29.000Z",
-      "hours_old": 9.1,
+      "hours_old": 9.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
