@@ -458,7 +458,7 @@
       "titre": "Renault Express VAN BLUE DCI 95 22 CONFORT",
       "description": "Renault Express VAN BLUE DCI 95 22 CONFORT camionnette, blanc, 5 cv, 5 portes, première mise en circulation le 26/03/2024, garantie 12 mois.\nboîte de vitesse : manuelle\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - Bluetooth\n\nConduite :\n  - limiteur de vitesse\n  - régulateur de vitesse\n",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "negociation",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -474,6 +474,10 @@
         {
           "date": "2026-03-31",
           "action": "Informations modifiées"
+        },
+        {
+          "date": "2026-03-31",
+          "action": "Sourcing : a_contacter → negociation"
         }
       ],
       "commentaires": [],
