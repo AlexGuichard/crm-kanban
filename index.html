@@ -1471,26 +1471,20 @@ function generateEmailActions(emails) {
 }
 
 function openEmailMimestream(threadId, subject, from) {
-  // Le bridge tourne sur localhost:9876 en HTTP.
-  // Depuis GitHub Pages (HTTPS), fetch() vers HTTP est bloqué (Mixed Content).
-  // window.open() est la seule méthode autorisée — la popup se referme automatiquement.
-  if (subject) {
-    const bridgeUrl = `http://localhost:9876/open?subject=${encodeURIComponent(subject)}&from=${encodeURIComponent(from||'')}&id=${encodeURIComponent(threadId||'')}`;
-    const popup = window.open(bridgeUrl, '_blank', 'width=1,height=1,left=-100,top=-100');
-    // Fallback Gmail si le bridge ne répond pas (popup reste ouverte)
-    setTimeout(() => {
-      try {
-        if (popup && !popup.closed) {
-          popup.close();
-          window.open(`https://mail.google.com/mail/u/0/#search/${encodeURIComponent(subject)}`, '_blank');
-        }
-      } catch(e) {
-        window.open(`https://mail.google.com/mail/u/0/#search/${encodeURIComponent(subject)}`, '_blank');
-      }
-    }, 2000);
-  } else {
-    window.open(`https://mail.google.com/mail/u/0/#inbox/${threadId}`, '_blank');
-  }
+  if (!subject && !threadId) return;
+  // Bridge via <img> — seule technique non bloquée depuis HTTPS vers HTTP local (passive mixed content)
+  const bridgeUrl = `http://localhost:9876/open?subject=${encodeURIComponent(subject||'')}&from=${encodeURIComponent(from||'')}&id=${encodeURIComponent(threadId||'')}`;
+  let bridgeOk = false;
+  const img = new Image();
+  img.onload = img.onerror = () => { bridgeOk = true; };
+  img.src = bridgeUrl;
+  // Fallback Gmail si bridge non disponible après 1.5s
+  setTimeout(() => {
+    if (!bridgeOk) {
+      const q = subject ? `#search/${encodeURIComponent(subject)}` : `#inbox/${threadId}`;
+      window.open(`https://mail.google.com/mail/u/0/${q}`, '_blank');
+    }
+  }, 1500);
 }
 
 function dismissEmail(id) {
