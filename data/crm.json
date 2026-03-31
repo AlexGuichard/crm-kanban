@@ -442,11 +442,11 @@
       "url_annonce": "https://www.leboncoin.fr/ad/utilitaires/3149793780",
       "source": "LeBonCoin",
       "marque": "RENAULT",
-      "modele": "Autres",
-      "annee": 2024,
+      "modele": "Express Van",
+      "annee": "2024",
       "date_mec": "03/2024",
-      "km": 26317,
-      "prix_demande": 15480,
+      "km": "26317",
+      "prix_demande": "15480",
       "carburant": "Diesel",
       "boite": "Manuelle",
       "couleur": "Blanc",
@@ -470,8 +470,18 @@
         {
           "date": "2026-03-31",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-03-31",
+          "action": "Informations modifiées"
         }
-      ]
+      ],
+      "commentaires": [],
+      "vin": "",
+      "immatriculation": "",
+      "prix_negocie": "",
+      "fournisseur_email": "",
+      "commentaire": ""
     }
   ],
   "lots": [],
