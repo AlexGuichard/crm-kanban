@@ -1,6 +1,6 @@
 {
   "date": "2026-03-31",
-  "generated_at": "2026-03-31T06:00:49.323Z",
+  "generated_at": "2026-03-31T06:05:49.383Z",
   "is_morning": false,
   "emails": [
     {
@@ -9,7 +9,7 @@
       "subject": "(sans objet)",
       "snippet": "Bonjour, ci joint les factures demandées, en nous excusant pour le retard ! Bonne réception -- *Cordialement, * *Service Occasion* *Tél. : 02.97.80.14.80 * *LE GLEUT A",
       "date": "2026-03-11T08:24:50.000Z",
-      "hours_old": 477.6,
+      "hours_old": 477.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -20,7 +20,7 @@
       "subject": "RE: Voitures en attente de paiement.",
       "snippet": "Alex Si cela te convient j’attends ton règlement et je n’annule pas. Bonne soirée Jean-Pierre ARANDA Responsable achats véhicules d’occasion Tél: 06 75 68 26 81 j.ara",
       "date": "2026-03-11T16:32:02.000Z",
-      "hours_old": 469.5,
+      "hours_old": 469.6,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -31,7 +31,7 @@
       "subject": "EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Je vous confirme avoir été informé que le virement à bien été fait et que j'ai bien reçu la preuve de virement. J'ai également mis en préparation les EXPRESS VAN po",
       "date": "2026-03-20T13:24:35.000Z",
-      "hours_old": 256.6,
+      "hours_old": 256.7,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -42,7 +42,7 @@
       "subject": "REGLEMENT FACTURE",
       "snippet": "Bonjour, Pourriez-vous procéder au règlement de la facture que je vous avais adressé le 07/10/2025 ? Merci Cordialement, De : contact@levail",
       "date": "2026-03-20T15:19:07.000Z",
-      "hours_old": 254.7,
+      "hours_old": 254.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -53,7 +53,7 @@
       "subject": "[Votre démarche] Avis de contravention électronique - Relance",
       "snippet": "Avis de contravention électronique - Relance [image: Logo Antai] Avis de contravention électronique - Relance Bonjour, Nous vous rappelons que GUICHARD ALEX est le destinatair",
       "date": "2026-03-20T19:06:10.000Z",
-      "hours_old": 250.9,
+      "hours_old": 251,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -64,7 +64,7 @@
       "subject": "FACTURES AUTOBUY",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-23T09:04:20.000Z",
-      "hours_old": 188.9,
+      "hours_old": 189,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -75,7 +75,7 @@
       "subject": "RE: Parc",
       "snippet": "Hello Alex, Ca va ? On a eu un changement sur une voiture. La HC-379-EP VR3USHPYXSJ566250 est annulée. Elle est remplacé par la HE-379-LX VR3USHPY6SJ704186 dispo Vatry",
       "date": "2026-03-23T14:00:40.000Z",
-      "hours_old": 184,
+      "hours_old": 184.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -97,7 +97,7 @@
       "subject": "LOT",
       "snippet": "Bon aprem [cid:da78bebd-a497-46c9-87b1-7a8d458729db]",
       "date": "2026-03-25T13:58:17.000Z",
-      "hours_old": 136,
+      "hours_old": 136.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -108,7 +108,7 @@
       "subject": "RE: Proposition commerciale Clio DCI",
       "snippet": "Bonjour Alex, Je vous renvoie un bon de commande car je me suis trompé en entrant le prix de vente, c’est 16450€ et non 15450€, désolé pour le contretemps. Pouvez-vous me renvo",
       "date": "2026-03-26T15:18:58.000Z",
-      "hours_old": 110.7,
+      "hours_old": 110.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -119,7 +119,7 @@
       "subject": "ATTESTATION TRAFIC GP555VY",
       "snippet": "Bonjour, Dans le cadre de l'annulation de la vente du Renault Trafic immatriculé GP-555-VY, pourriez-vous svp nous retourner le document ci-joint tamponné et signé? Merci d'a",
       "date": "2026-03-27T08:20:03.000Z",
-      "hours_old": 93.7,
+      "hours_old": 93.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -130,7 +130,7 @@
       "subject": "Re: EXPRESS VAN : GX350KV / GX364KV / GX386KV / GX531WM",
       "snippet": "Bonjour, Voici les derniers documents à nous retourner signés. Les immatriculations ont été faites ce jour, vous allez les recevoir d'ici une dizaine de jours. Bien cordial",
       "date": "2026-03-27T09:19:25.000Z",
-      "hours_old": 92.7,
+      "hours_old": 92.8,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -141,7 +141,7 @@
       "subject": "Mail automatique",
       "snippet": "Hello Titouan, J’espère que tu vas bien. Je pense qu’il y a un problème avec notre compte car j’ai reçu 115 mails automatique ce week-end. Peux-tu checker et me dire stp ?",
       "date": "2026-03-30T07:13:22.000Z",
-      "hours_old": 22.8,
+      "hours_old": 22.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -152,7 +152,7 @@
       "subject": "RENAULT TRAFICL2H1 3000 2.0 dCi 150ch Advance",
       "snippet": "[Afficher dans le navigateur](https://mailin-srv1.com/mk/mr/sh/6rqJ8GoudeITQpqE7DD9GA7IGzB/swV3SkOe2h6I) [TOURISME ](https://mailin-srv1.com/mk/cl/f/sh/6rqJfgq8dIPRQs7G6tPe4Mv",
       "date": "2026-03-30T07:30:31.000Z",
-      "hours_old": 22.5,
+      "hours_old": 22.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -163,7 +163,7 @@
       "subject": "X2 CITROEN BERLINGO M 1.5 HDI 100CH à partir de 8 990€ HT",
       "snippet": "Bonjour, pour bien commencer la semaine X2 Citroen Berlingo M C8237 CITROËN BERLINGO M 650 KG 1.5 HDI 100 CH DRIVER 2 PL + CARPLAY + REGUL + CAM + CLIM",
       "date": "2026-03-30T08:26:49.000Z",
-      "hours_old": 21.6,
+      "hours_old": 21.7,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -174,7 +174,7 @@
       "subject": "Liste 130 VO +  Des Remises sur 40 Véhicules sélectionnés et Disponible. ",
       "snippet": "Votre centrale d’achats multimarques 100 % Pro ✔ Offre Spéciale sur 40 véhicules ✔ Des véhicules sélectionnés avec un prix spécial. 👉 Découvrez nos offres dès maintenant : www",
       "date": "2026-03-30T08:28:53.000Z",
-      "hours_old": 21.5,
+      "hours_old": 21.6,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -185,7 +185,7 @@
       "subject": "Re: Devis Gruau Lyon 2 Clio VPVU E-TECH Hybride",
       "snippet": "Salut Nico, Tu peux en rajouter un troisième stp ? Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Dre",
       "date": "2026-03-30T08:44:52.000Z",
-      "hours_old": 21.3,
+      "hours_old": 21.4,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -196,9 +196,20 @@
       "subject": "FACTURE AUTOBUY GV-078-RL",
       "snippet": "Bonjour, Veuillez trouver ci-joint votre facture et notre RIB dans le corps de celle-ci. Nous vous remercions d'indiquer l'immatriculation concernée sur le libellé du pai",
       "date": "2026-03-30T08:50:44.000Z",
-      "hours_old": 21.2,
+      "hours_old": 21.3,
       "label": null,
       "category": "sans_reponse",
+      "score": 8
+    },
+    {
+      "id": "19d2aa03194524cd",
+      "from": "Alex Guichard <alex@flease.fr>",
+      "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
+      "snippet": "Bonjour Thibault, Et voici le bdc signé. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 6",
+      "date": "2026-03-30T08:53:13.000Z",
+      "hours_old": 21.2,
+      "label": "ajouter au dash",
+      "category": "label",
       "score": 8
     },
     {
@@ -213,14 +224,14 @@
       "score": 8
     },
     {
-      "id": "19d2aa03194524cd",
-      "from": "Alex Guichard <alex@flease.fr>",
-      "subject": "Re: TTRM AUTO : BDC Dacia Jogger",
-      "snippet": "Bonjour Thibault, Et voici le bdc signé. Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin Pierre Drevet, 6",
-      "date": "2026-03-30T08:53:13.000Z",
-      "hours_old": 21.1,
-      "label": "ajouter au dash",
-      "category": "label",
+      "id": "19d3e05e0eb0b679",
+      "from": "ANDREO Stephane <stephane.andreo@renault.com>",
+      "subject": "Bon de commande Kangoo Van Electrique",
+      "snippet": "Bonjour Alex, J’espère que le weekend fut bon, pourrais-tu stp m’envoyer le bon de commande tamponné et signé car je ne pourrai bientôt plus utiliser mon pc. Bien à toi, Stép",
+      "date": "2026-03-30T09:14:22.000Z",
+      "hours_old": 20.9,
+      "label": null,
+      "category": "sans_reponse",
       "score": 8
     },
     {
@@ -235,23 +246,12 @@
       "score": 8
     },
     {
-      "id": "19d3e05e0eb0b679",
-      "from": "ANDREO Stephane <stephane.andreo@renault.com>",
-      "subject": "Bon de commande Kangoo Van Electrique",
-      "snippet": "Bonjour Alex, J’espère que le weekend fut bon, pourrais-tu stp m’envoyer le bon de commande tamponné et signé car je ne pourrai bientôt plus utiliser mon pc. Bien à toi, Stép",
-      "date": "2026-03-30T09:14:22.000Z",
-      "hours_old": 20.8,
-      "label": null,
-      "category": "sans_reponse",
-      "score": 8
-    },
-    {
       "id": "19d3e09409e03e82",
       "from": "ANDREO Stephane <stephane.andreo@renault.com>",
       "subject": "Réponse automatique : Besoins",
       "snippet": "Bonjour, Je suis actuellement en congés et de retour le 20 avril, j'aurai un accès limité à mes mails durant cette période. Si votre demande peut attendre, je vous répondrai dè",
       "date": "2026-03-30T09:18:04.000Z",
-      "hours_old": 20.7,
+      "hours_old": 20.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -262,7 +262,7 @@
       "subject": "Re: Besoins",
       "snippet": "Bonjour Stephane, En PJ les docs signés. Bonne vacances Merci, Alex Alex Guichard - International Purchaser Manager + 33 6 10 33 00 62alex@flease.fr www.flease.fr887 Chemin",
       "date": "2026-03-30T09:16:54.000Z",
-      "hours_old": 20.7,
+      "hours_old": 20.8,
       "label": "ajouter au dash",
       "category": "label",
       "score": 8
@@ -273,7 +273,7 @@
       "subject": "Karoq Sportline 1.5 TSI 150 DSG",
       "snippet": "Bonjour, Celles-ci sont immédiatement disponibles de notre stock!! N’hésitez pas s’il y a des questions : [cid:image001.png@01DCC03D.DF223010] [cid:image002.png@01DCC03D.DF",
       "date": "2026-03-30T10:08:09.000Z",
-      "hours_old": 19.9,
+      "hours_old": 20,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -284,7 +284,7 @@
       "subject": "Liste VO Exclusive MASSOUTRE du 30.03.2026",
       "snippet": "L'email ne s'affiche pas correctement ? *Cliquez-ici* <https://clicks.messengeo.net?i=b38ef40c34b209a3c0148c527697469d&c=cmYuZXNhZWxmQHhlbGE6OjI2Mjk3ODU0NzM=> Découvrez vite no",
       "date": "2026-03-30T10:06:49.000Z",
-      "hours_old": 19.9,
+      "hours_old": 20,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -295,7 +295,7 @@
       "subject": "[] - [GX386KV] - My Express Driver - Votre récapitulatif d'inspection de véhicule",
       "snippet": "[View in browser](https://dcdbfda.r.tsp1-brevo.net/tr/mr/3psq3WTFydPYRX30469WWmplyixRyQDLqMzpp1kMGNtv3WNz5Sj0bWPM0rZnh4pWXr-pqtSGcrIlkotgVrUVV5t-twHFbi2MMU_IY1M-pOjns4IHfJEOen-9fQH",
       "date": "2026-03-30T12:48:36.000Z",
-      "hours_old": 17.2,
+      "hours_old": 17.3,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -306,7 +306,7 @@
       "subject": "AW: [UNKNOWN SENDER] Re: Ihre Anfrage bei Mercedes-Benz Vertragspartner Assenheimer + Mulfinger GmbH & Co. KG (Lead #121324281)",
       "snippet": "Unfortunately, I can't offer you a discount. As I already told you, the audit of your company cost me €450.00. Therefore, I can't offer any further discount. Von: Alex Guichard",
       "date": "2026-03-30T12:59:12.000Z",
-      "hours_old": 17,
+      "hours_old": 17.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -328,7 +328,7 @@
       "subject": "new: Dacia Duster _ Sandero",
       "snippet": "Hello, please see our current offer for new: * Dacia Duster Journey hybrid 140 1.6 hybrid 140 * Dacia Sandero Extreme ECO-G 120 * Dacia Sandero Extreme TCe 110 * Dacia",
       "date": "2026-03-30T14:12:16.000Z",
-      "hours_old": 15.8,
+      "hours_old": 15.9,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -339,7 +339,7 @@
       "subject": "Re: OFFRE C3 MAX // MOUREY APPRO",
       "snippet": "Hello Matthieu, Le chassis concerné : VF7SXHMRVRT044400 Si possible d’avoir la facture, merci beaucoup Cordialement, Alex Guichard - International Purchaser Manager + 33 6 1",
       "date": "2026-03-30T14:14:04.000Z",
-      "hours_old": 15.8,
+      "hours_old": 15.9,
       "label": "A traiter",
       "category": "label",
       "score": 8
@@ -350,7 +350,7 @@
       "subject": "A Saisir sur Parc : Porsche 911 Coupé (991) Carrera GTS PDK + Toit Ouvrant + Pack Intérieur Cuir à 104 990 € TTC Chez VO-LINK",
       "snippet": "PORSCHE 911 COUPE (991) CARRERA GTS PDK Prix de Vente : 104 990 € Devis : 100 € 1° MEC = 04/12/2015 KMS : 81 933 Couleur = Gris Quartz Metal *Prix TTC Au départ de LYON",
       "date": "2026-03-30T14:20:42.000Z",
-      "hours_old": 15.7,
+      "hours_old": 15.8,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -372,7 +372,7 @@
       "subject": "NEW OPEL VIVARO XL 2.0 HDI 145CH EAT-8 de 10/2025 avec 10 kms à 23 390 € HT",
       "snippet": "Le plus long de la gamme VIVARO en BVA ! NEW OPEL VIVARO Taille XL 3 Places EAT-8 2.0 HDI 145CH Couleur : Blanc Banquise De 10/2025 10 kms",
       "date": "2026-03-30T15:08:10.000Z",
-      "hours_old": 14.9,
+      "hours_old": 15,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -383,7 +383,7 @@
       "subject": "€ 12.400🛞C4 PLUS 130 EAT8🛞2025🛞MOUREY APPRO",
       "snippet": ">>> CITROEN C4 PURETECH 130 EAT8 PLUS. EQUIPEMENTS & OPTIONS : PACK Navigation Mirror Link Clim Auto Caméra Radar Arrière Régulateur / Limiteur Vitesse COULEUR : Okeni",
       "date": "2026-03-30T15:59:22.000Z",
-      "hours_old": 14,
+      "hours_old": 14.1,
       "label": null,
       "category": "sans_reponse",
       "score": 8
@@ -394,10 +394,10 @@
       "subject": "Offre 1x Ford Ranger MS-RT 3.0 EcoBlue 240ch 4WD",
       "snippet": "Dear customer, Available in 2 weeks, **1x Ford Ranger MS-RT 3.0 EcoBlue 240ch 4WD double cabine** Km : 10 Fuel : gasoline Automatic gearbox **",
       "date": "2026-03-30T18:01:25.000Z",
-      "hours_old": 12,
+      "hours_old": 12.1,
       "label": null,
       "category": "sans_reponse",
-      "score": 6
+      "score": 8
     },
     {
       "id": "19cb4001bae9d85b",
@@ -405,7 +405,7 @@
       "subject": "Complétée : Veuillez signer avec DocuSign : Bon de Commande",
       "snippet": "Bonjour FLEASE FLEET, Toutes les parties ont complété « Veuillez signer avec DocuSign : Bon de Commande ». Cher Client, Nous vous invitons à prendre connaissa",
       "date": "2026-03-03T14:00:29.000Z",
-      "hours_old": 664,
+      "hours_old": 664.1,
       "label": "ajouter au dash",
       "category": "label",
       "score": 1
@@ -427,7 +427,7 @@
       "subject": "TTRM AUTO : Liste de VO / VN complète",
       "snippet": "Bonjour, Vous trouverez ci-dessous mon offre complète de véhicules : Modèle KM Couleur MEC Prix TTC Options Fre RENAULT Captur Techno 160 E-tech 1.8 10 Gris rafale 2025 25",
       "date": "2026-03-30T08:04:12.000Z",
-      "hours_old": 21.9,
+      "hours_old": 22,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -438,7 +438,7 @@
       "subject": "Peugeot 2008 1.2 Hybrid 136/145 MHEV Allure",
       "snippet": "$title [image: Car Market] <https://syxiz.mjt.lu/lnk/EAAACHB_kwsAAc6cysIABAAF59cAAYKKTxMAAAAAADCjOgBpymPymo6q9puuTgCkUyhPEMPvsQAsedE/1/U8nOH1k0shRbcSKB3IvSyA/aHR0cDovL2Nhci1tYXJ",
       "date": "2026-03-30T11:52:18.000Z",
-      "hours_old": 18.1,
+      "hours_old": 18.2,
       "label": null,
       "category": "sans_reponse",
       "score": 1
@@ -447,8 +447,8 @@
   "summary": {
     "total": 40,
     "critical": 0,
-    "high": 35,
-    "medium": 1,
+    "high": 36,
+    "medium": 0,
     "low": 4
   }
 }
