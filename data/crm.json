@@ -34,7 +34,14 @@
           "date": "2026-03-31",
           "action": "Sourcing : a_contacter → contacte"
         }
-      ]
+      ],
+      "commentaires": [
+        {
+          "ts": "31/03/2026 18:02",
+          "text": "Doit revenir vers moi"
+        }
+      ],
+      "commentaire": "31/03/2026 18:02 : Doit revenir vers moi"
     },
     {
       "id": "750ad746-91dc-4284-99c6-16dffdbc96f4",
