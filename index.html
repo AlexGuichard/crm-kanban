@@ -1471,9 +1471,20 @@ function generateEmailActions(emails) {
 }
 
 function openEmailMimestream(threadId, subject, from) {
-  // Le navigateur ouvre directement le URL scheme mimestream:// — pas besoin de bridge
   if (subject) {
-    window.location.href = `mimestream://search?q=${encodeURIComponent(subject)}`;
+    // Ouvrir Mimestream via URL scheme sans quitter la page
+    const a = document.createElement('a');
+    a.href = `mimestream://search?q=${encodeURIComponent(subject)}`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { if (a.parentNode) document.body.removeChild(a); }, 500);
+    // Fallback Gmail si la fenêtre garde le focus (= Mimestream non installé)
+    const fallback = setTimeout(() => {
+      window.open(`https://mail.google.com/mail/u/0/#search/${encodeURIComponent(subject)}`, '_blank');
+    }, 1500);
+    const cancel = () => { clearTimeout(fallback); window.removeEventListener('blur', cancel); };
+    window.addEventListener('blur', cancel);
   } else {
     window.open(`https://mail.google.com/mail/u/0/#inbox/${threadId}`, '_blank');
   }
