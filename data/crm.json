@@ -570,6 +570,43 @@
       "prix_negocie": "",
       "fournisseur_email": "",
       "commentaire": "31/03/2026 11:58 : En attente de son offre par email"
+    },
+    {
+      "id": "2bd030c9-581a-44ca-a93a-4ba88130f7f7",
+      "lbc_id": "3150304679",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3150304679",
+      "source": "LeBonCoin",
+      "marque": "Renault",
+      "modele": "Clio",
+      "annee": 2024,
+      "date_mec": "08/2024",
+      "km": 18655,
+      "prix_demande": 16490,
+      "carburant": "Diesel",
+      "boite": "Manuelle",
+      "couleur": "Gris",
+      "localisation": "Figeac (46)",
+      "fournisseur_nom": "RENAULT FIGEAC - Bony auto-mobile",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/97/a8/77/97a8773b82a08336f4076f64f94ef02a9da56c8e.jpg?rule=ad-large",
+      "titre": "Renault Clio V Blue dCi 100 ch GSR2 Evolution",
+      "description": "Renault Clio V Blue dCi 100 ch GSR2 Evolution berline, gris clair, 5 cv, 5 portes, couleur intérieure : titane, première mise en circulation le 19/08/2024, garantie 12 mois.\n\nPrix TTC : 16 490,00 €\nPrix HT : 13 742,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places, longueur : 4,05 mètre(s), poi",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "priority": 3,
+      "documents": {
+        "carte_grise": false,
+        "facture_achat": false,
+        "certificat_cession": false
+      },
+      "created_at": "2026-04-01T15:31:45",
+      "historique": [
+        {
+          "date": "2026-04-01",
+          "action": "Importé depuis LBC"
+        }
+      ]
     }
   ],
   "lots": [],
