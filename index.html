@@ -1114,14 +1114,18 @@ const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 // Répare le double-encodage UTF-8 (mojibake) dans les données chargées depuis GitHub
 function fixMojibake(str) {
   if (!str || typeof str !== 'string') return str;
-  if (!/[\x80-\xFF]/.test(str)) return str;
-  try {
-    const bytes = new Uint8Array(str.length);
-    for (let i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i) & 0xFF;
-    const decoded = new TextDecoder('utf-8').decode(bytes);
-    if (decoded.includes('\uFFFD')) return str;
-    return decoded;
-  } catch (e) { return str; }
+  let current = str;
+  for (let pass = 0; pass < 10; pass++) {
+    if (!/[-ÿ]/.test(current)) break;
+    try {
+      const bytes = new Uint8Array(current.length);
+      for (let i = 0; i < current.length; i++) bytes[i] = current.charCodeAt(i) & 0xFF;
+      const decoded = new TextDecoder('utf-8').decode(bytes);
+      if (decoded.includes('�') || decoded === current) break;
+      current = decoded;
+    } catch (e) { break; }
+  }
+  return current;
 }
 function fixObjMojibake(obj) {
   if (!obj || typeof obj !== 'object') return obj;
