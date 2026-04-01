@@ -637,7 +637,7 @@
       "titre": "Renault Clio dCi 100 GSR2 Evolution",
       "description": "Renault Clio dCi 100 GSR2 Evolution berline, blanc, 5 cv, 5 portes, première mise en circulation le 13/12/2024, garantie 12 mois.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  Prédisposition éthylotest\n\nConduite :\n  - détecteur de pluie\n  - régulateur de vitesse\n\nCouleur :\n  ",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "negociation",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -649,6 +649,10 @@
         {
           "date": "2026-04-01",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-04-01",
+          "action": "Sourcing : a_contacter → negociation"
         }
       ],
       "commentaires": [
