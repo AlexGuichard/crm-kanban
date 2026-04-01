@@ -1110,6 +1110,29 @@ let ghSha = null;
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 const today = () => new Date().toISOString().slice(0, 10);
 const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
+
+// Répare le double-encodage UTF-8 (mojibake) dans les données chargées depuis GitHub
+function fixMojibake(str) {
+  if (!str || typeof str !== 'string') return str;
+  if (!/[\x80-\xFF]/.test(str)) return str;
+  try {
+    const bytes = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i) & 0xFF;
+    const decoded = new TextDecoder('utf-8').decode(bytes);
+    if (decoded.includes('\uFFFD')) return str;
+    return decoded;
+  } catch (e) { return str; }
+}
+function fixObjMojibake(obj) {
+  if (!obj || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(fixObjMojibake);
+  const out = {};
+  for (const k of Object.keys(obj)) {
+    const v = obj[k];
+    out[k] = typeof v === 'string' ? fixMojibake(v) : fixObjMojibake(v);
+  }
+  return out;
+}
 const fmtN = n => n ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
 const fmtD = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; } catch(e){return s||'—';} };
 const fmtDs = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}) : '—'; } catch(e){return s||'—';} };
@@ -1169,7 +1192,7 @@ async function loadFromGH() {
   try {
     ghSha = data.sha;
     const raw = atob(data.content.replace(/\n/g,''));
-    const content = JSON.parse(decodeURIComponent(escape(raw)));
+    const content = fixObjMojibake(JSON.parse(decodeURIComponent(escape(raw))));
     if (Array.isArray(content.vehicles)) S.vehicles = content.vehicles;
     if (Array.isArray(content.lots)) S.lots = content.lots;
     if (Array.isArray(content.tasks)) S.tasks = content.tasks;
