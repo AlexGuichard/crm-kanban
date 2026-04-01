@@ -650,7 +650,14 @@
           "date": "2026-04-01",
           "action": "Importé depuis LBC"
         }
-      ]
+      ],
+      "commentaires": [
+        {
+          "ts": "01/04/2026 17:46",
+          "text": "Il doit revenir vers moi avec prix de la voiture à 16k + CG, le 02/04"
+        }
+      ],
+      "commentaire": "01/04/2026 17:46 : Il doit revenir vers moi avec prix de la voiture à 16k + CG, le 02/04"
     }
   ],
   "lots": [],
