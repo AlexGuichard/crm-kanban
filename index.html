@@ -1599,13 +1599,26 @@ function vehicleCard(v) {
   const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
 
   // === Fraîcheur ===
-  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
   let freshnessHtml = '';
-  if (lastDate) {
-    const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
+  if (v.updated_at) {
+    // Précision à la minute si updated_at disponible
+    const d = new Date(v.updated_at);
+    const day = String(d.getDate()).padStart(2,'0');
+    const mo = String(d.getMonth()+1).padStart(2,'0');
+    const h = String(d.getHours()).padStart(2,'0');
+    const mi = String(d.getMinutes()).padStart(2,'0');
+    const days = Math.floor((Date.now() - d.getTime()) / 86400000);
     const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
-    const txt = days === 0 ? "Aujourd'hui" : days === 1 ? 'Hier' : `il y a ${days}j`;
-    freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
+    const txt = days === 0 ? `${h}:${mi}` : days === 1 ? `Hier ${h}:${mi}` : `${day}/${mo}`;
+    freshnessHtml = `<span class="freshness-badge${cls}" title="${day}/${mo}/${d.getFullYear()} ${h}:${mi}">↻ ${txt}</span>`;
+  } else {
+    const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
+    if (lastDate) {
+      const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
+      const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
+      const txt = days === 0 ? "Aujourd'hui" : days === 1 ? 'Hier' : `il y a ${days}j`;
+      freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
+    }
   }
 
   // === Méta (1 ligne) ===
