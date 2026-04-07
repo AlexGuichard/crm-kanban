@@ -147,6 +147,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .doc-badge.ok { background: rgba(22,163,74,0.12); color: #16a34a; border-color: rgba(22,163,74,0.3); }
 .doc-badge.ko { background: rgba(232,41,74,0.08); color: var(--urg-1); border-color: rgba(232,41,74,0.3); }
 .doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+.remind-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; color: var(--urg-1); background: rgba(232,41,74,0.08); border: 1px solid rgba(232,41,74,0.2); border-radius: 6px; padding: 2px 7px; margin-top: 4px; }
+.card-last-action { font-size: 10px; color: var(--text-muted); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-view-wrap { background: var(--surface); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
+.vehicle-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.vehicle-table th { text-align: left; padding: 9px 12px; font-size: 11px; font-weight: 700; color: var(--text-muted); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; background: var(--bg); }
+.vehicle-table th:hover { color: var(--text); }
+.vehicle-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.vehicle-table tr:last-child td { border-bottom: none; }
+.vehicle-table tbody tr:hover td { background: rgba(61,85,240,0.03); cursor: pointer; }
+.vt-sort { margin-left: 3px; opacity: 0.3; font-size: 10px; }
+.vt-sort.on { opacity: 1; }
+.vt-col-badge { display: inline-block; padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 700; }
 
 /* CARD SIZE VARIANTS */
 body.card-compact .card { padding: 8px 10px; }
@@ -596,7 +608,16 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 <!-- VIEW: ACHATS -->
 <div class="view active" id="view-achats">
   <div class="tasks-view-layout">
-    <div class="board" id="board" style="flex:1;min-width:0;"></div>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:flex-start">
+        <div class="tasks-view-toggle">
+          <button class="tvt-btn active" id="bvt-kanban" onclick="setBoardView('kanban')" title="Vue Kanban">⬛ Kanban</button>
+          <button class="tvt-btn" id="bvt-list" onclick="setBoardView('liste')" title="Vue Liste">≡ Liste</button>
+        </div>
+      </div>
+      <div class="board" id="board"></div>
+      <div id="board-list" style="display:none"></div>
+    </div>
     <div class="briefing-panel-sidebar" id="sidebarBriefingAchats"><div class="sidebar-resize-handle" onmousedown="startSidebarResize(event)"></div></div>
   </div>
 </div>
@@ -1105,6 +1126,9 @@ let currentDetailId = null;
 let pendingTransportId = null;
 let activeSS = 'a_contacter'; // active sourcing sub-stage tab
 let searchQ = '';
+let boardView = 'kanban';
+let listSortField = 'updated_at';
+let listSortDir = -1;
 let ghSha = null;
 
 // ============================================================
@@ -1301,11 +1325,97 @@ function render() {
 
 // -------- BOARD --------
 function renderBoard() {
+  if (boardView === 'liste') { renderBoardList(); return; }
   const cols = COLUMNS.filter(c => {
     if (c.key === 'archive') return S.settings.show_archive;
     return true;
   });
   document.getElementById('board').innerHTML = cols.map(col => renderCol(col)).join('');
+}
+
+function setBoardView(v) {
+  boardView = v;
+  document.getElementById('bvt-kanban').classList.toggle('active', v === 'kanban');
+  document.getElementById('bvt-list').classList.toggle('active', v === 'liste');
+  document.getElementById('board').style.display = v === 'kanban' ? '' : 'none';
+  document.getElementById('board-list').style.display = v === 'liste' ? '' : 'none';
+  if (v === 'kanban') renderBoard(); else renderBoardList();
+}
+
+function sortList(field) {
+  if (listSortField === field) listSortDir *= -1;
+  else { listSortField = field; listSortDir = -1; }
+  renderBoardList();
+}
+
+function renderBoardList() {
+  const el = document.getElementById('board-list');
+  if (!el) return;
+  const COL_LABEL = { sourcing:'Sourcing', a_payer:'À Payer', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
+  const COL_COLOR = { sourcing:'61,85,240', a_payer:'232,122,0', en_transport:'124,58,237', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
+
+  let vehicles = S.vehicles.filter(v => {
+    if (v.column === 'archive' && !S.settings.show_archive) return false;
+    return matchV(v);
+  });
+
+  vehicles = [...vehicles].sort((a, b) => {
+    let va, vb;
+    if (listSortField === 'updated_at') {
+      va = a.updated_at || (a.historique && a.historique.length ? a.historique[a.historique.length-1].date : (a.created_at||''));
+      vb = b.updated_at || (b.historique && b.historique.length ? b.historique[b.historique.length-1].date : (b.created_at||''));
+    } else if (listSortField === 'prix') {
+      va = Number(a.prix_negocie || a.prix_demande) || 0;
+      vb = Number(b.prix_negocie || b.prix_demande) || 0;
+    } else if (listSortField === 'km') {
+      va = Number(a.km) || 0; vb = Number(b.km) || 0;
+    } else if (listSortField === 'vehicule') {
+      va = (a.marque+' '+a.modele).toLowerCase(); vb = (b.marque+' '+b.modele).toLowerCase();
+    } else if (listSortField === 'colonne') {
+      const order = ['sourcing','a_payer','en_transport','livre','deal_perdu','archive'];
+      va = order.indexOf(a.column); vb = order.indexOf(b.column);
+    }
+    if (va < vb) return listSortDir; if (va > vb) return -listSortDir; return 0;
+  });
+
+  const sh = (field, label) => {
+    const on = listSortField === field;
+    const arrow = on ? (listSortDir === -1 ? '↓' : '↑') : '↕';
+    return `<th onclick="sortList('${field}')">${label}<span class="vt-sort${on?' on':''}">${arrow}</span></th>`;
+  };
+
+  const rows = vehicles.map(v => {
+    const price = v.prix_negocie || v.prix_demande;
+    const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at) || '';
+    let dateStr = '—'; let dateCls = '';
+    if (refDate) {
+      const d = new Date(refDate);
+      const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+      const day = String(d.getDate()).padStart(2,'0'), mo = String(d.getMonth()+1).padStart(2,'0');
+      const h = String(d.getHours()).padStart(2,'0'), mi = String(d.getMinutes()).padStart(2,'0');
+      if (days === 0) dateStr = `${h}:${mi}`;
+      else if (days === 1) dateStr = 'Hier';
+      else dateStr = `${day}/${mo}`;
+      if (days >= (S.settings.reminder_days||3)) dateCls = ' style="color:var(--urg-2);font-weight:700"';
+    }
+    const c = COL_COLOR[v.column] || '120,120,120';
+    const colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${COL_LABEL[v.column]||v.column}</span>`;
+    const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
+    return `<tr onclick="openDetail('${v.id}')">
+      <td><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${v.annee?` <span style="color:var(--text-muted);font-size:11px">${v.annee}</span>`:''}</td>
+      <td>${colHtml}</td>
+      <td>${price ? fmtN(price) : '—'}</td>
+      <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
+      <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
+      <td${dateCls}>${dateStr}</td>
+      <td style="color:var(--text-muted);font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(lastAct)}</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
+    <thead><tr>${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}<th>Fournisseur</th>${sh('updated_at','Activité')}<th>Dernière action</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
+  </table></div>`;
 }
 
 const sortByRecent = arr => [...arr].sort((a,b) => {
@@ -1649,6 +1759,22 @@ function vehicleCard(v) {
   const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
     ? `<div class="doc-warn">⚠️ Docs manquants</div>` : '';
 
+  // === Rappel inactif ===
+  const reminderDays = S.settings.reminder_days || 3;
+  const activeColumns = ['sourcing','a_payer','en_transport','livre'];
+  let remindHtml = '';
+  if (activeColumns.includes(v.column)) {
+    const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at);
+    if (refDate) {
+      const inactiveDays = Math.floor((Date.now() - new Date(refDate).getTime()) / 86400000);
+      if (inactiveDays >= reminderDays) remindHtml = `<div class="remind-badge">⏰ Relancer · ${inactiveDays}j</div>`;
+    }
+  }
+
+  // === Dernière action historique ===
+  const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
+  const lastActionHtml = lastAct ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
+
   // === Bouton action rapide ===
   let actions = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
@@ -1675,7 +1801,8 @@ function vehicleCard(v) {
       <div>${ssBadgeHtml}${nextActionHtml}</div>
       ${freshnessHtml}
     </div>
-    ${docWarn}
+    ${remindHtml}${docWarn}
+    ${lastActionHtml}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
   </div>`;
 }
