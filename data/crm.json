@@ -257,7 +257,7 @@
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/6f/c4/20/6fc420911fa4d054910f1a3c5057980aaae27d38.jpg?rule=ad-large",
       "titre": "Renault Clio dCi 100 GSR2 Evolution",
       "description": "Renault Clio dCi 100 GSR2 Evolution berline, blanc, 5 cv, 5 portes, première mise en circulation le 13/12/2024, garantie 12 mois.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  Prédisposition éthylotest\n\nConduite :\n  - détecteur de pluie\n  - régulateur de vitesse\n\nCouleur :\n  ",
-      "column": "sourcing",
+      "column": "deal_perdu",
       "sub_stage": "negociation",
       "priority": 3,
       "documents": {
@@ -274,6 +274,10 @@
         {
           "date": "2026-04-01",
           "action": "Sourcing : a_contacter → negociation"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Deal perdu"
         }
       ],
       "commentaires": [
@@ -282,7 +286,9 @@
           "text": "Il doit revenir vers moi avec prix de la voiture à 16k + CG, le 02/04"
         }
       ],
-      "commentaire": "01/04/2026 17:46 : Il doit revenir vers moi avec prix de la voiture à 16k + CG, le 02/04"
+      "commentaire": "01/04/2026 17:46 : Il doit revenir vers moi avec prix de la voiture à 16k + CG, le 02/04",
+      "deal_lost_reason": null,
+      "updated_at": "2026-04-07T09:38:35.398Z"
     }
   ],
   "lots": [],
