@@ -303,7 +303,10 @@
       "due_date": "2026-03-17",
       "due_time": "",
       "column": "a_faire",
-      "last_viewed_at": "2026-04-07T22:41:21.061Z"
+      "last_viewed_at": "2026-04-07T22:41:21.061Z",
+      "reminder": null,
+      "linked_vehicle_ids": [],
+      "linked_vehicle_id": null
     },
     {
       "id": "mmthga6hu10y",
