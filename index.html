@@ -769,8 +769,8 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <div class="stage-opts" id="vSubStage">
         <div class="stage-opt sel" data-ss="a_contacter" onclick="pickSS(this)">À contacter</div>
         <div class="stage-opt" data-ss="contacte" onclick="pickSS(this)">Contacté</div>
+        <div class="stage-opt" data-ss="attente_retour" onclick="pickSS(this)">Attente retour</div>
         <div class="stage-opt" data-ss="negociation" onclick="pickSS(this)">Négociation</div>
-        <div class="stage-opt" data-ss="bc_signe" onclick="pickSS(this)">BC Signé ✓</div>
       </div>
       <div style="font-size:11px;color:var(--text-muted);margin-top:6px">⚡ BC Signé → passage automatique en "À Payer"</div>
     </div>
@@ -1076,10 +1076,10 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 // CONSTANTS
 // ============================================================
 const SUB_STAGES = [
-  { key:'a_contacter', label:'À contacter' },
-  { key:'contacte', label:'Contacté' },
-  { key:'negociation', label:'Négociation' },
-  { key:'bc_signe', label:'BC Signé' }
+  { key:'a_contacter',   label:'À contacter' },
+  { key:'contacte',      label:'Contacté' },
+  { key:'attente_retour',label:'Attente retour' },
+  { key:'negociation',   label:'Négociation' }
 ];
 const COLUMNS = [
   { key:'sourcing', label:'📋 Sourcing' },
@@ -1169,7 +1169,7 @@ const fmtD = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day
 const fmtDs = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}) : '—'; } catch(e){return s||'—';} };
 
 const hasMissingDocs = v => !v.documents || DOCS.some(d => !v.documents[d.key]);
-const docsVisible = v => v.column !== 'sourcing' || v.sub_stage === 'bc_signe';
+const docsVisible = v => v.column !== 'sourcing';
 const getSS = key => SUB_STAGES.find(s => s.key === key) || SUB_STAGES[0];
 const getSSIdx = key => SUB_STAGES.findIndex(s => s.key === key);
 const urgClass = p => ({1:'urg-1',2:'urg-2',3:'urg-3',done:'urg-done'}[p]||'urg-3');
@@ -1659,12 +1659,7 @@ function onDropSS(event, ssKey) {
   if (!v || v.column !== 'sourcing' || v.sub_stage === ssKey) return;
   const prev = v.sub_stage;
   v.sub_stage = ssKey;
-  // BC Signé → passage auto en À Payer
-  if (ssKey === 'bc_signe') {
-    addHist(v, `Sourcing : ${prev} → BC Signé`);
-  } else {
-    addHist(v, `Sourcing : ${prev} → ${ssKey}`);
-  }
+  addHist(v, `Sourcing : ${prev} → ${ssKey}`);
   activeSS = ssKey;
   render();
   saveToGH();
@@ -1698,12 +1693,12 @@ function vehicleCard(v) {
   }
 
   // === Bordure gauche colorée par sous-étape ===
-  const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', negociation:'var(--urg-2)', bc_signe:'var(--urg-done)' };
+  const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', attente_retour:'#0891b2', negociation:'var(--urg-2)' };
   const SS_BADGE  = {
-    a_contacter: { label:'À contacter', color:'var(--text-muted)', bg:'var(--bg)' },
-    contacte:    { label:'Contacté',    color:'#3d55f0',          bg:'rgba(61,85,240,0.09)' },
-    negociation: { label:'Négociation', color:'#d97706',          bg:'rgba(217,119,6,0.1)' },
-    bc_signe:    { label:'BC Signé ✓',  color:'#16a34a',          bg:'rgba(22,163,74,0.1)' }
+    a_contacter:    { label:'À contacter',    color:'var(--text-muted)', bg:'var(--bg)' },
+    contacte:       { label:'Contacté',       color:'#3d55f0',           bg:'rgba(61,85,240,0.09)' },
+    attente_retour: { label:'Attente retour', color:'#0891b2',           bg:'rgba(8,145,178,0.1)' },
+    negociation:    { label:'Négociation',    color:'#d97706',           bg:'rgba(217,119,6,0.1)' }
   };
   const ssKey = v.sub_stage || 'a_contacter';
   const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
@@ -1747,7 +1742,7 @@ function vehicleCard(v) {
 
   // === Prochaine action ===
   const NEXT_ACTIONS = {
-    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', negociation:'🤝 En négociation', bc_signe:'💳 Passer en paiement' },
+    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', attente_retour:'⏳ Attente retour', negociation:'🤝 En négociation' },
     a_payer:'💳 Attente paiement', en_transport:'🚛 En transport', livre:'✅ Livré'
   };
   let nextAction = '';
@@ -1777,9 +1772,7 @@ function vehicleCard(v) {
 
   // === Bouton action rapide ===
   let actions = '';
-  if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
-    actions = `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}',event)">→ À Payer</button>`;
-  else if (v.column === 'a_payer')
+  if (v.column === 'a_payer')
     actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
   else if (v.column === 'en_transport')
     actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
@@ -2323,15 +2316,7 @@ function saveVehicle() {
       historique: [{ date:today(), action:'Véhicule créé' }],
       ...data
     };
-    // Auto-transition BC Signé → À Payer
-    if (col === 'sourcing' && ss === 'bc_signe') {
-      v.column = 'a_payer'; v.sub_stage = null;
-      addHist(v, 'Auto-passage en À Payer (BC Signé)');
-      S.vehicles.push(v);
-      createDocsTask(v); // auto-tâche si docs manquants
-    } else {
-      S.vehicles.push(v);
-    }
+    S.vehicles.push(v);
   }
 
   closeModal('ovVehicle');
@@ -2545,7 +2530,7 @@ function openDetail(id) {
 
   // ---- Boutons d'action ----
   let actionBtns = '';
-  if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
+  if (v.column === 'sourcing')
     actionBtns += `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}');closeModal('ovDetail')">→ À Payer</button>`;
   if (v.column === 'a_payer')
     actionBtns += `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}');closeModal('ovDetail')">🚛 Transport</button>`;
