@@ -73,49 +73,35 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .view.active { display: block; }
 
 /* BOARD */
-.board { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; min-height: calc(100vh - 130px); }
-.column { min-width: 260px; max-width: 280px; background: var(--surface); border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; max-height: calc(100vh - 140px); flex-shrink: 0; overflow: hidden; }
-.column-header { padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--surface); }
-.col-title { font-weight: 800; font-size: 13px; flex: 1; letter-spacing: -0.2px; }
-.col-count { background: var(--bg); color: var(--text-muted); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 800; min-width: 24px; text-align: center; }
-.col-price { font-size: 11px; color: var(--primary); font-weight: 700; opacity: 0.8; }
-.column-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex: 1; }
+.board { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; min-height: calc(100vh - 130px); }
+.column { min-width: 256px; max-width: 272px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); display: flex; flex-direction: column; max-height: calc(100vh - 140px); flex-shrink: 0; }
+.column-header { padding: 10px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; border-radius: var(--radius) var(--radius) 0 0; background: var(--surface); }
+.col-title { font-weight: 700; font-size: 13px; flex: 1; }
+.col-count { background: var(--bg); color: var(--text-muted); padding: 2px 7px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.col-price { font-size: 11px; color: var(--primary); font-weight: 600; }
+.column-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; overflow-y: auto; flex: 1; }
 .column-body.drag-over { background: rgba(29,32,78,0.04); }
-.col-add { padding: 8px; border-top: 1px solid var(--border); }
-.col-add button { width: 100%; padding: 8px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+.col-add { padding: 6px; border-top: 1px solid var(--border); }
+.col-add button { width: 100%; padding: 6px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
 .col-add button:hover { border-color: var(--primary); color: var(--primary); background: rgba(29,32,78,0.04); }
 
-/* COLUMN COLOR ACCENTS */
-.column-accent-sourcing { border-top: 3px solid #1d204e; }
-.column-accent-a_payer { border-top: 3px solid #f59e0b; }
-.column-accent-en_transport { border-top: 3px solid #8b5cf6; }
-.column-accent-livre { border-top: 3px solid #16a34a; }
-.column-accent-archive { border-top: 3px solid #6b7280; }
-
 /* SOURCING SUB-TABS */
-.sourcing-subtabs { display: flex; gap: 2px; padding: 6px 8px; background: var(--bg); border-bottom: 1px solid var(--border); }
-.ss-tab { flex: 1; padding: 6px 4px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-radius: 6px; border: none; border-bottom: none; transition: all 0.15s; line-height: 1.3; }
-.ss-tab:hover { background: rgba(29,32,78,0.05); }
-.ss-tab.active { color: var(--primary); background: var(--surface); box-shadow: 0 1px 3px rgba(29,32,78,0.08); }
-.ss-tab.ss-tab-drop { background: rgba(61,85,240,0.12); color: var(--accent); transform: scale(1.04); }
-.ss-tab-count { display: block; font-size: 11px; font-weight: 800; color: inherit; }
+.sourcing-subtabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
+.ss-tab { flex: 1; padding: 5px 2px; font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all 0.12s; line-height: 1.3; }
+.ss-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--surface); }
+.ss-tab.ss-tab-drop { background: rgba(61,85,240,0.12); border-bottom-color: var(--accent); color: var(--accent); transform: scale(1.04); }
+.ss-tab-count { display: block; font-size: 11px; font-weight: 700; color: inherit; }
 
 /* CARDS */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 13px; cursor: pointer; transition: box-shadow 0.18s, transform 0.12s; position: relative; border-left: 3px solid var(--border); user-select: none; }
-.card:hover { box-shadow: 0 4px 16px rgba(29,32,78,0.1), 0 1px 4px rgba(29,32,78,0.06); transform: translateY(-2px); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; position: relative; border-left: 3px solid var(--border); user-select: none; }
+.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
 .card.urg-1 { border-left-color: var(--urg-1); }
 .card.urg-2 { border-left-color: var(--urg-2); }
 .card.urg-3 { border-left-color: var(--urg-3); }
 .card.urg-done { border-left-color: var(--urg-done); }
-
-/* Card layout */
-.card-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
-.card-title { font-weight: 800; font-size: 14px; line-height: 1.25; color: var(--text); flex: 1; }
-.card-price-badge { background: rgba(29,32,78,0.07); color: var(--primary); font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
-.card-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; line-height: 1.4; }
-.card-concession { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 7px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.7; }
-.card-bottom-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px; }
+.card-title { font-weight: 700; font-size: 13px; line-height: 1.3; margin-bottom: 4px; }
 .card-sub { font-size: 11px; color: var(--text-muted); }
+.card-updated { font-size: 10px; color: var(--text-muted); margin-top: 5px; opacity: 0.65; }
 .tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 5px; }
 .tag { padding: 2px 6px; border-radius: 5px; font-size: 10px; font-weight: 600; background: var(--bg); color: var(--text-muted); }
 .tag-blue { background: rgba(29,32,78,0.09); color: var(--primary); }
@@ -123,39 +109,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .tag-red { background: rgba(232,41,74,0.1); color: var(--urg-1); }
 .tag-orange { background: rgba(232,122,0,0.1); color: var(--urg-2); }
 
-/* SUB-STAGE BAR (kept for compat) */
+/* SUB-STAGE BAR */
 .ss-bar { display: flex; gap: 2px; margin-top: 6px; }
 .ss-step { flex: 1; height: 3px; border-radius: 2px; background: var(--border); }
 .ss-step.done { background: var(--lime); }
 .ss-step.active { background: var(--primary); }
 .ss-label { font-size: 10px; color: var(--primary); font-weight: 600; margin-top: 3px; }
 
-/* SS BADGE */
-.ss-badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-
-/* FRESHNESS BADGE */
-.freshness-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600; background: var(--bg); color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
-.freshness-badge.fresh { background: rgba(22,163,74,0.1); color: var(--urg-done); }
-.freshness-badge.stale { background: rgba(232,122,0,0.12); color: var(--urg-2); }
-
-/* NEXT ACTION */
-.next-action { font-size: 10px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
-
 /* DOCS BADGES */
 .doc-badges { display: flex; gap: 3px; margin-top: 6px; }
 .doc-badge { width: 22px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
 .doc-badge.ok { background: rgba(22,163,74,0.12); color: #16a34a; border-color: rgba(22,163,74,0.3); }
 .doc-badge.ko { background: rgba(232,41,74,0.08); color: var(--urg-1); border-color: rgba(232,41,74,0.3); }
-.doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+.doc-warn { font-size: 10px; color: var(--urg-2); font-weight: 600; margin-top: 3px; }
 
 /* CARD SIZE VARIANTS */
-body.card-compact .card { padding: 8px 10px; }
-body.card-compact .card-title { font-size: 12px; }
-body.card-compact .card-concession { display: none; }
-body.card-compact .next-action { display: none; }
+body.card-compact .card { padding: 5px 8px; }
+body.card-compact .card-title { font-size: 12px; margin-bottom: 2px; }
+body.card-compact .card-sub { font-size: 10px; }
+body.card-compact .tags { margin-top: 3px; }
+body.card-compact .ss-bar { margin-top: 3px; }
+body.card-compact .doc-badges { margin-top: 3px; }
 body.card-compact .card-actions { display: none; }
-body.card-large .card { padding: 15px 16px; }
-body.card-large .card-title { font-size: 15px; }
+body.card-large .card { padding: 13px 15px; }
+body.card-large .card-title { font-size: 14px; margin-bottom: 6px; }
+body.card-large .card-sub { font-size: 12px; }
+body.card-large .tags { margin-top: 7px; gap: 4px; }
 
 /* CARD SIZE BUTTON */
 .card-size-btn { position: fixed; bottom: 18px; right: 20px; z-index: 200; background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 12px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow); transition: all 0.15s; }
@@ -169,15 +148,6 @@ body.card-large .card-title { font-size: 15px; }
 /* LOT CARD */
 .lot-card { background: linear-gradient(135deg, rgba(29,32,78,0.05) 0%, rgba(29,32,78,0.02) 100%); }
 .lot-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--primary); color: white; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-bottom: 5px; }
-
-/* MOBILE BOTTOM NAV */
-.mobile-bottom-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); z-index: 300; padding: 4px 0 calc(4px + env(safe-area-inset-bottom)); }
-.mobile-bottom-nav .nav-items { display: flex; justify-content: space-around; align-items: center; }
-.mobile-bottom-nav .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 12px; border: none; background: none; font-family: inherit; cursor: pointer; color: var(--text-muted); transition: color 0.15s; border-radius: 8px; font-size: 10px; font-weight: 600; }
-.mobile-bottom-nav .nav-item .nav-icon { font-size: 20px; line-height: 1; }
-.mobile-bottom-nav .nav-item.active { color: var(--primary); }
-.mobile-bottom-nav .nav-item.active .nav-icon { transform: scale(1.1); }
-body.dark-mode .mobile-bottom-nav { background: #0f1128; border-top-color: #1e2148; }
 
 /* DEAL PERDU column */
 .column-deal-perdu { min-width: 200px; max-width: 216px; border-top: 3px solid var(--urg-1); }
@@ -395,6 +365,9 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .card-move-btn { display: none; position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 5px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; align-items: center; justify-content: center; font-size: 12px; z-index: 2; }
 .card:hover .card-move-btn { display: flex; }
 @media (hover: none) { .card-move-btn { display: flex !important; } }
+.card-delete-btn { display: none; position: absolute; top: 6px; right: 32px; width: 22px; height: 22px; border-radius: 5px; background: rgba(232,41,74,0.1); border: 1px solid rgba(232,41,74,0.3); color: var(--urg-1); cursor: pointer; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; z-index: 2; line-height: 1; }
+.card:hover .card-delete-btn { display: flex; }
+.card-delete-btn:hover { background: var(--urg-1); color: #fff; border-color: var(--urg-1); }
 .card-icon-btn { width: 24px; height: 24px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.12s; flex-shrink: 0; }
 .card-icon-btn:hover { background: var(--primary); border-color: var(--primary); color: white; }
 
@@ -416,31 +389,27 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
    RESPONSIVE — MOBILE (≤640px) — iPhone Safari
    ============================================================ */
 @media (max-width: 640px) {
-  /* Header : masquer tabs, garder logo + actions */
-  .header { padding: 0 12px; gap: 8px; height: 48px; padding-top: env(safe-area-inset-top); }
-  .header .tabs { display: none; }
-  .logo { font-size: 16px; }
-  .search-wrap { display: none; }
-  .sync-badge { display: none; }
+  /* Header compact */
+  .header { padding: 0 10px; gap: 8px; height: 50px; }
+  .logo { font-size: 15px; }
+  .tab-btn { padding: 5px 9px; font-size: 11px; }
+  .search-wrap { display: none; }           /* Recherche masquée sur mobile */
+  .sync-badge { display: none; }            /* Badge sync masqué */
   .btn-icon:not(#notifBtn) { display: none; }
-
-  /* Bottom nav visible */
-  .mobile-bottom-nav { display: block; }
-  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
 
   /* Vues */
   .view { padding: 10px; }
 
-  /* Kanban mobile : colonnes plus étroites, scroll fluide */
-  .board { gap: 8px; padding-bottom: 8px; min-height: calc(100vh - 140px); -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
-  .column { min-width: 82vw; max-width: 84vw; max-height: calc(100vh - 150px); scroll-snap-align: center; border-radius: 14px; }
-  .card { padding: 11px 12px; border-radius: 10px; }
+  /* Kanban : scroll horizontal natif */
+  .board { gap: 8px; padding-bottom: 16px; min-height: calc(100vh - 120px); }
+  .column { min-width: 200px; max-width: 210px; max-height: calc(100vh - 130px); }
+  .card { padding: 10px; }
 
   /* Tâches layout : sidebar sous le kanban */
   .tasks-view-layout { flex-direction: column; }
   .tasks-layout-main { width: 100%; overflow-x: auto; }
-  .tasks-board { min-height: 50vh; }
-  .tasks-board .column { min-width: 78vw; max-width: 80vw; scroll-snap-align: center; }
+  .tasks-board { min-height: 60vh; }
+  .tasks-board .column { min-width: 180px; max-width: 190px; }
   .briefing-panel-sidebar {
     width: 100% !important;
     min-width: unset !important;
@@ -451,7 +420,7 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
   }
   .bp-card { flex: 1 1 calc(50% - 4px); min-width: 150px; }
 
-  /* Achats layout */
+  /* Achats layout : idem */
   #view-achats .tasks-view-layout { flex-direction: column; }
   #view-achats .briefing-panel-sidebar {
     width: 100% !important;
@@ -459,10 +428,10 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
     position: static;
   }
 
-  /* Modales : bottom sheet style */
-  .overlay { align-items: flex-end; padding: 0; }
+  /* Modales plein écran */
+  .modal-overlay { align-items: flex-end; padding: 0; }
   .modal { max-width: 100% !important; width: 100% !important; max-height: 92vh;
-           border-radius: 18px 18px 0 0; overflow-y: auto; padding: 20px 16px; }
+           border-radius: 18px 18px 0 0; overflow-y: auto; }
 
   /* Formulaires */
   .form-row { grid-template-columns: 1fr; }
@@ -473,11 +442,9 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
   .tl-row { flex-wrap: wrap; }
   .tl-desc { display: block; white-space: normal; font-size: 11px; }
 
-  /* Card size button repositionné au-dessus du bottom nav */
-  .card-size-btn { bottom: calc(72px + env(safe-area-inset-bottom)); }
-
-  /* Sidebar resize handle disabled on mobile */
-  .sidebar-resize-handle { display: none; }
+  /* safe area iOS */
+  .header { padding-top: env(safe-area-inset-top); }
+  body { padding-bottom: env(safe-area-inset-bottom); }
 }
 
 /* ============================================================
@@ -496,10 +463,6 @@ body.dark-mode {
 }
 body.dark-mode .header { background: #080a18; border-bottom-color: rgba(255,255,255,0.06); }
 body.dark-mode .card { background: var(--surface); border-color: var(--border); }
-body.dark-mode .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 1px 4px rgba(0,0,0,0.2); }
-body.dark-mode .card-price-badge { background: rgba(77,106,255,0.15); color: #7e9aff; }
-body.dark-mode .card-meta { color: var(--text-muted); }
-body.dark-mode .card-concession { color: var(--text-muted); opacity: 0.6; }
 body.dark-mode .column { background: #10132a; border-color: var(--border); }
 body.dark-mode .column-header { background: #10132a; }
 body.dark-mode .col-count { background: rgba(255,255,255,0.07); }
@@ -568,16 +531,6 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   </div>
 </header>
 
-<!-- MOBILE BOTTOM NAV -->
-<nav class="mobile-bottom-nav" id="mobileNav">
-  <div class="nav-items">
-    <button class="nav-item active" onclick="showView('achats',this)" data-view="achats"><span class="nav-icon">🚗</span>Achats</button>
-    <button class="nav-item" onclick="showView('taches',this)" data-view="taches"><span class="nav-icon">✅</span>Tâches</button>
-    <button class="nav-item" onclick="showView('emails',this)" data-view="emails"><span class="nav-icon">📬</span>Emails</button>
-    <button class="nav-item" onclick="showView('dashboard',this)" data-view="dashboard"><span class="nav-icon">📊</span>Dashboard</button>
-  </div>
-</nav>
-
 <!-- BRIEFING PANEL -->
 <div class="briefing-panel" id="briefingPanel">
   <div class="briefing-header">
@@ -608,7 +561,6 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
         <button class="tvt-btn" id="tvt-list" onclick="setTasksView('list')" title="Vue Liste">≡ Liste</button>
       </div>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="openModal('ovImgImport')" title="Importer une liste depuis une photo">📷 Importer liste</button>
     <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Tâche</button>
   </div>
   <div class="tasks-view-layout">
@@ -680,10 +632,12 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
     <!-- Section LBC (cachée par défaut) -->
     <div id="vLBCSection" style="display:none;padding:0 4px">
-      <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Colle une ou plusieurs URLs LeBonCoin, une par ligne.<br>La progression du scraping s'affichera dans une fenêtre dédiée.</p>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
+      <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne).</p>
+      <textarea id="lbcUrls" rows="5" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg-card);color:var(--text);resize:vertical"></textarea>
+      <div id="lbcStatus" style="margin-top:10px;font-size:13px;display:none"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
         <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
-        <button class="btn btn-primary" onclick="closeModal('ovVehicle');openLBCModal()">🔗 Ouvrir l'import LBC →</button>
+        <button class="btn btn-primary" id="lbcImportBtn" onclick="triggerLBCImport()">Importer</button>
       </div>
     </div>
 
@@ -892,9 +846,8 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <button class="close-btn" onclick="closeModal('ovSettings')">×</button>
     </div>
     <div class="form-group"><label class="form-label">Token GitHub (ghp_…)</label><input class="form-input" id="sToken" type="password" placeholder="ghp_…"></div>
-    <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/crm-kanban"></div>
+    <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/flease-crm"></div>
     <div class="form-group"><label class="form-label">Email alertes</label><input class="form-input" id="sEmail" placeholder="alex@flease.fr" type="email"></div>
-    <div class="form-group"><label class="form-label">Clé Anthropic (import photo → tâches)</label><input class="form-input" id="sAnthropicKey" type="password" placeholder="sk-ant-…"><div style="font-size:11px;color:var(--text-muted);margin-top:4px">Stockée uniquement sur cet appareil, jamais envoyée à GitHub.</div></div>
     <div class="form-group"><label class="form-label">Rappel après (jours sans mouvement)</label><input class="form-input" id="sReminder" type="number" value="3" min="1" max="30"></div>
     <div class="form-group" style="display:flex;align-items:center;gap:10px">
       <input type="checkbox" id="sArchive" style="width:16px;height:16px">
@@ -912,62 +865,6 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('ovSettings')">Annuler</button>
       <button class="btn btn-primary" onclick="saveSettings()">Sauvegarder</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RAPPEL -->
-<div class="overlay" id="ovReminder" onclick="overlayClick(event,'ovReminder')">
-  <div class="modal modal-sm">
-    <div class="modal-header">
-      <div class="modal-title">📱 Envoyer dans Rappels</div>
-      <button class="close-btn" onclick="closeModal('ovReminder')">×</button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Titre</label>
-      <input class="form-input" id="reminderTitle" readonly style="background:var(--bg);color:var(--text-muted)">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Date</label>
-        <input class="form-input" id="reminderDate" type="date">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Heure</label>
-        <input class="form-input" id="reminderTime" type="time">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Note (optionnel)</label>
-      <input class="form-input" id="reminderNotes" placeholder="Contexte, détails…">
-    </div>
-    <div id="reminderBridgeStatus" style="font-size:12px;margin-bottom:8px;display:none"></div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('ovReminder')">Annuler</button>
-      <button class="btn btn-primary" onclick="confirmSendReminder()">📱 Envoyer</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL IMPORT PHOTO → TÂCHES -->
-<div class="overlay" id="ovImgImport" onclick="overlayClick(event,'ovImgImport')">
-  <div class="modal modal-sm">
-    <div class="modal-header">
-      <div class="modal-title">📷 Importer une liste de véhicules</div>
-      <button class="close-btn" onclick="closeModal('ovImgImport')">×</button>
-    </div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">Prends un screenshot de ta liste de véhicules à acheter. Claude va extraire les véhicules et créer les tâches automatiquement.</p>
-    <div id="imgDropZone" onclick="document.getElementById('imgFileInput').click()"
-      style="border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all 0.15s;font-size:13px;color:var(--text-muted)">
-      <div style="font-size:32px;margin-bottom:8px">📷</div>
-      Clique ou glisse une image ici
-      <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="handleImgFile(this.files[0])">
-    </div>
-    <div id="imgPreview" style="display:none;margin-top:12px"></div>
-    <div id="imgStatus" style="margin-top:12px;font-size:13px;display:none"></div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('ovImgImport')">Annuler</button>
-      <button class="btn btn-primary" id="imgImportBtn" onclick="runImgImport()" style="display:none">✨ Créer les tâches</button>
     </div>
   </div>
 </div>
@@ -1111,21 +1008,16 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 const today = () => new Date().toISOString().slice(0, 10);
 const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
 
-// Répare le double-encodage UTF-8 (mojibake) dans les données chargées depuis GitHub
+// Répare le mojibake (double-encodage UTF-8) dans les chaînes chargées depuis GitHub
 function fixMojibake(str) {
   if (!str || typeof str !== 'string') return str;
-  let current = str;
-  for (let pass = 0; pass < 10; pass++) {
-    if (!/[-ÿ]/.test(current)) break;
-    try {
-      const bytes = new Uint8Array(current.length);
-      for (let i = 0; i < current.length; i++) bytes[i] = current.charCodeAt(i) & 0xFF;
-      const decoded = new TextDecoder('utf-8').decode(bytes);
-      if (decoded.includes('�') || decoded === current) break;
-      current = decoded;
-    } catch (e) { break; }
-  }
-  return current;
+  // Détecte les patterns typiques du double-encodage (Ã, Â, etc.)
+  if (!/[\xC0-\xFF]/.test(str)) return str;
+  try {
+    const bytes = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) bytes[i] = str.charCodeAt(i) & 0xFF;
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  } catch (e) { return str; }
 }
 function fixObjMojibake(obj) {
   if (!obj || typeof obj !== 'object') return obj;
@@ -1150,6 +1042,7 @@ const urgClass = p => ({1:'urg-1',2:'urg-2',3:'urg-3',done:'urg-done'}[p]||'urg-
 function addHist(v, action) {
   if (!v.historique) v.historique = [];
   v.historique.push({ date: today(), action });
+  v.updated_at = new Date().toISOString();
 }
 
 // ============================================================
@@ -1304,14 +1197,13 @@ function renderBoard() {
   document.getElementById('board').innerHTML = cols.map(col => renderCol(col)).join('');
 }
 
-const sortByRecent = arr => [...arr].sort((a,b) => {
-  const da = a.historique && a.historique.length ? a.historique[a.historique.length-1].date : (a.created_at||'');
-  const db = b.historique && b.historique.length ? b.historique[b.historique.length-1].date : (b.created_at||'');
-  return db.localeCompare(da);
-});
-
 function renderCol(col) {
-  const vehicles = sortByRecent(S.vehicles.filter(v => v.column === col.key && matchV(v)));
+  const vehicles = S.vehicles.filter(v => v.column === col.key && matchV(v))
+    .sort((a, b) => {
+      const ua = a.updated_at || a.created_at || '';
+      const ub = b.updated_at || b.created_at || '';
+      return ub > ua ? 1 : ub < ua ? -1 : 0;
+    });
   const lots = S.lots.filter(l => l.column === col.key && matchL(l));
 
   let bodyHtml;
@@ -1345,7 +1237,7 @@ function renderCol(col) {
   const allV = vehicles.length + lots.length;
   const totalPrix = vehicles.reduce((s,v)=>s+(Number(v.prix_negocie)||Number(v.prix_demande)||0), 0);
 
-  const extraClass = (col.key === 'deal_perdu' ? ' column-deal-perdu' : '') + ` column-accent-${col.key}`;
+  const extraClass = col.key === 'deal_perdu' ? ' column-deal-perdu' : '';
   return `<div class="column${extraClass}">
     <div class="column-header">
       <span class="col-title">${col.label}</span>
@@ -1372,148 +1264,120 @@ function renderEmailsView() {
   const countEl = document.getElementById('emailCount');
   if (!filtersEl || !listEl) return;
 
-  if (!b) {
-    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8">
-      <div style="font-size:28px;margin-bottom:8px">📬</div>
-      <div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div>
-      <div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.</div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing()">⟳ Charger maintenant</button>
-    </div>`;
-    return;
-  }
+  const emails = (b && b.emails) ? b.emails.filter(e => !dismissedEmails.includes(e.id)) : [];
 
-  const allEmails = (b.emails || []).filter(e => !dismissedEmails.includes(e.id));
-
+  // Filtres
   const filters = [
-    { key:'all',      label:'Tous' },
-    { key:'critical', label:'🔴 Critiques' },
-    { key:'high',     label:'🟠 Importants' },
-    { key:'replied',  label:'✅ Répondus' },
-    { key:'waiting',  label:'⏳ Réponse att.' },
+    { key:'all', label:'Tous' },
+    { key:'critical', label:'🔴 Critiques (9-10)' },
+    { key:'important', label:'🟠 Importants (7-8)' },
+    { key:'a_traiter', label:'A traiter' },
+    { key:'bdc', label:'BDC à signer' },
+    { key:'dash', label:'Ajouter au dash' },
+    { key:'sans_reponse', label:'Sans réponse' },
   ];
   filtersEl.innerHTML = filters.map(f =>
     `<button class="email-filter-btn ${emailFilter===f.key?'active':''}" onclick="setEmailFilter('${f.key}')">${f.label}</button>`
   ).join('');
 
-  let filtered = allEmails;
-  if (emailFilter === 'critical') filtered = allEmails.filter(e => e.priority === 'critical' && !e.replied);
-  else if (emailFilter === 'high') filtered = allEmails.filter(e => e.priority === 'high' && !e.replied);
-  else if (emailFilter === 'replied') filtered = allEmails.filter(e => e.replied);
-  else if (emailFilter === 'waiting') filtered = allEmails.filter(e => e.needs_reply && !e.replied);
+  // Filtre actif
+  let filtered = emails;
+  if (emailFilter === 'critical') filtered = emails.filter(e => e.score >= 9);
+  else if (emailFilter === 'important') filtered = emails.filter(e => e.score >= 7 && e.score < 9);
+  else if (emailFilter === 'a_traiter') filtered = emails.filter(e => e.label === 'A traiter');
+  else if (emailFilter === 'bdc') filtered = emails.filter(e => e.label === 'BDC a signer');
+  else if (emailFilter === 'dash') filtered = emails.filter(e => e.label === 'ajouter au dash');
+  else if (emailFilter === 'sans_reponse') filtered = emails.filter(e => e.category === 'sans_reponse');
 
-  const updatedAt = b.generated_at ? new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : '';
-  countEl.textContent = `${filtered.length} email${filtered.length!==1?'s':''} · mis à jour ${updatedAt}`;
+  countEl.textContent = `${filtered.length} email${filtered.length>1?'s':''} ${b ? '· Mis à jour ' + new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : ''}`;
 
-  if (!filtered.length) {
-    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`;
-    return;
-  }
+  if (!b) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8"><div style="font-size:28px;margin-bottom:8px">📬</div><div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div><div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.<br>Si cela persiste, vérifie que le script Google Apps est actif.</div><button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing().then(()=>renderEmailsView())">⟳ Charger maintenant</button></div>`; return; }
+  if (!filtered.length) { listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`; return; }
 
-  // Séparer : à traiter vs déjà répondus
-  const toHandle = filtered.filter(e => !e.replied);
-  const done     = filtered.filter(e => e.replied);
-
-  const PRIORITY_STYLE = {
-    critical: { icon:'🔴', color:'#dc2626', bg:'#fef2f2', label:'Critique' },
-    high:     { icon:'🟠', color:'#f97316', bg:'#fff7ed', label:'Important' },
-    medium:   { icon:'🟡', color:'#d97706', bg:'#fefce8', label:'Moyen' },
-    low:      { icon:'⚪', color:'#6b7280', bg:'#f3f4f6', label:'Info' },
-  };
-
-  const renderEmail = e => {
-    const ps = PRIORITY_STYLE[e.priority] || PRIORITY_STYLE.low;
-    const senderName = e.from_name || (e.from||'').split('@')[0];
-    const repliedBadge = e.replied
-      ? `<span style="font-size:10px;background:#dcfce7;color:#16a34a;border-radius:20px;padding:2px 8px;font-weight:700">✓ Répondu</span>`
-      : (e.needs_reply
-        ? `<span style="font-size:10px;background:#fff7ed;color:#f97316;border-radius:20px;padding:2px 8px;font-weight:700">⏳ Réponse attendue</span>`
-        : '');
-    const dateDisplay = e.date_display || '';
-    const subj = esc((e.subject||'').slice(0,75));
-    const summary = esc((e.summary||'').slice(0,120));
-    return `<div class="email-row${e.replied?' dismissed':''}" id="email-${esc(e.id||'')}">
-      <div class="email-score" style="background:${ps.bg};color:${ps.color};font-size:11px;width:auto;padding:0 6px">${ps.icon}</div>
+  listEl.innerHTML = filtered.map(e => {
+    const sc = e.score || 0;
+    const scoreColor = sc>=9?'#dc2626':sc>=7?'#f97316':sc>=5?'#eab308':'#6b7280';
+    const scoreBg   = sc>=9?'#fef2f2':sc>=7?'#fff7ed':sc>=5?'#fefce8':'#f3f4f6';
+    const labelHtml = e.label
+      ? `<span class="email-label">${esc(e.label)}</span>`
+      : (e.category==='sans_reponse' ? `<span class="email-label sans-reponse">sans réponse</span>` : '');
+    const age = e.hours_old != null ? (e.hours_old < 1 ? 'il y a moins d\'1h' : `il y a ${Math.round(e.hours_old)}h`) : '';
+    const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${e.id}`;
+    const sender = (e.from||'').replace(/<.*>/,'').trim();
+    return `<div class="email-row" id="email-${esc(e.id)}">
+      <div class="email-score" style="background:${scoreBg};color:${scoreColor}">${sc}</div>
       <div class="email-body">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-          <span style="font-size:12px;font-weight:700;color:var(--text)">${esc(senderName)}</span>
-          <span style="font-size:11px;color:var(--text-muted)">${dateDisplay}</span>
-          ${repliedBadge}
+        <div class="email-subject">${esc((e.subject||'').slice(0,80))}${(e.subject||'').length>80?'…':''}</div>
+        <div class="email-meta">
+          <span>${esc(sender.slice(0,40))}</span>
+          ${age ? `<span>· ${age}</span>` : ''}
+          ${labelHtml}
         </div>
-        <div class="email-subject">${subj}</div>
-        ${summary ? `<div class="email-snippet">${summary}</div>` : ''}
+        ${e.snippet ? `<div class="email-snippet">${esc(e.snippet)}</div>` : ''}
         <div class="email-actions">
-          <a class="btn btn-ghost btn-sm" style="font-size:11px;text-decoration:none"
-            href="mimestream://search?q=${encodeURIComponent((e.subject||'').slice(0,120))}"
-            onclick="event.stopPropagation()">✉️ Ouvrir dans Mimestream</a>
-          ${!e.replied ? `<button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id||'')}')">✅ Traité</button>` : ''}
+          <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="openEmailMimestream('${esc(e.id)}','${esc((e.subject||'').replace(/'/g,"\\'"))}','${esc((e.from||'').replace(/'/g,"\\'"))}');event.stopPropagation()">✉️ Ouvrir</button>
+          <button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id)}')">✅ Traité</button>
         </div>
       </div>
     </div>`;
-  };
-
-  let html = '';
-  if (toHandle.length) {
-    html += toHandle.map(renderEmail).join('');
-  }
-  if (done.length && emailFilter !== 'waiting' && emailFilter !== 'critical' && emailFilter !== 'high') {
-    html += `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:14px 4px 6px">✅ Déjà répondus (${done.length})</div>`;
-    html += done.map(renderEmail).join('');
-  }
-  listEl.innerHTML = html || `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email</div>`;
+  }).join('');
 }
 
 function setEmailFilter(f) { emailFilter = f; renderEmailsView(); }
 
 function generateEmailActions(emails) {
   if (!emails.length) return `<div class="bp-empty">✅ Aucun email à traiter</div>`;
-
-  // Emails non répondus uniquement, triés par priorité
-  const unreplied = emails.filter(e => !e.replied);
-  const critical  = unreplied.filter(e => e.priority === 'critical');
-  const waiting   = unreplied.filter(e => e.needs_reply);
-  const high      = unreplied.filter(e => e.priority === 'high' && !e.needs_reply);
-
-  if (!unreplied.length) {
-    return `<div class="bp-empty" style="color:var(--urg-done)">✅ Tous les emails ont été traités !</div>`;
-  }
-
   const actions = [];
-  if (critical.length) actions.push({ icon:'🔴', text:`${critical.length} email${critical.length>1?'s':''} critique${critical.length>1?'s':''} sans réponse`, emails: critical });
-  if (waiting.length)  actions.push({ icon:'⏳', text:`${waiting.length} email${waiting.length>1?'s':''} attend${waiting.length>1?'ent':''} une réponse`, emails: waiting });
-  if (high.length)     actions.push({ icon:'🟠', text:`${high.length} email${high.length>1?'s':''} important${high.length>1?'s':''}`, emails: high });
 
-  if (!actions.length && unreplied.length) {
-    actions.push({ icon:'📬', text:`${unreplied.length} email${unreplied.length>1?'s':''} non traité${unreplied.length>1?'s':''}`, emails: unreplied });
+  // BDC à signer
+  const bdc = emails.filter(e => e.label === 'BDC a signer');
+  if (bdc.length) actions.push({ priority: 9, icon: '✍️', text: `Signer ${bdc.length} BDC en attente`, emails: bdc });
+
+  // Factures / impayés
+  const factures = emails.filter(e => e.score === 10 && /facture|impay|relance/i.test(e.subject));
+  if (factures.length) actions.push({ priority: 10, icon: '🚨', text: `${factures.length} facture${factures.length>1?'s':''} impayée${factures.length>1?'s':''} à traiter`, emails: factures });
+
+  // Sans réponse depuis +12h
+  const noReply = emails.filter(e => e.category === 'sans_reponse' && e.hours_old > 12);
+  if (noReply.length) actions.push({ priority: 8, icon: '⏰', text: `${noReply.length} email${noReply.length>1?'s':''} sans réponse depuis +12h`, emails: noReply });
+
+  // A traiter
+  const aTraiter = emails.filter(e => e.label === 'A traiter');
+  if (aTraiter.length) actions.push({ priority: 7, icon: '📋', text: `${aTraiter.length} email${aTraiter.length>1?'s':''} labellisé "A traiter"`, emails: aTraiter });
+
+  // Critiques restants
+  const autresCritiques = emails.filter(e => e.score >= 9 && !bdc.includes(e) && !factures.includes(e));
+  if (autresCritiques.length) actions.push({ priority: 9, icon: '🔴', text: `${autresCritiques.length} email${autresCritiques.length>1?'s':''} urgent${autresCritiques.length>1?'s':''} à traiter`, emails: autresCritiques });
+
+  // Ajouter au dash
+  const dash = emails.filter(e => e.label === 'ajouter au dash');
+  if (dash.length) actions.push({ priority: 5, icon: '📊', text: `${dash.length} email${dash.length>1?'s':''} à ajouter au dashboard`, emails: dash });
+
+  if (!actions.length) {
+    const top = emails.filter(e => e.score >= 7).slice(0, 3);
+    top.forEach(e => actions.push({ priority: e.score, icon: '📬', text: (e.subject||'').slice(0, 45), emails: [e] }));
   }
 
-  return actions.slice(0,4).map((a, i) => {
-    const first = a.emails[0];
-    return `<div style="display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)">
+  actions.sort((a, b) => b.priority - a.priority);
+
+  return actions.slice(0, 5).map((a, i) => {
+    const firstEmail = a.emails.length === 1 ? a.emails[0] : null;
+    return `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border)">
       <span style="font-size:13px;flex-shrink:0">${a.icon}</span>
       <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:700;line-height:1.3">${esc(a.text)}</div>
-        ${first ? `<div style="font-size:11px;color:var(--text-muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc((first.from_name||first.from||'').slice(0,30))} — ${esc((first.subject||'').slice(0,35))}</div>` : ''}
-        ${first ? `<button onclick="openEmailMimestream('${esc(first.id||'')}','${esc((first.subject||'').replace(/'/g,"\\'"))}','${esc((first.from||'').replace(/'/g,"\\'"))}')" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--primary);padding:0;font-family:inherit;margin-top:2px">Ouvrir →</button>` : ''}
+        <div style="font-size:12px;font-weight:600;line-height:1.3">${i+1}. ${esc(a.text)}</div>
+        ${firstEmail ? `<button onclick="openEmailMimestream('${esc(firstEmail.id)}','${esc((firstEmail.subject||'').replace(/'/g,"\\'"))}','${esc((firstEmail.from||'').replace(/'/g,"\\'"))}')" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--primary);padding:0;font-family:inherit">Ouvrir →</button>` : `<span style="font-size:10px;color:var(--text-muted)">${a.emails.length} emails</span>`}
       </div>
     </div>`;
-  }).join('') + `<div style="margin-top:8px"><button class="btn btn-ghost btn-sm" style="width:100%;font-size:11px" onclick="showView('emails',document.getElementById('tabEmails'))">Voir tous les emails →</button></div>`;
+  }).join('');
 }
 
 function openEmailMimestream(threadId, subject, from) {
-  if (!subject && !threadId) return;
-  // Bridge via <img> — seule technique non bloquée depuis HTTPS vers HTTP local (passive mixed content)
-  const bridgeUrl = `http://localhost:9876/open?subject=${encodeURIComponent(subject||'')}&from=${encodeURIComponent(from||'')}&id=${encodeURIComponent(threadId||'')}`;
-  let bridgeOk = false;
-  const img = new Image();
-  img.onload = img.onerror = () => { bridgeOk = true; };
-  img.src = bridgeUrl;
-  // Fallback Gmail si bridge non disponible après 1.5s
-  setTimeout(() => {
-    if (!bridgeOk) {
-      const q = subject ? `#search/${encodeURIComponent(subject)}` : `#inbox/${threadId}`;
-      window.open(`https://mail.google.com/mail/u/0/${q}`, '_blank');
-    }
-  }, 1500);
+  const bridgeUrl = `http://localhost:9876/open?id=${encodeURIComponent(threadId)}&subject=${encodeURIComponent(subject)}&from=${encodeURIComponent(from)}`;
+  const gmailUrl = `https://mail.google.com/mail/u/0/#inbox/${threadId}`;
+  // fetch() est bloqué (mixed content HTTPS→HTTP) — window.open() fonctionne
+  const w = window.open(bridgeUrl, '_mimestream_bridge', 'width=1,height=1,top=-200,left=-200');
+  if (!w) window.open(gmailUrl, '_blank'); // popup bloqué → fallback Gmail
 }
 
 function dismissEmail(id) {
@@ -1561,104 +1425,50 @@ function vehicleCard(v) {
   const price = v.prix_negocie || v.prix_demande;
   const showDocs = docsVisible(v);
   const missD = hasMissingDocs(v);
-  const isMatch = searchQ && matchV(v);
-  const dragAttrs = `draggable="true"
-    ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
-    ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
-    onclick="openDetail('${v.id}')" oncontextmenu="openCtx(event,'vehicle','${v.id}')"`;
 
-  // === DEAL PERDU : carte minimaliste ===
-  if (v.column === 'deal_perdu') {
-    return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
-      style="border-left-color:var(--urg-1);opacity:0.75">
-      <div class="card-btn-group">
-        <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
-      </div>
-      <div class="card-header-row">
-        <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
-        ${price ? `<span class="card-price-badge">${fmtN(price)}</span>` : ''}
-      </div>
-      ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : '<div class="deal-lost-reason" style="color:var(--text-muted)">Raison non précisée</div>'}
-    </div>`;
-  }
+  const ssBar = v.column === 'sourcing' ? (() => {
+    const idx = getSSIdx(v.sub_stage);
+    return `<div class="ss-bar">${SUB_STAGES.map((ss,i) => `<div class="ss-step ${i<idx?'done':i===idx?'active':''}"></div>`).join('')}</div>
+    <div class="ss-label">${getSS(v.sub_stage).label}</div>`;
+  })() : '';
 
-  // === Bordure gauche colorée par sous-étape ===
-  const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', negociation:'var(--urg-2)', bc_signe:'var(--urg-done)' };
-  const SS_BADGE  = {
-    a_contacter: { label:'À contacter', color:'var(--text-muted)', bg:'var(--bg)' },
-    contacte:    { label:'Contacté',    color:'#3d55f0',          bg:'rgba(61,85,240,0.09)' },
-    negociation: { label:'Négociation', color:'#d97706',          bg:'rgba(217,119,6,0.1)' },
-    bc_signe:    { label:'BC Signé ✓',  color:'#16a34a',          bg:'rgba(22,163,74,0.1)' }
-  };
-  const ssKey = v.sub_stage || 'a_contacter';
-  const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
+  const docBadges = showDocs ? `<div class="doc-badges">${DOCS.map(d =>
+    `<div class="doc-badge ${v.documents&&v.documents[d.key]?'ok':'ko'}" title="${d.full}">${d.label}</div>`).join('')}</div>` : '';
 
-  // === Fraîcheur ===
-  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
-  let freshnessHtml = '';
-  if (lastDate) {
-    const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
-    const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
-    const txt = days === 0 ? "Aujourd'hui" : days === 1 ? 'Hier' : `il y a ${days}j`;
-    freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
-  }
-
-  // === Méta (1 ligne) ===
-  const metaParts = [v.annee, v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '', v.carburant].filter(Boolean);
-  const metaHtml = metaParts.length ? `<div class="card-meta">${metaParts.join(' · ')}</div>` : '';
-
-  // === Concession ===
-  const conc = v.concessionnaire || v.vendeur || '';
-  const concHtml = conc ? `<div class="card-concession">${hl(esc(conc), searchQ)}</div>` : '';
-
-  // === Badge sous-étape (sourcing) ===
-  const ssBadgeInfo = v.column === 'sourcing' ? (SS_BADGE[ssKey] || SS_BADGE.a_contacter) : null;
-  const ssBadgeHtml = ssBadgeInfo
-    ? `<span class="ss-badge" style="background:${ssBadgeInfo.bg};color:${ssBadgeInfo.color}">${ssBadgeInfo.label}</span>`
-    : '';
-
-  // === Prochaine action ===
-  const NEXT_ACTIONS = {
-    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', negociation:'🤝 En négociation', bc_signe:'💳 Passer en paiement' },
-    a_payer:'💳 Attente paiement', en_transport:'🚛 En transport', livre:'✅ Livré'
-  };
-  let nextAction = '';
-  if (v.column === 'sourcing') nextAction = NEXT_ACTIONS.sourcing[ssKey] || '';
-  else if (NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
-  const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
-
-  // === Docs warning ===
+  // Warning persistant dès À Payer et sur toutes les colonnes suivantes (sauf archive)
   const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
-    ? `<div class="doc-warn">⚠️ Docs manquants</div>` : '';
+    ? `<div class="doc-warn">⚠️ Documents manquants</div>` : '';
 
-  // === Bouton action rapide ===
   let actions = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
     actions = `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}',event)">→ À Payer</button>`;
   else if (v.column === 'a_payer')
     actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
   else if (v.column === 'en_transport')
-    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
+    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Confirmé livré</button>`;
   else if (v.column === 'livre')
     actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
 
-  return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
-    style="border-left-color:${borderColor}">
-    <div class="card-btn-group">
-      <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+  const isMatch = searchQ && matchV(v);
+  return `<div class="card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
+    ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
+    ontouchstart="tStart(event,'vehicle','${v.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+    onclick="openDetail('${v.id}')"
+    oncontextmenu="openCtx(event,'vehicle','${v.id}')">
+    <button class="card-move-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
+    ${v.column === 'deal_perdu' ? `<button class="card-delete-btn" onclick="event.stopPropagation();deleteVehicleFast('${v.id}')" title="Supprimer">×</button>` : ''}
+    <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+    <div class="tags">
+      ${v.annee ? `<span class="tag">${v.annee}</span>` : ''}
+      ${v.km ? `<span class="tag">${Number(v.km).toLocaleString('fr-FR')} km</span>` : ''}
+      ${v.carburant ? `<span class="tag">${hl(v.carburant, searchQ)}</span>` : ''}
+      ${price ? `<span class="tag tag-blue">${fmtN(price)}</span>` : ''}
+      ${v.fournisseur_nom ? `<span class="tag">${hl(v.fournisseur_nom, searchQ)}</span>` : ''}
     </div>
-    <div class="card-header-row">
-      <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
-      ${price ? `<span class="card-price-badge">${fmtN(price)}</span>` : ''}
-    </div>
-    ${metaHtml}
-    ${concHtml}
-    <div class="card-bottom-row">
-      <div>${ssBadgeHtml}${nextActionHtml}</div>
-      ${freshnessHtml}
-    </div>
-    ${docWarn}
+    ${ssBar}${docBadges}${docWarn}
+    ${v.deal_lost_reason ? `<div class="deal-lost-reason">❌ ${esc(v.deal_lost_reason)}</div>` : ''}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
+    ${v.updated_at ? `<div class="card-updated">↻ ${fmtUpdated(v.updated_at)}</div>` : ''}
   </div>`;
 }
 
@@ -2022,16 +1832,7 @@ function showView(id, btn) {
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  if (btn && btn.classList.contains('tab-btn')) btn.classList.add('active');
-  // Sync header tabs
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.textContent.toLowerCase().includes(id === 'achats' ? 'achat' : id === 'taches' ? 'tâche' : id === 'emails' ? 'email' : 'dashboard'))
-      b.classList.add('active');
-  });
-  // Sync mobile bottom nav
-  document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(n => {
-    n.classList.toggle('active', n.dataset.view === id);
-  });
+  if (btn) btn.classList.add('active');
   if (id === 'dashboard') renderDashboard();
   if (id === 'emails') {
     renderEmailsView();
@@ -2072,19 +1873,12 @@ function switchVTab(tab) {
   document.getElementById('vFormSection').style.display = isLBC ? 'none' : 'block';
   document.getElementById('vTabManuel').className = isLBC ? 'btn btn-ghost btn-sm' : 'btn btn-primary btn-sm';
   document.getElementById('vTabLBC').className = isLBC ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
-}
-
-function openLBCModal() {
-  const wrap = document.getElementById('lbcProgressWrap');
-  if (wrap) { wrap.classList.remove('visible'); }
-  const res = document.getElementById('lbcResult');
-  if (res) { res.style.display = 'none'; }
-  const fill = document.getElementById('lbcProgressFill');
-  if (fill) { fill.style.width = '0%'; }
-  const btn = document.getElementById('lbcImportBtn');
-  if (btn) { btn.disabled = false; btn.textContent = '🔗 Importer'; btn.onclick = triggerLBCImport; }
-  document.getElementById('lbcUrls').value = '';
-  openModal('ovLBC');
+  if (isLBC) {
+    document.getElementById('lbcUrls').value = '';
+    document.getElementById('lbcStatus').style.display = 'none';
+    document.getElementById('lbcImportBtn').disabled = false;
+    document.getElementById('lbcImportBtn').textContent = 'Importer';
+  }
 }
 
 function openAddVehicle(col) {
@@ -2173,7 +1967,7 @@ function saveVehicle() {
     const col = window._addCol || 'sourcing';
     const v = {
       id: uid(), column: col, sub_stage: col === 'sourcing' ? ss : null,
-      priority: urg, created_at: today(),
+      priority: urg, created_at: today(), updated_at: new Date().toISOString(),
       documents: { carte_grise:false, facture_achat:false, certificat_cession:false },
       historique: [{ date:today(), action:'Véhicule créé' }],
       ...data
@@ -2198,6 +1992,12 @@ function deleteVehicle(id) {
   if (!confirm('Supprimer ce véhicule définitivement ?')) return;
   S.vehicles = S.vehicles.filter(v=>v.id!==id);
   closeModal('ovDetail');
+  render();
+  saveToGH();
+}
+
+function deleteVehicleFast(id) {
+  S.vehicles = S.vehicles.filter(v=>v.id!==id);
   render();
   saveToGH();
 }
@@ -2304,48 +2104,6 @@ function openDetail(id) {
   const showDocs = docsVisible(v);
   const missD = hasMissingDocs(v);
 
-  // ---- Sections communes ----
-  const photoHtml = v.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;max-height:200px;background:var(--bg)">
-    <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
-  </div>` : '';
-
-  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : '';
-
-  const infoGridHtml = `
-    <div class="detail-grid">
-      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
-      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
-      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
-      <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
-      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
-      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
-      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
-      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
-      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
-      ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
-    </div>`;
-
-  const fournisseurSection = `
-    <div class="form-section">
-      <div class="form-section-title">🏢 Fournisseur</div>
-      <div class="detail-grid">
-        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
-        <div class="detail-field"><label>Téléphone</label>
-          <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
-            onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
-            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
-        </div>
-        <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
-          <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
-            onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
-            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
-        </div>
-        <div style="grid-column:1/-1;margin-top:6px">
-          <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
-        </div>
-      </div>
-    </div>`;
-
   const docsSection = showDocs ? `
     <div class="form-section">
       <div class="form-section-title" style="display:flex;align-items:center;justify-content:space-between">
@@ -2371,18 +2129,6 @@ function openDetail(id) {
       ${v.transport_notes ? `<div style="font-size:13px;margin-top:8px;color:var(--text-muted)">${esc(v.transport_notes)}</div>` : ''}
     </div>` : '';
 
-  const commentSection = `
-    <div class="form-section">
-      <div class="form-section-title">💬 Commentaires</div>
-      <div id="commentList_${v.id}">${buildCommentListHTML(v)}</div>
-      <div style="display:flex;gap:6px;margin-top:8px">
-        <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
-          style="flex:1;padding:7px 10px;font-size:13px"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
-        <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+ Ajouter</button>
-      </div>
-    </div>`;
-
   const histSection = v.historique && v.historique.length ? `
     <div class="form-section">
       <div class="form-section-title">📅 Historique</div>
@@ -2392,7 +2138,6 @@ function openDetail(id) {
       </div>
     </div>` : '';
 
-  // ---- Boutons d'action ----
   let actionBtns = '';
   if (v.column === 'sourcing' && v.sub_stage === 'bc_signe')
     actionBtns += `<button class="btn btn-primary btn-sm" onclick="moveToAPayer('${v.id}');closeModal('ovDetail')">→ À Payer</button>`;
@@ -2406,74 +2151,59 @@ function openDetail(id) {
     actionBtns += `<button class="btn btn-ghost btn-sm" style="color:var(--urg-1);border-color:var(--urg-1)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
   actionBtns += `<button class="btn btn-danger btn-sm" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
 
-  // ---- Composition contextuelle selon stade ----
-  let bodyContent = '';
-
-  if (v.column === 'deal_perdu') {
-    // Vue simplifiée : raison + infos de base + commentaires + historique
-    bodyContent = `
-      <div style="background:rgba(232,41,74,0.06);border:1px solid rgba(232,41,74,0.2);border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-size:11px;font-weight:700;color:var(--urg-1);margin-bottom:4px">❌ DEAL PERDU</div>
-        <div style="font-size:13px;color:var(--text)">${v.deal_lost_reason ? esc(v.deal_lost_reason) : '<em style="color:var(--text-muted)">Raison non précisée</em>'}</div>
-      </div>
-      ${infoGridHtml}
-      ${commentSection}
-      ${histSection}`;
-
-  } else if (v.column === 'archive') {
-    // Vue lecture seule : infos + commentaires
-    bodyContent = `
-      ${photoHtml}${annonceLinkHtml}
-      ${infoGridHtml}
-      ${commentSection}
-      ${histSection}`;
-
-  } else if (v.column === 'sourcing') {
-    // Vue sourcing : contact prioritaire, docs uniquement si bc_signé
-    bodyContent = `
-      ${photoHtml}${annonceLinkHtml}
-      ${v.titre ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic">${esc(v.titre)}</div>` : ''}
-      ${infoGridHtml}
-      ${fournisseurSection}
-      ${docsSection}
-      ${commentSection}
-      ${histSection}`;
-
-  } else if (v.column === 'a_payer') {
-    // Vue paiement : docs en premier (c'est ce qui bloque), puis fournisseur
-    bodyContent = `
-      ${photoHtml}
-      ${infoGridHtml}
-      ${docsSection}
-      ${fournisseurSection}
-      ${commentSection}
-      ${histSection}`;
-
-  } else if (v.column === 'en_transport') {
-    // Vue transport : infos transport en premier, puis docs
-    bodyContent = `
-      ${photoHtml}
-      ${infoGridHtml}
-      ${transportSection}
-      ${docsSection}
-      ${commentSection}
-      ${histSection}`;
-
-  } else {
-    // Vue par défaut (livre, etc.)
-    bodyContent = `
-      ${photoHtml}${annonceLinkHtml}
-      ${infoGridHtml}
-      ${fournisseurSection}
-      ${docsSection}
-      ${transportSection}
-      ${commentSection}
-      ${histSection}`;
-  }
-
   const price = v.prix_negocie || v.prix_demande;
   document.getElementById('detailBody').innerHTML = `
-    ${bodyContent}
+    ${v.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;max-height:200px;background:var(--bg)">
+      <img src="${esc(v.photo)}" style="width:100%;object-fit:cover;max-height:200px;display:block" onerror="this.parentElement.style.display='none'">
+    </div>` : ''}
+    ${v.url_annonce ? `<div style="margin-bottom:12px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--primary);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : ''}
+    ${v.titre ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic">${esc(v.titre)}</div>` : ''}
+    <div class="detail-grid">
+      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
+      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
+      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
+      <div class="detail-field"><label>Boîte de vitesse</label><value>${v.boite||'—'}</value></div>
+      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--primary)">${fmtN(v.prix_negocie)}</value></div>
+      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
+      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
+      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
+      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
+      ${v.immatriculation ? `<div class="detail-field"><label>Immatriculation</label><value>${esc(v.immatriculation)}</value></div>` : ''}
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">🏢 Fournisseur</div>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
+        <div class="detail-field"><label>Téléphone</label>
+          <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
+            onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--primary);font-family:inherit">
+        </div>
+        <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
+          <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
+            onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
+            style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
+        </div>
+        <div style="grid-column:1/-1;margin-top:6px">
+          <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
+        </div>
+      </div>
+    </div>
+    ${docsSection}
+    ${transportSection}
+    <div class="form-section">
+      <div class="form-section-title">💬 Commentaires</div>
+      <div id="commentList_${v.id}">
+        ${buildCommentListHTML(v)}
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
+          style="flex:1;padding:7px 10px;font-size:13px"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
+        <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+ Ajouter</button>
+      </div>
+    </div>
+    ${histSection}
     <div class="form-section" style="display:flex;gap:8px;justify-content:flex-end">${actionBtns}</div>
   `;
   openModal('ovDetail');
@@ -2602,148 +2332,35 @@ function deleteTask(id) {
 // ============================================================
 // SHARE TO REMINDERS (iOS Rappels / Web Share API)
 // ============================================================
-let _reminderTaskId = null;
-
-function shareTask(id) {
+async function shareTask(id) {
   const t = id ? S.tasks.find(x=>x.id===id) : null;
   if (!t) return;
-  _reminderTaskId = id;
-  document.getElementById('reminderTitle').value = t.title;
-  document.getElementById('reminderDate').value = t.due_date || '';
-  document.getElementById('reminderTime').value = t.due_time || '';
-  document.getElementById('reminderNotes').value = t.description || '';
-  const st = document.getElementById('reminderBridgeStatus');
-  st.style.display = 'none';
-  openModal('ovReminder');
-}
 
-async function confirmSendReminder() {
-  const title = document.getElementById('reminderTitle').value;
-  const date  = document.getElementById('reminderDate').value;
-  const time  = document.getElementById('reminderTime').value;
-  const notes = document.getElementById('reminderNotes').value;
-  const st    = document.getElementById('reminderBridgeStatus');
+  // Construire le texte du rappel
+  const urgLabels = { 1:'🔴 Très urgent', 2:'🟠 Urgent', 3:'Normal' };
+  const lines = [t.title];
+  if (t.description) lines.push(t.description);
+  if (t.due_date) lines.push(`Échéance : ${fmtD(t.due_date)}${t.due_time ? ' à ' + t.due_time : ''}`);
+  if (t.priority && t.priority !== 3) lines.push(urgLabels[t.priority] || '');
+  const shareText = lines.filter(Boolean).join('\n');
 
-  // ① Essayer le bridge local (port 9878)
-  const params = new URLSearchParams({ title, notes, date, time });
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 1500);
-    const r = await fetch(`http://localhost:9878/remind?${params}`, { signal: ctrl.signal, mode: 'no-cors' });
-    clearTimeout(timer);
-    st.style.display = 'block';
-    st.style.color = 'var(--urg-done)';
-    st.textContent = '✅ Rappel créé dans l\'app Rappels !';
-    setTimeout(() => closeModal('ovReminder'), 1400);
-    return;
-  } catch(e) { /* bridge non dispo */ }
-
-  // ② Web Share API (iOS natif)
-  const shareText = [title, notes, date ? `Échéance : ${date}${time ? ' à ' + time : ''}` : ''].filter(Boolean).join('\n');
+  // Web Share API — ouvre la feuille de partage native iOS
   if (navigator.share) {
     try {
-      await navigator.share({ title, text: shareText });
-      closeModal('ovReminder');
+      await navigator.share({ title: t.title, text: shareText });
       return;
-    } catch(e) { if (e.name === 'AbortError') { closeModal('ovReminder'); return; } }
-  }
-
-  // ③ Fallback : copier dans le presse-papier
-  try { await navigator.clipboard.writeText(shareText); } catch(e) {}
-  st.style.display = 'block';
-  st.style.color = 'var(--text-muted)';
-  st.textContent = '📋 Copié ! Colle dans l\'app Rappels. (Lance le bridge pour automatiser)';
-}
-
-// ── Import photo → tâches ─────────────────────────────────────────────────
-
-let _imgBase64 = null, _imgType = null;
-
-function handleImgFile(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const dataUrl = e.target.result;
-    _imgBase64 = dataUrl.split(',')[1];
-    _imgType   = file.type || 'image/jpeg';
-    const prev = document.getElementById('imgPreview');
-    prev.style.display = 'block';
-    prev.innerHTML = `<img src="${dataUrl}" style="width:100%;border-radius:8px;max-height:200px;object-fit:contain">`;
-    document.getElementById('imgImportBtn').style.display = 'inline-flex';
-    const st = document.getElementById('imgStatus');
-    st.style.display = 'none';
-  };
-  reader.readAsDataURL(file);
-}
-
-async function runImgImport() {
-  const key = localStorage.getItem('anthropic_key');
-  if (!key) {
-    showToast('⚙️ Configure ta clé Anthropic dans Paramètres');
-    return;
-  }
-  if (!_imgBase64) return;
-
-  const btn = document.getElementById('imgImportBtn');
-  btn.disabled = true; btn.textContent = '⏳ Analyse en cours…';
-  const st = document.getElementById('imgStatus');
-  st.style.display = 'block'; st.style.color = 'var(--text-muted)';
-  st.textContent = 'Claude analyse l\'image…';
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-        'anthropic-dangerous-direct-browser-calls': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: _imgType, data: _imgBase64 } },
-            { type: 'text', text: 'Cette image contient une liste de véhicules à acheter. Extrais chaque véhicule et retourne UNIQUEMENT un JSON array, rien d\'autre. Format: [{"marque":"Renault","modele":"Clio","annee":"2023","km":"25000","prix":"15000","notes":""}]. Si un champ est absent mets "". Maximum 20 véhicules.' }
-          ]
-        }]
-      })
-    });
-
-    if (!resp.ok) throw new Error(`API ${resp.status}`);
-    const data = await resp.json();
-    const text = data.content?.[0]?.text || '';
-
-    // Extraire le JSON
-    const match = text.match(/\[[\s\S]*\]/);
-    if (!match) throw new Error('Pas de liste détectée');
-    const vehicles = JSON.parse(match[0]);
-
-    if (!vehicles.length) throw new Error('Aucun véhicule trouvé');
-
-    // Créer une tâche par véhicule
-    let created = 0;
-    for (const v of vehicles) {
-      const label = [v.marque, v.modele, v.annee].filter(Boolean).join(' ');
-      const notes = [v.km ? v.km+' km' : '', v.prix ? v.prix+' €' : '', v.notes].filter(Boolean).join(' — ');
-      S.tasks.push({ id: uid(), created_at: today(), auto_generated: false,
-        title: `🚗 Acheter ${label}`, description: notes,
-        priority: 3, column: 'a_faire', due_date: '', due_time: '' });
-      created++;
+    } catch(e) {
+      if (e.name === 'AbortError') return; // user cancelled
     }
+  }
 
-    render(); saveToGH();
-    st.style.color = 'var(--urg-done)';
-    st.textContent = `✅ ${created} tâche(s) créée(s) !`;
-    btn.textContent = '✅ Créées';
-    setTimeout(() => closeModal('ovImgImport'), 1600);
-
+  // Fallback desktop : copier dans le presse-papier
+  try {
+    await navigator.clipboard.writeText(shareText);
+    showToast('✅ Copié ! Collez dans l\'app Rappels.');
   } catch(e) {
-    st.style.color = 'var(--urg-1)';
-    st.textContent = `❌ Erreur : ${e.message}`;
-    btn.disabled = false; btn.textContent = '✨ Réessayer';
+    // Dernier recours : prompt
+    prompt('Copiez ce texte dans Rappels :', shareText);
   }
 }
 
@@ -2822,6 +2439,16 @@ function nowTs() {
   return `${d}/${mo}/${n.getFullYear()} ${h}:${mi}`;
 }
 
+function fmtUpdated(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const day = String(d.getDate()).padStart(2,'0');
+  const mo = String(d.getMonth()+1).padStart(2,'0');
+  const h = String(d.getHours()).padStart(2,'0');
+  const mi = String(d.getMinutes()).padStart(2,'0');
+  return `${day}/${mo} ${h}:${mi}`;
+}
+
 function getCommentaires(v) {
   if (!v.commentaires) {
     v.commentaires = [];
@@ -2861,6 +2488,7 @@ function addComment(id) {
   if (!text) { input.focus(); return; }
   getCommentaires(v); // ensure array exists
   v.commentaires.push({ ts: nowTs(), text });
+  v.updated_at = new Date().toISOString();
   // Sync legacy field
   v.commentaire = v.commentaires.map(c => `${c.ts} : ${c.text}`).join('\n');
   input.value = '';
@@ -3064,7 +2692,6 @@ function openSettings() {
   document.getElementById('sToken').value = S.settings.github_token || localStorage.getItem('gh_token')||'';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
   document.getElementById('sEmail').value = S.settings.email||'';
-  document.getElementById('sAnthropicKey').value = localStorage.getItem('anthropic_key')||'';
   document.getElementById('sReminder').value = S.settings.reminder_days||3;
   document.getElementById('sArchive').checked = S.settings.show_archive||false;
   document.getElementById('sDarkMode').checked = S.settings.dark_mode || localStorage.getItem('dark_mode')==='1' || false;
@@ -3078,10 +2705,6 @@ function saveSettings() {
   S.settings.email = document.getElementById('sEmail').value.trim();
   S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
   S.settings.show_archive = document.getElementById('sArchive').checked;
-  // Clé Anthropic — stockée uniquement en localStorage, jamais envoyée à GitHub
-  const ak = document.getElementById('sAnthropicKey').value.trim();
-  if (ak) localStorage.setItem('anthropic_key', ak);
-  else localStorage.removeItem('anthropic_key');
   const dm = document.getElementById('sDarkMode').checked;
   S.settings.dark_mode = dm;
   localStorage.setItem('dark_mode', dm ? '1' : '0');
