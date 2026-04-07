@@ -465,58 +465,6 @@
       "commentaires": []
     },
     {
-      "id": "fea75ecb-fd48-4eb9-b243-2fd15b5d99cc",
-      "lbc_id": "3148181619",
-      "url_annonce": "https://www.leboncoin.fr/ad/voitures/3148181619",
-      "source": "LeBonCoin",
-      "marque": "Renault",
-      "modele": "Clio",
-      "annee": 2024,
-      "date_mec": "11/2024",
-      "km": 26802,
-      "prix_demande": 16450,
-      "carburant": "Diesel",
-      "boite": "Manuelle",
-      "couleur": "Blanc",
-      "localisation": "Muret (31)",
-      "fournisseur_nom": "Renault Muret",
-      "fournisseur_tel": "",
-      "fournisseur_type": "pro",
-      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/d6/4b/7d/d64b7deb01cd267a710a8d49521eb66880e34f4d.jpg?rule=ad-large",
-      "titre": "Renault Clio Blue dCi 100 Evolution",
-      "description": "Renault Clio Blue dCi 100 Evolution berline, blanc, 5 cv, 5 portes, première mise en circulation le 29/11/2024, garantie 12 mois.\n\nPrix TTC : 16 450,00 €\nPrix HT : 13 708,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - radio numérique",
-      "column": "deal_perdu",
-      "sub_stage": null,
-      "priority": 3,
-      "documents": {
-        "carte_grise": false,
-        "facture_achat": false,
-        "certificat_cession": false
-      },
-      "created_at": "2026-03-16T17:50:57",
-      "historique": [
-        {
-          "date": "2026-03-16",
-          "action": "Importé depuis LBC"
-        },
-        {
-          "date": "2026-03-16",
-          "action": "Sourcing : a_contacter → contacte"
-        },
-        {
-          "date": "2026-03-31",
-          "action": "Déplacé: sourcing → deal_perdu"
-        }
-      ],
-      "commentaires": [
-        {
-          "ts": "16/03/2026 18:53",
-          "text": "Je dois rappeler demain"
-        }
-      ],
-      "commentaire": "16/03/2026 18:53 : Je dois rappeler demain"
-    },
-    {
       "id": "31ad8622-3d5a-43a9-b330-c64ffae01cd5",
       "lbc_id": "3149793780",
       "url_annonce": "https://www.leboncoin.fr/ad/utilitaires/3149793780",
