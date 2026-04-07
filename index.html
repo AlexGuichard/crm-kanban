@@ -107,6 +107,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .btn-ghost { background: var(--surface); color: var(--text-2); border: 1px solid var(--border); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 .btn-danger { background: var(--urg-1); color: white; }
+.btn:focus-visible, .sidebar .nav-item:focus-visible, .drawer-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
 .btn-sm { padding: 4px 10px; font-size: 12px; }
 .btn-icon { width: 34px; height: 34px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; border-radius: 8px; position: relative; }
 .sync-badge { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap; cursor: pointer; }
@@ -160,7 +161,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .col-count { background: var(--border); color: var(--text-muted); padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 700; min-width: 22px; text-align: center; }
 .col-price { font-size: 11px; color: var(--text-muted); font-weight: 600; }
 .column-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; flex: 1; }
-.column-body.drag-over { background: rgba(79,110,247,0.07); outline: 2px dashed var(--accent); border-radius: 0 0 var(--r-xl) var(--r-xl); }
+.column-body.drag-over { background: rgba(79,110,247,0.1); outline: 2px dashed var(--accent); border-radius: 0 0 var(--r-xl) var(--r-xl); box-shadow: inset 0 0 20px rgba(79,110,247,0.08); }
 .col-add { padding: 8px; border-top: 1px solid var(--border-2); }
 .col-add button { width: 100%; padding: 8px; border: 1.5px dashed var(--border); background: none; border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all var(--t); font-family: inherit; }
 .col-add button:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
@@ -174,7 +175,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 
 /* SOURCING SUB-TABS */
 .sourcing-subtabs { display: flex; gap: 3px; padding: 6px 8px; flex-wrap: wrap; }
-.ss-tab { flex: 1; padding: 3px 7px; font-size: 10px; font-weight: 600; text-align: center; cursor: pointer; color: var(--text-muted); border-radius: 5px; border: 1px solid var(--border); background: var(--surface); transition: all var(--t); line-height: 1.3; white-space: nowrap; }
+.ss-tab { flex: 1; padding: 5px 8px; font-size: 11px; font-weight: 600; text-align: center; cursor: pointer; color: var(--text-muted); border-radius: 5px; border: 1px solid var(--border); background: var(--surface); transition: all var(--t); line-height: 1.3; white-space: nowrap; }
 .ss-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
 .ss-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
 .ss-tab.ss-tab-drop { background: rgba(61,85,240,0.12); color: var(--accent); transform: scale(1.04); }
@@ -192,9 +193,9 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 
 /* Card layout */
 .card-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; padding-right: 22px; }
-.card-title { font-weight: 700; font-size: 13.5px; line-height: 1.25; color: var(--primary); flex: 1; }
+.card-title { font-weight: 700; font-size: 14px; line-height: 1.25; color: var(--primary); flex: 1; }
 .card-price-badge { background: rgba(79,110,247,0.09); color: var(--accent); font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 6px; white-space: nowrap; flex-shrink: 0; }
-.card-meta { font-size: 11.5px; color: var(--text-muted); margin-bottom: 3px; line-height: 1.4; font-weight: 400; }
+.card-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 3px; line-height: 1.4; font-weight: 400; }
 .card-concession { font-size: 11px; color: var(--text-light); font-weight: 500; margin-bottom: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card-bottom-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px; }
 .card-sub { font-size: 11px; color: var(--text-muted); }
@@ -478,8 +479,8 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 /* DRAG STATES */
 .card { cursor: grab; }
 .card:active { cursor: grabbing; }
-.card.dragging { opacity: 0.45; transform: scale(0.97); }
-.column-body.drag-over { background: rgba(77,101,255,0.07); outline: 2px dashed var(--primary); border-radius: 0 0 var(--radius) var(--radius); }
+.card.dragging { opacity: 0.6; transform: scale(0.97) rotate(-1deg); box-shadow: 0 12px 32px rgba(26,31,94,0.2); }
+.column-body.drag-over { background: rgba(79,110,247,0.1); outline: 2px dashed var(--accent); border-radius: 0 0 var(--r-xl) var(--r-xl); box-shadow: inset 0 0 20px rgba(79,110,247,0.08); }
 
 /* CARD ACTION BUTTONS (move + share) — visible on hover / always on mobile */
 .card-btn-group { display: none; position: absolute; top: 5px; right: 5px; gap: 3px; z-index: 2; }
@@ -579,6 +580,16 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
   .sidebar-resize-handle { display: none; }
 }
 
+/* SEARCH OVERLAY */
+.search-overlay { position:fixed;inset:0;z-index:500;background:rgba(26,31,94,0.25);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding-top:min(20vh,140px); }
+.search-overlay.open { display:flex; }
+.search-box { width:520px;max-width:92vw;background:var(--surface);border-radius:16px;border:1px solid var(--border);box-shadow:0 16px 48px rgba(26,31,94,0.18);overflow:hidden; }
+.search-box-input { width:100%;padding:16px 20px 16px 48px;border:none;background:none;font-size:16px;font-family:var(--font);color:var(--text);outline:none; }
+.search-box-input::placeholder { color:var(--text-light); }
+.search-box-icon { position:absolute;left:18px;top:18px;font-size:18px;pointer-events:none;color:var(--text-muted); }
+.search-box-hint { padding:10px 20px;font-size:11px;color:var(--text-light);border-top:1px solid var(--border-2);display:flex;gap:12px; }
+.search-box-hint kbd { background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700; }
+
 /* ============================================================
    VEHICLE DRAWER
    ============================================================ */
@@ -590,7 +601,7 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .drawer-overlay.open { opacity: 1; pointer-events: all; }
 .drawer {
   position: fixed; top: 0; right: 0; bottom: 0; z-index: 201;
-  width: 440px; max-width: 100vw;
+  width: 540px; max-width: 100vw;
   background: var(--surface); border-left: 1px solid var(--border);
   display: flex; flex-direction: column;
   transform: translateX(100%); transition: transform 0.26s cubic-bezier(.4,0,.2,1);
@@ -737,7 +748,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     </div>
   </nav>
   <div class="sidebar-footer">
-    <button class="sidebar-footer-btn" onclick="onSearch()" title="Rechercher">🔍</button>
+    <button class="sidebar-footer-btn" onclick="openSearch()" title="Rechercher">🔍</button>
     <button class="sidebar-footer-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="sidebar-footer-btn" onclick="manualRefresh()" title="Rafraîchir">⟳</button>
     <span class="sync-badge" id="syncBadge" style="cursor:pointer;margin-left:auto" onclick="openSettings()">⏳ Config…</span>
@@ -858,6 +869,15 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
 </main><!-- /main -->
 </div><!-- /app -->
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-box" style="position:relative">
+    <span class="search-box-icon">🔍</span>
+    <input class="search-box-input" id="searchBoxInput" placeholder="Rechercher véhicules, tâches…" oninput="onSearchBox(this.value)" autofocus>
+    <div class="search-box-hint"><span><kbd>Esc</kbd> fermer</span><span><kbd>⌘K</kbd> ouvrir</span></div>
+  </div>
+</div>
 
 <!-- VEHICLE DETAIL DRAWER -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -2169,7 +2189,14 @@ function renderTasksList() {
 // -------- TASKS BOARD --------
 function renderTasksBoard() {
   document.getElementById('tasksBoard').innerHTML = TASK_COLS.map(col => {
-    const tasks = S.tasks.filter(t => t.column === col.key && matchT(t));
+    const tasks = S.tasks.filter(t => t.column === col.key && matchT(t))
+      .sort((a,b) => {
+        const todayStr = today();
+        const aOver = a.due_date && a.due_date < todayStr ? 1 : 0;
+        const bOver = b.due_date && b.due_date < todayStr ? 1 : 0;
+        if (bOver !== aOver) return bOver - aOver;
+        return (a.priority||3) - (b.priority||3);
+      });
     return `<div class="column">
       <div class="column-header">
         <span class="col-title">${col.label}</span>
@@ -2616,10 +2643,16 @@ function saveVehicle() {
 
 function deleteVehicle(id) {
   if (!confirm('Supprimer ce véhicule définitivement ?')) return;
+  const removed = S.vehicles.find(v=>v.id===id);
+  if (!removed) return;
   S.vehicles = S.vehicles.filter(v=>v.id!==id);
   closeDrawer();
-  render();
-  saveToGH();
+  render(); saveToGH();
+  showUndoToast('Véhicule supprimé', () => {
+    S.vehicles.push(removed);
+    render(); saveToGH();
+    showToast('↩️ Véhicule restauré');
+  });
 }
 
 function deleteVehicleFast(id) {
@@ -3024,8 +3057,16 @@ function saveTask() {
 
 function deleteTask(id) {
   if (!confirm('Supprimer cette tâche ?')) return;
+  const removed = S.tasks.find(t=>t.id===id);
+  if (!removed) return;
   S.tasks = S.tasks.filter(t=>t.id!==id);
+  closeModal('ovTask');
   render(); saveToGH();
+  showUndoToast('Tâche supprimée', () => {
+    S.tasks.push(removed);
+    render(); saveToGH();
+    showToast('↩️ Tâche restaurée');
+  });
 }
 
 // ============================================================
@@ -3322,6 +3363,21 @@ function showToast(msg) {
   toast.style.opacity = '1';
   clearTimeout(toast._t);
   toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 2800);
+}
+
+function showUndoToast(msg, undoFn) {
+  let el = document.getElementById('undoToast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'undoToast';
+    el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:600;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(26,31,94,0.3);font-family:var(--font);transition:opacity 0.3s';
+    document.body.appendChild(el);
+  }
+  clearTimeout(el._timer);
+  el.innerHTML = msg + ' <button onclick="this.parentElement._undo()" style="background:rgba(255,255,255,0.2);color:white;border:none;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">↩️ Annuler</button>';
+  el._undo = () => { clearTimeout(el._timer); el.style.opacity='0'; undoFn(); };
+  el.style.opacity = '1';
+  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 5000);
 }
 
 // ============================================================
@@ -3959,6 +4015,34 @@ function onSidebarResizeEnd(e) {
 }
 
 // ============================================================
+// GLOBAL SEARCH (Cmd+K)
+// ============================================================
+document.addEventListener('keydown', function(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    openSearch();
+  }
+});
+
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  const input = document.getElementById('searchBoxInput');
+  input.value = searchQ || '';
+  input.focus();
+}
+
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+}
+
+let _searchTimer = null;
+function onSearchBox(val) {
+  searchQ = val.trim().toLowerCase();
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => render(), 200);
+}
+
+// ============================================================
 // DRAWER EVENT DELEGATION
 // ============================================================
 document.addEventListener('click', function(e) {
@@ -3966,7 +4050,7 @@ document.addEventListener('click', function(e) {
   const tab = e.target.closest('[data-dtab]');
   if (tab && tab.closest('#drawerTabs')) { switchDrawerTab(parseInt(tab.dataset.dtab)); return; }
 });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeDrawer(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeDrawer(); closeSearch(); } });
 
 </script>
 </body>
