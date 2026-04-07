@@ -2892,6 +2892,7 @@ function addComment(id) {
   // Refresh just the comment list without closing the modal
   const listEl = document.getElementById('commentList_' + id);
   if (listEl) listEl.innerHTML = buildCommentListHTML(v);
+  renderBoard(); // mettre à jour le badge de fraîcheur sur la carte
   saveToGH();
 }
 
