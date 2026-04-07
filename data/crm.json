@@ -201,7 +201,7 @@
       "titre": "Renault Clio V Blue dCi 100 ch GSR2 Evolution",
       "description": "Renault Clio V Blue dCi 100 ch GSR2 Evolution berline, gris clair, 5 cv, 5 portes, couleur intérieure : titane, première mise en circulation le 19/08/2024, garantie 12 mois.\n\nPrix TTC : 16 490,00 €\nPrix HT : 13 742,00 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places, longueur : 4,05 mètre(s), poi",
       "column": "sourcing",
-      "sub_stage": "a_contacter",
+      "sub_stage": "contacte",
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -217,6 +217,10 @@
         {
           "date": "2026-04-07",
           "action": "Commentaire ajouté"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Sourcing : a_contacter → contacte"
         }
       ],
       "commentaires": [
@@ -230,7 +234,7 @@
         }
       ],
       "commentaire": "01/04/2026 17:33 : Je dois les rappeler ils m'ont pas répondu URGENCE JOJO\n07/04/2026 11:34 : Je les ai relancé, ils doivent devenir vers moi dans la journée",
-      "updated_at": "2026-04-07T09:34:35.692Z"
+      "updated_at": "2026-04-07T09:34:42.055Z"
     },
     {
       "id": "f0422bf1-ae9b-43a4-9ae0-431923a6425d",
