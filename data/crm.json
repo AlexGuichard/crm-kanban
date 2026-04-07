@@ -302,11 +302,12 @@
       "priority": 1,
       "due_date": "2026-03-17",
       "due_time": "",
-      "column": "a_faire",
+      "column": "termine",
       "last_viewed_at": "2026-04-07T22:41:21.061Z",
       "reminder": null,
       "linked_vehicle_ids": [],
-      "linked_vehicle_id": null
+      "linked_vehicle_id": null,
+      "completed_at": "2026-04-07T22:41:48.274Z"
     },
     {
       "id": "mmthga6hu10y",
