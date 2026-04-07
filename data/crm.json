@@ -563,13 +563,17 @@
         {
           "ts": "31/03/2026 11:58",
           "text": "En attente de son offre par email"
+        },
+        {
+          "ts": "07/04/2026 10:27",
+          "text": "J'ai relancé pcq pas de newq"
         }
       ],
       "vin": "",
       "immatriculation": "",
       "prix_negocie": "",
       "fournisseur_email": "",
-      "commentaire": "31/03/2026 11:58 : En attente de son offre par email"
+      "commentaire": "31/03/2026 11:58 : En attente de son offre par email\n07/04/2026 10:27 : J'ai relancé pcq pas de newq"
     },
     {
       "id": "2bd030c9-581a-44ca-a93a-4ba88130f7f7",
