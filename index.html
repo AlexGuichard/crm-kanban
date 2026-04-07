@@ -1112,6 +1112,26 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
         <option value="termine">Terminé</option>
       </select>
     </div>
+    <div class="form-group">
+      <label class="form-label">Véhicules liés</label>
+      <div id="tVehicleSearch" style="position:relative;margin-bottom:6px">
+        <input class="form-input" id="tVehicleFilter" placeholder="Rechercher un véhicule…" oninput="filterTaskVehicles()" style="padding-right:30px">
+        <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none">🔍</span>
+      </div>
+      <div id="tVehicles" style="max-height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding:4px 0"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Rappel</label>
+      <select class="form-select" id="tReminder">
+        <option value="">Aucun rappel</option>
+        <option value="10m">10 minutes avant</option>
+        <option value="30m">30 minutes avant</option>
+        <option value="1h">1 heure avant</option>
+        <option value="3h">3 heures avant</option>
+        <option value="1d">1 jour avant</option>
+        <option value="3d">3 jours avant</option>
+      </select>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-ghost btn-sm" id="btnShareTask" onclick="shareTask(editingTaskId)" style="margin-right:auto;display:none" title="Envoyer vers l'app Rappels iPhone">📲 Rappels</button>
       <button class="btn btn-ghost" onclick="closeModal('ovTask')">Annuler</button>
@@ -1141,6 +1161,24 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
         <span class="dark-toggle-label">🌙 Mode sombre</span>
         <label class="toggle-switch">
           <input type="checkbox" id="sDarkMode" onchange="toggleDarkMode(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="dark-toggle-wrap">
+        <span class="dark-toggle-label">🔔 Alertes sonores</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sAlertSound" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="dark-toggle-wrap">
+        <span class="dark-toggle-label">🔕 Notifications navigateur</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="sNotifications" onchange="toggleNotifPerm(this.checked)">
           <span class="toggle-slider"></span>
         </label>
       </div>
@@ -2060,31 +2098,71 @@ function renderTasksList() {
   const el = document.getElementById('tasksList');
   if (!el) return;
   const activeTasks = S.tasks.filter(t => ACTIVE_TASK_COLS.includes(t.column) && matchT(t));
-  if (!activeTasks.length) { el.innerHTML = `<div class="tl-empty">✨ Aucune tâche active</div>`; return; }
+  const doneTasks = S.tasks.filter(t => t.column === 'termine');
   const todayStr = today();
-  let html = '';
+
+  let html = `<div style="margin-bottom:14px;display:flex;gap:8px">
+    <input class="form-input" id="quickTaskInput" placeholder="+ Ajouter une tâche rapide… (Entrée pour valider)"
+      style="flex:1;padding:10px 14px;font-size:14px;border-radius:10px"
+      onkeydown="if(event.key==='Enter'){quickAddTask();event.preventDefault()}">
+    <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px">+</button>
+  </div>`;
+
+  if (!activeTasks.length && !doneTasks.length) {
+    el.innerHTML = html + '<div class="tl-empty">✨ Aucune tâche</div>';
+    return;
+  }
+
   PRIORITY_GROUPS.forEach(g => {
     const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
     if (!group.length) return;
-    html += `<div class="tl-group"><div class="tl-group-title">${g.label} <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">${group.length}</span></div>`;
+    html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
     group.forEach(t => {
       const overdue = t.due_date && t.due_date < todayStr;
       const isMatch = searchQ && matchT(t);
-      const hasTags = t.due_date || t.linked_vehicle_id;
-      html += `<div class="tl-row ${g.cls}${isMatch ? ' search-match' : ''}" onclick="openEditTask('${t.id}')">
-        <span class="tl-col-badge tl-col-${t.column}">${COL_LABEL[t.column]||t.column}</span>
-        <div class="tl-content">
-          <div class="tl-title">${t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : ''}${hl(t.title, searchQ)}</div>
-          ${t.description ? `<div class="tl-desc">${hl(t.description, searchQ)}</div>` : ''}
-          ${hasTags ? `<div class="tl-tags" style="margin-top:5px">
-            ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time?' · '+t.due_time:''}</span>` : ''}
-            ${t.linked_vehicle_id ? `<span class="tag tag-blue">🚗 Lié véh.</span>` : ''}
-          </div>` : ''}
-        </div>
-      </div>`;
+      const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+      const vBadges = vIds.map(vid => {
+        const v = S.vehicles.find(x=>x.id===vid);
+        return v ? '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : '';
+      }).filter(Boolean).join('');
+      const viewDays = t.last_viewed_at ? Math.floor((Date.now()-new Date(t.last_viewed_at).getTime())/86400000) : 999;
+      const viewWarn = viewDays >= 5 ? '<span class="tag tag-orange" title="Pas consultée depuis ' + viewDays + 'j">👁️ ' + viewDays + 'j</span>' : '';
+      const reminderBadge = t.reminder ? '<span class="tag" title="Rappel configuré">🔔</span>' : '';
+
+      html += '<div class="tl-row ' + g.cls + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center">'
+        + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
+        + '<div class="tl-content">'
+        + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
+        + (t.description ? '<div class="tl-desc">' + hl(t.description, searchQ) + '</div>' : '')
+        + '<div class="tl-tags" style="margin-top:5px">'
+        + (t.due_date ? '<span class="tag ' + (overdue?'tag-red':'') + '">' + (overdue?'⚠️ ':'') + fmtDs(t.due_date) + (t.due_time?' · '+t.due_time:'') + '</span>' : '')
+        + vBadges + viewWarn + reminderBadge
+        + '</div></div>'
+        + '<button class="btn btn-ghost btn-sm" onclick="completeTask(\'' + t.id + '\',event)" title="Shift+clic = terminé direct" style="flex-shrink:0;padding:6px 10px;font-size:16px;border-radius:8px">☐</button>'
+        + '</div>';
     });
     html += '</div>';
   });
+
+  if (doneTasks.length) {
+    html += '<div class="tl-group" style="margin-top:16px;opacity:0.7">'
+      + '<div class="tl-group-title" style="cursor:pointer" onclick="document.getElementById(\'archiveTasks\').style.display=document.getElementById(\'archiveTasks\').style.display===\'none\'?\'block\':\'none\'">'
+      + '✅ Terminées <span style="background:rgba(22,163,74,0.1);color:var(--urg-done);padding:1px 6px;border-radius:10px;font-size:10px">' + doneTasks.length + '</span>'
+      + ' <span style="font-size:10px;margin-left:4px">▶</span></div>'
+      + '<div id="archiveTasks" style="display:none">';
+    doneTasks.sort((a,b)=>(b.completed_at||b.created_at||'').localeCompare(a.completed_at||a.created_at||'')).forEach(t => {
+      const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+      const vBadges = vIds.map(vid => { const v = S.vehicles.find(x=>x.id===vid); return v ? '<span class="tag tag-blue">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : ''; }).filter(Boolean).join('');
+      html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6">'
+        + '<span class="tl-col-badge" style="background:rgba(22,163,74,0.1);color:var(--urg-done)">✅</span>'
+        + '<div class="tl-content"><div class="tl-title" style="text-decoration:line-through">' + esc(t.title) + '</div>'
+        + '<div class="tl-tags" style="margin-top:3px">'
+        + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
+        + vBadges + '</div></div></div>';
+    });
+    html += '</div></div>';
+  }
+
   el.innerHTML = html;
 }
 
@@ -2123,7 +2201,8 @@ function taskCard(t) {
     ${t.description ? `<div class="card-sub" style="margin-top:3px">${hl(t.description.slice(0,70), searchQ)}${t.description.length>70?'…':''}</div>` : ''}
     <div class="tags" style="margin-top:6px">
       ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time ? ' · ' + t.due_time : ''}</span>` : ''}
-      ${t.linked_vehicle_id ? `<span class="tag tag-blue">🚗 Lié véh.</span>` : ''}
+      ${(t.linked_vehicle_ids||[]).map(vid=>{const v=S.vehicles.find(x=>x.id===vid);return v?'<span class="tag tag-blue">🚗 '+esc(v.marque)+' '+esc(v.modele)+'</span>':''}).filter(Boolean).join('')}
+      ${!(t.linked_vehicle_ids||[]).length && t.linked_vehicle_id ? '<span class="tag tag-blue">🚗 Lié véh.</span>' : ''}
     </div>
   </div>`;
 }
@@ -2765,7 +2844,7 @@ function openDetail(id) {
   document.getElementById('dpane-1').innerHTML = histHtml;
 
   // ---- TAB 2: Tâches liées ----
-  const linkedTasks = S.tasks.filter(t=>t.linked_vehicle_id===v.id);
+  const linkedTasks = S.tasks.filter(t => (t.linked_vehicle_ids||[]).includes(v.id) || t.linked_vehicle_id===v.id);
   const tasksHtml = linkedTasks.length
     ? linkedTasks.map(t=>{
         const isDone = t.column === 'termine';
@@ -2887,10 +2966,14 @@ function openAddTask(col) {
   document.getElementById('btnShareTask').style.display = 'none';
   document.getElementById('tTitle').value = '';
   document.getElementById('tDesc').value = '';
-  document.getElementById('tDue').value = '';
+  document.getElementById('tDue').value = today();
   document.getElementById('tDueTime').value = '';
   document.getElementById('tCol').value = col || 'a_faire';
+  document.getElementById('tReminder').value = '';
   document.querySelectorAll('#tUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg==='3'));
+  const vFilter = document.getElementById('tVehicleFilter');
+  if (vFilter) vFilter.value = '';
+  populateTaskVehicles([]);
   openModal('ovTask');
 }
 
@@ -2898,6 +2981,7 @@ function openEditTask(id) {
   const t = S.tasks.find(x=>x.id===id);
   if (!t) return;
   editingTaskId = t.id;
+  trackTaskView(id);
   document.getElementById('taskModalTitle').textContent = 'Modifier tâche';
   document.getElementById('btnShareTask').style.display = 'inline-flex';
   document.getElementById('tTitle').value = t.title;
@@ -2905,24 +2989,35 @@ function openEditTask(id) {
   document.getElementById('tDue').value = t.due_date||'';
   document.getElementById('tDueTime').value = t.due_time||'';
   document.getElementById('tCol').value = t.column;
+  document.getElementById('tReminder').value = t.reminder||'';
   document.querySelectorAll('#tUrg .urg-opt').forEach(el=>el.classList.toggle('sel',el.dataset.urg===String(t.priority)));
+  const vFilter = document.getElementById('tVehicleFilter');
+  if (vFilter) vFilter.value = '';
+  populateTaskVehicles(t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []));
   openModal('ovTask');
 }
 
 function saveTask() {
   const title = document.getElementById('tTitle').value.trim();
   if (!title) { alert('Titre requis'); return; }
+  const selectedVIds = Array.from(document.querySelectorAll('#tVehicles input:checked')).map(el => el.value);
   const data = {
     title, description: document.getElementById('tDesc').value.trim(),
     priority: getUrg('tUrg'), due_date: document.getElementById('tDue').value,
     due_time: document.getElementById('tDueTime').value,
-    column: document.getElementById('tCol').value
+    column: document.getElementById('tCol').value,
+    reminder: document.getElementById('tReminder').value || null,
+    linked_vehicle_ids: selectedVIds,
+    linked_vehicle_id: selectedVIds[0] || null
   };
   if (editingTaskId) {
     const t = S.tasks.find(x=>x.id===editingTaskId);
-    if (t) Object.assign(t, data);
+    if (t) {
+      Object.assign(t, data);
+      if (data.column === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
+    }
   } else {
-    S.tasks.push({ id:uid(), created_at:today(), auto_generated:false, ...data });
+    S.tasks.push({ id:uid(), created_at:today(), auto_generated:false, last_viewed_at:new Date().toISOString(), ...data });
   }
   closeModal('ovTask'); render(); saveToGH();
 }
@@ -2931,6 +3026,139 @@ function deleteTask(id) {
   if (!confirm('Supprimer cette tâche ?')) return;
   S.tasks = S.tasks.filter(t=>t.id!==id);
   render(); saveToGH();
+}
+
+// ============================================================
+// TASK QUICK-COMPLETE
+// ============================================================
+function completeTask(id, e) {
+  e.stopPropagation();
+  const t = S.tasks.find(x=>x.id===id);
+  if (!t) return;
+  if (e.shiftKey) {
+    t.column = 'termine';
+    t.completed_at = new Date().toISOString();
+    showToast('✅ Tâche terminée');
+    render(); saveToGH();
+  } else {
+    if (confirm('Marquer cette tâche comme terminée ?')) {
+      t.column = 'termine';
+      t.completed_at = new Date().toISOString();
+      showToast('✅ Tâche terminée');
+      render(); saveToGH();
+    }
+  }
+}
+
+function quickAddTask() {
+  const input = document.getElementById('quickTaskInput');
+  if (!input) return;
+  const title = input.value.trim();
+  if (!title) { input.focus(); return; }
+  let priority = 3;
+  let cleanTitle = title;
+  if (title.includes('!1')) { priority = 1; cleanTitle = cleanTitle.replace('!1','').trim(); }
+  else if (title.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
+  S.tasks.push({
+    id: uid(), title: cleanTitle, description: '', priority,
+    due_date: today(), due_time: '', column: 'a_faire',
+    created_at: today(), auto_generated: false,
+    linked_vehicle_ids: [], linked_vehicle_id: null,
+    last_viewed_at: new Date().toISOString(), reminder: null
+  });
+  input.value = '';
+  render(); saveToGH();
+  showToast('✅ Tâche ajoutée');
+  setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
+}
+
+// ============================================================
+// TASK VEHICLE SELECTOR
+// ============================================================
+function populateTaskVehicles(selectedIds) {
+  const el = document.getElementById('tVehicles');
+  if (!el) return;
+  const filter = (document.getElementById('tVehicleFilter') || {}).value || '';
+  const filterLc = filter.toLowerCase();
+  const activeVehicles = S.vehicles.filter(v => v.column !== 'archive');
+  const filtered = filterLc ? activeVehicles.filter(v =>
+    (v.marque + ' ' + v.modele + ' ' + (v.annee||'') + ' ' + (v.fournisseur_nom||v.vendeur||'')).toLowerCase().includes(filterLc)
+  ) : activeVehicles;
+  el.innerHTML = filtered.length === 0
+    ? '<div style="color:var(--text-muted);font-size:12px;padding:4px 8px">Aucun véhicule trouvé</div>'
+    : filtered.map(v => {
+      const checked = (selectedIds || []).includes(v.id);
+      const price = v.prix_negocie || v.prix_demande;
+      return '<label style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;cursor:pointer;border:1px solid ' + (checked?'var(--accent)':'var(--border)') + ';background:' + (checked?'var(--accent-light)':'var(--surface-2)') + ';transition:all 0.12s">'
+        + '<input type="checkbox" value="' + v.id + '" ' + (checked?'checked':'') + ' style="width:16px;height:16px;accent-color:var(--accent)">'
+        + '<span style="font-size:13px;font-weight:600">' + esc(v.marque) + ' ' + esc(v.modele) + '</span>'
+        + '<span style="font-size:11px;color:var(--text-muted);margin-left:auto">' + (price ? fmtN(price) : '') + '</span>'
+        + '</label>';
+    }).join('');
+}
+
+function filterTaskVehicles() {
+  const selectedIds = Array.from(document.querySelectorAll('#tVehicles input:checked')).map(el => el.value);
+  populateTaskVehicles(selectedIds);
+}
+
+// ============================================================
+// TASK TRACKING & NOTIFICATIONS
+// ============================================================
+function trackTaskView(id) {
+  const t = S.tasks.find(x=>x.id===id);
+  if (t) { t.last_viewed_at = new Date().toISOString(); saveToGH(); }
+}
+
+function toggleNotifPerm(enabled) {
+  if (enabled && 'Notification' in window && Notification.permission !== 'granted') {
+    Notification.requestPermission();
+  }
+}
+
+function checkReminders() {
+  if (!S.settings.notifications) return;
+  const now = Date.now();
+  S.tasks.forEach(t => {
+    if (t.column === 'termine' || !t.reminder || !t.due_date) return;
+    if (t._reminded) return;
+    const dueStr = t.due_date + 'T' + (t.due_time || '09:00');
+    const dueMs = new Date(dueStr).getTime();
+    if (isNaN(dueMs)) return;
+    let offsetMs = 0;
+    const r = t.reminder;
+    if (r === '10m') offsetMs = 10*60*1000;
+    else if (r === '30m') offsetMs = 30*60*1000;
+    else if (r === '1h') offsetMs = 60*60*1000;
+    else if (r === '3h') offsetMs = 3*60*60*1000;
+    else if (r === '1d') offsetMs = 24*60*60*1000;
+    else if (r === '3d') offsetMs = 3*24*60*60*1000;
+    const triggerAt = dueMs - offsetMs;
+    if (now >= triggerAt && now < dueMs + 60000) {
+      t._reminded = true;
+      fireReminder(t);
+    }
+  });
+}
+
+function fireReminder(t) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('⏰ Rappel Flease CRM', { body: t.title + (t.due_time ? ' — ' + t.due_time : '') });
+  }
+  if (S.settings.alert_sound !== false) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = 800; gain.gain.value = 0.3;
+      osc.start(); osc.stop(ctx.currentTime + 0.15);
+      setTimeout(() => { const o2 = ctx.createOscillator(); const g2 = ctx.createGain(); o2.connect(g2); g2.connect(ctx.destination); o2.frequency.value = 1000; g2.gain.value = 0.3; o2.start(); o2.stop(ctx.currentTime + 0.15); }, 200);
+    } catch(e) {}
+  }
+  const badge = document.getElementById('tasksBadge');
+  if (badge) { const c = parseInt(badge.textContent||'0')+1; badge.textContent = c; badge.style.display = ''; }
+  showToast('⏰ Rappel : ' + t.title);
 }
 
 // ============================================================
@@ -3404,6 +3632,8 @@ function openSettings() {
   document.getElementById('sReminder').value = S.settings.reminder_days||3;
   document.getElementById('sArchive').checked = S.settings.show_archive||false;
   document.getElementById('sDarkMode').checked = S.settings.dark_mode || localStorage.getItem('dark_mode')==='1' || false;
+  document.getElementById('sAlertSound').checked = S.settings.alert_sound !== false;
+  document.getElementById('sNotifications').checked = S.settings.notifications === true;
   openModal('ovSettings');
 }
 
@@ -3414,6 +3644,8 @@ function saveSettings() {
   S.settings.email = document.getElementById('sEmail').value.trim();
   S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
   S.settings.show_archive = document.getElementById('sArchive').checked;
+  S.settings.alert_sound = document.getElementById('sAlertSound').checked;
+  S.settings.notifications = document.getElementById('sNotifications').checked;
   // Clé Anthropic — stockée uniquement en localStorage, jamais envoyée à GitHub
   const ak = document.getElementById('sAnthropicKey').value.trim();
   if (ak) localStorage.setItem('anthropic_key', ak);
@@ -3664,6 +3896,17 @@ function startApp() {
   initTasksViewMode();
   renderSidebarBriefing();
   init();
+  // Migrate task fields
+  S.tasks.forEach(t => {
+    if (!t.linked_vehicle_ids) t.linked_vehicle_ids = t.linked_vehicle_id ? [t.linked_vehicle_id] : [];
+    if (!t.last_viewed_at) t.last_viewed_at = null;
+    if (!t.reminder) t.reminder = null;
+    if (t.column === 'termine' && !t.completed_at) t.completed_at = null;
+  });
+  setInterval(checkReminders, 30000);
+  if (S.settings.notifications && 'Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
 }
 // Fonctionne que le DOM soit déjà prêt ou non
 if (document.readyState === 'loading') {
