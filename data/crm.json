@@ -16,7 +16,7 @@
       "fournisseur_nom": "RENAULT DACIA BYmyCAR BAR-LE-DUC",
       "photo": "https://pictures.lacentrale.fr/classifieds/E118670156_STANDARD_0.jpg?format=webp&lastUpdated=1775026000&size=92x69&signature=bb5fdf14e3f0e366a0284ab1c8eb86d424c341ee61c6b156569bc03a",
       "titre": "RENAULT AUSTRAL E-TECH FULL HYBRID 200 GSR2 TECHNO ESPRIT ALPINE",
-      "column": "sourcing",
+      "column": "deal_perdu",
       "sub_stage": "negociation",
       "priority": 3,
       "documents": {
@@ -33,9 +33,15 @@
         {
           "date": "2026-04-01",
           "action": "Sourcing : a_contacter → negociation"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Deal perdu"
         }
       ],
-      "commentaires": []
+      "commentaires": [],
+      "deal_lost_reason": null,
+      "updated_at": "2026-04-07T09:29:39.716Z"
     },
     {
       "id": "87b82b92-8cf9-411c-8f6f-bc50db10da9b",
