@@ -131,8 +131,8 @@
       "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/bb/e7/f7/bbe7f7503593619b408365eee896a4419c2ddf65.jpg?rule=ad-large",
       "titre": "Renault Express VAN BLUE DCI 95 22 CONFORT",
       "description": "Renault Express VAN BLUE DCI 95 22 CONFORT camionnette, blanc, 5 cv, 5 portes, première mise en circulation le 26/03/2024, garantie 12 mois.\nboîte de vitesse : manuelle\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  - Bluetooth\n\nConduite :\n  - limiteur de vitesse\n  - régulateur de vitesse\n",
-      "column": "sourcing",
-      "sub_stage": "bc_signe",
+      "column": "a_payer",
+      "sub_stage": null,
       "priority": 3,
       "documents": {
         "carte_grise": false,
@@ -160,6 +160,10 @@
         {
           "date": "2026-04-07",
           "action": "Sourcing : negociation → BC Signé"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Passé en À Payer"
         }
       ],
       "commentaires": [
@@ -177,7 +181,7 @@
       "prix_negocie": "",
       "fournisseur_email": "",
       "commentaire": "31/03/2026 11:58 : En attente de son offre par email\n07/04/2026 10:57 : En attente de l'offre",
-      "updated_at": "2026-04-07T09:01:09.075Z"
+      "updated_at": "2026-04-07T09:40:53.969Z"
     },
     {
       "id": "2bd030c9-581a-44ca-a93a-4ba88130f7f7",
@@ -317,6 +321,17 @@
       "due_date": "2026-04-02",
       "due_time": "10:00",
       "column": "a_faire"
+    },
+    {
+      "id": "mnofilhtwbaz",
+      "column": "a_faire",
+      "title": "Demander les papiers — RENAULT Express Van",
+      "description": "Documents manquants : Carte Grise, Facture d'achat, Certificat de cession",
+      "priority": 1,
+      "due_date": "2026-04-07",
+      "linked_vehicle_id": "31ad8622-3d5a-43a9-b330-c64ffae01cd5",
+      "auto_generated": true,
+      "created_at": "2026-04-07"
     }
   ],
   "settings": {
