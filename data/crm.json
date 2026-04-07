@@ -180,19 +180,28 @@
         {
           "date": "2026-03-31",
           "action": "Sourcing : a_contacter → negociation"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Commentaire ajouté"
         }
       ],
       "commentaires": [
         {
           "ts": "31/03/2026 11:58",
           "text": "En attente de son offre par email"
+        },
+        {
+          "ts": "07/04/2026 10:57",
+          "text": "En attente de l'offre"
         }
       ],
       "vin": "",
       "immatriculation": "",
       "prix_negocie": "",
       "fournisseur_email": "",
-      "commentaire": "31/03/2026 11:58 : En attente de son offre par email"
+      "commentaire": "31/03/2026 11:58 : En attente de son offre par email\n07/04/2026 10:57 : En attente de l'offre",
+      "updated_at": "2026-04-07T08:57:14.794Z"
     },
     {
       "id": "2bd030c9-581a-44ca-a93a-4ba88130f7f7",
