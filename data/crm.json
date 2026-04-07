@@ -213,15 +213,24 @@
         {
           "date": "2026-04-01",
           "action": "Importé depuis LBC"
+        },
+        {
+          "date": "2026-04-07",
+          "action": "Commentaire ajouté"
         }
       ],
       "commentaires": [
         {
           "ts": "01/04/2026 17:33",
           "text": "Je dois les rappeler ils m'ont pas répondu URGENCE JOJO"
+        },
+        {
+          "ts": "07/04/2026 11:34",
+          "text": "Je les ai relancé, ils doivent devenir vers moi dans la journée"
         }
       ],
-      "commentaire": "01/04/2026 17:33 : Je dois les rappeler ils m'ont pas répondu URGENCE JOJO"
+      "commentaire": "01/04/2026 17:33 : Je dois les rappeler ils m'ont pas répondu URGENCE JOJO\n07/04/2026 11:34 : Je les ai relancé, ils doivent devenir vers moi dans la journée",
+      "updated_at": "2026-04-07T09:34:35.692Z"
     },
     {
       "id": "f0422bf1-ae9b-43a4-9ae0-431923a6425d",
