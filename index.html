@@ -2198,6 +2198,11 @@ function renderTasksList() {
   });
   const _descVisible = document.getElementById('quickTaskDescWrap');
   const _descWasVisible = _descVisible && _descVisible.style.display !== 'none';
+  // Sauvegarder l'état d'ouverture des sections collapsibles
+  const _watchOpen = document.getElementById('watchList');
+  const _watchWasOpen = _watchOpen && _watchOpen.style.display !== 'none';
+  const _archiveOpen = document.getElementById('archiveTasks');
+  const _archiveWasOpen = _archiveOpen && _archiveOpen.style.display !== 'none';
   const todoTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
   const watchingTasks = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
   const doneTasks = S.tasks.filter(t => t.column === 'termine');
@@ -2225,6 +2230,17 @@ function renderTasksList() {
     <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
   </div>`;
 
+  // Barre d'actions groupées si sélection
+  if (_selectedTasks.size > 0) {
+    html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;margin-bottom:10px;background:var(--accent-light);border:1px solid rgba(79,110,247,0.2);border-radius:10px">'
+      + '<span style="font-size:13px;font-weight:700;color:var(--accent)">' + _selectedTasks.size + ' sélectionnée' + (_selectedTasks.size>1?'s':'') + '</span>'
+      + '<button class="btn btn-primary btn-sm" onclick="bulkComplete()" style="margin-left:8px">✅ Terminer</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="bulkWatch()">👁️ Surveiller</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="bulkDelete()" style="color:var(--urg-1);border-color:rgba(232,41,74,0.2)">🗑️ Supprimer</button>'
+      + '<button class="btn btn-ghost btn-sm" onclick="clearTaskSel()" style="margin-left:auto">✕ Désélectionner</button>'
+      + '</div>';
+  }
+
   if (!todoTasks.length && !watchingTasks.length && !doneTasks.length) {
     el.innerHTML = html + '<div class="tl-empty">✨ Aucune tâche</div>';
     return;
@@ -2250,7 +2266,9 @@ function renderTasksList() {
       else if (wDays >= 1) watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
       else watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis aujourd\'hui</span>';
     }
+    const isSel = _selectedTasks.has(t.id);
     return '<div class="tl-row ' + (cls||'') + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center">'
+      + '<input type="checkbox" ' + (isSel?'checked ':'') + 'onclick="event.stopPropagation();toggleTaskSel(\'' + t.id + '\')" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">'
       + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
       + '<div class="tl-content">'
       + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
@@ -2326,6 +2344,9 @@ function renderTasksList() {
   });
   if (_descWasVisible) { const dw = document.getElementById('quickTaskDescWrap'); if (dw) dw.style.display = ''; }
   if (_savedInputs._focus) { const f = document.getElementById(_savedInputs._focus); if (f) f.focus(); }
+  // Restaurer l'état des sections collapsibles
+  if (_watchWasOpen) { const w = document.getElementById('watchList'); if (w) { w.style.display = 'block'; const arr = w.previousElementSibling?.querySelector('.tl-arrow'); if (arr) arr.classList.add('open'); } }
+  if (_archiveWasOpen) { const a = document.getElementById('archiveTasks'); if (a) { a.style.display = 'block'; const arr = a.previousElementSibling?.querySelector('.tl-arrow'); if (arr) arr.classList.add('open'); } }
 }
 
 // -------- TASKS BOARD --------
@@ -3237,6 +3258,51 @@ function completeTask(id, e) {
       render(); saveToGH();
     }
   }
+}
+
+// ============================================================
+// TASK MULTI-SELECT
+// ============================================================
+const _selectedTasks = new Set();
+
+function toggleTaskSel(id) {
+  if (_selectedTasks.has(id)) _selectedTasks.delete(id);
+  else _selectedTasks.add(id);
+  renderTasksList();
+}
+
+function clearTaskSel() {
+  _selectedTasks.clear();
+  renderTasksList();
+}
+
+function bulkComplete() {
+  if (!confirm('Terminer ' + _selectedTasks.size + ' tâche(s) ?')) return;
+  _selectedTasks.forEach(id => {
+    const t = S.tasks.find(x=>x.id===id);
+    if (t) { t.column = 'termine'; t.completed_at = new Date().toISOString(); }
+  });
+  showToast('✅ ' + _selectedTasks.size + ' tâche(s) terminée(s)');
+  _selectedTasks.clear();
+  render(); saveToGH();
+}
+
+function bulkWatch() {
+  _selectedTasks.forEach(id => {
+    const t = S.tasks.find(x=>x.id===id);
+    if (t) { t.column = 'en_attente'; if (!t.watching_since) t.watching_since = new Date().toISOString(); }
+  });
+  showToast('👁️ ' + _selectedTasks.size + ' tâche(s) en surveillance');
+  _selectedTasks.clear();
+  render(); saveToGH();
+}
+
+function bulkDelete() {
+  if (!confirm('Supprimer définitivement ' + _selectedTasks.size + ' tâche(s) ?')) return;
+  S.tasks = S.tasks.filter(t => !_selectedTasks.has(t.id));
+  showToast('🗑️ ' + _selectedTasks.size + ' tâche(s) supprimée(s)');
+  _selectedTasks.clear();
+  render(); saveToGH();
 }
 
 let _quickPriority = 3;
