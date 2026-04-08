@@ -580,11 +580,12 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 
   /* Sidebar resize handle disabled on mobile */
   .sidebar-resize-handle { display: none; }
-  #searchBar { left: 0 !important; }
+  #searchResults { left: 4px !important; right: 4px !important; }
 }
 
-/* SEARCH BAR */
-#searchBar { transition: all 0.15s ease; }
+/* SEARCH */
+#searchResults::-webkit-scrollbar { width: 4px; }
+#searchResults::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 /* ============================================================
    VEHICLE DRAWER
@@ -743,8 +744,17 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <span class="nav-icon">📊</span><span class="nav-label">Dashboard</span>
     </div>
   </nav>
+  <div style="padding:8px 10px;position:relative">
+    <div style="display:flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:0 8px">
+      <span style="font-size:12px;color:var(--text-light)">🔍</span>
+      <input id="searchBoxInput" placeholder="Rechercher…" oninput="onSearchBox(this.value)" onfocus="onSearchBox(this.value)"
+        style="flex:1;border:none;background:none;padding:7px 0;font-size:12px;font-family:inherit;color:var(--text);outline:none" autocomplete="off">
+      <span id="searchCount" style="font-size:10px;color:var(--text-light);white-space:nowrap"></span>
+      <button onclick="closeSearch()" style="display:none;border:none;background:none;cursor:pointer;font-size:11px;color:var(--text-muted);padding:2px" id="searchClearBtn">✕</button>
+    </div>
+    <div id="searchResults" style="display:none;position:absolute;left:10px;right:10px;top:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);max-height:320px;overflow-y:auto;z-index:30;margin-top:4px"></div>
+  </div>
   <div class="sidebar-footer">
-    <button class="sidebar-footer-btn" onclick="openSearch()" title="Rechercher">🔍</button>
     <button class="sidebar-footer-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="sidebar-footer-btn" onclick="manualRefresh()" title="Rafraîchir">⟳</button>
     <span class="sync-badge" id="syncBadge" style="cursor:pointer;margin-left:auto" onclick="openSettings()">⏳ Config…</span>
@@ -908,15 +918,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   </div>
 </div>
 
-<!-- SEARCH BAR (inline, top of main) -->
-<div id="searchBar" style="display:none;padding:8px 24px;background:var(--surface);border-bottom:1px solid var(--border);position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:50">
-  <div style="display:flex;align-items:center;gap:8px;max-width:500px">
-    <span style="font-size:14px">🔍</span>
-    <input id="searchBoxInput" class="form-input" placeholder="Rechercher… (Esc pour fermer)" oninput="onSearchBox(this.value)" style="flex:1;padding:7px 12px;font-size:14px;border-radius:8px">
-    <span id="searchCount" style="font-size:11px;color:var(--text-muted);white-space:nowrap"></span>
-    <button class="btn btn-ghost btn-sm" onclick="closeSearch()" style="padding:4px 8px">✕</button>
-  </div>
-</div>
+<!-- Removed: old searchBar (now integrated in sidebar) -->
 
 <!-- VEHICLE DETAIL DRAWER -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -4370,36 +4372,82 @@ document.addEventListener('keydown', function(e) {
 });
 
 function openSearch() {
-  const bar = document.getElementById('searchBar');
-  bar.style.display = '';
   const input = document.getElementById('searchBoxInput');
-  input.value = searchQ || '';
-  input.focus();
-  input.select();
+  if (input) { input.focus(); input.select(); }
 }
 
 function closeSearch() {
-  document.getElementById('searchBar').style.display = 'none';
   searchQ = '';
-  document.getElementById('searchBoxInput').value = '';
+  const input = document.getElementById('searchBoxInput');
+  if (input) input.value = '';
+  const btn = document.getElementById('searchClearBtn');
+  if (btn) btn.style.display = 'none';
+  const res = document.getElementById('searchResults');
+  if (res) res.style.display = 'none';
   render();
 }
 
 let _searchTimer = null;
 function onSearchBox(val) {
-  searchQ = val.trim().toLowerCase();
+  searchQ = (val || '').trim().toLowerCase();
   clearTimeout(_searchTimer);
+  const btn = document.getElementById('searchClearBtn');
+  if (btn) btn.style.display = searchQ ? '' : 'none';
   _searchTimer = setTimeout(() => {
     render();
-    // Show match count
-    const cnt = document.getElementById('searchCount');
-    if (cnt && searchQ) {
-      const vMatch = S.vehicles.filter(v => matchV(v)).length;
-      const tMatch = S.tasks.filter(t => matchT(t)).length;
-      cnt.textContent = vMatch + ' véhicule' + (vMatch>1?'s':'') + ', ' + tMatch + ' tâche' + (tMatch>1?'s':'');
-    } else if (cnt) { cnt.textContent = ''; }
+    renderSearchResults();
   }, 200);
 }
+
+function renderSearchResults() {
+  const cnt = document.getElementById('searchCount');
+  const res = document.getElementById('searchResults');
+  if (!searchQ) {
+    if (cnt) cnt.textContent = '';
+    if (res) res.style.display = 'none';
+    return;
+  }
+  const vMatches = S.vehicles.filter(v => matchV(v));
+  const tMatches = S.tasks.filter(t => matchT(t));
+  if (cnt) cnt.textContent = vMatches.length + 'v · ' + tMatches.length + 't';
+  if (!res) return;
+  if (!vMatches.length && !tMatches.length) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="padding:12px;font-size:12px;color:var(--text-muted);text-align:center">Aucun résultat</div>';
+    return;
+  }
+  let html = '';
+  // Véhicules
+  vMatches.slice(0, 5).forEach(v => {
+    const price = v.prix_negocie || v.prix_demande;
+    html += '<div onclick="closeSearch();showView(\'achats\');setTimeout(()=>openDetail(\'' + v.id + '\'),100)" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border-2);transition:background 0.1s" onmouseover="this.style.background=\'var(--surface-2)\'" onmouseout="this.style.background=\'\'">'
+      + '<span style="font-size:14px">🚗</span>'
+      + '<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(v.marque) + ' ' + esc(v.modele) + '</div>'
+      + '<div style="font-size:10px;color:var(--text-muted)">' + [v.annee, v.carburant, price ? fmtN(price) : ''].filter(Boolean).join(' · ') + '</div></div>'
+      + '<span style="font-size:10px;color:var(--text-light)">Achats →</span></div>';
+  });
+  // Tâches
+  tMatches.slice(0, 5).forEach(t => {
+    html += '<div onclick="closeSearch();showView(\'taches\');setTimeout(()=>openEditTask(\'' + t.id + '\'),100)" style="display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border-2);transition:background 0.1s" onmouseover="this.style.background=\'var(--surface-2)\'" onmouseout="this.style.background=\'\'">'
+      + '<span style="font-size:14px">✅</span>'
+      + '<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(t.title) + '</div>'
+      + '<div style="font-size:10px;color:var(--text-muted)">' + (COL_LABEL[t.column] || t.column) + '</div></div>'
+      + '<span style="font-size:10px;color:var(--text-light)">Tâches →</span></div>';
+  });
+  if (vMatches.length > 5 || tMatches.length > 5) {
+    html += '<div style="padding:8px 12px;font-size:11px;color:var(--text-muted);text-align:center">' + (vMatches.length + tMatches.length) + ' résultats au total</div>';
+  }
+  res.innerHTML = html;
+  res.style.display = 'block';
+}
+
+// Fermer les résultats quand on clique ailleurs
+document.addEventListener('click', function(e) {
+  const res = document.getElementById('searchResults');
+  if (res && !e.target.closest('#searchResults') && e.target.id !== 'searchBoxInput') {
+    res.style.display = 'none';
+  }
+});
 
 // ============================================================
 // DRAWER EVENT DELEGATION
@@ -4409,7 +4457,9 @@ document.addEventListener('click', function(e) {
   const tab = e.target.closest('[data-dtab]');
   if (tab && tab.closest('#drawerTabs')) { switchDrawerTab(parseInt(tab.dataset.dtab)); return; }
 });
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeDrawer(); closeSearch(); } });
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeDrawer(); closeSearch(); }
+});
 
 </script>
 </body>
