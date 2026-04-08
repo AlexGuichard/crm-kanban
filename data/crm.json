@@ -502,7 +502,7 @@
       "id": "mnq26sdbd1ta",
       "title": "Paiement e-kangoo / golf allemande",
       "description": "Planifier avec KSK le rapatriement à lundi au plus tard",
-      "priority": 3,
+      "priority": 1,
       "due_date": "2026-04-08",
       "due_time": "",
       "column": "a_faire",
@@ -511,7 +511,8 @@
       "linked_vehicle_ids": [],
       "linked_vehicle_id": null,
       "last_viewed_at": "2026-04-08T13:03:24.016Z",
-      "reminder": null
+      "reminder": null,
+      "watching_since": null
     }
   ],
   "settings": {
