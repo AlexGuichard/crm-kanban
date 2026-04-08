@@ -2273,12 +2273,14 @@ function renderTasksList() {
       doneTasks.sort((a,b)=>(b.completed_at||b.created_at||'').localeCompare(a.completed_at||a.created_at||'')).forEach(t => {
         const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
         const vBadges = vIds.map(vid => { const v = S.vehicles.find(x=>x.id===vid); return v ? '<span class="tag tag-blue">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : ''; }).filter(Boolean).join('');
-        html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6">'
+        html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6;align-items:center">'
           + '<span class="tl-col-badge" style="background:rgba(22,163,74,0.1);color:var(--urg-done)">✅</span>'
           + '<div class="tl-content"><div class="tl-title" style="text-decoration:line-through">' + esc(t.title) + '</div>'
           + '<div class="tl-tags" style="margin-top:3px">'
           + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
-          + vBadges + '</div></div></div>';
+          + vBadges + '</div></div>'
+          + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();deleteTask(\'' + t.id + '\')" title="Supprimer" style="flex-shrink:0;padding:4px 8px;font-size:13px;color:var(--urg-1);border-color:transparent">🗑️</button>'
+          + '</div>';
       });
     } else {
       html += '<div style="padding:8px 12px;font-size:12px;color:var(--text-muted);font-style:italic">Aucune tâche terminée</div>';
