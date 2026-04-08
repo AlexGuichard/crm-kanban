@@ -811,20 +811,20 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <div class="tasks-layout-main">
       <div class="tasks-board" id="tasksBoard"></div>
       <div class="tasks-list" id="tasksList" style="display:none"></div>
-      <!-- Résumé du jour + Notes -->
-      <div id="tasksSidePanels" style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
-        <div style="flex:1;min-width:280px;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
-          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📊 Résumé du jour</div>
-          <div id="daySummary" style="display:flex;flex-direction:column;gap:6px;font-size:13px"></div>
-        </div>
-        <div style="flex:1;min-width:280px;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
-          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📝 Notes rapides</div>
-          <textarea id="scratchpad" placeholder="Prise de notes en call, numéros, prix…"
-            oninput="saveScratchpad()"
-            style="width:100%;min-height:120px;border:1px solid var(--border-2);border-radius:8px;padding:10px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface-2);resize:vertical;outline:none;line-height:1.5"
-          ></textarea>
-          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:right">Sauvegarde automatique</div>
-        </div>
+    </div>
+    <!-- Résumé du jour + Notes (colonne du milieu) -->
+    <div id="tasksSidePanels" style="width:260px;min-width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;overflow-y:auto;padding-top:4px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📊 Résumé du jour</div>
+        <div id="daySummary" style="display:flex;flex-direction:column;gap:6px;font-size:13px"></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;flex:1;display:flex;flex-direction:column">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📝 Notes rapides</div>
+        <textarea id="scratchpad" placeholder="Prise de notes en call, numéros, prix…"
+          oninput="saveScratchpad()"
+          style="width:100%;flex:1;min-height:100px;border:1px solid var(--border-2);border-radius:8px;padding:10px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface-2);resize:none;outline:none;line-height:1.5"
+        ></textarea>
+        <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:right">Auto-save</div>
       </div>
     </div>
     <div class="briefing-panel-sidebar" id="sidebarBriefing"><div class="sidebar-resize-handle" onmousedown="startSidebarResize(event)"></div></div>
