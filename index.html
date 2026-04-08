@@ -302,7 +302,7 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .tasks-list { display: flex; flex-direction: column; gap: 0; min-height: calc(100vh - 160px); }
 .tl-group { margin-bottom: 16px; }
 .tl-group-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); padding: 0 4px 7px; display: flex; align-items: center; gap: 6px; }
-.tl-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 8px; margin-bottom: 5px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; }
+.tl-row { display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 8px; margin-bottom: 4px; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; }
 .tl-row:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
 .tl-row.urg-1 { border-left-color: var(--urg-1); }
 .tl-row.urg-2 { border-left-color: var(--urg-2); }
@@ -314,9 +314,11 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .tl-col-en_attente{ background: rgba(8,145,178,0.1); color: #0891b2; }
 .tl-content { flex: 1; min-width: 0; }
 .tl-title { font-size: 13px; font-weight: 700; line-height: 1.4; }
-.tl-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-.tl-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.4; }
+.tl-tags { display: flex; gap: 3px; flex-wrap: wrap; align-items: center; margin-top: 3px; }
+.tl-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 500px; }
 .tl-empty { text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px 0; }
+.tl-arrow { transform: rotate(-90deg); }
+.tl-arrow.open { transform: rotate(0deg); }
 
 /* BRIEFING PANEL */
 .briefing-panel-sidebar { width: 280px; min-width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; position: relative; }
@@ -2241,32 +2243,46 @@ function renderTasksList() {
     html += '</div>';
   });
 
-  // Watching section
-  if (watchingTasks.length) {
+  // Watching section — toujours visible, collapsible
+  {
     const needsRelance = watchingTasks.filter(t => t.watching_since && Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000) >= 5).length;
-    html += '<div class="tl-group" style="border-left:3px solid #0891b2;border-radius:0"><div class="tl-group-title">👁️ À surveiller <span style="background:rgba(8,145,178,0.1);color:#0891b2;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingTasks.length + '</span>'
+    html += '<div class="tl-group" style="border-left:3px solid #0891b2;border-radius:0;margin-top:12px">'
+      + '<div class="tl-group-title" style="cursor:pointer" onclick="var el=document.getElementById(\'watchList\');el.style.display=el.style.display===\'none\'?\'block\':\'none\';this.querySelector(\'.tl-arrow\').classList.toggle(\'open\')">'
+      + '👁️ À surveiller <span style="background:rgba(8,145,178,0.1);color:#0891b2;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingTasks.length + '</span>'
       + (needsRelance ? ' <span style="background:rgba(232,41,74,0.08);color:var(--urg-1);padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700">' + needsRelance + ' à relancer</span>' : '')
-      + '</div>';
-    watchingTasks.forEach(t => { html += renderTaskRow(t, ''); });
-    html += '</div>';
+      + ' <span class="tl-arrow open" style="font-size:10px;margin-left:4px;display:inline-block;transition:transform 0.15s">▼</span>'
+      + '</div>'
+      + '<div id="watchList">';
+    if (watchingTasks.length) {
+      watchingTasks.forEach(t => { html += renderTaskRow(t, ''); });
+    } else {
+      html += '<div style="padding:8px 12px;font-size:12px;color:var(--text-muted);font-style:italic">Aucune tâche en surveillance</div>';
+    }
+    html += '</div></div>';
   }
 
-  if (doneTasks.length) {
-    html += '<div class="tl-group" style="margin-top:16px;opacity:0.7">'
-      + '<div class="tl-group-title" style="cursor:pointer" onclick="document.getElementById(\'archiveTasks\').style.display=document.getElementById(\'archiveTasks\').style.display===\'none\'?\'block\':\'none\'">'
+  // Terminées — collapsible, fermé par défaut
+  {
+    html += '<div class="tl-group" style="margin-top:8px;opacity:0.7">'
+      + '<div class="tl-group-title" style="cursor:pointer" onclick="var el=document.getElementById(\'archiveTasks\');el.style.display=el.style.display===\'none\'?\'block\':\'none\';this.querySelector(\'.tl-arrow\').classList.toggle(\'open\')">'
       + '✅ Terminées <span style="background:rgba(22,163,74,0.1);color:var(--urg-done);padding:1px 6px;border-radius:10px;font-size:10px">' + doneTasks.length + '</span>'
-      + ' <span style="font-size:10px;margin-left:4px">▶</span></div>'
+      + ' <span class="tl-arrow" style="font-size:10px;margin-left:4px;display:inline-block;transition:transform 0.15s">▼</span>'
+      + '</div>'
       + '<div id="archiveTasks" style="display:none">';
-    doneTasks.sort((a,b)=>(b.completed_at||b.created_at||'').localeCompare(a.completed_at||a.created_at||'')).forEach(t => {
-      const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
-      const vBadges = vIds.map(vid => { const v = S.vehicles.find(x=>x.id===vid); return v ? '<span class="tag tag-blue">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : ''; }).filter(Boolean).join('');
-      html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6">'
-        + '<span class="tl-col-badge" style="background:rgba(22,163,74,0.1);color:var(--urg-done)">✅</span>'
-        + '<div class="tl-content"><div class="tl-title" style="text-decoration:line-through">' + esc(t.title) + '</div>'
-        + '<div class="tl-tags" style="margin-top:3px">'
-        + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
-        + vBadges + '</div></div></div>';
-    });
+    if (doneTasks.length) {
+      doneTasks.sort((a,b)=>(b.completed_at||b.created_at||'').localeCompare(a.completed_at||a.created_at||'')).forEach(t => {
+        const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+        const vBadges = vIds.map(vid => { const v = S.vehicles.find(x=>x.id===vid); return v ? '<span class="tag tag-blue">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : ''; }).filter(Boolean).join('');
+        html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6">'
+          + '<span class="tl-col-badge" style="background:rgba(22,163,74,0.1);color:var(--urg-done)">✅</span>'
+          + '<div class="tl-content"><div class="tl-title" style="text-decoration:line-through">' + esc(t.title) + '</div>'
+          + '<div class="tl-tags" style="margin-top:3px">'
+          + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
+          + vBadges + '</div></div></div>';
+      });
+    } else {
+      html += '<div style="padding:8px 12px;font-size:12px;color:var(--text-muted);font-style:italic">Aucune tâche terminée</div>';
+    }
     html += '</div></div>';
   }
 
