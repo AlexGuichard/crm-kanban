@@ -497,6 +497,22 @@
       "last_viewed_at": "2026-04-08T13:04:16.415Z",
       "reminder": null,
       "watching_since": null
+    },
+    {
+      "id": "mnq0volikj3k",
+      "title": "Test",
+      "description": "",
+      "priority": 3,
+      "due_date": "2026-04-08",
+      "due_time": "",
+      "column": "termine",
+      "created_at": "2026-04-08",
+      "auto_generated": false,
+      "linked_vehicle_ids": [],
+      "linked_vehicle_id": null,
+      "last_viewed_at": "2026-04-08T13:19:34.266Z",
+      "reminder": null,
+      "completed_at": "2026-04-08T12:26:46.725Z"
     }
   ],
   "settings": {
