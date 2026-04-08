@@ -320,7 +320,8 @@
       "priority": 3,
       "due_date": "2026-03-17",
       "due_time": "",
-      "column": "a_faire"
+      "column": "termine",
+      "completed_at": "2026-04-08T08:02:31.497Z"
     },
     {
       "id": "mng4eypbkc9i",
