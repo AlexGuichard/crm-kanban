@@ -931,12 +931,12 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <!-- Onglets Manuel / LBC (visibles uniquement en mode "Nouveau") -->
     <div id="vTabs" style="display:flex;gap:6px;padding:0 16px 12px;border-bottom:1px solid var(--border);margin-bottom:12px">
       <button id="vTabManuel" class="btn btn-primary btn-sm" onclick="switchVTab('manuel')">✏️ Manuel</button>
-      <button id="vTabLBC" class="btn btn-ghost btn-sm" onclick="switchVTab('lbc')">🔗 Importer LBC</button>
+      <button id="vTabLBC" class="btn btn-ghost btn-sm" onclick="switchVTab('lbc')">🔗 Importer LBC / LaCentrale</button>
     </div>
 
     <!-- Section LBC (cachée par défaut) -->
     <div id="vLBCSection" style="display:none;padding:0 4px">
-      <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Colle une ou plusieurs URLs LeBonCoin, une par ligne.<br>La progression du scraping s'affichera dans une fenêtre dédiée.</p>
+      <p style="font-size:13px;color:var(--text-muted);margin:0 0 16px">Colle une ou plusieurs URLs <strong>LeBonCoin</strong> ou <strong>LaCentrale</strong>, une par ligne.<br>La progression du scraping s'affichera dans une fenêtre dédiée.</p>
       <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:4px">
         <button class="btn btn-ghost" onclick="closeModal('ovVehicle')">Annuler</button>
         <button class="btn btn-primary" onclick="closeModal('ovVehicle');openLBCModal()">🔗 Ouvrir l'import LBC →</button>
@@ -1304,7 +1304,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     </div>
     <div class="modal-body">
       <p style="font-size:13px;color:var(--text-muted);margin:0 0 10px">Colle une ou plusieurs URLs LeBonCoin (une par ligne). Les véhicules seront ajoutés automatiquement en <strong>Sourcing</strong>.</p>
-      <textarea id="lbcUrls" rows="4" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.leboncoin.fr/ad/voitures/..." style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical"></textarea>
+      <textarea id="lbcUrls" rows="4" placeholder="https://www.leboncoin.fr/ad/voitures/...&#10;https://www.lacentrale.fr/auto-occasion-annonce-...&#10;(LeBonCoin + LaCentrale acceptés)" style="width:100%;box-sizing:border-box;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);resize:vertical"></textarea>
 
       <!-- Barre de progression -->
       <div class="lbc-progress-wrap" id="lbcProgressWrap">
@@ -1355,7 +1355,7 @@ const COLUMNS = [
   { key:'sourcing', label:'📋 Sourcing' },
   { key:'a_payer', label:'💳 À Payer' },
   { key:'en_transport', label:'🚛 En Transport' },
-  { key:'livre', label:'✅ Livré' },
+  { key:'livre', label:'📋 Ajouter au dashboard' },
   { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
   { key:'archive', label:'🗄️ Archive' }
 ];
@@ -2017,9 +2017,9 @@ function vehicleCard(v) {
     sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', attente_retour:'⏳ Attente retour', negociation:'🤝 En négociation' },
     a_payer:'💳 Attente paiement', en_transport:'🚛 En transport', livre:'✅ Livré'
   };
+  // Next action: ne pas afficher si c'est du sourcing (déjà visible via le badge sous-étape)
   let nextAction = '';
-  if (v.column === 'sourcing') nextAction = NEXT_ACTIONS.sourcing[ssKey] || '';
-  else if (NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
+  if (v.column !== 'sourcing' && NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
   const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
 
   // === Docs warning ===
@@ -2038,16 +2038,18 @@ function vehicleCard(v) {
     }
   }
 
-  // === Dernière action historique ===
+  // === Dernière action historique (masquée si redondante avec le sous-stade) ===
   const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
-  const lastActionHtml = lastAct ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
+  const ssLabel = ssBadgeInfo ? ssBadgeInfo.label.toLowerCase() : '';
+  const lastActRedundant = lastAct && ssLabel && lastAct.toLowerCase().includes(ssLabel);
+  const lastActionHtml = lastAct && !lastActRedundant ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
 
   // === Bouton action rapide ===
   let actions = '';
   if (v.column === 'a_payer')
     actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
   else if (v.column === 'en_transport')
-    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
+    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">📋 Dashboard</button>`;
   else if (v.column === 'livre')
     actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
 
@@ -2900,7 +2902,7 @@ function openDetail(id) {
   if (v.column === 'a_payer')
     actionHtml += `<button class="btn btn-primary" onclick="openTransportModal('${v.id}');closeDrawer()">🚛 Mettre en transport</button>`;
   if (v.column === 'en_transport')
-    actionHtml += `<button class="btn btn-primary" onclick="confirmArrival('${v.id}');closeDrawer()">✅ Marquer livré</button>`;
+    actionHtml += `<button class="btn btn-primary" onclick="confirmArrival('${v.id}');closeDrawer()">📋 Ajouter au dashboard</button>`;
   if (v.column === 'livre')
     actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
   if (v.column !== 'deal_perdu' && v.column !== 'archive')
