@@ -580,17 +580,11 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 
   /* Sidebar resize handle disabled on mobile */
   .sidebar-resize-handle { display: none; }
+  #searchBar { left: 0 !important; }
 }
 
-/* SEARCH OVERLAY */
-.search-overlay { position:fixed;inset:0;z-index:500;background:rgba(26,31,94,0.25);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding-top:min(20vh,140px); }
-.search-overlay.open { display:flex; }
-.search-box { width:520px;max-width:92vw;background:var(--surface);border-radius:16px;border:1px solid var(--border);box-shadow:0 16px 48px rgba(26,31,94,0.18);overflow:hidden; }
-.search-box-input { width:100%;padding:16px 20px 16px 48px;border:none;background:none;font-size:16px;font-family:var(--font);color:var(--text);outline:none; }
-.search-box-input::placeholder { color:var(--text-light); }
-.search-box-icon { position:absolute;left:18px;top:18px;font-size:18px;pointer-events:none;color:var(--text-muted); }
-.search-box-hint { padding:10px 20px;font-size:11px;color:var(--text-light);border-top:1px solid var(--border-2);display:flex;gap:12px; }
-.search-box-hint kbd { background:var(--surface-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700; }
+/* SEARCH BAR */
+#searchBar { transition: all 0.15s ease; }
 
 /* ============================================================
    VEHICLE DRAWER
@@ -817,6 +811,21 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <div class="tasks-layout-main">
       <div class="tasks-board" id="tasksBoard"></div>
       <div class="tasks-list" id="tasksList" style="display:none"></div>
+      <!-- Résumé du jour + Notes -->
+      <div id="tasksSidePanels" style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📊 Résumé du jour</div>
+          <div id="daySummary" style="display:flex;flex-direction:column;gap:6px;font-size:13px"></div>
+        </div>
+        <div style="flex:1;min-width:280px;max-width:360px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:10px">📝 Notes rapides</div>
+          <textarea id="scratchpad" placeholder="Prise de notes en call, numéros, prix…"
+            oninput="saveScratchpad()"
+            style="width:100%;min-height:120px;border:1px solid var(--border-2);border-radius:8px;padding:10px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface-2);resize:vertical;outline:none;line-height:1.5"
+          ></textarea>
+          <div style="font-size:10px;color:var(--text-light);margin-top:4px;text-align:right">Sauvegarde automatique</div>
+        </div>
+      </div>
     </div>
     <div class="briefing-panel-sidebar" id="sidebarBriefing"><div class="sidebar-resize-handle" onmousedown="startSidebarResize(event)"></div></div>
   </div>
@@ -899,12 +908,13 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   </div>
 </div>
 
-<!-- SEARCH OVERLAY -->
-<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
-  <div class="search-box" style="position:relative">
-    <span class="search-box-icon">🔍</span>
-    <input class="search-box-input" id="searchBoxInput" placeholder="Rechercher véhicules, tâches…" oninput="onSearchBox(this.value)" autofocus>
-    <div class="search-box-hint"><span><kbd>Esc</kbd> fermer</span><span><kbd>⌘K</kbd> ouvrir</span></div>
+<!-- SEARCH BAR (inline, top of main) -->
+<div id="searchBar" style="display:none;padding:8px 24px;background:var(--surface);border-bottom:1px solid var(--border);position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:50">
+  <div style="display:flex;align-items:center;gap:8px;max-width:500px">
+    <span style="font-size:14px">🔍</span>
+    <input id="searchBoxInput" class="form-input" placeholder="Rechercher… (Esc pour fermer)" oninput="onSearchBox(this.value)" style="flex:1;padding:7px 12px;font-size:14px;border-radius:8px">
+    <span id="searchCount" style="font-size:11px;color:var(--text-muted);white-space:nowrap"></span>
+    <button class="btn btn-ghost btn-sm" onclick="closeSearch()" style="padding:4px 8px">✕</button>
   </div>
 </div>
 
@@ -1541,6 +1551,7 @@ async function loadFromGH() {
 }
 
 async function saveToGH() {
+  pushUndo();
   const repo = S.settings.github_repo;
   saveLocal(); // always local backup
   if (!repo || !S.settings.github_token) return;
@@ -1620,6 +1631,8 @@ function render() {
   renderTasksList();
   renderSidebarBriefing();
   renderBriefing();
+  renderDaySummary();
+  loadScratchpad();
 }
 
 // -------- BOARD --------
@@ -2116,10 +2129,8 @@ function vehicleCard(v) {
       <button class="card-icon-btn" onclick="event.stopPropagation();openVehicleReminder('${v.id}')" title="Rappel">🔔</button>
       <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
     </div>
-    <div class="card-header-row">
-      <div class="card-title">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
-      ${price ? `<span class="card-price-badge">${fmtN(price)}</span>` : ''}
-    </div>
+    <div class="card-title" style="padding-right:56px">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
+    ${price ? `<div style="margin:3px 0 2px"><span class="card-price-badge">${fmtN(price)}</span></div>` : ''}
     ${metaHtml}
     ${concHtml}
     <div class="card-bottom-row">
@@ -4157,6 +4168,81 @@ function onSidebarResizeEnd(e) {
 }
 
 // ============================================================
+// SCRATCHPAD
+// ============================================================
+let _scratchTimer = null;
+function saveScratchpad() {
+  clearTimeout(_scratchTimer);
+  _scratchTimer = setTimeout(() => {
+    S.settings.scratchpad = document.getElementById('scratchpad').value;
+    saveToGH();
+  }, 500);
+}
+
+function loadScratchpad() {
+  const el = document.getElementById('scratchpad');
+  if (el && S.settings.scratchpad) el.value = S.settings.scratchpad;
+}
+
+// ============================================================
+// DAY SUMMARY
+// ============================================================
+function renderDaySummary() {
+  const el = document.getElementById('daySummary');
+  if (!el) return;
+  const todayStr = today();
+  const todayTasks = S.tasks.filter(t => t.column !== 'termine' && t.due_date === todayStr);
+  const overdueTasks = S.tasks.filter(t => t.column !== 'termine' && t.due_date && t.due_date < todayStr);
+  const watchingTasks = S.tasks.filter(t => t.column === 'en_attente');
+  const needsRelance = watchingTasks.filter(t => t.watching_since && Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000) >= 5);
+  const vehicleReminders = S.vehicles.filter(v => v.reminder_at && new Date(v.reminder_at) <= new Date());
+  const staleVehicles = S.vehicles.filter(v => {
+    if (v.column === 'deal_perdu' || v.column === 'archive') return false;
+    const ref = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at);
+    return ref && Math.floor((Date.now()-new Date(ref).getTime())/86400000) >= (S.settings.reminder_days||3);
+  });
+
+  const rows = [];
+  if (todayTasks.length) rows.push({icon:'📋', text: todayTasks.length + ' tâche' + (todayTasks.length>1?'s':'') + " aujourd'hui", action: todayTasks.length === 1 ? "openEditTask('" + todayTasks[0].id + "')" : "showView('taches')", cls:''});
+  if (overdueTasks.length) rows.push({icon:'⚠️', text: overdueTasks.length + ' tâche' + (overdueTasks.length>1?'s':'') + ' en retard', action: overdueTasks.length === 1 ? "openEditTask('" + overdueTasks[0].id + "')" : "showView('taches')", cls:'color:var(--urg-1);font-weight:700'});
+  if (needsRelance.length) rows.push({icon:'🔄', text: needsRelance.length + ' tâche' + (needsRelance.length>1?'s':'') + ' à relancer', action: needsRelance.length === 1 ? "openEditTask('" + needsRelance[0].id + "')" : "showView('taches')", cls:'color:var(--urg-2)'});
+  if (vehicleReminders.length) rows.push({icon:'🔔', text: vehicleReminders.length + ' rappel' + (vehicleReminders.length>1?'s':'') + ' véhicule échu' + (vehicleReminders.length>1?'s':''), action: vehicleReminders.length === 1 ? "openDetail('" + vehicleReminders[0].id + "')" : "showView('achats')", cls:'color:var(--urg-1);font-weight:700'});
+  if (staleVehicles.length) rows.push({icon:'⏰', text: staleVehicles.length + ' véhicule' + (staleVehicles.length>1?'s':'') + ' à relancer', action: staleVehicles.length === 1 ? "openDetail('" + staleVehicles[0].id + "')" : "showView('achats')", cls:'color:var(--urg-2)'});
+  if (watchingTasks.length && !needsRelance.length) rows.push({icon:'👁️', text: watchingTasks.length + ' en surveillance', action: "showView('taches')", cls:''});
+
+  if (!rows.length) rows.push({icon:'✅', text: 'Rien de spécial — bonne journée !', action: '', cls:'color:var(--urg-done)'});
+
+  el.innerHTML = rows.map(r =>
+    '<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;cursor:' + (r.action?'pointer':'default') + ';transition:background 0.12s;' + r.cls + '"'
+    + (r.action ? ' onclick="' + r.action + '" onmouseover="this.style.background=\'var(--surface-2)\'" onmouseout="this.style.background=\'\'"' : '')
+    + '><span>' + r.icon + '</span><span>' + r.text + '</span>'
+    + (r.action ? '<span style="margin-left:auto;color:var(--text-light);font-size:11px">→</span>' : '')
+    + '</div>'
+  ).join('');
+}
+
+// ============================================================
+// UNDO SYSTEM (Cmd+Z)
+// ============================================================
+const _undoStack = [];
+const UNDO_MAX = 20;
+
+function pushUndo() {
+  _undoStack.push(JSON.stringify({ vehicles: S.vehicles, tasks: S.tasks, lots: S.lots }));
+  if (_undoStack.length > UNDO_MAX) _undoStack.shift();
+}
+
+function doUndo() {
+  if (!_undoStack.length) { showToast('Rien à annuler'); return; }
+  const snapshot = JSON.parse(_undoStack.pop());
+  S.vehicles = snapshot.vehicles;
+  S.tasks = snapshot.tasks;
+  S.lots = snapshot.lots;
+  render(); saveToGH();
+  showToast('↩️ Action annulée (' + _undoStack.length + ' restante' + (_undoStack.length>1?'s':'') + ')');
+}
+
+// ============================================================
 // ============================================================
 // VEHICLE REMINDERS
 // ============================================================
@@ -4243,24 +4329,44 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
     openSearch();
   }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'z' && !e.shiftKey) {
+    // Only undo if not typing in an input/textarea
+    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'SELECT')) return;
+    e.preventDefault();
+    doUndo();
+  }
 });
 
 function openSearch() {
-  document.getElementById('searchOverlay').classList.add('open');
+  const bar = document.getElementById('searchBar');
+  bar.style.display = '';
   const input = document.getElementById('searchBoxInput');
   input.value = searchQ || '';
   input.focus();
+  input.select();
 }
 
 function closeSearch() {
-  document.getElementById('searchOverlay').classList.remove('open');
+  document.getElementById('searchBar').style.display = 'none';
+  searchQ = '';
+  document.getElementById('searchBoxInput').value = '';
+  render();
 }
 
 let _searchTimer = null;
 function onSearchBox(val) {
   searchQ = val.trim().toLowerCase();
   clearTimeout(_searchTimer);
-  _searchTimer = setTimeout(() => render(), 200);
+  _searchTimer = setTimeout(() => {
+    render();
+    // Show match count
+    const cnt = document.getElementById('searchCount');
+    if (cnt && searchQ) {
+      const vMatch = S.vehicles.filter(v => matchV(v)).length;
+      const tMatch = S.tasks.filter(t => matchT(t)).length;
+      cnt.textContent = vMatch + ' véhicule' + (vMatch>1?'s':'') + ', ' + tMatch + ' tâche' + (tMatch>1?'s':'');
+    } else if (cnt) { cnt.textContent = ''; }
+  }, 200);
 }
 
 // ============================================================
