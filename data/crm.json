@@ -282,9 +282,20 @@
         {
           "date": "2026-04-08",
           "action": "Sourcing : a_contacter → attente_retour"
+        },
+        {
+          "date": "2026-04-08",
+          "action": "Commentaire ajouté"
         }
       ],
-      "updated_at": "2026-04-08T08:06:41.532Z"
+      "updated_at": "2026-04-08T08:07:28.116Z",
+      "commentaires": [
+        {
+          "ts": "08/04/2026 10:07",
+          "text": "Je viens de les appeler, j'ai laissé mes coordonnées ils doivent me rappeler. (Philippe doit me rappeler)"
+        }
+      ],
+      "commentaire": "08/04/2026 10:07 : Je viens de les appeler, j'ai laissé mes coordonnées ils doivent me rappeler. (Philippe doit me rappeler)"
     }
   ],
   "lots": [],
