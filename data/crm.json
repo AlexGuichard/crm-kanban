@@ -251,10 +251,10 @@
       "source": "LeBonCoin",
       "marque": "Peugeot",
       "modele": "208",
-      "annee": 2025,
+      "annee": "2025",
       "date_mec": "01/2025",
-      "km": 12658,
-      "prix_demande": 19990,
+      "km": "12658",
+      "prix_demande": "19990",
       "carburant": "Électrique",
       "boite": "Automatique",
       "couleur": "Gris",
@@ -267,7 +267,7 @@
       "description": "Peugeot 208 ELECTRIQUE 50 kWh 136ch - Style citadine, gris, 4 cv, 5 portes, première mise en circulation le 28/01/2025.\n\n5 places, longueur : 4,06 mètre(s), poids en charge : 1530 kg\n\nOPTIONS ET ÉQUIPEMENTS :\nAudio - Télécommunications :\n  -  Bluetooth\n  -  Mirror Screen sans fil (Apple CarPlay / An",
       "column": "sourcing",
       "sub_stage": "attente_retour",
-      "priority": 3,
+      "priority": 1,
       "documents": {
         "carte_grise": false,
         "facture_achat": false,
@@ -290,16 +290,24 @@
         {
           "date": "2026-04-08",
           "action": "km modifié"
+        },
+        {
+          "date": "2026-04-08",
+          "action": "Informations modifiées"
         }
       ],
-      "updated_at": "2026-04-08T08:25:16.391Z",
+      "updated_at": "2026-04-08T08:25:49.355Z",
       "commentaires": [
         {
           "ts": "08/04/2026 10:07",
           "text": "Je viens de les appeler, j'ai laissé mes coordonnées ils doivent me rappeler. (Philippe doit me rappeler)"
         }
       ],
-      "commentaire": "08/04/2026 10:07 : Je viens de les appeler, j'ai laissé mes coordonnées ils doivent me rappeler. (Philippe doit me rappeler)"
+      "commentaire": "08/04/2026 10:07 : Je viens de les appeler, j'ai laissé mes coordonnées ils doivent me rappeler. (Philippe doit me rappeler)",
+      "vin": "",
+      "immatriculation": "",
+      "prix_negocie": "",
+      "fournisseur_email": ""
     }
   ],
   "lots": [],
