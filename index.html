@@ -870,6 +870,33 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 </main><!-- /main -->
 </div><!-- /app -->
 
+<!-- VEHICLE REMINDER POPUP -->
+<div class="overlay" id="ovVehicleReminder" onclick="overlayClick(event,'ovVehicleReminder')">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-header">
+      <div class="modal-title">🔔 Rappel véhicule</div>
+      <button class="close-btn" onclick="closeModal('ovVehicleReminder')">×</button>
+    </div>
+    <div id="vReminderVehicleName" style="font-size:14px;font-weight:700;color:var(--primary);margin-bottom:12px"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="vReminderDate" type="date"></div>
+      <div class="form-group"><label class="form-label">Heure</label><input class="form-input" id="vReminderTime" type="time" value="09:00"></div>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="btn btn-ghost btn-sm" onclick="setQuickReminder(0,1)">Dans 1h</button>
+      <button class="btn btn-ghost btn-sm" onclick="setQuickReminder(0,3)">Dans 3h</button>
+      <button class="btn btn-ghost btn-sm" onclick="setQuickReminder(1,0)">Demain 9h</button>
+      <button class="btn btn-ghost btn-sm" onclick="setQuickReminder(3,0)">Dans 3 jours</button>
+      <button class="btn btn-ghost btn-sm" onclick="setQuickReminder(7,0)">Dans 1 sem.</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="clearVehicleReminder()" style="margin-right:auto;color:var(--urg-1)">🗑️ Supprimer</button>
+      <button class="btn btn-ghost" onclick="closeModal('ovVehicleReminder')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveVehicleReminder()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <!-- SEARCH OVERLAY -->
 <div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
   <div class="search-box" style="position:relative">
@@ -1353,9 +1380,9 @@ const SUB_STAGES = [
 ];
 const COLUMNS = [
   { key:'sourcing', label:'📋 Sourcing' },
-  { key:'a_payer', label:'💳 À Payer' },
+  { key:'a_payer', label:'📋 Ajouter au dashboard' },
   { key:'en_transport', label:'🚛 En Transport' },
-  { key:'livre', label:'📋 Ajouter au dashboard' },
+  { key:'livre', label:'✅ Livré' },
   { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
   { key:'archive', label:'🗄️ Archive' }
 ];
@@ -1621,7 +1648,7 @@ function sortList(field) {
 function renderBoardList() {
   const el = document.getElementById('board-list');
   if (!el) return;
-  const COL_LABEL = { sourcing:'Sourcing', a_payer:'À Payer', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
+  const COL_LABEL = { sourcing:'Sourcing', a_payer:'Dashboard', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
   const COL_COLOR = { sourcing:'61,85,240', a_payer:'232,122,0', en_transport:'124,58,237', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
 
   let vehicles = S.vehicles.filter(v => {
@@ -2055,18 +2082,36 @@ function vehicleCard(v) {
   const lastActRedundant = lastAct && ssLabel && lastAct.toLowerCase().includes(ssLabel);
   const lastActionHtml = lastAct && !lastActRedundant ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
 
+  // === Rappel véhicule ===
+  let vReminderHtml = '';
+  if (v.reminder_at) {
+    const rDate = new Date(v.reminder_at);
+    const now = new Date();
+    const overdue = rDate <= now;
+    const rDay = String(rDate.getDate()).padStart(2,'0');
+    const rMo = String(rDate.getMonth()+1).padStart(2,'0');
+    const rH = String(rDate.getHours()).padStart(2,'0');
+    const rMi = String(rDate.getMinutes()).padStart(2,'0');
+    if (overdue) {
+      vReminderHtml = `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:700;color:var(--urg-1);background:rgba(232,41,74,0.08);padding:3px 7px;border-radius:5px">❗ Rappel échu ${rDay}/${rMo} ${rH}:${rMi}</div>`;
+    } else {
+      vReminderHtml = `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:5px">🔔 ${rDay}/${rMo} ${rH}:${rMi}</div>`;
+    }
+  }
+
   // === Bouton action rapide ===
   let actions = '';
   if (v.column === 'a_payer')
     actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
   else if (v.column === 'en_transport')
-    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">📋 Dashboard</button>`;
+    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
   else if (v.column === 'livre')
     actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
 
   return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
     style="border-left-color:${borderColor}">
     <div class="card-btn-group">
+      <button class="card-icon-btn" onclick="event.stopPropagation();openVehicleReminder('${v.id}')" title="Rappel">🔔</button>
       <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
     </div>
     <div class="card-header-row">
@@ -2079,7 +2124,7 @@ function vehicleCard(v) {
       <div>${ssBadgeHtml}${nextActionHtml}</div>
       ${freshnessHtml}
     </div>
-    ${remindHtml}${docWarn}
+    ${remindHtml}${docWarn}${vReminderHtml}
     ${lastActionHtml}
     ${actions ? `<div class="card-actions">${actions}</div>` : ''}
   </div>`;
@@ -2917,11 +2962,11 @@ function openDetail(id) {
   let actionHtml = `<div style="display:flex;flex-direction:column;gap:8px">
     <button class="btn btn-ghost" onclick="editVehicle();closeDrawer()">✏️ Modifier le véhicule</button>`;
   if (v.column === 'sourcing')
-    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">→ Passer en À Payer</button>`;
+    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">📋 Ajouter au dashboard</button>`;
   if (v.column === 'a_payer')
     actionHtml += `<button class="btn btn-primary" onclick="openTransportModal('${v.id}');closeDrawer()">🚛 Mettre en transport</button>`;
   if (v.column === 'en_transport')
-    actionHtml += `<button class="btn btn-primary" onclick="confirmArrival('${v.id}');closeDrawer()">📋 Ajouter au dashboard</button>`;
+    actionHtml += `<button class="btn btn-primary" onclick="confirmArrival('${v.id}');closeDrawer()">✅ Marquer livré</button>`;
   if (v.column === 'livre')
     actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
   if (v.column !== 'deal_perdu' && v.column !== 'archive')
@@ -4002,6 +4047,7 @@ function startApp() {
     if (t.column === 'termine' && !t.completed_at) t.completed_at = null;
   });
   setInterval(checkReminders, 30000);
+  setInterval(checkVehicleReminders, 30000);
   if (S.settings.notifications && 'Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
   }
@@ -4057,6 +4103,85 @@ function onSidebarResizeEnd(e) {
 }
 
 // ============================================================
+// ============================================================
+// VEHICLE REMINDERS
+// ============================================================
+let _vReminderId = null;
+
+function openVehicleReminder(id) {
+  const v = S.vehicles.find(x=>x.id===id);
+  if (!v) return;
+  _vReminderId = id;
+  document.getElementById('vReminderVehicleName').textContent = v.marque + ' ' + v.modele;
+  if (v.reminder_at) {
+    const d = new Date(v.reminder_at);
+    document.getElementById('vReminderDate').value = d.toISOString().slice(0,10);
+    document.getElementById('vReminderTime').value = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  } else {
+    const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+    document.getElementById('vReminderDate').value = tomorrow.toISOString().slice(0,10);
+    document.getElementById('vReminderTime').value = '09:00';
+  }
+  openModal('ovVehicleReminder');
+}
+
+function setQuickReminder(days, hours) {
+  const d = new Date();
+  if (days > 0) { d.setDate(d.getDate()+days); d.setHours(9,0,0,0); }
+  else { d.setHours(d.getHours()+hours); }
+  document.getElementById('vReminderDate').value = d.toISOString().slice(0,10);
+  document.getElementById('vReminderTime').value = String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
+function saveVehicleReminder() {
+  const v = S.vehicles.find(x=>x.id===_vReminderId);
+  if (!v) return;
+  const date = document.getElementById('vReminderDate').value;
+  const time = document.getElementById('vReminderTime').value || '09:00';
+  if (!date) { alert('Choisis une date'); return; }
+  v.reminder_at = date + 'T' + time + ':00';
+  addHist(v, 'Rappel programmé ' + date + ' ' + time);
+  closeModal('ovVehicleReminder');
+  renderBoard(); saveToGH();
+  showToast('🔔 Rappel programmé');
+}
+
+function clearVehicleReminder() {
+  const v = S.vehicles.find(x=>x.id===_vReminderId);
+  if (!v) return;
+  v.reminder_at = null;
+  closeModal('ovVehicleReminder');
+  renderBoard(); saveToGH();
+  showToast('Rappel supprimé');
+}
+
+function checkVehicleReminders() {
+  if (!S.settings.notifications) return;
+  const now = Date.now();
+  S.vehicles.forEach(v => {
+    if (!v.reminder_at || v._vReminded) return;
+    const rMs = new Date(v.reminder_at).getTime();
+    if (isNaN(rMs)) return;
+    if (now >= rMs && now < rMs + 120000) {
+      v._vReminded = true;
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('🔔 Rappel véhicule', { body: v.marque + ' ' + v.modele + ' — à traiter maintenant' });
+      }
+      if (S.settings.alert_sound !== false) {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator(); const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.frequency.value = 600; gain.gain.value = 0.3;
+          osc.start(); osc.stop(ctx.currentTime + 0.2);
+          setTimeout(()=>{const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=800;g.gain.value=0.3;o.start();o.stop(ctx.currentTime+0.2);},250);
+        } catch(e){}
+      }
+      showToast('🔔 Rappel : ' + v.marque + ' ' + v.modele);
+    }
+  });
+}
+
 // GLOBAL SEARCH (Cmd+K)
 // ============================================================
 document.addEventListener('keydown', function(e) {
