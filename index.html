@@ -1978,22 +1978,33 @@ function vehicleCard(v) {
   // === Fraîcheur ===
   let freshnessHtml = '';
   if (v.updated_at) {
-    // Précision à la minute si updated_at disponible
     const d = new Date(v.updated_at);
+    const now = new Date();
     const day = String(d.getDate()).padStart(2,'0');
     const mo = String(d.getMonth()+1).padStart(2,'0');
     const h = String(d.getHours()).padStart(2,'0');
     const mi = String(d.getMinutes()).padStart(2,'0');
-    const days = Math.floor((Date.now() - d.getTime()) / 86400000);
-    const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
-    const txt = days === 0 ? `${h}:${mi}` : days === 1 ? `Hier ${h}:${mi}` : `${day}/${mo}`;
+    // Comparaison par date calendaire (pas par durée)
+    const dDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const nDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const calDays = Math.round((nDate - dDate) / 86400000);
+    const cls = calDays === 0 ? ' fresh' : calDays >= 5 ? ' stale' : '';
+    let txt;
+    if (calDays === 0) txt = `${h}:${mi}`;
+    else if (calDays === 1) txt = `Hier ${h}:${mi}`;
+    else if (calDays < 7) txt = `il y a ${calDays}j`;
+    else txt = `${day}/${mo}`;
     freshnessHtml = `<span class="freshness-badge${cls}" title="${day}/${mo}/${d.getFullYear()} ${h}:${mi}">↻ ${txt}</span>`;
   } else {
     const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
     if (lastDate) {
-      const days = Math.floor((Date.now() - new Date(lastDate).getTime()) / 86400000);
-      const cls = days === 0 ? ' fresh' : days >= 5 ? ' stale' : '';
-      const txt = days === 0 ? "Aujourd'hui" : days === 1 ? 'Hier' : `il y a ${days}j`;
+      const d2 = new Date(lastDate);
+      const now2 = new Date();
+      const dDate2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+      const nDate2 = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
+      const calDays2 = Math.round((nDate2 - dDate2) / 86400000);
+      const cls = calDays2 === 0 ? ' fresh' : calDays2 >= 5 ? ' stale' : '';
+      const txt = calDays2 === 0 ? "Aujourd'hui" : calDays2 === 1 ? 'Hier' : `il y a ${calDays2}j`;
       freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
     }
   }
