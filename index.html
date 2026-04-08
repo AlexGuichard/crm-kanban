@@ -2308,7 +2308,7 @@ function renderTasksList() {
           + '<div class="tl-tags" style="margin-top:3px">'
           + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
           + vBadges + '</div></div>'
-          + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();deleteTask(\'' + t.id + '\')" title="Supprimer" style="flex-shrink:0;padding:4px 8px;font-size:13px;color:var(--urg-1);border-color:transparent">🗑️</button>'
+          + '<button onclick="event.stopPropagation();deleteTask(\'' + t.id + '\')" title="Supprimer définitivement" style="flex-shrink:0;width:32px;height:32px;border-radius:8px;border:1px solid rgba(232,41,74,0.2);background:rgba(232,41,74,0.06);color:var(--urg-1);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.12s" onmouseover="this.style.background=\'var(--urg-1)\';this.style.color=\'white\'" onmouseout="this.style.background=\'rgba(232,41,74,0.06)\';this.style.color=\'var(--urg-1)\'">🗑️</button>'
           + '</div>';
       });
     } else {
