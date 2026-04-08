@@ -351,8 +351,8 @@
     },
     {
       "id": "mnp7gro42i1x",
-      "title": "Appeler Activ et lui dire pour les véhicules HS (dans conv eliot)",
-      "description": "",
+      "title": "Appeler Activ",
+      "description": "et lui dire pour les véhicules HS (dans conv eliot)\net vérifier les 5008 s'ils ont bien le grand écran",
       "priority": 3,
       "due_date": "2026-04-07",
       "due_time": "",
