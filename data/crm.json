@@ -330,8 +330,9 @@
       "priority": 1,
       "due_date": "2026-04-02",
       "due_time": "10:00",
-      "column": "a_faire",
-      "last_viewed_at": "2026-04-08T08:00:53.427Z"
+      "column": "termine",
+      "last_viewed_at": "2026-04-08T08:00:53.427Z",
+      "completed_at": "2026-04-08T08:02:18.024Z"
     },
     {
       "id": "mnofiu6nrau8",
