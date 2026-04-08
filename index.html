@@ -2268,7 +2268,7 @@ function renderTasksList() {
     const group = todoTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
     if (!group.length) return;
     html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
-    group.forEach(t => { html += renderTaskRow(t, g.cls); });
+    group.sort((a,b) => ((a.due_date||'9999')+(a.due_time||'99:99')).localeCompare((b.due_date||'9999')+(b.due_time||'99:99'))).forEach(t => { html += renderTaskRow(t, g.cls); });
     html += '</div>';
   });
 
