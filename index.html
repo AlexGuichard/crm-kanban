@@ -2134,11 +2134,18 @@ function renderTasksList() {
   const doneTasks = S.tasks.filter(t => t.column === 'termine');
   const todayStr = today();
 
-  let html = `<div style="margin-bottom:14px;display:flex;gap:8px">
-    <input class="form-input" id="quickTaskInput" placeholder="+ Ajouter une tâche rapide… (Entrée pour valider)"
-      style="flex:1;padding:10px 14px;font-size:14px;border-radius:10px"
-      onkeydown="if(event.key==='Enter'){quickAddTask();event.preventDefault()}">
-    <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px">+</button>
+  let html = `<div style="margin-bottom:14px;display:flex;gap:8px;align-items:flex-end">
+    <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+      <input class="form-input" id="quickTaskInput" placeholder="Titre de la tâche…"
+        style="padding:10px 14px;font-size:14px;border-radius:10px 10px 0 0;border-bottom:none"
+        onkeydown="if(event.key==='Enter'){document.getElementById('quickTaskDesc').focus();event.preventDefault()}" onfocus="document.getElementById('quickTaskDescWrap').style.display=''">
+      <div id="quickTaskDescWrap" style="display:none">
+        <input class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)"
+          style="padding:8px 14px;font-size:12px;border-radius:0 0 10px 10px;border-top:1px dashed var(--border-2);color:var(--text-muted)"
+          onkeydown="if(event.key==='Enter'){quickAddTask();event.preventDefault()}">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
   </div>`;
 
   if (!activeTasks.length && !doneTasks.length) {
@@ -2813,34 +2820,35 @@ function openDetail(id) {
     </div>`;
   }
 
+  const _i = (field, val, opts) => inlineInput(v.id, field, val, opts);
   const infoGridHtml = `
     <div class="detail-grid">
-      <div class="detail-field"><label>Kilométrage</label><value>${(v.km||v.kilometrage) ? Number(v.km||v.kilometrage).toLocaleString('fr-FR')+' km' : '—'}</value></div>
-      <div class="detail-field"><label>Carburant</label><value>${v.carburant||'—'}</value></div>
-      <div class="detail-field"><label>Prix demandé</label><value>${fmtN(v.prix_demande||v.prix)}</value></div>
-      <div class="detail-field"><label>Boîte</label><value>${v.boite||'—'}</value></div>
-      <div class="detail-field"><label>Prix négocié</label><value style="color:var(--accent)">${fmtN(v.prix_negocie)}</value></div>
-      ${v.date_mec ? `<div class="detail-field"><label>Mise en circulation</label><value>${esc(v.date_mec)}</value></div>` : (v.annee ? `<div class="detail-field"><label>Millésime</label><value>${v.annee}</value></div>` : '')}
-      ${v.couleur ? `<div class="detail-field"><label>Couleur</label><value>${esc(v.couleur)}</value></div>` : ''}
-      ${v.localisation ? `<div class="detail-field"><label>Localisation</label><value>${esc(v.localisation)}</value></div>` : ''}
-      ${v.vin ? `<div class="detail-field"><label>VIN</label><value>${esc(v.vin)}</value></div>` : ''}
-      ${v.immatriculation ? `<div class="detail-field"><label>Immat.</label><value>${esc(v.immatriculation)}</value></div>` : ''}
+      <div class="detail-field"><label>Kilométrage</label>${_i('km', v.km||v.kilometrage||'', {type:'number',placeholder:'45000'})}</div>
+      <div class="detail-field"><label>Carburant</label>
+        <select onchange="saveInlineField('${v.id}','carburant',this.value)" style="border:none;background:transparent;font-size:14px;font-weight:700;color:var(--primary);width:100%;padding:0;font-family:inherit;outline:none;cursor:pointer">
+          ${['Essence','Diesel','Hybride','Électrique','GPL',''].map(c=>'<option'+(c===(v.carburant||'')?' selected':'')+'>'+c+'</option>').join('')}
+        </select>
+      </div>
+      <div class="detail-field"><label>Prix demandé</label>${_i('prix_demande', v.prix_demande||v.prix||'', {type:'number',placeholder:'15000'})}</div>
+      <div class="detail-field"><label>Boîte</label>
+        <select onchange="saveInlineField('${v.id}','boite',this.value)" style="border:none;background:transparent;font-size:14px;font-weight:700;color:var(--primary);width:100%;padding:0;font-family:inherit;outline:none;cursor:pointer">
+          ${['Automatique','Manuelle','Semi-auto',''].map(b=>'<option'+(b===(v.boite||'')?' selected':'')+'>'+b+'</option>').join('')}
+        </select>
+      </div>
+      <div class="detail-field"><label>Prix négocié</label>${_i('prix_negocie', v.prix_negocie||'', {type:'number',placeholder:'—',style:'color:var(--accent)'})}</div>
+      <div class="detail-field"><label>Millésime</label>${_i('annee', v.annee||'', {type:'number',placeholder:'2024'})}</div>
+      <div class="detail-field"><label>Couleur</label>${_i('couleur', v.couleur||'', {placeholder:'Gris'})}</div>
+      <div class="detail-field"><label>Localisation</label>${_i('localisation', v.localisation||'', {placeholder:'Ville'})}</div>
+      <div class="detail-field"><label>VIN</label>${_i('vin', v.vin||'', {placeholder:'VF1…'})}</div>
+      <div class="detail-field"><label>Immat.</label>${_i('immatriculation', v.immatriculation||'', {placeholder:'AB-123-CD'})}</div>
     </div>`;
 
   const fournisseurHtml = `
     <div class="drawer-section-title" style="margin-top:14px">🏢 Fournisseur</div>
     <div class="detail-grid">
-      <div class="detail-field"><label>Nom</label><value>${esc(v.fournisseur_nom||v.vendeur||'—')}</value></div>
-      <div class="detail-field"><label>Téléphone</label>
-        <input type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="06…"
-          onblur="saveInlineField('${v.id}','fournisseur_tel',this.value)"
-          style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--accent);font-family:inherit">
-      </div>
-      <div class="detail-field" style="grid-column:1/-1"><label>Email</label>
-        <input type="email" id="inlineEmail_${v.id}" value="${esc(v.fournisseur_email||'')}" placeholder="contact@…"
-          onblur="saveInlineField('${v.id}','fournisseur_email',this.value)"
-          style="border:none;border-bottom:1px solid var(--border);background:transparent;font-size:13px;font-weight:600;width:100%;padding:2px 0;color:var(--text);font-family:inherit">
-      </div>
+      <div class="detail-field"><label>Nom</label>${_i('fournisseur_nom', v.fournisseur_nom||v.vendeur||'', {placeholder:'Nom du fournisseur'})}</div>
+      <div class="detail-field"><label>Téléphone</label>${_i('fournisseur_tel', v.fournisseur_tel||'', {type:'tel',placeholder:'06…',style:'color:var(--accent)'})}</div>
+      <div class="detail-field" style="grid-column:1/-1"><label>Email</label>${_i('fournisseur_email', v.fournisseur_email||'', {type:'email',placeholder:'contact@…'})}</div>
       <div style="grid-column:1/-1;margin-top:6px">
         <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
       </div>
@@ -3106,21 +3114,24 @@ function completeTask(id, e) {
 
 function quickAddTask() {
   const input = document.getElementById('quickTaskInput');
+  const descInput = document.getElementById('quickTaskDesc');
   if (!input) return;
   const title = input.value.trim();
   if (!title) { input.focus(); return; }
+  const desc = descInput ? descInput.value.trim() : '';
   let priority = 3;
   let cleanTitle = title;
   if (title.includes('!1')) { priority = 1; cleanTitle = cleanTitle.replace('!1','').trim(); }
   else if (title.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
   S.tasks.push({
-    id: uid(), title: cleanTitle, description: '', priority,
+    id: uid(), title: cleanTitle, description: desc, priority,
     due_date: today(), due_time: '', column: 'a_faire',
     created_at: today(), auto_generated: false,
     linked_vehicle_ids: [], linked_vehicle_id: null,
     last_viewed_at: new Date().toISOString(), reminder: null
   });
   input.value = '';
+  if (descInput) descInput.value = '';
   render(); saveToGH();
   showToast('✅ Tâche ajoutée');
   setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
@@ -3439,8 +3450,26 @@ Flease`
 function saveInlineField(id, field, value) {
   const v = S.vehicles.find(x => x.id === id);
   if (!v || v[field] === value) return;
+  const old = v[field];
   v[field] = value;
+  if (field === 'km' || field === 'prix_demande' || field === 'prix_negocie' || field === 'annee') {
+    v[field] = value ? Number(value) || value : null;
+  }
+  addHist(v, `${field} modifié`);
+  renderBoard();
   saveToGH();
+}
+
+function inlineInput(vid, field, value, opts) {
+  opts = opts || {};
+  const type = opts.type || 'text';
+  const ph = opts.placeholder || '';
+  const style = opts.style || '';
+  const val = value != null && value !== '—' ? value : '';
+  return '<input type="'+type+'" value="'+esc(String(val))+'" placeholder="'+ph+'"'
+    + ' onblur="saveInlineField(\''+vid+'\',\''+field+'\',this.value)"'
+    + ' onkeydown="if(event.key===\'Enter\')this.blur()"'
+    + ' style="border:none;background:transparent;font-size:14px;font-weight:700;color:var(--primary);width:100%;padding:0;font-family:inherit;outline:none;'+style+'">';
 }
 
 // ---- COMMENTAIRES HORODATÉS ----
