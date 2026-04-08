@@ -2188,6 +2188,14 @@ const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'À surv
 function renderTasksList() {
   const el = document.getElementById('tasksList');
   if (!el) return;
+  // Sauvegarder les inputs en cours de saisie avant re-render
+  const _savedInputs = {};
+  ['quickTaskInput','quickTaskDesc','scratchpad'].forEach(id => {
+    const inp = document.getElementById(id);
+    if (inp) { _savedInputs[id] = inp.value; if (document.activeElement === inp) _savedInputs._focus = id; }
+  });
+  const _descVisible = document.getElementById('quickTaskDescWrap');
+  const _descWasVisible = _descVisible && _descVisible.style.display !== 'none';
   const todoTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
   const watchingTasks = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
   const doneTasks = S.tasks.filter(t => t.column === 'termine');
@@ -2300,6 +2308,14 @@ function renderTasksList() {
   }
 
   el.innerHTML = html;
+  // Restaurer les inputs après re-render
+  Object.keys(_savedInputs).forEach(id => {
+    if (id === '_focus') return;
+    const inp = document.getElementById(id);
+    if (inp && _savedInputs[id]) inp.value = _savedInputs[id];
+  });
+  if (_descWasVisible) { const dw = document.getElementById('quickTaskDescWrap'); if (dw) dw.style.display = ''; }
+  if (_savedInputs._focus) { const f = document.getElementById(_savedInputs._focus); if (f) f.focus(); }
 }
 
 // -------- TASKS BOARD --------
@@ -4181,7 +4197,8 @@ function saveScratchpad() {
 
 function loadScratchpad() {
   const el = document.getElementById('scratchpad');
-  if (el && S.settings.scratchpad) el.value = S.settings.scratchpad;
+  // Ne pas écraser si l'utilisateur est en train de taper
+  if (el && document.activeElement !== el && S.settings.scratchpad != null) el.value = S.settings.scratchpad;
 }
 
 // ============================================================
