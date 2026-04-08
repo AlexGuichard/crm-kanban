@@ -308,6 +308,43 @@
       "immatriculation": "",
       "prix_negocie": "",
       "fournisseur_email": ""
+    },
+    {
+      "id": "6264e439-28d4-4d4a-8a54-dc2256a749a4",
+      "url_annonce": "https://www.leboncoin.fr/ad/voitures/2970447820",
+      "source": "LeBonCoin",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "priority": 3,
+      "documents": {
+        "carte_grise": false,
+        "facture_achat": false,
+        "certificat_cession": false
+      },
+      "created_at": "2026-04-08T08:36:41",
+      "historique": [
+        {
+          "date": "2026-04-08",
+          "action": "Importé depuis LeBonCoin"
+        }
+      ],
+      "lbc_id": "2970447820",
+      "marque": "Peugeot",
+      "modele": "208",
+      "annee": 2024,
+      "date_mec": "02/2024",
+      "km": 8882,
+      "prix_demande": 21290,
+      "carburant": "Électrique",
+      "boite": "Automatique",
+      "couleur": "Gris",
+      "localisation": "Béziers (34)",
+      "fournisseur_nom": "Peugeot Béziers - Groupe GGS AUTO",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://img.leboncoin.fr/api/v1/lbcpb1/images/00/8a/ba/008abaecc766dececc73f3666e491ade54a2d36d.jpg?rule=ad-large",
+      "titre": "PEUGEOT 208 Electrique 50 kWh 136ch Allure",
+      "description": "PEUGEOT 208 Electrique 50 kWh 136ch Allure, berline, gris, 4 cv, 5 portes, première mise en circulation le 29/02/2024, garantie : 12 mois.\n\nPrix TTC : 21 290 €\nPrix HT : 17 741 €\nLa TVA est récupérable sur ce véhicule.\n\n5 places, couleur intérieur : Noir\n\nOPTIONS ET ÉQUIPEMENTS :\nExtérieur :\n  - Aid"
     }
   ],
   "lots": [],
