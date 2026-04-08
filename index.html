@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1d204e">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com file:; font-src https://fonts.gstatic.com; connect-src https://api.github.com https://api.anthropic.com http://localhost:9876 http://localhost:9878; img-src 'self' data: blob: file:; frame-ancestors 'none';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
 <title>Flease CRM</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -712,9 +715,60 @@ body.dark-mode .doc-badge { background: rgba(255,255,255,0.07); color: var(--tex
 .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
 body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6aff; }
 .toggle-switch input:checked + .toggle-slider:before { transform: translateX(18px); }
+
+/* LOCK SCREEN */
+.lock-screen {
+  position: fixed; inset: 0; z-index: 99999;
+  background: linear-gradient(135deg, #1a1f5e 0%, #2a3090 50%, #1a1f5e 100%);
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+}
+.lock-screen.hidden { display: none; }
+.lock-box {
+  background: rgba(255,255,255,0.07); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  padding: 40px 36px; width: 340px; text-align: center;
+}
+.lock-logo { font-size: 48px; margin-bottom: 8px; }
+.lock-title { font-size: 22px; font-weight: 800; color: white; letter-spacing: -0.3px; margin-bottom: 4px; }
+.lock-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+.lock-input {
+  width: 100%; padding: 12px 16px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06); color: white; font-size: 20px; font-family: inherit;
+  text-align: center; letter-spacing: 8px; outline: none; transition: border-color 0.2s;
+}
+.lock-input::placeholder { color: rgba(255,255,255,0.25); letter-spacing: 2px; font-size: 14px; }
+.lock-input:focus { border-color: rgba(79,110,247,0.6); }
+.lock-input.error { border-color: #e8294a; animation: lockShake 0.4s ease; }
+@keyframes lockShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
+.lock-btn {
+  width: 100%; padding: 12px; border-radius: 10px; border: none;
+  background: #4f6ef7; color: white; font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: inherit; margin-top: 14px; transition: all 0.15s;
+}
+.lock-btn:hover { background: #3d5ce0; transform: translateY(-1px); }
+.lock-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.lock-msg { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 14px; min-height: 18px; }
+.lock-msg.error { color: #f87171; }
+.lock-secure-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 20px; }
 </style>
 </head>
 <body>
+
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-logo">🔒</div>
+    <div class="lock-title">Flease CRM</div>
+    <div class="lock-sub" id="lockSub">Entrez votre code PIN pour accéder au CRM</div>
+    <input class="lock-input" id="lockPin" type="password" maxlength="20" placeholder="PIN" autocomplete="off" autofocus>
+    <div id="lockConfirmWrap" style="display:none;margin-top:10px">
+      <input class="lock-input" id="lockPinConfirm" type="password" maxlength="20" placeholder="Confirmez le PIN" autocomplete="off">
+    </div>
+    <button class="lock-btn" id="lockBtn" onclick="handleLockSubmit()">Déverrouiller</button>
+    <div class="lock-msg" id="lockMsg"></div>
+    <div class="lock-secure-badge">🛡️ Chiffrement AES-256-GCM</div>
+  </div>
+</div>
 
 <div class="app">
 
@@ -757,6 +811,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   <div class="sidebar-footer">
     <button class="sidebar-footer-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
     <button class="sidebar-footer-btn" onclick="manualRefresh()" title="Rafraîchir">⟳</button>
+    <button class="sidebar-footer-btn" onclick="lockApp()" title="Verrouiller">🔒</button>
     <span class="sync-badge" id="syncBadge" style="cursor:pointer;margin-left:auto" onclick="openSettings()">⏳ Config…</span>
   </div>
 </aside>
@@ -1384,6 +1439,207 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
 <script>
 // ============================================================
+// CRYPTO MODULE — AES-256-GCM via WebCrypto API
+// ============================================================
+const Vault = (() => {
+  const SALT_KEY = 'flease_vault_salt';
+  const CHECK_KEY = 'flease_vault_check';
+  const ITERATIONS = 600000; // OWASP 2023 recommendation for PBKDF2-SHA256
+  let _key = null; // CryptoKey in memory only — never persisted
+
+  function _getSalt() {
+    let b64 = localStorage.getItem(SALT_KEY);
+    if (b64) return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    localStorage.setItem(SALT_KEY, btoa(String.fromCharCode(...salt)));
+    return salt;
+  }
+
+  async function _deriveKey(pin) {
+    const enc = new TextEncoder().encode(pin);
+    const base = await crypto.subtle.importKey('raw', enc, 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: _getSalt(), iterations: ITERATIONS, hash: 'SHA-256' },
+      base,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  async function encrypt(plaintext) {
+    if (!_key) throw new Error('Vault locked');
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const data = new TextEncoder().encode(plaintext);
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, _key, data);
+    // Format: base64(iv + ciphertext)
+    const buf = new Uint8Array(iv.length + ct.byteLength);
+    buf.set(iv); buf.set(new Uint8Array(ct), iv.length);
+    return btoa(String.fromCharCode(...buf));
+  }
+
+  async function decrypt(b64) {
+    if (!_key) throw new Error('Vault locked');
+    const buf = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const iv = buf.slice(0, 12);
+    const ct = buf.slice(12);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, _key, ct);
+    return new TextDecoder().decode(pt);
+  }
+
+  function isSetup() { return !!localStorage.getItem(CHECK_KEY); }
+
+  async function setup(pin) {
+    _key = await _deriveKey(pin);
+    // Store an encrypted known string to verify PIN later
+    const check = await encrypt('FLEASE_OK');
+    localStorage.setItem(CHECK_KEY, check);
+  }
+
+  async function unlock(pin) {
+    _key = await _deriveKey(pin);
+    try {
+      const val = await decrypt(localStorage.getItem(CHECK_KEY));
+      if (val !== 'FLEASE_OK') { _key = null; return false; }
+      return true;
+    } catch(e) { _key = null; return false; }
+  }
+
+  function lock() { _key = null; }
+  function isUnlocked() { return !!_key; }
+
+  return { encrypt, decrypt, isSetup, setup, unlock, lock, isUnlocked };
+})();
+
+// ============================================================
+// LOCK SCREEN LOGIC
+// ============================================================
+async function handleLockSubmit() {
+  const pin = document.getElementById('lockPin').value;
+  const btn = document.getElementById('lockBtn');
+  const msg = document.getElementById('lockMsg');
+  const input = document.getElementById('lockPin');
+
+  if (!pin || pin.length < 4) {
+    msg.textContent = 'Le PIN doit contenir au moins 4 caractères';
+    msg.className = 'lock-msg error';
+    input.classList.add('error');
+    setTimeout(() => input.classList.remove('error'), 400);
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = '⏳ Déchiffrement…';
+
+  try {
+    if (!Vault.isSetup()) {
+      // First time: need confirmation
+      const confirmWrap = document.getElementById('lockConfirmWrap');
+      const confirmInput = document.getElementById('lockPinConfirm');
+      if (confirmWrap.style.display === 'none') {
+        confirmWrap.style.display = 'block';
+        confirmInput.focus();
+        msg.textContent = 'Confirmez votre PIN pour le configurer';
+        msg.className = 'lock-msg';
+        btn.disabled = false; btn.textContent = 'Configurer le PIN';
+        return;
+      }
+      if (pin !== confirmInput.value) {
+        msg.textContent = 'Les PINs ne correspondent pas';
+        msg.className = 'lock-msg error';
+        confirmInput.classList.add('error');
+        setTimeout(() => confirmInput.classList.remove('error'), 400);
+        btn.disabled = false; btn.textContent = 'Configurer le PIN';
+        return;
+      }
+      await Vault.setup(pin);
+      // Migrate existing cleartext data to encrypted
+      await migrateToEncrypted();
+      unlockApp();
+    } else {
+      const ok = await Vault.unlock(pin);
+      if (!ok) {
+        msg.textContent = 'PIN incorrect';
+        msg.className = 'lock-msg error';
+        input.classList.add('error');
+        setTimeout(() => input.classList.remove('error'), 400);
+        input.value = '';
+        input.focus();
+        btn.disabled = false; btn.textContent = 'Déverrouiller';
+        return;
+      }
+      unlockApp();
+    }
+  } catch(e) {
+    msg.textContent = 'Erreur: ' + e.message;
+    msg.className = 'lock-msg error';
+    btn.disabled = false; btn.textContent = 'Déverrouiller';
+  }
+}
+
+// Migrate existing cleartext localStorage to encrypted
+async function migrateToEncrypted() {
+  // Migrate gh_token
+  const ghToken = localStorage.getItem('gh_token');
+  if (ghToken && !ghToken.startsWith('ENC:')) {
+    localStorage.setItem('gh_token', 'ENC:' + await Vault.encrypt(ghToken));
+  }
+  // Migrate anthropic_key
+  const ak = localStorage.getItem('anthropic_key');
+  if (ak && !ak.startsWith('ENC:')) {
+    localStorage.setItem('anthropic_key', 'ENC:' + await Vault.encrypt(ak));
+  }
+  // Migrate CRM data
+  const crm = localStorage.getItem('flease_crm');
+  if (crm && !crm.startsWith('ENC:')) {
+    localStorage.setItem('flease_crm', 'ENC:' + await Vault.encrypt(crm));
+  }
+}
+
+function unlockApp() {
+  document.getElementById('lockScreen').classList.add('hidden');
+  startApp();
+}
+
+// Enter key support on lock screen
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !document.getElementById('lockScreen').classList.contains('hidden')) {
+    handleLockSubmit();
+  }
+});
+
+// Show lock screen on load
+(function() {
+  const ls = document.getElementById('lockScreen');
+  if (!ls) return;
+  if (!Vault.isSetup()) {
+    document.getElementById('lockSub').textContent = 'Créez un code PIN pour sécuriser vos données';
+    document.getElementById('lockBtn').textContent = 'Configurer le PIN';
+  }
+})();
+
+// ============================================================
+// ENCRYPTED STORAGE HELPERS
+// ============================================================
+async function secureGet(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  if (raw.startsWith('ENC:')) {
+    if (!Vault.isUnlocked()) return null;
+    try { return await Vault.decrypt(raw.slice(4)); } catch(e) { return null; }
+  }
+  return raw; // Legacy cleartext fallback
+}
+
+async function secureSet(key, value) {
+  if (!Vault.isUnlocked()) { localStorage.setItem(key, value); return; }
+  localStorage.setItem(key, 'ENC:' + await Vault.encrypt(value));
+}
+
+async function secureRemove(key) {
+  localStorage.removeItem(key);
+}
+
+// ============================================================
 // CONSTANTS
 // ============================================================
 const SUB_STAGES = [
@@ -1497,7 +1753,7 @@ function addHist(v, action) {
 const GH = 'https://api.github.com';
 
 function ghHeaders() {
-  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  const token = S.settings.github_token;
   return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
 }
 
@@ -1535,7 +1791,19 @@ async function loadFromGH() {
   try {
     ghSha = data.sha;
     const raw = atob(data.content.replace(/\n/g,''));
-    const content = fixObjMojibake(JSON.parse(decodeURIComponent(escape(raw))));
+    let jsonStr = decodeURIComponent(escape(raw));
+    // Detect encrypted payload
+    let parsed;
+    try { parsed = JSON.parse(jsonStr); } catch(e) { setSyncBadge('error'); return false; }
+    let content;
+    if (parsed.encrypted && parsed.data && Vault.isUnlocked()) {
+      const decrypted = await Vault.decrypt(parsed.data);
+      content = fixObjMojibake(JSON.parse(decrypted));
+    } else if (parsed.encrypted) {
+      setSyncBadge('error'); return false; // Vault locked, can't decrypt
+    } else {
+      content = fixObjMojibake(parsed);
+    }
     if (Array.isArray(content.vehicles)) S.vehicles = content.vehicles;
     if (Array.isArray(content.lots)) S.lots = content.lots;
     if (Array.isArray(content.tasks)) S.tasks = content.tasks;
@@ -1555,15 +1823,23 @@ async function loadFromGH() {
 async function saveToGH() {
   pushUndo();
   const repo = S.settings.github_repo;
-  saveLocal(); // always local backup
+  await saveLocal(); // always local backup
   if (!repo || !S.settings.github_token) return;
   setSyncBadge('loading');
   // Ne jamais stocker le token dans le fichier GitHub (secret scanning bloquerait le push)
   const safeSettings = Object.assign({}, S.settings);
   delete safeSettings.github_token;
   const payload = { vehicles: S.vehicles, lots: S.lots, tasks: S.tasks, settings: safeSettings };
-  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-  const body = { message: `CRM update ${today()}`, content: b64, ...(ghSha ? { sha: ghSha } : {}) };
+  const jsonStr = JSON.stringify(payload, null, 2);
+  // Chiffrer le payload avant envoi sur GitHub
+  let fileContent;
+  if (Vault.isUnlocked()) {
+    const encrypted = await Vault.encrypt(jsonStr);
+    fileContent = btoa(unescape(encodeURIComponent(JSON.stringify({ encrypted: true, data: encrypted }))));
+  } else {
+    fileContent = btoa(unescape(encodeURIComponent(jsonStr)));
+  }
+  const body = { message: `CRM update ${today()}`, content: fileContent, ...(ghSha ? { sha: ghSha } : {}) };
   const res = await ghPut(`/repos/${repo}/contents/data/crm.json`, body);
   if (res && res.content) { ghSha = res.content.sha; setSyncBadge('ok'); }
   else setSyncBadge('error');
@@ -1580,11 +1856,12 @@ async function loadBriefing() {
   } catch(e) {}
 }
 
-function saveLocal() {
-  localStorage.setItem('flease_crm', JSON.stringify({ vehicles:S.vehicles, lots:S.lots, tasks:S.tasks, settings:S.settings }));
+async function saveLocal() {
+  const json = JSON.stringify({ vehicles:S.vehicles, lots:S.lots, tasks:S.tasks, settings:S.settings });
+  await secureSet('flease_crm', json);
 }
-function loadLocal() {
-  const raw = localStorage.getItem('flease_crm');
+async function loadLocal() {
+  const raw = await secureGet('flease_crm');
   if (!raw) return;
   try {
     const d = JSON.parse(raw);
@@ -3504,7 +3781,7 @@ function handleImgFile(file) {
 }
 
 async function runImgImport() {
-  const key = localStorage.getItem('anthropic_key');
+  const key = await secureGet('anthropic_key');
   if (!key) {
     showToast('⚙️ Configure ta clé Anthropic dans Paramètres');
     return;
@@ -3871,7 +4148,7 @@ async function triggerLBCImport() {
     lbcShowResult(false, '❌ Aucune URL valide trouvée');
     return;
   }
-  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  const token = S.settings.github_token;
   if (!token) {
     lbcShowResult(false, '❌ Token GitHub manquant — configure dans ⚙️ Paramètres');
     return;
@@ -3922,11 +4199,12 @@ function toggleDarkMode(on) {
   S.settings.dark_mode = on;
 }
 
-function openSettings() {
-  document.getElementById('sToken').value = S.settings.github_token || localStorage.getItem('gh_token')||'';
+async function openSettings() {
+  document.getElementById('sToken').value = S.settings.github_token || '';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
   document.getElementById('sEmail').value = S.settings.email||'';
-  document.getElementById('sAnthropicKey').value = localStorage.getItem('anthropic_key')||'';
+  const ak = await secureGet('anthropic_key');
+  document.getElementById('sAnthropicKey').value = ak||'';
   document.getElementById('sReminder').value = S.settings.reminder_days||3;
   document.getElementById('sArchive').checked = S.settings.show_archive||false;
   document.getElementById('sDarkMode').checked = S.settings.dark_mode || localStorage.getItem('dark_mode')==='1' || false;
@@ -3935,19 +4213,19 @@ function openSettings() {
   openModal('ovSettings');
 }
 
-function saveSettings() {
+async function saveSettings() {
   const token = document.getElementById('sToken').value.trim();
-  if (token) { S.settings.github_token = token; localStorage.setItem('gh_token', token); }
+  if (token) { S.settings.github_token = token; await secureSet('gh_token', token); }
   S.settings.github_repo = document.getElementById('sRepo').value.trim();
   S.settings.email = document.getElementById('sEmail').value.trim();
   S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
   S.settings.show_archive = document.getElementById('sArchive').checked;
   S.settings.alert_sound = document.getElementById('sAlertSound').checked;
   S.settings.notifications = document.getElementById('sNotifications').checked;
-  // Clé Anthropic — stockée uniquement en localStorage, jamais envoyée à GitHub
+  // Clé Anthropic — stockée chiffrée en localStorage, jamais envoyée à GitHub
   const ak = document.getElementById('sAnthropicKey').value.trim();
-  if (ak) localStorage.setItem('anthropic_key', ak);
-  else localStorage.removeItem('anthropic_key');
+  if (ak) await secureSet('anthropic_key', ak);
+  else await secureRemove('anthropic_key');
   const dm = document.getElementById('sDarkMode').checked;
   S.settings.dark_mode = dm;
   localStorage.setItem('dark_mode', dm ? '1' : '0');
@@ -4154,6 +4432,26 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 function overlayClick(e, id) { if (e.target.id === id) closeModal(id); }
 
 // ============================================================
+// LOCK APP
+// ============================================================
+function lockApp() {
+  Vault.lock();
+  // Clear sensitive data from memory
+  S.settings.github_token = '';
+  S.vehicles = []; S.lots = []; S.tasks = [];
+  // Show lock screen
+  const ls = document.getElementById('lockScreen');
+  ls.classList.remove('hidden');
+  document.getElementById('lockPin').value = '';
+  document.getElementById('lockMsg').textContent = '';
+  document.getElementById('lockBtn').textContent = 'Déverrouiller';
+  document.getElementById('lockBtn').disabled = false;
+  document.getElementById('lockConfirmWrap').style.display = 'none';
+  document.getElementById('lockSub').textContent = 'Entrez votre code PIN pour accéder au CRM';
+  document.getElementById('lockPin').focus();
+}
+
+// ============================================================
 // INIT
 // ============================================================
 async function manualRefresh() {
@@ -4170,7 +4468,9 @@ async function manualRefresh() {
 }
 
 async function init() {
-  const token = S.settings.github_token || localStorage.getItem('gh_token');
+  // Load token from encrypted storage
+  const storedToken = await secureGet('gh_token');
+  const token = S.settings.github_token || storedToken;
   if (!token) {
     setSyncBadge('error');
     document.getElementById('syncBadge').title = 'Cliquez pour configurer GitHub';
@@ -4193,8 +4493,8 @@ async function init() {
   }, 5 * 60 * 1000);
 }
 
-function startApp() {
-  loadLocal();
+async function startApp() {
+  await loadLocal();
   // Apply dark mode immediately from localStorage
   const dm = S.settings.dark_mode || localStorage.getItem('dark_mode') === '1';
   if (dm) document.body.classList.add('dark-mode');
@@ -4216,12 +4516,8 @@ function startApp() {
     Notification.requestPermission();
   }
 }
-// Fonctionne que le DOM soit déjà prêt ou non
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', startApp);
-} else {
-  startApp();
-}
+// L'app démarre uniquement après déverrouillage PIN via unlockApp()
+// Ne PAS lancer startApp() automatiquement
 
 // ============================================================
 // SIDEBAR RESIZABLE
@@ -4302,12 +4598,14 @@ function renderDaySummary() {
     return ref && Math.floor((Date.now()-new Date(ref).getTime())/86400000) >= (S.settings.reminder_days||3);
   });
 
+  // escAttr: échapper les IDs pour injection-safe dans les attributs onclick
+  const escAttr = s => String(s).replace(/[&<>"'\\]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;",'\\':'&#92;'}[c]));
   const rows = [];
-  if (todayTasks.length) rows.push({icon:'📋', text: todayTasks.length + ' tâche' + (todayTasks.length>1?'s':'') + " aujourd'hui", action: todayTasks.length === 1 ? "openEditTask('" + todayTasks[0].id + "')" : "showView('taches')", cls:''});
-  if (overdueTasks.length) rows.push({icon:'⚠️', text: overdueTasks.length + ' tâche' + (overdueTasks.length>1?'s':'') + ' en retard', action: overdueTasks.length === 1 ? "openEditTask('" + overdueTasks[0].id + "')" : "showView('taches')", cls:'color:var(--urg-1);font-weight:700'});
-  if (needsRelance.length) rows.push({icon:'🔄', text: needsRelance.length + ' tâche' + (needsRelance.length>1?'s':'') + ' à relancer', action: needsRelance.length === 1 ? "openEditTask('" + needsRelance[0].id + "')" : "showView('taches')", cls:'color:var(--urg-2)'});
-  if (vehicleReminders.length) rows.push({icon:'🔔', text: vehicleReminders.length + ' rappel' + (vehicleReminders.length>1?'s':'') + ' véhicule échu' + (vehicleReminders.length>1?'s':''), action: vehicleReminders.length === 1 ? "openDetail('" + vehicleReminders[0].id + "')" : "showView('achats')", cls:'color:var(--urg-1);font-weight:700'});
-  if (staleVehicles.length) rows.push({icon:'⏰', text: staleVehicles.length + ' véhicule' + (staleVehicles.length>1?'s':'') + ' à relancer', action: staleVehicles.length === 1 ? "openDetail('" + staleVehicles[0].id + "')" : "showView('achats')", cls:'color:var(--urg-2)'});
+  if (todayTasks.length) rows.push({icon:'📋', text: todayTasks.length + ' tâche' + (todayTasks.length>1?'s':'') + " aujourd'hui", action: todayTasks.length === 1 ? "openEditTask('" + escAttr(todayTasks[0].id) + "')" : "showView('taches')", cls:''});
+  if (overdueTasks.length) rows.push({icon:'⚠️', text: overdueTasks.length + ' tâche' + (overdueTasks.length>1?'s':'') + ' en retard', action: overdueTasks.length === 1 ? "openEditTask('" + escAttr(overdueTasks[0].id) + "')" : "showView('taches')", cls:'color:var(--urg-1);font-weight:700'});
+  if (needsRelance.length) rows.push({icon:'🔄', text: needsRelance.length + ' tâche' + (needsRelance.length>1?'s':'') + ' à relancer', action: needsRelance.length === 1 ? "openEditTask('" + escAttr(needsRelance[0].id) + "')" : "showView('taches')", cls:'color:var(--urg-2)'});
+  if (vehicleReminders.length) rows.push({icon:'🔔', text: vehicleReminders.length + ' rappel' + (vehicleReminders.length>1?'s':'') + ' véhicule échu' + (vehicleReminders.length>1?'s':''), action: vehicleReminders.length === 1 ? "openDetail('" + escAttr(vehicleReminders[0].id) + "')" : "showView('achats')", cls:'color:var(--urg-1);font-weight:700'});
+  if (staleVehicles.length) rows.push({icon:'⏰', text: staleVehicles.length + ' véhicule' + (staleVehicles.length>1?'s':'') + ' à relancer', action: staleVehicles.length === 1 ? "openDetail('" + escAttr(staleVehicles[0].id) + "')" : "showView('achats')", cls:'color:var(--urg-2)'});
   if (watchingTasks.length && !needsRelance.length) rows.push({icon:'👁️', text: watchingTasks.length + ' en surveillance', action: "showView('taches')", cls:''});
 
   if (!rows.length) rows.push({icon:'✅', text: 'Rien de spécial — bonne journée !', action: '', cls:'color:var(--urg-done)'});
