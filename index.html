@@ -311,7 +311,7 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .tl-col-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
 .tl-col-a_faire   { background: rgba(29,32,78,0.07); color: var(--primary); }
 .tl-col-en_cours  { background: #fff7ed; color: #ea580c; }
-.tl-col-en_attente{ background: #fefce8; color: #b45309; }
+.tl-col-en_attente{ background: rgba(8,145,178,0.1); color: #0891b2; }
 .tl-content { flex: 1; min-width: 0; }
 .tl-title { font-size: 13px; font-weight: 700; line-height: 1.4; }
 .tl-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
@@ -1155,7 +1155,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <select class="form-select" id="tCol">
         <option value="a_faire">À faire</option>
         <option value="en_cours">En cours</option>
-        <option value="en_attente">En attente</option>
+        <option value="en_attente">À surveiller</option>
         <option value="termine">Terminé</option>
       </select>
     </div>
@@ -1389,7 +1389,7 @@ const COLUMNS = [
 const TASK_COLS = [
   { key:'a_faire', label:'📝 À faire' },
   { key:'en_cours', label:'⚡ En cours' },
-  { key:'en_attente', label:'⏳ En attente' },
+  { key:'en_attente', label:'👁️ À surveiller' },
   { key:'termine', label:'✅ Terminé' }
 ];
 const DOCS = [
@@ -2170,12 +2170,13 @@ const PRIORITY_GROUPS = [
   { prio: null, label: '⚪ Sans priorité', cls: '' },
 ];
 const ACTIVE_TASK_COLS = ['a_faire','en_cours','en_attente'];
-const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'En attente' };
+const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'À surveiller' };
 
 function renderTasksList() {
   const el = document.getElementById('tasksList');
   if (!el) return;
-  const activeTasks = S.tasks.filter(t => ACTIVE_TASK_COLS.includes(t.column) && matchT(t));
+  const todoTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
+  const watchingTasks = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
   const doneTasks = S.tasks.filter(t => t.column === 'termine');
   const todayStr = today();
 
@@ -2193,41 +2194,62 @@ function renderTasksList() {
     <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
   </div>`;
 
-  if (!activeTasks.length && !doneTasks.length) {
+  if (!todoTasks.length && !watchingTasks.length && !doneTasks.length) {
     el.innerHTML = html + '<div class="tl-empty">✨ Aucune tâche</div>';
     return;
   }
 
+  // Helper pour rendre une ligne de tâche
+  function renderTaskRow(t, cls) {
+    const overdue = t.due_date && t.due_date < todayStr;
+    const isMatch = searchQ && matchT(t);
+    const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+    const vBadges = vIds.map(vid => {
+      const v = S.vehicles.find(x=>x.id===vid);
+      return v ? '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : '';
+    }).filter(Boolean).join('');
+    const viewDays = t.last_viewed_at ? Math.floor((Date.now()-new Date(t.last_viewed_at).getTime())/86400000) : 999;
+    const viewWarn = viewDays >= 5 ? '<span class="tag tag-orange" title="Pas consultée depuis ' + viewDays + 'j">👁️ ' + viewDays + 'j</span>' : '';
+    const reminderBadge = t.reminder ? '<span class="tag" title="Rappel configuré">🔔</span>' : '';
+    // Watching badge
+    let watchBadge = '';
+    if (t.column === 'en_attente' && t.watching_since) {
+      const wDays = Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000);
+      if (wDays >= 5) watchBadge = '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
+      else if (wDays >= 1) watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
+      else watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis aujourd\'hui</span>';
+    }
+    return '<div class="tl-row ' + (cls||'') + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center">'
+      + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
+      + '<div class="tl-content">'
+      + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
+      + (t.description ? '<div class="tl-desc">' + hl(t.description, searchQ) + '</div>' : '')
+      + '<div class="tl-tags" style="margin-top:5px">'
+      + (t.due_date ? '<span class="tag ' + (overdue?'tag-red':'') + '">' + (overdue?'⚠️ ':'') + fmtDs(t.due_date) + (t.due_time?' · '+t.due_time:'') + '</span>' : '')
+      + vBadges + watchBadge + viewWarn + reminderBadge
+      + '</div></div>'
+      + '<button class="btn btn-ghost btn-sm" onclick="completeTask(\'' + t.id + '\',event)" title="Shift+clic = terminé direct" style="flex-shrink:0;padding:6px 10px;font-size:16px;border-radius:8px">☐</button>'
+      + '</div>';
+  }
+
+  // Active tasks by priority
   PRIORITY_GROUPS.forEach(g => {
-    const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
+    const group = todoTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
     if (!group.length) return;
     html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
-    group.forEach(t => {
-      const overdue = t.due_date && t.due_date < todayStr;
-      const isMatch = searchQ && matchT(t);
-      const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
-      const vBadges = vIds.map(vid => {
-        const v = S.vehicles.find(x=>x.id===vid);
-        return v ? '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : '';
-      }).filter(Boolean).join('');
-      const viewDays = t.last_viewed_at ? Math.floor((Date.now()-new Date(t.last_viewed_at).getTime())/86400000) : 999;
-      const viewWarn = viewDays >= 5 ? '<span class="tag tag-orange" title="Pas consultée depuis ' + viewDays + 'j">👁️ ' + viewDays + 'j</span>' : '';
-      const reminderBadge = t.reminder ? '<span class="tag" title="Rappel configuré">🔔</span>' : '';
-
-      html += '<div class="tl-row ' + g.cls + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center">'
-        + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
-        + '<div class="tl-content">'
-        + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
-        + (t.description ? '<div class="tl-desc">' + hl(t.description, searchQ) + '</div>' : '')
-        + '<div class="tl-tags" style="margin-top:5px">'
-        + (t.due_date ? '<span class="tag ' + (overdue?'tag-red':'') + '">' + (overdue?'⚠️ ':'') + fmtDs(t.due_date) + (t.due_time?' · '+t.due_time:'') + '</span>' : '')
-        + vBadges + viewWarn + reminderBadge
-        + '</div></div>'
-        + '<button class="btn btn-ghost btn-sm" onclick="completeTask(\'' + t.id + '\',event)" title="Shift+clic = terminé direct" style="flex-shrink:0;padding:6px 10px;font-size:16px;border-radius:8px">☐</button>'
-        + '</div>';
-    });
+    group.forEach(t => { html += renderTaskRow(t, g.cls); });
     html += '</div>';
   });
+
+  // Watching section
+  if (watchingTasks.length) {
+    const needsRelance = watchingTasks.filter(t => t.watching_since && Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000) >= 5).length;
+    html += '<div class="tl-group" style="border-left:3px solid #0891b2;border-radius:0"><div class="tl-group-title">👁️ À surveiller <span style="background:rgba(8,145,178,0.1);color:#0891b2;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingTasks.length + '</span>'
+      + (needsRelance ? ' <span style="background:rgba(232,41,74,0.08);color:var(--urg-1);padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700">' + needsRelance + ' à relancer</span>' : '')
+      + '</div>';
+    watchingTasks.forEach(t => { html += renderTaskRow(t, ''); });
+    html += '</div>';
+  }
 
   if (doneTasks.length) {
     html += '<div class="tl-group" style="margin-top:16px;opacity:0.7">'
@@ -3112,11 +3134,16 @@ function saveTask() {
   if (editingTaskId) {
     const t = S.tasks.find(x=>x.id===editingTaskId);
     if (t) {
+      const oldCol = t.column;
       Object.assign(t, data);
       if (data.column === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
+      if (data.column === 'en_attente' && oldCol !== 'en_attente') t.watching_since = new Date().toISOString();
+      if (data.column !== 'en_attente') t.watching_since = null;
     }
   } else {
-    S.tasks.push({ id:uid(), created_at:today(), auto_generated:false, last_viewed_at:new Date().toISOString(), ...data });
+    const newTask = { id:uid(), created_at:today(), auto_generated:false, last_viewed_at:new Date().toISOString(), ...data };
+    if (data.column === 'en_attente') newTask.watching_since = new Date().toISOString();
+    S.tasks.push(newTask);
   }
   closeModal('ovTask'); render(); saveToGH();
 }
@@ -3859,6 +3886,9 @@ function onDropTask(event, colKey) {
   const t = S.tasks.find(x=>x.id===tid);
   if (!t || t.column === colKey) return;
   t.column = colKey;
+  if (colKey === 'en_attente' && !t.watching_since) t.watching_since = new Date().toISOString();
+  if (colKey !== 'en_attente') t.watching_since = null;
+  if (colKey === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
   render(); saveToGH();
 }
 
@@ -3913,7 +3943,13 @@ function execMove(colKey) {
   closeModal('ovMoveSheet');
   if (_msType === 'task') {
     const t = S.tasks.find(x=>x.id===_msId);
-    if (t) { t.column = colKey; render(); saveToGH(); }
+    if (t) {
+      t.column = colKey;
+      if (colKey === 'en_attente' && !t.watching_since) t.watching_since = new Date().toISOString();
+      if (colKey !== 'en_attente') t.watching_since = null;
+      if (colKey === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
+      render(); saveToGH();
+    }
     return;
   }
   // Vehicle
