@@ -303,11 +303,17 @@ def extract_ld_json(html: str) -> dict:
 def parse_lacentrale(html: str, url: str) -> dict:
     """Parse une annonce LaCentrale depuis le HTML."""
 
-    if "captcha" in html.lower() or "robot" in html.lower():
-        raise ValueError("CAPTCHA détecté sur LaCentrale")
-
-    if len(html) < 2000:
+    if len(html) < 1000:
         raise ValueError(f"Page trop courte ({len(html)} car) — probablement bloquée")
+
+    # Strip Google Cache wrapper si présent
+    cache_strip = re.search(r'<div id="cache-body">(.*)', html, re.DOTALL)
+    if cache_strip:
+        html = cache_strip.group(1)
+        print("  [parse] Google Cache wrapper détecté et retiré", flush=True)
+
+    if "captcha" in html.lower() and "lacentrale" not in html.lower():
+        raise ValueError("CAPTCHA détecté sur LaCentrale")
 
     # ── Essai 1 : JSON-LD (schema.org) — le plus fiable ──
     ld = extract_ld_json(html)
@@ -354,16 +360,27 @@ def parse_lacentrale(html: str, url: str) -> dict:
 
     # ── Extraction depuis le HTML (fallback et complément) ──
 
-    # Titre de l'annonce
+    # Titre: essayer plusieurs patterns (h1, og:title, title tag)
     titre = extract_meta(html, r'<h1[^>]*>(.*?)</h1>')
     titre = re.sub(r'<[^>]+>', '', titre).strip()
+    if not titre:
+        titre = extract_meta(html, r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)')
+    if not titre:
+        titre = extract_meta(html, r'<title[^>]*>([^<]+)</title>')
+        # Nettoyer le suffixe LaCentrale
+        titre = re.sub(r'\s*[-–|].*[Ll]a\s*[Cc]entrale.*$', '', titre).strip()
 
     # Marque/modèle depuis le titre si manquant
     if not marque and titre:
         parts = titre.split()
         if len(parts) >= 2:
-            marque = marque or parts[0]
-            modele = modele or " ".join(parts[1:3])
+            marque = parts[0]
+            modele = " ".join(parts[1:3])
+    # Dernier recours: extraire depuis l'URL
+    if not marque:
+        url_parts = re.search(r'/([a-z]+)-occasion-annonce', url)
+        if url_parts:
+            marque = url_parts.group(1).capitalize()
 
     # Prix depuis le HTML
     if not prix:
