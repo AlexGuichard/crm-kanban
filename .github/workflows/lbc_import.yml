@@ -27,4 +27,6 @@ jobs:
           GITHUB_REPO:  ${{ github.repository }}
           LBC_URLS:     ${{ github.event.inputs.lbc_urls }}
           SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+          SCRAPINGBEE_KEY: ${{ secrets.SCRAPINGBEE_KEY }}
+          ZENROWS_KEY: ${{ secrets.ZENROWS_KEY }}
         run: python scripts/lbc_import.py

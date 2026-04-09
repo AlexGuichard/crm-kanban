@@ -22,15 +22,23 @@ GITHUB_TOKEN   = os.environ["GITHUB_TOKEN"]
 GITHUB_REPO    = os.environ.get("GITHUB_REPO", "AlexGuichard/crm-kanban")
 CRM_FILE       = "data/crm.json"
 SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
+SCRAPINGBEE_KEY = os.environ.get("SCRAPINGBEE_KEY", "")
+ZENROWS_KEY     = os.environ.get("ZENROWS_KEY", "")
 
 HEADERS_BROWSER = {
     "User-Agent": (
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     ),
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "fr-FR,fr;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate",
     "Cache-Control": "no-cache",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Upgrade-Insecure-Requests": "1",
 }
 
 
@@ -61,6 +69,17 @@ def make_vehicle_base(url: str, source: str) -> dict:
 
 # ── Fetch ───────────────────────────────────────────────────────────────────
 
+def _fetch_url(url: str, headers: dict = None, timeout: int = 30) -> str:
+    """Fetch générique avec gestion gzip."""
+    req = urllib.request.Request(url, headers=headers or HEADERS_BROWSER)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        raw = r.read()
+        enc = r.info().get("Content-Encoding", "")
+        if "gzip" in enc:
+            raw = gzip.decompress(raw)
+        return raw.decode("utf-8", errors="replace")
+
+
 def scraper_api_fetch(url: str, render: bool) -> str:
     """Appelle ScraperAPI avec ou sans rendu JS."""
     api_url = (
@@ -70,47 +89,103 @@ def scraper_api_fetch(url: str, render: bool) -> str:
         f"&country_code=fr"
         + ("&render=true" if render else "")
     )
-    req = urllib.request.Request(api_url, headers={"User-Agent": "python-scraperapi"})
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return r.read().decode("utf-8", errors="replace")
+    return _fetch_url(api_url, {"User-Agent": "python-scraperapi"}, timeout=90)
+
+
+def scrapingbee_fetch(url: str, render: bool) -> str:
+    """Appelle ScrapingBee comme fallback."""
+    params = urllib.parse.urlencode({
+        "api_key": SCRAPINGBEE_KEY,
+        "url": url,
+        "country_code": "fr",
+        "render_js": "true" if render else "false",
+    })
+    return _fetch_url(f"https://app.scrapingbee.com/api/v1/?{params}", timeout=90)
+
+
+def zenrows_fetch(url: str, render: bool) -> str:
+    """Appelle ZenRows comme fallback."""
+    params = urllib.parse.urlencode({
+        "apikey": ZENROWS_KEY,
+        "url": url,
+        "js_render": "true" if render else "false",
+        "premium_proxy": "true",
+    })
+    return _fetch_url(f"https://api.zenrows.com/v1/?{params}", timeout=90)
+
+
+def google_cache_fetch(url: str) -> str:
+    """Tente de récupérer la page via le cache Google."""
+    cache_url = f"https://webcache.googleusercontent.com/search?q=cache:{urllib.parse.quote(url, safe='')}"
+    return _fetch_url(cache_url, timeout=20)
+
+
+def _try_provider(name: str, fn, url: str, need_next_data: bool, render: bool) -> str | None:
+    """Essaye un provider et retourne le HTML ou None."""
+    label = f"{name}" + (" +JS" if render else "")
+    print(f"  [fetch] {label}...", flush=True)
+    try:
+        html = fn(url, render) if render is not None else fn(url)
+        if need_next_data and "__NEXT_DATA__" not in html:
+            print(f"  [fetch] ⚠ {label}: données manquantes ({len(html):,} car)", flush=True)
+            return None
+        if len(html) < 2000:
+            print(f"  [fetch] ⚠ {label}: page trop courte ({len(html):,} car)", flush=True)
+            return None
+        print(f"  [fetch] ✅ {label} ({len(html):,} car)", flush=True)
+        return html
+    except Exception as e:
+        print(f"  [fetch] ⚠ {label} échoué: {e}", flush=True)
+        return None
 
 
 def fetch_page(url: str, need_next_data: bool = False) -> str:
-    """Tente plusieurs méthodes pour obtenir la page."""
+    """Tente plusieurs providers en cascade pour obtenir la page."""
 
+    # ① ScraperAPI (principal)
     if SCRAPERAPI_KEY:
-        # ① ScraperAPI sans render — rapide (~5-8s)
-        print("  [fetch] ScraperAPI (fast)...", flush=True)
-        try:
-            html = scraper_api_fetch(url, render=False)
-            if not need_next_data or "__NEXT_DATA__" in html:
-                print(f"  [fetch] ✅ ScraperAPI fast ({len(html):,} car)", flush=True)
-                return html
-            print(f"  [fetch] ⚠ Sans render: données manquantes ({len(html):,} car)", flush=True)
-        except Exception as e:
-            print(f"  [fetch] ⚠ ScraperAPI fast échoué: {e}", flush=True)
+        html = _try_provider("ScraperAPI", scraper_api_fetch, url, need_next_data, render=False)
+        if html: return html
+        html = _try_provider("ScraperAPI", scraper_api_fetch, url, need_next_data, render=True)
+        if html: return html
 
-        # ② ScraperAPI avec render JS — plus lent (~25-40s)
-        print("  [fetch] ScraperAPI render=true (JS)...", flush=True)
-        try:
-            html = scraper_api_fetch(url, render=True)
-            if not need_next_data or "__NEXT_DATA__" in html:
-                print(f"  [fetch] ✅ ScraperAPI render ({len(html):,} car)", flush=True)
-                return html
-            print(f"  [fetch] ⚠ Render: données manquantes ({len(html):,} car)", flush=True)
-        except Exception as e:
-            print(f"  [fetch] ⚠ ScraperAPI render échoué: {e}", flush=True)
+    # ② ScrapingBee (fallback 1)
+    if SCRAPINGBEE_KEY:
+        html = _try_provider("ScrapingBee", scrapingbee_fetch, url, need_next_data, render=False)
+        if html: return html
+        html = _try_provider("ScrapingBee", scrapingbee_fetch, url, need_next_data, render=True)
+        if html: return html
 
-    # ③ Requête directe
+    # ③ ZenRows (fallback 2)
+    if ZENROWS_KEY:
+        html = _try_provider("ZenRows", zenrows_fetch, url, need_next_data, render=False)
+        if html: return html
+        html = _try_provider("ZenRows", zenrows_fetch, url, need_next_data, render=True)
+        if html: return html
+
+    # ④ Google Cache (gratuit, pas toujours dispo)
+    if not need_next_data:
+        print("  [fetch] Google Cache...", flush=True)
+        try:
+            html = google_cache_fetch(url)
+            if len(html) > 2000:
+                print(f"  [fetch] ✅ Google Cache ({len(html):,} car)", flush=True)
+                return html
+        except Exception as e:
+            print(f"  [fetch] ⚠ Google Cache échoué: {e}", flush=True)
+
+    # ⑤ Requête directe (dernier recours)
     print("  [fetch] Requête directe...", flush=True)
-    req = urllib.request.Request(url, headers=HEADERS_BROWSER)
-    with urllib.request.urlopen(req, timeout=20) as r:
-        raw = r.read()
-        if r.info().get("Content-Encoding") == "gzip":
-            raw = gzip.decompress(raw)
-        html = raw.decode("utf-8", errors="replace")
-    print(f"  [fetch] Direct ({len(html):,} car)", flush=True)
-    return html
+    try:
+        html = _fetch_url(url, timeout=20)
+        print(f"  [fetch] Direct ({len(html):,} car)", flush=True)
+        return html
+    except Exception as e:
+        raise RuntimeError(
+            f"Tous les providers ont échoué. "
+            f"Vérifie tes clés API (ScraperAPI/ScrapingBee/ZenRows) "
+            f"ou réessaie plus tard. Dernière erreur: {e}"
+        )
 
 
 # ── Parse LeBonCoin ────────────────────────────────────────────────────────
@@ -457,7 +532,13 @@ def main():
     print(f"📋 {len(urls)} URL(s) à traiter")
     for u in urls:
         print(f"   {detect_source(u)}: {u}")
-    print(f"🔑 ScraperAPI: {'configurée ✅' if SCRAPERAPI_KEY else 'absente ⚠'}")
+    providers = []
+    if SCRAPERAPI_KEY:  providers.append("ScraperAPI ✅")
+    if SCRAPINGBEE_KEY: providers.append("ScrapingBee ✅")
+    if ZENROWS_KEY:     providers.append("ZenRows ✅")
+    providers.append("Google Cache")
+    providers.append("Direct")
+    print(f"🔑 Providers: {' → '.join(providers)}")
 
     gh_file = gh_get(CRM_FILE)
     crm = json.loads(base64.b64decode(gh_file["content"]).decode("utf-8"))
