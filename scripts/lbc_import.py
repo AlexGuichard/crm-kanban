@@ -100,6 +100,8 @@ def scrapingbee_fetch(url: str, render: bool) -> str:
         "url": url,
         "country_code": "fr",
         "render_js": "true" if render else "false",
+        "premium_proxy": "true",
+        "block_ads": "true",
     })
     return _fetch_url(f"https://app.scrapingbee.com/api/v1/?{params}", timeout=90)
 
