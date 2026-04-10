@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 GITHUB_TOKEN   = os.environ["GITHUB_TOKEN"]
 GITHUB_REPO    = os.environ.get("GITHUB_REPO", "AlexGuichard/crm-kanban")
 CRM_FILE       = "data/crm.json"
+IMPORT_QUEUE   = "data/import_queue.json"
 SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "")
 SCRAPINGBEE_KEY = os.environ.get("SCRAPINGBEE_KEY", "")
 ZENROWS_KEY     = os.environ.get("ZENROWS_KEY", "")
@@ -557,10 +558,37 @@ def main():
     providers.append("Direct")
     print(f"🔑 Providers: {' → '.join(providers)}")
 
-    gh_file = gh_get(CRM_FILE)
-    crm = json.loads(base64.b64decode(gh_file["content"]).decode("utf-8"))
-    sha = gh_file["sha"]
-    existing_ids = {v.get("lbc_id") for v in crm.get("vehicles", []) if v.get("lbc_id")}
+    # Charger les IDs existants pour déduplication
+    # Le CRM peut être chiffré — on lit la queue précédente pour les IDs déjà importés
+    existing_ids = set()
+
+    # Essayer de lire crm.json pour déduplication (marche seulement si non chiffré)
+    try:
+        gh_file = gh_get(CRM_FILE)
+        raw = base64.b64decode(gh_file["content"]).decode("utf-8")
+        crm = json.loads(raw)
+        if not crm.get("encrypted"):
+            existing_ids = {v.get("lbc_id") for v in crm.get("vehicles", []) if v.get("lbc_id")}
+            print(f"  [dedup] {len(existing_ids)} véhicules existants (crm.json non chiffré)")
+        else:
+            print(f"  [dedup] crm.json chiffré — déduplication via queue uniquement")
+    except Exception:
+        pass
+
+    # Charger la queue d'import existante pour déduplication
+    queue_sha = None
+    queue_vehicles = []
+    try:
+        q_file = gh_get(IMPORT_QUEUE)
+        queue_sha = q_file["sha"]
+        queue_data = json.loads(base64.b64decode(q_file["content"]).decode("utf-8"))
+        queue_vehicles = queue_data.get("vehicles", [])
+        for v in queue_vehicles:
+            if v.get("lbc_id"):
+                existing_ids.add(v["lbc_id"])
+        print(f"  [dedup] {len(queue_vehicles)} véhicules dans la queue d'import")
+    except Exception:
+        print(f"  [dedup] Pas de queue existante — création")
 
     added, errors = [], []
 
@@ -574,7 +602,7 @@ def main():
             if v.get("lbc_id") and v["lbc_id"] in existing_ids:
                 print(f"  ⚠ Déjà présent (ID {v['lbc_id']}) — ignoré")
                 continue
-            crm.setdefault("vehicles", []).append(v)
+            queue_vehicles.append(v)
             if v.get("lbc_id"):
                 existing_ids.add(v["lbc_id"])
             label = f"{v['marque']} {v['modele']} {v.get('annee','?')} — {v['km']:,} km — {v.get('prix_demande','?')} €"
@@ -592,11 +620,33 @@ def main():
             print("\n".join(f"  • {e}" for e in errors))
         sys.exit(1 if errors else 0)
 
-    gh_put(CRM_FILE, json.dumps(crm, ensure_ascii=False, indent=2), sha,
-           f"Import: {len(added)} véhicule(s)")
-    print(f"\n✅ {len(added)} véhicule(s) ajouté(s):")
+    # Écrire dans import_queue.json (jamais dans crm.json chiffré)
+    queue_content = json.dumps(
+        {"vehicles": queue_vehicles, "updated_at": datetime.now(timezone.utc).isoformat()},
+        ensure_ascii=False, indent=2
+    )
+    if queue_sha:
+        gh_put(IMPORT_QUEUE, queue_content, queue_sha, f"Import: {len(added)} véhicule(s)")
+    else:
+        # Créer le fichier (pas de SHA)
+        body = json.dumps({
+            "message": f"Import: {len(added)} véhicule(s)",
+            "content": base64.b64encode(queue_content.encode("utf-8")).decode("ascii"),
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"https://api.github.com/repos/{GITHUB_REPO}/contents/{IMPORT_QUEUE}",
+            data=body, method="PUT",
+            headers={"Authorization": f"Bearer {GITHUB_TOKEN}",
+                     "Accept": "application/vnd.github+json",
+                     "Content-Type": "application/json"},
+        )
+        with urllib.request.urlopen(req, timeout=15):
+            pass
+
+    print(f"\n✅ {len(added)} véhicule(s) ajouté(s) à la queue d'import:")
     for label in added:
         print(f"  + {label}")
+    print(f"  → Le CRM fusionnera au prochain chargement")
     if errors:
         print(f"\n⚠ {len(errors)} erreur(s):")
         for e in errors:

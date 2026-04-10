@@ -1816,8 +1816,45 @@ async function loadFromGH() {
     }
     setSyncBadge('ok');
     applyColors();
+    // Fusionner la queue d'import (véhicules ajoutés par GitHub Actions)
+    await mergeImportQueue();
     return true;
   } catch(e) { setSyncBadge('error'); return false; }
+}
+
+async function mergeImportQueue() {
+  const repo = S.settings.github_repo;
+  if (!repo || !S.settings.github_token) return;
+  try {
+    const qData = await ghGet(`/repos/${repo}/contents/data/import_queue.json`);
+    if (!qData || !qData.content) return;
+    const raw = atob(qData.content.replace(/\n/g,''));
+    const queue = JSON.parse(decodeURIComponent(escape(raw)));
+    if (!queue.vehicles || !queue.vehicles.length) return;
+    // Déduplication par lbc_id et id
+    const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
+    const existingUids = new Set(S.vehicles.map(v => v.id));
+    let merged = 0;
+    for (const v of queue.vehicles) {
+      if (v.lbc_id && existingIds.has(v.lbc_id)) continue;
+      if (existingUids.has(v.id)) continue;
+      S.vehicles.push(v);
+      existingIds.add(v.lbc_id);
+      merged++;
+    }
+    if (merged > 0) {
+      showToast(`📥 ${merged} véhicule${merged>1?'s':''} importé${merged>1?'s':''} depuis LBC`);
+      render();
+      // Vider la queue après fusion
+      await ghPut(`/repos/${repo}/contents/data/import_queue.json`, {
+        message: 'Queue fusionnée',
+        content: btoa(unescape(encodeURIComponent(JSON.stringify({vehicles:[], updated_at: new Date().toISOString()})))),
+        sha: qData.sha
+      });
+      // Sauvegarder les données fusionnées
+      await saveToGH();
+    }
+  } catch(e) { /* Queue absente ou erreur — pas grave */ }
 }
 
 async function saveToGH() {
