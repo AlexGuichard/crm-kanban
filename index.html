@@ -4414,8 +4414,10 @@ async function saveSettings() {
 // ============================================================
 // LOT TASKS — expand/collapse + link vehicles
 // ============================================================
+const _lotLinkSelection = {}; // taskId → Set of vehicleIds to link
+
 function toggleLotExpand(taskId) {
-  if (_expandedLotTasks.has(taskId)) _expandedLotTasks.delete(taskId);
+  if (_expandedLotTasks.has(taskId)) { _expandedLotTasks.delete(taskId); delete _lotLinkSelection[taskId]; }
   else _expandedLotTasks.add(taskId);
   renderTasksList();
 }
@@ -4426,35 +4428,60 @@ function filterLotLink(input, taskId) {
   if (!el) return;
   const t = S.tasks.find(x=>x.id===taskId);
   const alreadyLinked = new Set(t ? (t.linked_vehicle_ids||[]) : []);
+  if (!_lotLinkSelection[taskId]) _lotLinkSelection[taskId] = new Set();
+  const sel = _lotLinkSelection[taskId];
   const matches = S.vehicles.filter(v => {
     if (alreadyLinked.has(v.id)) return false;
     if (!q) return true;
     return [v.marque,v.modele,v.fournisseur_nom,v.vin,v.immatriculation].some(s=>s&&s.toLowerCase().includes(q));
-  }).slice(0, 8);
+  }).slice(0, 12);
   if (!matches.length) {
     el.innerHTML = '<div style="font-size:11px;color:var(--text-muted);padding:4px 8px">' + (q ? 'Aucun véhicule trouvé' : '') + '</div>';
     return;
   }
-  el.innerHTML = matches.map(v =>
-    '<div class="lot-link-opt" onclick="event.stopPropagation();linkVehicleToTask(\'' + esc(taskId) + '\',\'' + esc(v.id) + '\')">'
-    + '<span style="width:8px;height:8px;border-radius:50%;background:' + ({sourcing:'#f59e0b',a_payer:'#4f6ef7',en_transport:'#7c3aed',livre:'#16a34a',deal_perdu:'#e8294a',archive:'#999'}[v.column]||'#999') + ';flex-shrink:0"></span>'
-    + '<span style="font-weight:600">' + esc(v.marque) + ' ' + esc(v.modele) + '</span>'
-    + '<span style="color:var(--text-muted)">' + (v.km ? v.km.toLocaleString('fr-FR') + ' km' : '') + '</span>'
-    + '<span style="color:var(--accent);font-weight:600">' + (v.prix_demande ? fmtN(v.prix_demande) : '') + '</span>'
-    + '<span style="margin-left:auto;color:var(--urg-done);font-size:13px">+</span>'
-    + '</div>'
-  ).join('');
+  const colColor = {sourcing:'#f59e0b',a_payer:'#4f6ef7',en_transport:'#7c3aed',livre:'#16a34a',deal_perdu:'#e8294a',archive:'#999'};
+  el.innerHTML = matches.map(v => {
+    const checked = sel.has(v.id);
+    return '<div class="lot-link-opt' + (checked ? ' selected' : '') + '" onclick="event.stopPropagation();toggleLotLinkSel(\'' + esc(taskId) + '\',\'' + esc(v.id) + '\')" style="' + (checked ? 'background:rgba(79,110,247,0.08);border:1px solid rgba(79,110,247,0.2)' : '') + '">'
+      + '<input type="checkbox" ' + (checked?'checked ':'') + 'onclick="event.stopPropagation();toggleLotLinkSel(\'' + esc(taskId) + '\',\'' + esc(v.id) + '\')" style="width:14px;height:14px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">'
+      + '<span style="width:8px;height:8px;border-radius:50%;background:' + (colColor[v.column]||'#999') + ';flex-shrink:0"></span>'
+      + '<span style="font-weight:600">' + esc(v.marque) + ' ' + esc(v.modele) + '</span>'
+      + '<span style="color:var(--text-muted)">' + (v.km ? v.km.toLocaleString('fr-FR') + ' km' : '') + '</span>'
+      + '<span style="color:var(--accent);font-weight:600">' + (v.prix_demande ? fmtN(v.prix_demande) : '') + '</span>'
+      + '</div>';
+  }).join('')
+  // Bouton de validation si sélection
+  + (sel.size > 0 ? '<div style="display:flex;justify-content:flex-end;padding:6px 4px 2px;gap:8px;align-items:center">'
+    + '<span style="font-size:11px;color:var(--text-muted)">' + sel.size + ' sélectionné' + (sel.size>1?'s':'') + '</span>'
+    + '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();confirmLotLink(\'' + esc(taskId) + '\')" style="font-size:11px;padding:4px 12px">🔗 Lier ' + sel.size + ' véhicule' + (sel.size>1?'s':'') + '</button>'
+    + '</div>' : '');
 }
 
-function linkVehicleToTask(taskId, vehicleId) {
+function toggleLotLinkSel(taskId, vehicleId) {
+  if (!_lotLinkSelection[taskId]) _lotLinkSelection[taskId] = new Set();
+  const sel = _lotLinkSelection[taskId];
+  if (sel.has(vehicleId)) sel.delete(vehicleId);
+  else sel.add(vehicleId);
+  // Re-render les résultats sans perdre la recherche
+  const input = document.querySelector('#lotLinkResults_' + taskId)?.parentElement?.querySelector('input');
+  if (input) filterLotLink(input, taskId);
+}
+
+function confirmLotLink(taskId) {
   const t = S.tasks.find(x=>x.id===taskId);
   if (!t) return;
   if (!t.linked_vehicle_ids) t.linked_vehicle_ids = [];
-  if (t.linked_vehicle_ids.includes(vehicleId)) return;
-  t.linked_vehicle_ids.push(vehicleId);
+  const sel = _lotLinkSelection[taskId];
+  if (!sel || !sel.size) return;
+  let added = 0;
+  sel.forEach(vid => {
+    if (!t.linked_vehicle_ids.includes(vid)) { t.linked_vehicle_ids.push(vid); added++; }
+  });
   t.linked_vehicle_id = t.linked_vehicle_ids[0] || null;
+  delete _lotLinkSelection[taskId];
   renderTasksList();
   saveToGH();
+  if (added) showToast('🔗 ' + added + ' véhicule' + (added>1?'s':'') + ' lié' + (added>1?'s':''));
 }
 
 function unlinkVehicleFromTask(taskId, vehicleId) {
