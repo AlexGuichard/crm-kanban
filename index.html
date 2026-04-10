@@ -2546,7 +2546,8 @@ function renderTasksList() {
       <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;background:var(--surface);overflow:hidden">
         <input class="form-input" id="quickTaskInput" placeholder="Titre de la tâche…"
           style="flex:1;padding:10px 14px;font-size:14px;border:none;outline:none;background:none"
-          onkeydown="if(event.key==='Enter'){document.getElementById('quickTaskDesc').focus();event.preventDefault()}" onfocus="document.getElementById('quickTaskDescWrap').style.display=''">
+          onkeydown="if(event.key==='Enter'){document.getElementById('quickTaskDesc').focus();event.preventDefault()}" onfocus="document.getElementById('quickTaskDescWrap').style.display=''"
+          onpaste="handleQuickPaste(event)">
         <div style="display:flex;gap:2px;padding:4px 8px;flex-shrink:0" title="Priorité">
           <button onclick="event.preventDefault();setQuickPrio(1)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===1?'var(--urg-1)':'var(--border)'};background:${_qp===1?'rgba(232,41,74,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🔴</button>
           <button onclick="event.preventDefault();setQuickPrio(3)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===3?'var(--text-muted)':'var(--border)'};background:${_qp===3?'rgba(0,0,0,0.04)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">⚪</button>
@@ -2554,9 +2555,9 @@ function renderTasksList() {
         </div>
       </div>
       <div id="quickTaskDescWrap" style="display:none">
-        <input class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)"
-          style="padding:8px 14px;font-size:12px;border-radius:0 0 10px 10px;border-top:1px dashed var(--border-2);color:var(--text-muted)"
-          onkeydown="if(event.key==='Enter'){quickAddTask();event.preventDefault()}">
+        <textarea class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)&#10;Ou colle plusieurs lignes : x10 Clio, x5 Polo…" rows="2"
+          style="padding:8px 14px;font-size:12px;border-radius:0 0 10px 10px;border-top:1px dashed var(--border-2);color:var(--text-muted);resize:vertical;min-height:32px;font-family:inherit"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){quickAddTask();event.preventDefault()}"></textarea>
       </div>
     </div>
     <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
@@ -3708,6 +3709,26 @@ function setQuickPrio(p) {
   renderTasksList();
 }
 
+function handleQuickPaste(e) {
+  const pasted = (e.clipboardData || window.clipboardData).getData('text');
+  const lines = pasted.split(/\n/).map(l => l.trim()).filter(Boolean);
+  const xLines = lines.filter(l => /^x\d+\s*/i.test(l));
+  // Si le texte collé contient 2+ lignes x\d+, intercepter et mettre dans le textarea
+  if (xLines.length >= 2) {
+    e.preventDefault();
+    const input = document.getElementById('quickTaskInput');
+    const desc = document.getElementById('quickTaskDesc');
+    const wrap = document.getElementById('quickTaskDescWrap');
+    if (input) input.value = xLines[0];
+    if (desc && wrap) {
+      wrap.style.display = '';
+      desc.value = xLines.slice(1).join('\n');
+      desc.focus();
+    }
+    showToast('📋 ' + xLines.length + ' tâches détectées — Entrée pour valider');
+  }
+}
+
 function quickAddTask() {
   const input = document.getElementById('quickTaskInput');
   const descInput = document.getElementById('quickTaskDesc');
@@ -3715,7 +3736,41 @@ function quickAddTask() {
   const title = input.value.trim();
   if (!title) { input.focus(); return; }
   const desc = descInput ? descInput.value.trim() : '';
-  let priority = _quickPriority || 3;
+  const basePriority = _quickPriority || 3;
+
+  // Combiner titre + description et chercher les lignes x\d+
+  const allText = title + (desc ? '\n' + desc : '');
+  const lines = allText.split(/\n/).map(l => l.trim()).filter(Boolean);
+  const xLines = lines.filter(l => /^x\d+\s*/i.test(l));
+
+  // Si plusieurs lignes x\d+ → créer une tâche par ligne
+  if (xLines.length > 1) {
+    let count = 0;
+    xLines.forEach(line => {
+      let priority = basePriority;
+      let cleanTitle = line;
+      if (line.includes('!1')) { priority = 1; cleanTitle = cleanTitle.replace('!1','').trim(); }
+      else if (line.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
+      S.tasks.push({
+        id: uid(), title: cleanTitle, description: '', priority,
+        due_date: today(), due_time: '', column: 'a_faire',
+        created_at: today(), auto_generated: false,
+        linked_vehicle_ids: [], linked_vehicle_id: null,
+        last_viewed_at: new Date().toISOString(), reminder: null
+      });
+      count++;
+    });
+    input.value = '';
+    if (descInput) descInput.value = '';
+    _quickPriority = 3;
+    render(); saveToGH();
+    showToast('✅ ' + count + ' tâches ajoutées');
+    setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
+    return;
+  }
+
+  // Sinon → tâche unique (comportement normal)
+  let priority = basePriority;
   let cleanTitle = title;
   if (title.includes('!1')) { priority = 1; cleanTitle = cleanTitle.replace('!1','').trim(); }
   else if (title.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
