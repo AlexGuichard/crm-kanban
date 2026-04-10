@@ -1,1 +1,42 @@
-{"vehicles":[],"updated_at":"2026-04-10T08:43:00.608Z"}
+{
+  "vehicles": [
+    {
+      "id": "aa47c32c-f4fd-47bd-a300-7f0d556c5d6b",
+      "url_annonce": "https://www.lacentrale.fr/utilitaire-occasion-annonce-69118580760.html",
+      "source": "LaCentrale",
+      "column": "sourcing",
+      "sub_stage": "a_contacter",
+      "priority": 3,
+      "documents": {
+        "carte_grise": false,
+        "facture_achat": false,
+        "certificat_cession": false
+      },
+      "created_at": "2026-04-10T08:47:38",
+      "historique": [
+        {
+          "date": "2026-04-10",
+          "action": "Importé depuis LaCentrale"
+        }
+      ],
+      "lbc_id": "",
+      "marque": "RENAULT",
+      "modele": "KANGOO VAN",
+      "annee": 2024,
+      "date_mec": "2024",
+      "km": 25148,
+      "prix_demande": 16990,
+      "carburant": "Diesel",
+      "boite": "Automatique",
+      "couleur": "var(--colors-negative);\n      ",
+      "localisation": "91200 ATHIS-MONS",
+      "fournisseur_nom": "RENAULT ATHIS MONS",
+      "fournisseur_tel": "",
+      "fournisseur_type": "pro",
+      "photo": "https://image-annonce.lacentrale.fr/1096x829/E118580760_STANDARD_0.jpg",
+      "titre": "RENAULT KANGOO VAN",
+      "description": ""
+    }
+  ],
+  "updated_at": "2026-04-10T08:47:38.378445+00:00"
+}
