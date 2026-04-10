@@ -307,11 +307,22 @@ def parse_lacentrale(html: str, url: str) -> dict:
     if len(html) < 1000:
         raise ValueError(f"Page trop courte ({len(html)} car) — probablement bloquée")
 
-    # Strip Google Cache wrapper si présent
-    cache_strip = re.search(r'<div id="cache-body">(.*)', html, re.DOTALL)
-    if cache_strip:
-        html = cache_strip.group(1)
-        print("  [parse] Google Cache wrapper détecté et retiré", flush=True)
+    # Strip Google Cache wrapper si présent (plusieurs formats connus)
+    for cache_pattern in [
+        r'<div id="cache-body">(.*)',
+        r'<div class="cache-body">(.*)',
+        r'<!-- google_cache_first_chunk_end -->(.*)',
+        r'</style></head><body[^>]*>(.*)',  # Google cache generic
+    ]:
+        cache_strip = re.search(cache_pattern, html, re.DOTALL)
+        if cache_strip and "googleusercontent" in html[:2000]:
+            html = cache_strip.group(1)
+            print("  [parse] Google Cache wrapper détecté et retiré", flush=True)
+            break
+
+    # Si le HTML vient de Google Cache, le <title> peut être "Google"
+    # On force le titre depuis og:title ou d'autres sources fiables
+    is_google_cache = "googleusercontent" in html[:500] or "google" in html[:500].lower()
 
     if "captcha" in html.lower() and "lacentrale" not in html.lower():
         raise ValueError("CAPTCHA détecté sur LaCentrale")
@@ -361,15 +372,24 @@ def parse_lacentrale(html: str, url: str) -> dict:
 
     # ── Extraction depuis le HTML (fallback et complément) ──
 
-    # Titre: essayer plusieurs patterns (h1, og:title, title tag)
-    titre = extract_meta(html, r'<h1[^>]*>(.*?)</h1>')
-    titre = re.sub(r'<[^>]+>', '', titre).strip()
+    # Titre: essayer plusieurs patterns (og:title prioritaire, puis h1, title)
+    # og:title est le plus fiable car LaCentrale le remplit toujours
+    titre = extract_meta(html, r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)')
     if not titre:
-        titre = extract_meta(html, r'<meta[^>]+property=["\']og:title["\'][^>]+content=["\']([^"\']+)')
+        titre = extract_meta(html, r'<h1[^>]*>(.*?)</h1>')
+        titre = re.sub(r'<[^>]+>', '', titre).strip()
     if not titre:
         titre = extract_meta(html, r'<title[^>]*>([^<]+)</title>')
-        # Nettoyer le suffixe LaCentrale
-        titre = re.sub(r'\s*[-–|].*[Ll]a\s*[Cc]entrale.*$', '', titre).strip()
+    # Nettoyer les suffixes LaCentrale / Google
+    titre = re.sub(r'\s*[-–|].*[Ll]a\s*[Cc]entrale.*$', '', titre).strip()
+    titre = re.sub(r'\s*[-–|].*[Gg]oogle.*$', '', titre).strip()
+    # Rejeter les titres parasites (Google Cache, erreurs)
+    garbage = ('google', 'cache', 'search', 'not found', 'erreur', '404', 'captcha')
+    if titre and titre.lower().strip() in garbage:
+        titre = ""
+    if titre and any(g in titre.lower() for g in ('google search', 'google cache')):
+        titre = ""
+    print(f"  [parse] Titre extrait: {titre!r}", flush=True)
 
     # Marque/modèle depuis le titre si manquant
     if not marque and titre:
@@ -377,7 +397,16 @@ def parse_lacentrale(html: str, url: str) -> dict:
         if len(parts) >= 2:
             marque = parts[0]
             modele = " ".join(parts[1:3])
-    # Dernier recours: extraire depuis l'URL
+    # Dernier recours: extraire depuis l'URL (ex: /utilitaire-occasion-annonce-69118720894.html)
+    if not marque:
+        # Essai: og:description contient souvent "RENAULT Express Van ..."
+        og_desc = extract_meta(html, r'<meta[^>]+property=["\']og:description["\'][^>]+content=["\']([^"\']+)')
+        if og_desc:
+            desc_parts = og_desc.split()
+            if len(desc_parts) >= 2:
+                marque = desc_parts[0]
+                modele = " ".join(desc_parts[1:3])
+                print(f"  [parse] Marque/modèle depuis og:description: {marque} {modele}", flush=True)
     if not marque:
         url_parts = re.search(r'/([a-z]+)-occasion-annonce', url)
         if url_parts:
