@@ -2469,7 +2469,10 @@ function renderBoardList() {
       daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
     }
     const c = COL_COLOR[v.column] || '120,120,120';
-    const colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${COL_LABEL[v.column]||v.column}</span>`;
+    const stageLabel = v.column === 'sourcing' && v.sub_stage
+      ? (SUB_STAGES.find(s => s.key === v.sub_stage)?.label || COL_LABEL[v.column] || v.column)
+      : (COL_LABEL[v.column] || v.column);
+    const colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${stageLabel}</span>`;
     const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
     let lastActHtml;
     if (daysSince !== null && daysSince >= 6) {
