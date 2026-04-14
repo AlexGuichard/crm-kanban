@@ -340,6 +340,54 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .tl-arrow { transform: rotate(-90deg); }
 .tl-arrow.open { transform: rotate(0deg); }
 
+/* PIPELINE STRIP */
+.pipeline-strip { display:flex; align-items:stretch; gap:0; background:#fff; border-bottom:1px solid var(--border); padding:10px 20px; overflow-x:auto; }
+.pipe-stage { display:flex; flex-direction:column; align-items:center; padding:6px 14px; border-radius:8px; cursor:pointer; transition:all 0.12s; flex:1; min-width:70px; border:2px solid transparent; user-select:none; }
+.pipe-stage:hover { background:var(--bg); }
+.pipe-stage.ps-active { border-color:currentColor; background:rgba(77,101,255,0.06); }
+.pipe-count { font-size:20px; font-weight:800; line-height:1; }
+.pipe-label { font-size:10px; font-weight:600; margin-top:2px; white-space:nowrap; color:inherit; opacity:0.8; }
+.pipe-sep { color:var(--border); font-size:14px; display:flex; align-items:center; padding:0 4px; flex-shrink:0; }
+.ps-a_contacter { color:#64748b; }
+.ps-contacte { color:#0ea5e9; }
+.ps-attente_retour { color:#f59e0b; }
+.ps-negociation { color:#8b5cf6; }
+.ps-confirme { color:#16a34a; }
+.ps-confirme.ps-active { background:rgba(22,163,74,0.07) !important; }
+
+/* FILTER BAR */
+.filter-bar-strip { display:flex; align-items:center; gap:6px; background:var(--surface-2); border-bottom:1px solid var(--border); padding:7px 20px; flex-wrap:wrap; }
+.fb-search { position:relative; flex-shrink:0; }
+.fb-search input { padding:5px 10px 5px 28px; border:1.5px solid var(--border); border-radius:7px; font-size:12px; background:var(--surface); color:var(--text); outline:none; width:200px; font-family:inherit; }
+.fb-search input:focus { border-color:var(--accent); }
+.fb-search-icon { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:12px; pointer-events:none; color:var(--text-muted); }
+.fb-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:6px; border:1.5px solid var(--border); background:var(--surface); font-size:11px; font-weight:600; color:var(--text-muted); cursor:pointer; transition:all 0.12s; white-space:nowrap; }
+.fb-chip:hover { border-color:var(--accent); color:var(--accent); }
+.fb-chip.fb-active { border-color:var(--accent); background:rgba(77,101,255,0.08); color:var(--accent); }
+.fb-chip .fb-x { opacity:0.6; margin-left:2px; font-size:11px; }
+.fb-add { padding:4px 10px; border-radius:6px; border:1.5px dashed var(--border); background:none; font-size:11px; color:var(--text-muted); cursor:pointer; font-weight:600; font-family:inherit; }
+.fb-add:hover { border-color:var(--accent); color:var(--accent); }
+.fb-count { margin-left:auto; font-size:11px; color:var(--text-muted); white-space:nowrap; }
+
+/* BULK BAR */
+@keyframes bulkSlide { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+.bulk-bar { display:flex; align-items:center; gap:8px; background:#1e293b; color:#fff; padding:8px 20px; font-size:12px; animation:bulkSlide 0.15s ease-out; flex-shrink:0; }
+.bulk-bar-btn { padding:4px 12px; border-radius:5px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; transition:background 0.12s; }
+.bulk-bar-btn:hover { background:rgba(255,255,255,0.2); }
+.bulk-bar-btn.bulk-danger { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.15); }
+.bulk-bar-btn.bulk-danger:hover { background:rgba(239,68,68,0.3); }
+.bulk-cancel { margin-left:auto; opacity:0.6; cursor:pointer; font-size:12px; background:none; border:none; color:#fff; font-family:inherit; }
+.bulk-stage-select { padding:4px 8px; border-radius:5px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); color:#fff; font-size:11px; font-family:inherit; cursor:pointer; }
+.bulk-stage-select option { background:#1e293b; color:#fff; }
+
+/* TABLE ROW CHECKBOX */
+.vt-check { width:14px; height:14px; border-radius:4px; cursor:pointer; accent-color:var(--accent); }
+.vehicle-table td:first-child, .vehicle-table th:first-child { width:32px; padding-right:4px; }
+
+/* RELANCE BADGE in table */
+.relance-badge-table { display:inline-flex; align-items:center; gap:3px; font-size:9px; font-weight:700; padding:1px 5px; border-radius:4px; background:rgba(232,41,74,0.1); color:var(--urg-1); white-space:nowrap; }
+.stale-warning { color:var(--urg-2); font-weight:700; }
+
 /* BRIEFING PANEL */
 .briefing-panel-sidebar { width: 280px; min-width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; position: relative; }
 .sidebar-resize-handle { position: absolute; left: -4px; top: 0; bottom: 0; width: 8px; cursor: col-resize; z-index: 10; border-radius: 4px; transition: background 0.15s; }
@@ -865,6 +913,9 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <button class="btn btn-ghost btn-sm" id="refreshBtn" onclick="manualRefresh()" title="Rafraîchir">⟳</button>
     </div>
   </div>
+  <div id="pipeline-strip"></div>
+  <div id="filter-bar-wrap"></div>
+  <div id="bulk-bar-wrap"></div>
   <div class="tasks-view-layout">
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden">
       <div class="board" id="board"></div>
@@ -1717,6 +1768,10 @@ let listSortField = 'updated_at';
 let listSortDir = -1;
 let ghSha = null;
 let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
+let _pipeFilter = new Set(); // ex: 'sourcing:a_contacter', 'sourcing:contacte', 'a_payer'
+let _priceFilter = null;     // null | [min, max] en euros
+let _locFilter = '';         // filtre texte sur localisation
+let _selectedVehicles = new Set(); // IDs sélectionnés pour bulk actions
 function pinVehicle(id) {
   _pinnedVehicleId = id;
   localStorage.setItem('pinnedVehicleId', id);
@@ -1959,6 +2014,233 @@ function onSearch() {
 const matchV = v => !searchQ || [v.marque,v.modele,v.fournisseur_nom,v.vendeur,v.vin,v.immatriculation,v.source,v.carburant,v.couleur,v.notes].some(s=>s&&s.toLowerCase().includes(searchQ));
 const matchL = l => !searchQ || [l.nom,l.fournisseur,l.description].some(s=>s&&s.toLowerCase().includes(searchQ));
 const matchT = t => !searchQ || [t.title,t.description].some(s=>s&&s.toLowerCase().includes(searchQ));
+function matchVFiltered(v) {
+  // Masquer les colonnes post-dashboard
+  if (!['sourcing','a_payer'].includes(v.column)) return false;
+  // Recherche texte existante
+  if (!matchV(v)) return false;
+  // Filtre pipeline strip
+  if (_pipeFilter.size > 0) {
+    const key = v.column === 'sourcing' ? `sourcing:${v.sub_stage||'a_contacter'}` : v.column;
+    if (!_pipeFilter.has(key)) return false;
+  }
+  // Filtre prix
+  if (_priceFilter) {
+    const price = Number(v.prix_negocie || v.prix_demande) || 0;
+    if (price < _priceFilter[0] || price > _priceFilter[1]) return false;
+  }
+  // Filtre localisation
+  if (_locFilter && !(v.localisation||'').toLowerCase().includes(_locFilter.toLowerCase())) return false;
+  return true;
+}
+function togglePipeFilter(key) {
+  if (_pipeFilter.has(key)) _pipeFilter.delete(key);
+  else _pipeFilter.add(key);
+  renderPipelineStrip();
+  renderFilterBar();
+  renderBoardList();
+}
+
+function clearAllFilters() {
+  _pipeFilter.clear();
+  _priceFilter = null;
+  _locFilter = '';
+  const si = document.getElementById('fb-search-input');
+  if (si) si.value = '';
+  renderPipelineStrip();
+  renderFilterBar();
+  renderBoardList();
+}
+
+function setLocFilter(val) {
+  _locFilter = val.trim().toLowerCase();
+  renderFilterBar();
+  renderBoardList();
+}
+
+function setPriceFilter(min, max) {
+  _priceFilter = (min === null) ? null : [min, max];
+  renderFilterBar();
+  renderBoardList();
+}
+function renderPipelineStrip() {
+  const el = document.getElementById('pipeline-strip');
+  if (!el) return;
+
+  const activeVehicles = S.vehicles.filter(v => ['sourcing','a_payer'].includes(v.column));
+
+  const stages = [
+    { key:'sourcing:a_contacter',   label:'À contacter',   cls:'ps-a_contacter',   count: activeVehicles.filter(v=>v.column==='sourcing'&&(v.sub_stage||'a_contacter')==='a_contacter').length },
+    { key:'sourcing:contacte',      label:'Contacté',      cls:'ps-contacte',      count: activeVehicles.filter(v=>v.column==='sourcing'&&v.sub_stage==='contacte').length },
+    { key:'sourcing:attente_retour',label:'Attente retour',cls:'ps-attente_retour',count: activeVehicles.filter(v=>v.column==='sourcing'&&v.sub_stage==='attente_retour').length },
+    { key:'sourcing:negociation',   label:'Négociation',   cls:'ps-negociation',   count: activeVehicles.filter(v=>v.column==='sourcing'&&v.sub_stage==='negociation').length },
+    { key:'a_payer',                label:'✅ Confirmé',   cls:'ps-confirme',      count: activeVehicles.filter(v=>v.column==='a_payer').length }
+  ];
+
+  el.innerHTML = `<div class="pipeline-strip">${
+    stages.map((s, i) => {
+      const active = _pipeFilter.has(s.key);
+      return (i === 4 ? `<div class="pipe-sep" style="margin:0 8px">⟶</div>` : (i > 0 ? `<div class="pipe-sep">›</div>` : ''))
+        + `<div class="pipe-stage ${s.cls}${active?' ps-active':''}" onclick="togglePipeFilter('${s.key}')">
+             <span class="pipe-count">${s.count}</span>
+             <span class="pipe-label">${s.label}</span>
+           </div>`;
+    }).join('')
+  }</div>`;
+}
+function renderFilterBar() {
+  const el = document.getElementById('filter-bar-wrap');
+  if (!el) return;
+
+  const allVehicles = S.vehicles.filter(v => ['sourcing','a_payer'].includes(v.column));
+  const filteredCount = allVehicles.filter(matchVFiltered).length;
+
+  // Chips actifs
+  let activeChips = '';
+  if (_pipeFilter.size > 0) {
+    const PIPE_LABELS = { 'sourcing:a_contacter':'À contacter','sourcing:contacte':'Contacté','sourcing:attente_retour':'Attente retour','sourcing:negociation':'Négociation','a_payer':'Confirmé' };
+    [..._pipeFilter].forEach(k => {
+      activeChips += `<div class="fb-chip fb-active">${PIPE_LABELS[k]||k} <span class="fb-x" onclick="event.stopPropagation();togglePipeFilter('${k}')">×</span></div>`;
+    });
+  }
+  if (_priceFilter) {
+    const label = _priceFilter[1] === Infinity ? `> ${fmtN(_priceFilter[0])}` : `${fmtN(_priceFilter[0])}–${fmtN(_priceFilter[1])}`;
+    activeChips += `<div class="fb-chip fb-active">Prix : ${label} <span class="fb-x" onclick="event.stopPropagation();setPriceFilter(null,null)">×</span></div>`;
+  }
+  if (_locFilter) {
+    activeChips += `<div class="fb-chip fb-active">📍 ${esc(_locFilter)} <span class="fb-x" onclick="event.stopPropagation();setLocFilter('')">×</span></div>`;
+  }
+
+  const hasFilters = _pipeFilter.size > 0 || _priceFilter || _locFilter;
+
+  el.innerHTML = `<div class="filter-bar-strip">
+    <div class="fb-search">
+      <span class="fb-search-icon">🔍</span>
+      <input id="fb-search-input" placeholder="Rechercher…" value="${esc(searchQ)}"
+        oninput="searchQ=this.value.toLowerCase();renderBoardList()">
+    </div>
+    ${activeChips}
+    <div class="fb-chip" onclick="showPriceFilterMenu()">Prix ▾</div>
+    <div class="fb-chip" onclick="showLocFilterMenu()">📍 Lieu ▾</div>
+    ${hasFilters ? `<button class="fb-add" onclick="clearAllFilters()">✕ Effacer filtres</button>` : ''}
+    <div class="fb-count">${filteredCount} véhicule${filteredCount>1?'s':''}</div>
+  </div>`;
+}
+
+function showPriceFilterMenu() {
+  const ranges = [
+    [0, 10000, '< 10 000 €'],
+    [10000, 15000, '10 000 – 15 000 €'],
+    [15000, 20000, '15 000 – 20 000 €'],
+    [20000, Infinity, '> 20 000 €']
+  ];
+  const existing = document.getElementById('price-filter-popup');
+  if (existing) { existing.remove(); return; }
+  const popup = document.createElement('div');
+  popup.id = 'price-filter-popup';
+  popup.style.cssText = 'position:fixed;z-index:500;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);min-width:200px;overflow:hidden';
+  const fbEl = document.querySelector('.filter-bar-strip');
+  const rect = fbEl ? fbEl.getBoundingClientRect() : {top:100,left:100};
+  popup.style.top = (rect.bottom + 4) + 'px';
+  popup.style.left = '200px';
+  const opts = ranges.map(([min,max,lbl]) => {
+    const sel = _priceFilter && _priceFilter[0]===min && _priceFilter[1]===max;
+    return `<div onclick="setPriceFilter(${min},${max});document.getElementById('price-filter-popup')?.remove()" style="padding:10px 16px;cursor:pointer;font-size:13px;background:${sel?'var(--accent-light)':'none'};color:${sel?'var(--accent)':'var(--text)'}">${lbl}</div>`;
+  }).join('');
+  popup.innerHTML = `<div style="padding:8px 16px;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid var(--border)">Filtrer par prix</div>${opts}`;
+  document.body.appendChild(popup);
+  setTimeout(() => document.addEventListener('click', function h(e){ if(!popup.contains(e.target)){popup.remove();document.removeEventListener('click',h);} }), 50);
+}
+
+function showLocFilterMenu() {
+  const existing = document.getElementById('loc-filter-popup');
+  if (existing) { existing.remove(); return; }
+  const popup = document.createElement('div');
+  popup.id = 'loc-filter-popup';
+  popup.style.cssText = 'position:fixed;z-index:500;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);min-width:220px;overflow:hidden;padding:12px';
+  const fbEl = document.querySelector('.filter-bar-strip');
+  const rect = fbEl ? fbEl.getBoundingClientRect() : {top:100,left:100};
+  popup.style.top = (rect.bottom + 4) + 'px';
+  popup.style.left = '320px';
+  popup.innerHTML = `<div style="font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Filtrer par localisation</div>
+    <input id="loc-filter-input" class="form-input" placeholder="ex: Paris, 75, Lyon…" value="${esc(_locFilter)}" style="font-size:12px;padding:7px 10px"
+      oninput="setLocFilter(this.value)" autofocus>
+    <button onclick="setLocFilter('');document.getElementById('loc-filter-popup')?.remove()" style="margin-top:8px;width:100%;padding:6px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;font-size:12px;color:var(--text-muted)">Effacer</button>`;
+  document.body.appendChild(popup);
+  setTimeout(() => popup.querySelector('#loc-filter-input')?.focus(), 50);
+  setTimeout(() => document.addEventListener('click', function h(e){ if(!popup.contains(e.target)&&e.target.id!=='loc-filter-popup'){popup.remove();document.removeEventListener('click',h);} }), 100);
+}
+
+function toggleVehicleSelect(id, checked) {
+  if (checked) _selectedVehicles.add(id);
+  else _selectedVehicles.delete(id);
+  renderBulkBar();
+  renderBoardList();
+}
+
+function toggleAllVehicles(checked, ids) {
+  if (checked) ids.forEach(id => _selectedVehicles.add(id));
+  else _selectedVehicles.clear();
+  renderBulkBar();
+  renderBoardList();
+}
+
+function renderBulkBar() {
+  const el = document.getElementById('bulk-bar-wrap');
+  if (!el) return;
+  const n = _selectedVehicles.size;
+  if (n === 0) { el.innerHTML = ''; return; }
+
+  const stageOpts = [
+    {key:'sourcing:a_contacter', label:'À contacter'},
+    {key:'sourcing:contacte', label:'Contacté'},
+    {key:'sourcing:attente_retour', label:'Attente retour'},
+    {key:'sourcing:negociation', label:'Négociation'},
+    {key:'a_payer', label:'✅ Confirmé'}
+  ].map(s => `<option value="${s.key}">${s.label}</option>`).join('');
+
+  el.innerHTML = `<div class="bulk-bar">
+    <strong>${n} sélectionné${n>1?'s':''}</strong>
+    <select class="bulk-stage-select" onchange="bulkMoveVehicles(this.value);this.value=''">
+      <option value="" disabled selected>→ Passer à l'étape…</option>
+      ${stageOpts}
+    </select>
+    <button class="bulk-bar-btn bulk-danger" onclick="bulkDealLost()">❌ Deal Perdu</button>
+    <button class="bulk-cancel" onclick="_selectedVehicles.clear();renderBulkBar();renderBoardList()">✕ Annuler</button>
+  </div>`;
+}
+
+function bulkMoveVehicles(stageKey) {
+  if (!stageKey) return;
+  const [col, sub] = stageKey.includes(':') ? stageKey.split(':') : [stageKey, null];
+  _selectedVehicles.forEach(id => {
+    const v = S.vehicles.find(x => x.id === id);
+    if (!v) return;
+    v.column = col;
+    if (sub) v.sub_stage = sub;
+    else if (col === 'a_payer') v.sub_stage = null;
+    addHist(v, `Passé en ${col === 'a_payer' ? 'Confirmé' : sub || col} (bulk)`);
+  });
+  const count = _selectedVehicles.size;
+  _selectedVehicles.clear();
+  render(); saveToGH();
+  showToast(`✅ ${count} véhicule${count>1?'s':''} déplacé${count>1?'s':''}`);
+}
+
+function bulkDealLost() {
+  const n = _selectedVehicles.size;
+  if (!confirm(`Marquer ${n} véhicule${n>1?'s':''} comme Deal Perdu ?`)) return;
+  _selectedVehicles.forEach(id => {
+    const v = S.vehicles.find(x => x.id === id);
+    if (!v) return;
+    v.column = 'deal_perdu';
+    v.archived_at = today();
+    addHist(v, 'Deal perdu (bulk)');
+  });
+  _selectedVehicles.clear();
+  render(); saveToGH();
+  showToast(`❌ ${n} deal${n>1?'s':''} perdu${n>1?'s':''}`);
+}
 
 // Highlight matching text — applique <mark> sur les occurrences du terme cherché
 function hl(raw, q) {
@@ -1979,6 +2261,9 @@ function render() {
   renderBriefing();
   renderDaySummary();
   loadScratchpad();
+  renderPipelineStrip();
+  renderFilterBar();
+  renderBulkBar();
 }
 
 // -------- BOARD --------
@@ -2026,13 +2311,10 @@ function sortList(field) {
 function renderBoardList() {
   const el = document.getElementById('board-list');
   if (!el) return;
-  const COL_LABEL = { sourcing:'Sourcing', a_payer:'Dashboard', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
-  const COL_COLOR = { sourcing:'61,85,240', a_payer:'232,122,0', en_transport:'124,58,237', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
+  const COL_LABEL = { sourcing:'Sourcing', a_payer:'✅ Confirmé', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
+  const COL_COLOR = { sourcing:'61,85,240', a_payer:'22,163,74', en_transport:'124,58,237', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
 
-  let vehicles = S.vehicles.filter(v => {
-    if (v.column === 'archive' && !S.settings.show_archive) return false;
-    return matchV(v);
-  });
+  let vehicles = S.vehicles.filter(matchVFiltered);
 
   vehicles = [...vehicles].sort((a, b) => {
     let va, vb;
@@ -2061,37 +2343,47 @@ function renderBoardList() {
     return `<th onclick="sortList('${field}')">${label}<span class="vt-sort${on?' on':''}">${arrow}</span></th>`;
   };
 
+  const reminderDays = S.settings.reminder_days || 3;
   const rows = vehicles.map(v => {
     const price = v.prix_negocie || v.prix_demande;
     const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at) || '';
-    let dateStr = '—'; let dateCls = '';
+    let daysSince = null;
     if (refDate) {
       const d = new Date(refDate);
-      const days = Math.floor((Date.now() - d.getTime()) / 86400000);
-      const day = String(d.getDate()).padStart(2,'0'), mo = String(d.getMonth()+1).padStart(2,'0');
-      const h = String(d.getHours()).padStart(2,'0'), mi = String(d.getMinutes()).padStart(2,'0');
-      if (days === 0) dateStr = `${h}:${mi}`;
-      else if (days === 1) dateStr = 'Hier';
-      else dateStr = `${day}/${mo}`;
-      if (days >= (S.settings.reminder_days||3)) dateCls = ' style="color:var(--urg-2);font-weight:700"';
+      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
     }
     const c = COL_COLOR[v.column] || '120,120,120';
     const colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${COL_LABEL[v.column]||v.column}</span>`;
     const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
-    return `<tr onclick="openDetail('${v.id}')">
-      <td><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${v.annee?` <span style="color:var(--text-muted);font-size:11px">${v.annee}</span>`:''}</td>
+    let lastActHtml;
+    if (daysSince !== null && daysSince >= 6) {
+      lastActHtml = `<span class="relance-badge-table">🔔 Relancer ×${daysSince}j</span>`;
+    } else if (daysSince !== null && daysSince >= reminderDays) {
+      lastActHtml = `<span class="stale-warning">⚠ il y a ${daysSince}j</span>`;
+    } else {
+      lastActHtml = `<span style="color:var(--text-muted);font-size:11px">${esc(lastAct)}</span>`;
+    }
+    const isSel = _selectedVehicles.has(v.id);
+    const urg = v.priority === 1 ? '#ef4444' : v.priority === 2 ? '#f97316' : '#e2e8f0';
+    return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}">
+      <td onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
+      <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${v.annee?` <span style="color:var(--text-muted);font-size:11px">${v.annee}</span>`:''}</td>
       <td>${colHtml}</td>
       <td>${price ? fmtN(price) : '—'}</td>
       <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
-      <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
       <td style="color:var(--text-muted);font-size:12px">${esc(v.localisation||'—')}</td>
-      <td style="color:var(--text-muted);font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(lastAct)}</td>
+      <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
+      <td>${lastActHtml}</td>
     </tr>`;
   }).join('');
 
+  const allShown = vehicles.length > 0 && vehicles.every(v => _selectedVehicles.has(v.id));
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
-    <thead><tr>${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}<th>Fournisseur</th>${sh('localisation','Localisation')}<th>Dernière action</th></tr></thead>
-    <tbody>${rows || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
+    <thead><tr>
+      <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} onchange="toggleAllVehicles(this.checked,${JSON.stringify(vehicles.map(v=>v.id))})"></th>
+      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>Dernière action</th>
+    </tr></thead>
+    <tbody>${rows || '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -3364,6 +3656,7 @@ function confirmDealLost() {
   if (!v) return;
   const reason = document.getElementById('dealLostReason').value.trim();
   v.column = 'deal_perdu';
+  v.archived_at = today();
   v.deal_lost_reason = reason || null;
   addHist(v, `Deal perdu${reason ? ' — ' + reason : ''}`);
   closeModal('ovDealPerdu');
