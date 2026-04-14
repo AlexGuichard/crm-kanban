@@ -1935,16 +1935,22 @@ async function ghGet(path) {
   } catch(e) { return null; }
 }
 
+function ghAbortFetch(url, opts, ms = 15000) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(tid));
+}
+
 async function ghPut(path, body) {
   try {
-    const r = await fetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    const r = await ghAbortFetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
     if (r.status === 409) {
       // SHA stale (conflit) : re-fetch le SHA puis retry une fois
       const fresh = await ghGet(path);
       if (fresh && fresh.sha) {
         ghSha = fresh.sha;
         body.sha = fresh.sha;
-        const r2 = await fetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+        const r2 = await ghAbortFetch(GH + path, { method:'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
         return r2.ok ? r2.json() : null;
       }
       return null;
@@ -4952,39 +4958,44 @@ async function triggerLBCImport() {
 }
 
 async function _importViaWorker(urls, workerUrl) {
-  lbcSetStep(1, 10, `⏳ Appel du Worker pour ${urls.length} annonce(s)…`);
-  const added = [], errors = [];
-  const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
+  lbcSetStep(1, 15, `⏳ Appel du Worker pour ${urls.length} annonce(s)…`);
+  lbcSetStep(2, 30, `🔍 Scraping ${urls.length} annonce(s) en parallèle…`);
 
-  for (let i = 0; i < urls.length; i++) {
-    const url = urls[i];
-    lbcSetStep(2, 20 + (i / urls.length) * 40, `🔍 Scraping annonce ${i + 1}/${urls.length}…`);
+  // Fire all Worker requests simultaneously
+  const results = await Promise.all(urls.map(async url => {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 45000);
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 45000);
       const resp = await fetch(workerUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url }),
         signal: controller.signal,
       });
-      clearTimeout(timeout);
-
+      clearTimeout(tid);
       const data = await resp.json();
-      if (!resp.ok || data.error) throw new Error(data.error || `Worker HTTP ${resp.status}`);
-
-      lbcSetStep(3, 60 + (i / urls.length) * 20, `⚙️ Parse véhicule ${i + 1}…`);
-
-      if (data.lbc_id && existingIds.has(data.lbc_id)) {
-        errors.push(`${url}: déjà présent dans le CRM`);
-        continue;
-      }
-      existingIds.add(data.lbc_id);
-      S.vehicles.push(data);
-      added.push(`${data.marque} ${data.modele} ${data.annee || '?'} — ${(data.km || 0).toLocaleString()} km`);
+      if (!resp.ok || data.error) return { url, error: data.error || `Worker HTTP ${resp.status}` };
+      return { url, data };
     } catch (err) {
-      errors.push(`${url}: ${err.name === 'AbortError' ? 'Timeout (45s)' : err.message}`);
+      clearTimeout(tid);
+      return { url, error: err.name === 'AbortError' ? 'Timeout (45s)' : (err.message || 'Erreur') };
     }
+  }));
+
+  lbcSetStep(3, 75, `⚙️ Traitement des résultats…`);
+
+  const added = [], errors = [];
+  const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
+
+  for (const { url, data, error } of results) {
+    if (error) { errors.push(`${url}: ${error}`); continue; }
+    if (data.lbc_id && existingIds.has(data.lbc_id)) {
+      errors.push(`${url}: déjà présent dans le CRM`);
+      continue;
+    }
+    existingIds.add(data.lbc_id);
+    S.vehicles.push(data);
+    added.push(`${data.marque} ${data.modele} ${data.annee || '?'} — ${(data.km || 0).toLocaleString()} km`);
   }
 
   if (!added.length && errors.length) {
@@ -4995,7 +5006,12 @@ async function _importViaWorker(urls, workerUrl) {
   }
 
   lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
-  await saveToGH();
+  try {
+    await saveToGH();
+  } catch (err) {
+    lbcShowResult(false, `❌ Sauvegarde échouée: ${err.message}`);
+    return;
+  }
   render(); renderSidebarBriefing();
   lbcShowResult(true,
     `✅ ${added.length} véhicule(s) importé(s)` +
