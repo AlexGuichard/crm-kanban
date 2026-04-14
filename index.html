@@ -1721,6 +1721,7 @@ async function handleLockSubmit() {
       await Vault.setup(pin);
       // Migrate existing cleartext data to encrypted
       await migrateToEncrypted();
+      sessionStorage.setItem('_flease_pin', pin);
       unlockApp();
     } else {
       const ok = await Vault.unlock(pin);
@@ -1734,6 +1735,7 @@ async function handleLockSubmit() {
         btn.disabled = false; btn.textContent = 'Déverrouiller';
         return;
       }
+      sessionStorage.setItem('_flease_pin', pin);
       unlockApp();
     }
   } catch(e) {
@@ -1774,10 +1776,16 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Show lock screen on load
-(function() {
+// Show lock screen on load — auto-unlock si PIN mémorisé en session
+(async function() {
   const ls = document.getElementById('lockScreen');
   if (!ls) return;
+  const savedPin = sessionStorage.getItem('_flease_pin');
+  if (savedPin && Vault.isSetup()) {
+    const ok = await Vault.unlock(savedPin);
+    if (ok) { unlockApp(); return; }
+    sessionStorage.removeItem('_flease_pin'); // PIN invalide, on nettoie
+  }
   if (!Vault.isSetup()) {
     document.getElementById('lockSub').textContent = 'Créez un code PIN pour sécuriser vos données';
     document.getElementById('lockBtn').textContent = 'Configurer le PIN';
