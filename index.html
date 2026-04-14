@@ -2442,6 +2442,8 @@ function renderBoardList() {
       vb = Number(b.prix_negocie || b.prix_demande) || 0;
     } else if (listSortField === 'km') {
       va = Number(a.km) || 0; vb = Number(b.km) || 0;
+    } else if (listSortField === 'annee') {
+      va = Number(a.annee) || 0; vb = Number(b.annee) || 0;
     } else if (listSortField === 'vehicule') {
       va = (a.marque+' '+a.modele).toLowerCase(); vb = (b.marque+' '+b.modele).toLowerCase();
     } else if (listSortField === 'colonne') {
@@ -2481,9 +2483,10 @@ function renderBoardList() {
     const urg = v.priority === 1 ? '#ef4444' : v.priority === 2 ? '#f97316' : '#e2e8f0';
     return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}">
       <td onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
-      <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${v.annee?` <span style="color:var(--text-muted);font-size:11px">${v.annee}</span>`:''}</td>
+      <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong></td>
       <td>${colHtml}</td>
       <td>${price ? fmtN(price) : '—'}</td>
+      <td style="color:var(--text-muted)">${v.annee || '—'}</td>
       <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
       <td style="color:var(--text-muted);font-size:12px">${esc(v.localisation||'—')}</td>
       <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
@@ -2495,9 +2498,9 @@ function renderBoardList() {
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
     <thead><tr>
       <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} data-ids='${JSON.stringify(vehicles.map(v=>v.id))}' onchange="toggleAllVehicles(this.checked,JSON.parse(this.dataset.ids))"></th>
-      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>Dernière action</th>
+      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('annee','Année')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>Dernière action</th>
     </tr></thead>
-    <tbody>${rows || '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
+    <tbody>${rows || '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
   </table></div>`;
 }
 
