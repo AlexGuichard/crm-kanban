@@ -4236,10 +4236,11 @@ function deleteTask(id) {
 // TASK QUICK-COMPLETE
 // ============================================================
 function completeTask(id, e) {
-  e.stopPropagation();
+  if (e) e.stopPropagation();
   const t = S.tasks.find(x=>x.id===id);
   if (!t) return;
-  if (e.shiftKey) {
+  // Appelé sans event (depuis completeTaskAnimated) ou avec Shift → terminé direct
+  if (!e || e.shiftKey) {
     t.column = 'termine';
     t.completed_at = new Date().toISOString();
     showToast('✅ Tâche terminée');
