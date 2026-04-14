@@ -1573,6 +1573,13 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
       <!-- Résultat -->
       <div class="lbc-result" id="lbcResult"></div>
+
+      <!-- Saisie manuelle pour URLs non scrapées -->
+      <div id="lbcManualEntry" style="display:none;margin-top:12px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text)">✏️ Saisie manuelle — scraper indisponible pour :</div>
+        <div id="lbcManualRows"></div>
+        <button class="btn btn-primary" style="margin-top:8px;width:100%" onclick="confirmManualEntries()">✅ Ajouter quand même</button>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" id="lbcCancelBtn" onclick="closeModal('ovLBC')">Annuler</button>
@@ -4998,13 +5005,74 @@ async function _importViaWorker(urls, workerUrl) {
     added.push(`${data.marque} ${data.modele} ${data.annee || '?'} — ${(data.km || 0).toLocaleString()} km`);
   }
 
-  if (!added.length && errors.length) {
-    showToast('⚠ Worker indisponible — basculement GitHub Actions');
-    lbcSetStep(1, 8, '⚙️ Basculement GitHub Actions…');
-    _importViaGHActions(urls, S.settings.github_token);
+  // Sauvegarder les véhicules scrapés avec succès
+  if (added.length) {
+    lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
+    const saveRace = Promise.race([
+      saveToGH(),
+      new Promise((_, rej) => setTimeout(() => rej(new Error('Timeout GitHub (20s) — données sauvegardées en local')), 20000))
+    ]);
+    try { await saveRace; } catch(e) { showToast('⚠ ' + e.message); }
+    render(); renderSidebarBriefing();
+  }
+
+  // Si des URLs ont échoué → afficher le formulaire de saisie manuelle
+  if (errors.length) {
+    const failedUrls = errors.map(e => e.split(': ')[0]);
+    _showManualEntry(failedUrls);
+    if (added.length) {
+      lbcShowResult(true, `✅ ${added.length} importé(s) · ⚠ ${errors.length} URL(s) à saisir manuellement ci-dessous`);
+    }
     return;
   }
 
+  lbcShowResult(true, `✅ ${added.length} véhicule(s) importé(s)`);
+}
+
+function _showManualEntry(failedUrls) {
+  const container = document.getElementById('lbcManualEntry');
+  const rows = document.getElementById('lbcManualRows');
+  rows.innerHTML = failedUrls.map((url, i) => `
+    <div style="margin-bottom:10px;padding:8px;background:var(--bg-2,#f5f5f5);border-radius:6px;border:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;word-break:break-all">${url}</div>
+      <div style="display:flex;gap:6px">
+        <input id="manualMarque${i}" data-url="${url}" placeholder="Marque (ex: BMW)" style="flex:1;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+        <input id="manualModele${i}" placeholder="Modèle (ex: Série 3)" style="flex:1;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--text)">
+      </div>
+    </div>
+  `).join('');
+  container.style.display = 'block';
+  const first = document.getElementById('manualMarque0');
+  if (first) setTimeout(() => first.focus(), 50);
+}
+
+async function confirmManualEntries() {
+  const inputs = document.querySelectorAll('#lbcManualRows [id^="manualMarque"]');
+  const added = [];
+  for (const inp of inputs) {
+    const idx = inp.id.replace('manualMarque', '');
+    const url = inp.dataset.url || '';
+    const marque = inp.value.trim();
+    const modele = (document.getElementById('manualModele' + idx) || {}).value?.trim() || '';
+    if (!marque) continue;
+    S.vehicles.push({
+      id: crypto.randomUUID(), lbc_id: '',
+      url_annonce: url,
+      source: url.includes('lacentrale') ? 'LaCentrale' : 'LeBonCoin',
+      marque, modele,
+      annee: null, date_mec: '', km: 0, prix_demande: null,
+      carburant: '', boite: '', couleur: '', localisation: '',
+      fournisseur_nom: '', fournisseur_tel: '', fournisseur_type: 'particulier',
+      photo: null, titre: `${marque} ${modele}`.trim(), description: '',
+      column: 'sourcing', sub_stage: 'a_contacter', priority: 3,
+      documents: { carte_grise: false, facture_achat: false, certificat_cession: false },
+      created_at: new Date().toISOString().slice(0, 19),
+      historique: [{ date: new Date().toISOString().slice(0, 10), action: 'Ajouté manuellement' }],
+    });
+    added.push(`${marque} ${modele}`);
+  }
+  if (!added.length) { showToast('Aucune marque saisie'); return; }
+  document.getElementById('lbcManualEntry').style.display = 'none';
   lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
   const saveRace = Promise.race([
     saveToGH(),
@@ -5012,10 +5080,7 @@ async function _importViaWorker(urls, workerUrl) {
   ]);
   try { await saveRace; } catch(e) { showToast('⚠ ' + e.message); }
   render(); renderSidebarBriefing();
-  lbcShowResult(true,
-    `✅ ${added.length} véhicule(s) importé(s)` +
-    (errors.length ? ` · ⚠ ${errors.length} erreur(s): ${errors.map(e => e.split(': ')[1]).join(', ')}` : '')
-  );
+  lbcShowResult(true, `✅ ${added.length} véhicule(s) ajouté(s) manuellement`);
 }
 
 function _importViaGHActions(urls, token) {
