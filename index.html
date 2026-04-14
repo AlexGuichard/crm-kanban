@@ -340,6 +340,77 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .tl-arrow { transform: rotate(-90deg); }
 .tl-arrow.open { transform: rotate(0deg); }
 
+/* TASK TABS */
+.task-tabs-bar { display:flex; gap:2px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:3px; }
+.task-tab-btn { padding:4px 12px; border-radius:6px; font-size:12px; font-weight:600; color:var(--text-muted); cursor:pointer; background:none; border:none; font-family:inherit; transition:all 0.12s; white-space:nowrap; }
+.task-tab-btn.active { background:var(--surface); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,0.08); }
+
+/* STATS STRIP */
+.tasks-stats-strip { display:flex; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--surface-2); }
+.tss-item { flex:1; padding:8px 14px; text-align:center; border-right:1px solid var(--border); cursor:pointer; transition:background 0.12s; }
+.tss-item:last-child { border-right:none; }
+.tss-item:hover { background:var(--bg); }
+.tss-num { font-size:18px; font-weight:800; color:var(--text); line-height:1; }
+.tss-lbl { font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+.tss-item.tss-bad .tss-num { color:#dc2626; }
+.tss-item.tss-good .tss-num { color:#16a34a; }
+
+/* TASK SECTIONS */
+.ts-section { margin-bottom:16px; }
+.ts-section-hdr { display:flex; align-items:center; gap:8px; padding:4px 0 8px; cursor:pointer; user-select:none; }
+.ts-section-lbl { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; }
+.tsl-overdue { color:#dc2626; }
+.tsl-today { color:#4d65ff; }
+.tsl-watching { color:#f59e0b; }
+.tsl-done { color:#16a34a; }
+.ts-section-count { font-size:10px; font-weight:700; padding:1px 7px; border-radius:20px; }
+.tsc-overdue { background:#fef2f2; color:#dc2626; }
+.tsc-today { background:#eef2ff; color:#4d65ff; }
+.tsc-watching { background:#fef9c3; color:#a16207; }
+.tsc-done { background:#f0fdf4; color:#16a34a; }
+.ts-toggle { margin-left:auto; color:var(--text-muted); font-size:11px; transition:transform 0.15s; display:inline-block; }
+.ts-toggle.closed { transform:rotate(-90deg); }
+.ts-body { display:flex; flex-direction:column; gap:4px; }
+.ts-body.hidden { display:none; }
+
+/* NEW TASK ROW */
+.tl-row2 { display:flex; align-items:flex-start; gap:10px; padding:9px 12px; background:var(--surface); border:1px solid var(--border-2,#f1f5f9); border-radius:9px; cursor:pointer; transition:all 0.15s; margin-bottom:4px; }
+.tl-row2:hover { border-color:#dde3f8; box-shadow:0 2px 8px rgba(77,101,255,0.07); transform:translateX(2px); }
+.tl-row2.overdue { border-left:3px solid #ef4444; }
+.tl-row2.watching { border-left:3px solid #f59e0b; }
+.tl-row2.done-row { opacity:0.6; }
+.tl-complete-circle { width:17px; height:17px; border-radius:50%; border:2px solid var(--border); flex-shrink:0; margin-top:1px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+.tl-complete-circle:hover { border-color:#4d65ff; background:#eef2ff; }
+.tl-complete-circle.done { background:#16a34a; border-color:#16a34a; color:white; font-size:9px; }
+.tl-row2-urg { width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.tl-row2-body { flex:1; min-width:0; }
+.tl-row2-title { font-size:13px; font-weight:600; color:var(--text); line-height:1.3; }
+.tl-row2-title.done-text { text-decoration:line-through; color:var(--text-muted); }
+.tl-row2-desc { font-size:11px; color:var(--text-muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tl-row2-meta { display:flex; gap:5px; margin-top:5px; flex-wrap:wrap; align-items:center; }
+.tl-row2-meta .tag { font-size:10px; }
+
+/* LOT TASK PROGRESS */
+.lot-progress-wrap { margin-top:6px; }
+.lot-progress-track { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
+.lot-progress-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#4d65ff,#7c3aed); transition:width 0.4s ease; }
+.lot-progress-fill.done { background:linear-gradient(90deg,#16a34a,#22c55e); }
+.lot-progress-lbl { font-size:10px; color:var(--text-muted); margin-top:3px; }
+.lot-cta { display:flex; align-items:center; gap:8px; margin-top:8px; padding:8px 12px; background:#16a34a; border-radius:8px; color:white; font-size:12px; font-weight:700; cursor:pointer; justify-content:center; border:none; font-family:inherit; transition:all 0.15s; width:100%; }
+.lot-cta:hover { background:#15803d; transform:scale(1.01); }
+@keyframes lot-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,0.3)} 50%{box-shadow:0 0 0 8px rgba(22,163,74,0)} }
+.tl-row2.lot-complete { border-color:#16a34a !important; border-width:2px !important; background:linear-gradient(135deg,#f0fdf4 0%,var(--surface) 60%) !important; animation:lot-pulse 2s ease-in-out infinite; }
+.lot-link-btn { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:6px; border:1.5px dashed var(--border); background:none; font-size:10px; font-weight:600; color:var(--text-muted); cursor:pointer; margin-top:4px; font-family:inherit; transition:all 0.12s; }
+.lot-link-btn:hover { border-color:#4d65ff; color:#4d65ff; background:#eef2ff; }
+.lot-badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:600; padding:2px 7px; border-radius:5px; }
+.lot-badge-empty { background:var(--bg); color:var(--text-muted); }
+.lot-badge-partial { background:#fef9c3; color:#a16207; }
+.lot-badge-complete { background:#dcfce7; color:#15803d; border:1.5px solid #bbf7d0; }
+
+/* COMPLETION ANIMATION */
+@keyframes taskFadeOut { 0%{opacity:1;max-height:80px} 100%{opacity:0;max-height:0;margin:0;padding:0;border-width:0} }
+.tl-completing { animation:taskFadeOut 0.45s ease-out forwards; pointer-events:none; overflow:hidden; }
+
 /* PIPELINE STRIP */
 .pipeline-strip { display:flex; align-items:stretch; gap:0; background:#fff; border-bottom:1px solid var(--border); padding:10px 20px; overflow-x:auto; }
 .pipe-stage { display:flex; flex-direction:column; align-items:center; padding:6px 14px; border-radius:8px; cursor:pointer; transition:all 0.12s; flex:1; min-width:70px; border:2px solid transparent; user-select:none; }
@@ -930,16 +1001,23 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
   <div class="view-header">
     <div style="display:flex;align-items:center;gap:10px">
       <div class="view-title">Mes Tâches</div>
-      <div class="tasks-view-toggle">
+      <div class="task-tabs-bar" id="task-tabs-bar">
+        <button class="task-tab-btn" id="ttab-today" onclick="setTaskTab('today')">Aujourd'hui</button>
+        <button class="task-tab-btn" id="ttab-all" onclick="setTaskTab('all')">Toutes</button>
+        <button class="task-tab-btn" id="ttab-watching" onclick="setTaskTab('watching')">👁 Surveiller</button>
+      </div>
+      <div class="tasks-view-toggle" style="margin-left:6px">
         <button class="tvt-btn active" id="tvt-kanban" onclick="setTasksView('kanban')" title="Vue Kanban">⬛ Kanban</button>
         <button class="tvt-btn" id="tvt-list" onclick="setTasksView('list')" title="Vue Liste">≡ Liste</button>
       </div>
     </div>
     <div class="view-header-right">
+      <button class="btn btn-ghost btn-sm" id="btn-toggle-sidebar" onclick="toggleBriefingSidebar()" title="Afficher/masquer le panneau droit">⊞</button>
       <button class="btn btn-ghost btn-sm" onclick="openModal('ovImgImport')" title="Importer une liste depuis une photo">📷 Import</button>
       <button class="btn btn-primary btn-sm" onclick="openAddTask()">+ Tâche</button>
     </div>
   </div>
+  <div id="tasks-stats-strip"></div>
   <div class="tasks-view-layout">
     <div class="tasks-layout-main">
       <div class="tasks-board" id="tasksBoard"></div>
@@ -1768,6 +1846,9 @@ let listSortField = 'updated_at';
 let listSortDir = -1;
 let ghSha = null;
 let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
+let _briefingSidebarHidden = localStorage.getItem('briefingSidebarHidden') === '1';
+let _taskTab = localStorage.getItem('taskTab') || 'today'; // 'today' | 'all' | 'watching'
+let _taskSectionState = JSON.parse(localStorage.getItem('taskSectionState') || '{}'); // {overdue:bool, today:bool, done:bool}
 let _pipeFilter = new Set(); // ex: 'sourcing:a_contacter', 'sourcing:contacte', 'a_payer'
 let _priceFilter = null;     // null | [min, max] en euros
 let _locFilter = '';         // filtre texte sur localisation
@@ -2264,6 +2345,7 @@ function render() {
   renderPipelineStrip();
   renderFilterBar();
   renderBulkBar();
+  renderTasksStatsStrip();
 }
 
 // -------- BOARD --------
@@ -2818,6 +2900,42 @@ function lotCard(l) {
 
 // -------- TASKS VIEW TOGGLE --------
 let tasksViewMode = localStorage.getItem('tasksViewMode') || 'kanban';
+function setTaskTab(tab) {
+  _taskTab = tab;
+  localStorage.setItem('taskTab', tab);
+  ['today','all','watching'].forEach(t => {
+    const btn = document.getElementById('ttab-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  renderTasksList();
+  renderTasksStatsStrip();
+}
+
+function renderTasksStatsStrip() {
+  const el = document.getElementById('tasks-stats-strip');
+  if (!el) return;
+  const todayStr = today();
+  const activeTasks = S.tasks.filter(t => t.column !== 'termine');
+  const overdue = activeTasks.filter(t => t.column !== 'en_attente' && t.due_date && t.due_date < todayStr).length;
+  const todayCount = activeTasks.filter(t => t.column !== 'en_attente' && (!t.due_date || t.due_date === todayStr)).length;
+  const watching = activeTasks.filter(t => t.column === 'en_attente').length;
+  const done = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr)).length;
+  el.innerHTML = `<div class="tasks-stats-strip">
+    <div class="tss-item${overdue?' tss-bad':''}" onclick="setTaskTab('today')" title="Voir les tâches en retard">
+      <div class="tss-num">${overdue}</div><div class="tss-lbl">En retard</div>
+    </div>
+    <div class="tss-item" onclick="setTaskTab('today')" title="Voir les tâches d'aujourd'hui">
+      <div class="tss-num">${todayCount}</div><div class="tss-lbl">Aujourd'hui</div>
+    </div>
+    <div class="tss-item" onclick="setTaskTab('watching')" title="Voir les tâches à surveiller">
+      <div class="tss-num">${watching}</div><div class="tss-lbl">À surveiller</div>
+    </div>
+    <div class="tss-item${done>0?' tss-good':''}" title="Terminées aujourd'hui">
+      <div class="tss-num">${done}</div><div class="tss-lbl">Terminées</div>
+    </div>
+  </div>`;
+}
+
 function setTasksView(mode) {
   tasksViewMode = mode;
   localStorage.setItem('tasksViewMode', mode);
@@ -2831,6 +2949,8 @@ function initTasksViewMode() {
   const btn = document.getElementById('tvt-' + tasksViewMode);
   if (btn) { btn.classList.add('active'); document.getElementById('tvt-' + (tasksViewMode === 'kanban' ? 'list' : 'kanban')).classList.remove('active'); }
   setTasksView(tasksViewMode);
+  setTaskTab(_taskTab);
+  renderTasksStatsStrip();
 }
 
 // -------- TASKS LIST VIEW --------
@@ -3005,58 +3125,105 @@ function renderTasksList() {
     return rowHtml;
   }
 
-  // Active tasks by priority
-  PRIORITY_GROUPS.forEach(g => {
-    const group = todoTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
-    if (!group.length) return;
-    html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
-    group.sort((a,b) => ((a.due_date||'9999')+(a.due_time||'99:99')).localeCompare((b.due_date||'9999')+(b.due_time||'99:99'))).forEach(t => { html += renderTaskRow(t, g.cls); });
-    html += '</div>';
-  });
+  // ---- Helper renderTaskRow2 : nouveau design temporal ----
+  function renderTaskRow2(t, extraCls) {
+    const overdue = t.column !== 'en_attente' && t.due_date && t.due_date < todayStr;
+    const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+    const targetCount = parseTargetCount(t.title);
+    const linked = vIds.length;
+    const isLot = targetCount > 0;
+    const lotComplete = isLot && linked >= targetCount;
+    const urg = t.priority === 1 ? '#ef4444' : t.priority === 2 ? '#f97316' : '#e2e8f0';
 
-  // Watching section — toujours visible, collapsible
-  {
-    const needsRelance = watchingTasks.filter(t => t.watching_since && Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000) >= 5).length;
-    html += '<div class="tl-group" style="border-left:3px solid #0891b2;border-radius:0;margin-top:12px">'
-      + '<div class="tl-group-title" style="cursor:pointer" onclick="var el=document.getElementById(\'watchList\');el.style.display=el.style.display===\'none\'?\'block\':\'none\';this.querySelector(\'.tl-arrow\').classList.toggle(\'open\')">'
-      + '👁️ À surveiller <span style="background:rgba(8,145,178,0.1);color:#0891b2;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingTasks.length + '</span>'
-      + (needsRelance ? ' <span style="background:rgba(232,41,74,0.08);color:var(--urg-1);padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700">' + needsRelance + ' à relancer</span>' : '')
-      + ' <span class="tl-arrow open" style="font-size:10px;margin-left:4px;display:inline-block;transition:transform 0.15s">▼</span>'
-      + '</div>'
-      + '<div id="watchList">';
-    if (watchingTasks.length) {
-      watchingTasks.forEach(t => { html += renderTaskRow(t, ''); });
-    } else {
-      html += '<div style="padding:8px 12px;font-size:12px;color:var(--text-muted);font-style:italic">Aucune tâche en surveillance</div>';
+    // Badges véhicules
+    let metaBadges = '';
+    if (t.due_date) {
+      const dueCls = overdue ? ' tag-red' : '';
+      metaBadges += '<span class="tag' + dueCls + '">' + (overdue ? '⚠️ ' : '🕐 ') + fmtDs(t.due_date) + (t.due_time ? ' · ' + t.due_time : '') + '</span>';
     }
-    html += '</div></div>';
+    if (!isLot && vIds.length) {
+      vIds.forEach(vid => {
+        const v = S.vehicles.find(x => x.id === vid);
+        if (v) metaBadges += '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>';
+      });
+    }
+    if (t.column === 'en_attente' && t.watching_since) {
+      const wDays = Math.floor((Date.now() - new Date(t.watching_since).getTime()) / 86400000);
+      if (wDays >= 5) metaBadges += '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
+      else if (wDays >= 1) metaBadges += '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
+    }
+
+    // Lot badge + progress
+    let lotHtml = '';
+    if (isLot) {
+      const pct = Math.min(100, Math.round(linked / targetCount * 100));
+      const badgeCls = linked === 0 ? 'lot-badge-empty' : linked >= targetCount ? 'lot-badge-complete' : 'lot-badge-partial';
+      const badgeTxt = linked >= targetCount ? '🎯 ' + linked + '/' + targetCount + ' — Prêt !' : '🚗 ' + linked + '/' + targetCount + ' véhicules';
+      lotHtml = '<div class="lot-progress-wrap">'
+        + '<span class="lot-badge ' + badgeCls + '">' + badgeTxt + '</span>'
+        + '<div class="lot-progress-track" style="margin-top:5px"><div class="lot-progress-fill' + (lotComplete ? ' done' : '') + '" style="width:' + pct + '%"></div></div>'
+        + (!lotComplete ? '<button class="lot-link-btn" onclick="event.stopPropagation();toggleLotExpand(\'' + t.id + '\')">+ Lier des véhicules</button>' : '')
+        + (lotComplete ? '<button class="lot-cta" onclick="event.stopPropagation();confirmLotToDashboard(\'' + t.id + '\')">🏁 Ajouter les ' + linked + ' véhicules au Dashboard → confirmer</button>' : '')
+        + '</div>';
+    }
+
+    const rowCls = 'tl-row2' + (overdue ? ' overdue' : (t.column === 'en_attente' ? ' watching' : '')) + (lotComplete ? ' lot-complete' : '') + (extraCls ? ' ' + extraCls : '');
+    return '<div id="trow_' + t.id + '" class="' + rowCls + '" onclick="openEditTask(\'' + t.id + '\')">'
+      + '<div class="tl-complete-circle" onclick="event.stopPropagation();completeTaskAnimated(\'' + t.id + '\')"></div>'
+      + '<div class="tl-row2-urg" style="background:' + urg + '"></div>'
+      + '<div class="tl-row2-body">'
+      + '<div class="tl-row2-title">' + hl(t.title, searchQ) + '</div>'
+      + (t.description ? '<div class="tl-row2-desc">' + esc(t.description) + '</div>' : '')
+      + (metaBadges ? '<div class="tl-row2-meta">' + metaBadges + '</div>' : '')
+      + lotHtml
+      + '</div>'
+      + '</div>';
   }
 
-  // Terminées — collapsible, fermé par défaut
-  {
-    html += '<div class="tl-group" style="margin-top:8px;opacity:0.7">'
-      + '<div class="tl-group-title" style="cursor:pointer" onclick="var el=document.getElementById(\'archiveTasks\');el.style.display=el.style.display===\'none\'?\'block\':\'none\';this.querySelector(\'.tl-arrow\').classList.toggle(\'open\')">'
-      + '✅ Terminées <span style="background:rgba(22,163,74,0.1);color:var(--urg-done);padding:1px 6px;border-radius:10px;font-size:10px">' + doneTasks.length + '</span>'
-      + ' <span class="tl-arrow" style="font-size:10px;margin-left:4px;display:inline-block;transition:transform 0.15s">▼</span>'
-      + '</div>'
-      + '<div id="archiveTasks" style="display:none">';
-    if (doneTasks.length) {
-      doneTasks.sort((a,b)=>(b.completed_at||b.created_at||'').localeCompare(a.completed_at||a.created_at||'')).forEach(t => {
-        const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
-        const vBadges = vIds.map(vid => { const v = S.vehicles.find(x=>x.id===vid); return v ? '<span class="tag tag-blue">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : ''; }).filter(Boolean).join('');
-        html += '<div class="tl-row" onclick="openEditTask(\'' + t.id + '\')" style="opacity:0.6;align-items:center">'
-          + '<span class="tl-col-badge" style="background:rgba(22,163,74,0.1);color:var(--urg-done)">✅</span>'
-          + '<div class="tl-content"><div class="tl-title" style="text-decoration:line-through">' + esc(t.title) + '</div>'
-          + '<div class="tl-tags" style="margin-top:3px">'
-          + (t.completed_at ? '<span class="tag tag-green">Terminée ' + fmtDs(t.completed_at) + '</span>' : '')
-          + vBadges + '</div></div>'
-          + '<button onclick="event.stopPropagation();deleteTask(\'' + t.id + '\')" title="Supprimer définitivement" style="flex-shrink:0;width:32px;height:32px;border-radius:8px;border:1px solid rgba(232,41,74,0.2);background:rgba(232,41,74,0.06);color:var(--urg-1);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.12s" onmouseover="this.style.background=\'var(--urg-1)\';this.style.color=\'white\'" onmouseout="this.style.background=\'rgba(232,41,74,0.06)\';this.style.color=\'var(--urg-1)\'">🗑️</button>'
-          + '</div>';
-      });
-    } else {
-      html += '<div style="padding:8px 12px;font-size:12px;color:var(--text-muted);font-style:italic">Aucune tâche terminée</div>';
+  // ---- Sections par tab ----
+  if (_taskTab === 'today') {
+    const activeTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
+    const overdueT = activeTasks.filter(t => t.due_date && t.due_date < todayStr);
+    const todayT = activeTasks.filter(t => !t.due_date || t.due_date === todayStr);
+    const doneTodayT = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr));
+
+    function renderSection(id, lbl, lblCls, cntCls, tasks, defaultOpen, emptyMsg) {
+      const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : defaultOpen;
+      const togCls = open ? '' : ' closed';
+      return '<div class="ts-section">'
+        + '<div class="ts-section-hdr" onclick="toggleTaskSection(\'' + id + '\')">'
+        + '<span class="ts-section-lbl ' + lblCls + '">' + lbl + '</span>'
+        + '<span class="ts-section-count ' + cntCls + '">' + tasks.length + '</span>'
+        + '<span class="ts-toggle' + togCls + '">▾</span>'
+        + '</div>'
+        + '<div class="ts-body' + (open ? '' : ' hidden') + '" id="ts-body-' + id + '">'
+        + (tasks.length ? tasks.map(t => renderTaskRow2(t)).join('') : '<div style="padding:6px 0 8px;font-size:12px;color:var(--text-muted);font-style:italic">' + emptyMsg + '</div>')
+        + '</div></div>';
     }
-    html += '</div></div>';
+
+    html += renderSection('overdue', '⚠ En retard', 'tsl-overdue', 'tsc-overdue', overdueT, true, 'Aucune tâche en retard 🎉');
+    html += renderSection('today', '● Aujourd\'hui', 'tsl-today', 'tsc-today', todayT, true, 'Aucune tâche pour aujourd\'hui');
+    if (doneTodayT.length > 0) html += renderSection('donetoday', '✅ Terminées aujourd\'hui', 'tsl-done', 'tsc-done', doneTodayT, false, '');
+
+  } else if (_taskTab === 'all') {
+    const activeTasks = S.tasks.filter(t => t.column !== 'termine' && t.column !== 'en_attente' && matchT(t));
+    PRIORITY_GROUPS.forEach(g => {
+      const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
+      if (!group.length) return;
+      group.sort((a, b) => ((a.due_date||'9999') + (a.due_time||'99:99')).localeCompare((b.due_date||'9999') + (b.due_time||'99:99')));
+      html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
+      group.forEach(t => { html += renderTaskRow2(t, g.cls); });
+      html += '</div>';
+    });
+    if (!activeTasks.length) html += '<div class="tl-empty">✨ Aucune tâche active</div>';
+
+  } else if (_taskTab === 'watching') {
+    const watching = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
+    if (watching.length) {
+      watching.forEach(t => { html += renderTaskRow2(t, ''); });
+    } else {
+      html += '<div class="tl-empty">👁️ Aucune tâche à surveiller</div>';
+    }
   }
 
   el.innerHTML = html;
@@ -3068,9 +3235,44 @@ function renderTasksList() {
   });
   if (_descWasVisible) { const dw = document.getElementById('quickTaskDescWrap'); if (dw) dw.style.display = ''; }
   if (_savedInputs._focus) { const f = document.getElementById(_savedInputs._focus); if (f) f.focus(); }
-  // Restaurer l'état des sections collapsibles
-  if (_watchWasOpen) { const w = document.getElementById('watchList'); if (w) { w.style.display = 'block'; const arr = w.previousElementSibling?.querySelector('.tl-arrow'); if (arr) arr.classList.add('open'); } }
-  if (_archiveWasOpen) { const a = document.getElementById('archiveTasks'); if (a) { a.style.display = 'block'; const arr = a.previousElementSibling?.querySelector('.tl-arrow'); if (arr) arr.classList.add('open'); } }
+}
+
+function toggleTaskSection(id) {
+  const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : true;
+  _taskSectionState[id] = !open;
+  localStorage.setItem('taskSectionState', JSON.stringify(_taskSectionState));
+  const body = document.getElementById('ts-body-' + id);
+  if (body) body.classList.toggle('hidden', open);
+  const hdr = body && body.previousElementSibling;
+  if (hdr) { const tog = hdr.querySelector('.ts-toggle'); if (tog) tog.classList.toggle('closed', open); }
+}
+
+function completeTaskAnimated(id) {
+  const row = document.getElementById('trow_' + id);
+  if (row) {
+    row.classList.add('tl-completing');
+    setTimeout(() => completeTask(id), 400);
+  } else {
+    completeTask(id);
+  }
+}
+
+function confirmLotToDashboard(taskId) {
+  const t = S.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  const vIds = t.linked_vehicle_ids || [];
+  if (!confirm('Ces ' + vIds.length + ' véhicules vont passer en Confirmé. La tâche sera terminée.')) return;
+  vIds.forEach(vid => {
+    const v = S.vehicles.find(x => x.id === vid);
+    if (!v) return;
+    v.column = 'a_payer';
+    v.sub_stage = null;
+    addHist(v, 'Passé en Confirmé via tâche lot');
+  });
+  t.column = 'termine';
+  t.completed_at = today();
+  render(); saveToGH();
+  showToast('🏁 ' + vIds.length + ' véhicules ajoutés au Dashboard');
 }
 
 // -------- TASKS BOARD --------
@@ -3121,10 +3323,22 @@ function taskCard(t) {
   </div>`;
 }
 
+function toggleBriefingSidebar() {
+  _briefingSidebarHidden = !_briefingSidebarHidden;
+  localStorage.setItem('briefingSidebarHidden', _briefingSidebarHidden ? '1' : '0');
+  renderSidebarBriefing();
+}
+
 // -------- SIDEBAR BRIEFING --------
 function renderSidebarBriefing() {
   const panels = ['sidebarBriefing','sidebarBriefingAchats'].map(id => document.getElementById(id)).filter(Boolean);
   if (!panels.length) return;
+  // Toggle button state
+  const btn = document.getElementById('btn-toggle-sidebar');
+  if (btn) btn.style.opacity = _briefingSidebarHidden ? '0.45' : '1';
+  // Hide/show panels
+  panels.forEach(p => { p.style.display = _briefingSidebarHidden ? 'none' : ''; });
+  if (_briefingSidebarHidden) return;
   const panel = panels[0]; // used for early returns below; all panels get same HTML at end
 
   // --- BLOC 0 : Véhicule épinglé ---
