@@ -1417,6 +1417,14 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
       <input id="sWorkerUrl" class="form-input" type="url" placeholder="https://flease-scraper.xxx.workers.dev/scrape" style="width:100%;box-sizing:border-box">
       <p style="font-size:11px;color:var(--text-muted);margin:4px 0 0">Laisser vide pour utiliser GitHub Actions (plus lent)</p>
     </div>
+    <div class="form-group" style="margin-top:16px;padding:12px 14px;background:var(--bg-2,#f5f5f5);border-radius:8px;border:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;margin-bottom:4px">🔖 Bookmarklet — import direct depuis Chrome</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">Ouvre une annonce LaCentrale <strong>ou</strong> LeBonCoin dans Chrome, clique ce bouton → le véhicule apparaît dans le CRM. Contourne l'anti-bot de LaCentrale.</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a id="bookmarkletLink" style="display:inline-block;padding:8px 14px;background:var(--primary,#4f46e5);color:white;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;cursor:grab;user-select:none" draggable="true">📥 Importer → Flease CRM</a>
+        <span style="font-size:12px;color:var(--text-muted)">← <strong>Glisse</strong> dans la barre de favoris Chrome</span>
+      </div>
+    </div>
     <div class="form-group"><label class="form-label">Email alertes</label><input class="form-input" id="sEmail" placeholder="alex@flease.fr" type="email"></div>
     <div class="form-group"><label class="form-label">Clé Anthropic (import photo → tâches)</label><input class="form-input" id="sAnthropicKey" type="password" placeholder="sk-ant-…"><div style="font-size:11px;color:var(--text-muted);margin-top:4px">Stockée uniquement sur cet appareil, jamais envoyée à GitHub.</div></div>
     <div class="form-group"><label class="form-label">Rappel après (jours sans mouvement)</label><input class="form-input" id="sReminder" type="number" value="3" min="1" max="30"></div>
@@ -5122,6 +5130,49 @@ function toggleDarkMode(on) {
   S.settings.dark_mode = on;
 }
 
+function _buildBookmarklet() {
+  const crmUrl = 'https://alexguichard.github.io/crm-kanban/';
+  const code = `(function(){
+var s=[...document.querySelectorAll('script[type="application/ld+json"]')],car=null,i,d,a;
+for(i=0;i<s.length;i++){try{d=JSON.parse(s[i].textContent);a=Array.isArray(d)?d:[d];car=a.find(function(x){return x['@type']==='Car'||x['@type']==='Product';});if(car)break;}catch(e){}}
+var v=null;
+if(car){var o=Array.isArray(car.offers)?car.offers[0]:(car.offers||{});var m=location.href.match(/annonce[-_](\d+)/);var fm={'Diesel':'Diesel','Essence':'Essence','\\u00c9lectrique':'\\u00c9lectrique','Hybride':'Hybride','Electric':'\\u00c9lectrique','Gasoline':'Essence'};var bm={'Automatique':'Automatique','Manuelle':'Manuelle','Automatic':'Automatique','Manual':'Manuelle'};v={source:'LaCentrale',lbc_id:m?m[1]:'',url_annonce:location.href,marque:(car.brand&&car.brand.name)||car.manufacturer||'',modele:car.model||car.name||'',annee:car.vehicleModelDate?parseInt(car.vehicleModelDate):null,km:parseInt(String((car.mileageFromOdometer&&car.mileageFromOdometer.value)||0).replace(/\\D/g,'')||0),prix_demande:o.price?parseInt(o.price):null,carburant:fm[car.fuelType||'']||car.fuelType||'',boite:bm[car.vehicleTransmission||'']||car.vehicleTransmission||'',couleur:car.color||car.vehicleColor||'',localisation:(car.availableAtOrFrom&&car.availableAtOrFrom.address&&car.availableAtOrFrom.address.addressLocality)||'',fournisseur_nom:(car.seller&&car.seller.name)||'',fournisseur_tel:(car.seller&&car.seller.telephone)||'',fournisseur_type:(car.seller&&car.seller['@type'])==='Organization'?'pro':'particulier',photo:Array.isArray(car.image)?car.image[0]:(typeof car.image==='string'?car.image:null),titre:car.name||'',description:(car.description||'').slice(0,300)};
+}else{var nd=document.getElementById('__NEXT_DATA__');if(!nd){alert('Aucune donn\\u00e9e v\\u00e9hicule trouv\\u00e9e.\\n(LeBonCoin et LaCentrale uniquement)');return;}try{var data=JSON.parse(nd.textContent),pp=(data.props&&data.props.pageProps)||{},ad=pp.ad||(pp.adView&&pp.adView.ad)||(pp.initialState&&pp.initialState.adView&&pp.initialState.adView.adData&&pp.initialState.adView.adData.ad);if(!ad){alert('Donn\\u00e9es LBC introuvables.');return;}var attrs={};for(var j=0;j<(ad.attributes||[]).length;j++){var at=ad.attributes[j];attrs[at.key||'']=at.value_label||at.value||'';}var pr=ad.price||[],prix=pr[0]?(parseInt(String(pr[0]).replace(/\\D/g,''))||null):null;var imgs=ad.images||{},photo=(imgs.urls_large||imgs.urls||imgs.urls_thumb||[])[0]||null;var loc2=ad.location||{},city=loc2.city||loc2.region_label||'',localisation=city+(loc2.zipcode?' ('+loc2.zipcode.slice(0,2)+')':'');var owner=ad.owner||{},phones=owner.phone_numbers||[];var reg=attrs.regdate||'',annee=reg.length>=4?parseInt(reg.slice(0,4)):null;var bm2={automatic:'Automatique',automatique:'Automatique',manual:'Manuelle',manuelle:'Manuelle',semi_auto:'Semi-auto'};var fm2={essence:'Essence',gasoline:'Essence',diesel:'Diesel',electric:'\\u00c9lectrique',hybrid:'Hybride',lpg:'GPL'};v={source:'LeBonCoin',lbc_id:String(ad.list_id||''),url_annonce:location.href,marque:attrs.brand||'',modele:attrs.model||ad.subject||'',annee:annee,date_mec:attrs.issuance_date||(annee?String(annee):''),km:parseInt((attrs.mileage||'0').replace(/\\D/g,'')||'0'),prix_demande:prix,carburant:fm2[(attrs.fuel||'').toLowerCase()]||attrs.fuel||'',boite:bm2[(attrs.gearbox_type||attrs.gearbox||attrs.transmission||'').toLowerCase()]||'',couleur:attrs.vehicule_color||attrs.color||'',localisation:localisation,fournisseur_nom:owner.name||'',fournisseur_tel:phones[0]||owner.phone||'',fournisseur_type:owner.type==='pro'?'pro':'particulier',photo:photo,titre:ad.subject||'',description:(ad.body||'').slice(0,300)};}catch(e){alert('Erreur LBC: '+e.message);return;}}
+if(!v){alert('Donn\\u00e9es introuvables.');return;}
+var enc=btoa(unescape(encodeURIComponent(JSON.stringify(v))));
+window.open('${crmUrl}#import='+enc,'_blank');
+})()`;
+  return 'javascript:' + code.replace(/\n/g, '');
+}
+
+async function _processImportHash() {
+  const hash = location.hash;
+  if (!hash.startsWith('#import=')) return;
+  history.replaceState(null, '', location.pathname + location.search);
+  let raw;
+  try {
+    raw = JSON.parse(decodeURIComponent(escape(atob(hash.slice(8)))));
+  } catch(e) { showToast('❌ Données import invalides'); return; }
+
+  const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
+  if (raw.lbc_id && existingIds.has(raw.lbc_id)) {
+    showToast('⚠ Véhicule déjà présent dans le CRM');
+    return;
+  }
+  const vehicle = {
+    id: crypto.randomUUID(),
+    column: 'sourcing', sub_stage: 'a_contacter', priority: 3,
+    documents: { carte_grise: false, facture_achat: false, certificat_cession: false },
+    created_at: new Date().toISOString().slice(0, 19),
+    historique: [{ date: new Date().toISOString().slice(0, 10), action: `Importé via bookmarklet depuis ${raw.source || 'annonce'}` }],
+    ...raw,
+  };
+  S.vehicles.push(vehicle);
+  await saveToGH();
+  render(); renderSidebarBriefing();
+  showToast(`✅ ${vehicle.marque} ${vehicle.modele} importé depuis ${vehicle.source}`);
+}
+
 async function openSettings() {
   document.getElementById('sToken').value = S.settings.github_token || '';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
@@ -5134,6 +5185,8 @@ async function openSettings() {
   document.getElementById('sDarkMode').checked = S.settings.dark_mode || localStorage.getItem('dark_mode')==='1' || false;
   document.getElementById('sAlertSound').checked = S.settings.alert_sound !== false;
   document.getElementById('sNotifications').checked = S.settings.notifications === true;
+  const bl = document.getElementById('bookmarkletLink');
+  if (bl) bl.href = _buildBookmarklet();
   openModal('ovSettings');
 }
 
@@ -5486,6 +5539,7 @@ async function init() {
   S.settings.github_token = token;
   const ok = await loadFromGH();
   if (ok) { render(); renderSidebarBriefing(); await loadBriefing(); }
+  await _processImportHash();
   // Auto-sync toutes les 30s
   setInterval(async () => {
     if (!S.settings.github_token) return;
