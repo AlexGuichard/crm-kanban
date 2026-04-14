@@ -1412,6 +1412,11 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     </div>
     <div class="form-group"><label class="form-label">Token GitHub (ghp_…)</label><input class="form-input" id="sToken" type="password" placeholder="ghp_…"></div>
     <div class="form-group"><label class="form-label">Dépôt GitHub</label><input class="form-input" id="sRepo" placeholder="AlexGuichard/crm-kanban"></div>
+    <div class="form-group">
+      <label style="display:block;font-size:13px;font-weight:600;margin:12px 0 4px">URL Worker CF <span style="font-weight:400;color:var(--text-muted)">(import rapide)</span></label>
+      <input id="sWorkerUrl" class="form-input" type="url" placeholder="https://flease-scraper.xxx.workers.dev/scrape" style="width:100%;box-sizing:border-box">
+      <p style="font-size:11px;color:var(--text-muted);margin:4px 0 0">Laisser vide pour utiliser GitHub Actions (plus lent)</p>
+    </div>
     <div class="form-group"><label class="form-label">Email alertes</label><input class="form-input" id="sEmail" placeholder="alex@flease.fr" type="email"></div>
     <div class="form-group"><label class="form-label">Clé Anthropic (import photo → tâches)</label><input class="form-input" id="sAnthropicKey" type="password" placeholder="sk-ant-…"><div style="font-size:11px;color:var(--text-muted);margin-top:4px">Stockée uniquement sur cet appareil, jamais envoyée à GitHub.</div></div>
     <div class="form-group"><label class="form-label">Rappel après (jours sans mouvement)</label><input class="form-input" id="sReminder" type="number" value="3" min="1" max="30"></div>
@@ -1542,7 +1547,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 <div class="overlay" id="ovLBC" onclick="overlayClick(event,'ovLBC')">
   <div class="modal" style="max-width:520px">
     <div class="modal-header">
-      <div class="modal-title">🔗 Importer depuis LeBonCoin</div>
+      <div class="modal-title">🔗 Importer depuis LBC / LaCentrale</div>
       <button class="close-btn" onclick="closeModal('ovLBC')">×</button>
     </div>
     <div class="modal-body">
@@ -1558,9 +1563,9 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
           <span id="lbcProgressText">En attente…</span>
         </div>
         <div class="lbc-steps-row">
-          <span class="lbc-progress-step" id="lstep1">1. Déclenchement</span>
-          <span class="lbc-progress-step" id="lstep2">2. Scraping LBC</span>
-          <span class="lbc-progress-step" id="lstep3">3. Analyse</span>
+          <span class="lbc-progress-step" id="lstep1">1. Appel</span>
+          <span class="lbc-progress-step" id="lstep2">2. Scraping</span>
+          <span class="lbc-progress-step" id="lstep3">3. Parse</span>
           <span class="lbc-progress-step" id="lstep4">4. Sauvegarde</span>
           <span class="lbc-progress-step" id="lstep5">5. Terminé</span>
         </div>
@@ -4925,53 +4930,109 @@ async function triggerLBCImport() {
   const urlsRaw = document.getElementById('lbcUrls').value.trim();
   if (!urlsRaw) return;
   const validUrls = urlsRaw.split('\n').map(u => u.trim()).filter(u => u.startsWith('http'));
-  if (!validUrls.length) {
-    lbcShowResult(false, '❌ Aucune URL valide trouvée');
-    return;
-  }
-  const token = S.settings.github_token;
-  if (!token) {
-    lbcShowResult(false, '❌ Token GitHub manquant — configure dans ⚙️ Paramètres');
-    return;
-  }
+  if (!validUrls.length) { lbcShowResult(false, '❌ Aucune URL valide trouvée'); return; }
 
-  const repo = S.settings.github_repo || 'AlexGuichard/crm-kanban';
+  const token = S.settings.github_token;
+  if (!token) { lbcShowResult(false, '❌ Token GitHub manquant — configure dans ⚙️ Paramètres'); return; }
+
+  const workerUrl = S.settings.worker_url;
   const btn = document.getElementById('lbcImportBtn');
   btn.disabled = true;
   btn.textContent = 'Lancement…';
-
-  // Réinitialise la progression
   document.getElementById('lbcProgressWrap').classList.add('visible');
   document.getElementById('lbcResult').style.display = 'none';
   document.getElementById('lbcProgressFill').style.background = '';
   document.getElementById('lbcProgressFill').classList.add('pulse');
-  lbcSetStep(1, 8, `⏳ Déclenchement pour ${validUrls.length} annonce(s)…`);
 
+  if (workerUrl) {
+    await _importViaWorker(validUrls, workerUrl);
+  } else {
+    _importViaGHActions(validUrls, token);
+  }
+}
+
+async function _importViaWorker(urls, workerUrl) {
+  lbcSetStep(1, 10, `⏳ Appel du Worker pour ${urls.length} annonce(s)…`);
+  const added = [], errors = [];
+
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    lbcSetStep(2, 20 + (i / urls.length) * 40, `🔍 Scraping annonce ${i + 1}/${urls.length}…`);
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 45000);
+      const resp = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+
+      const data = await resp.json();
+      if (!resp.ok || data.error) throw new Error(data.error || `Worker HTTP ${resp.status}`);
+
+      lbcSetStep(3, 60 + (i / urls.length) * 20, `⚙️ Parse véhicule ${i + 1}…`);
+
+      const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
+      if (data.lbc_id && existingIds.has(data.lbc_id)) {
+        errors.push(`${url}: déjà présent dans le CRM`);
+        continue;
+      }
+      S.vehicles.push(data);
+      added.push(`${data.marque} ${data.modele} ${data.annee || '?'} — ${(data.km || 0).toLocaleString()} km`);
+    } catch (err) {
+      errors.push(`${url}: ${err.name === 'AbortError' ? 'Timeout (45s)' : err.message}`);
+    }
+  }
+
+  if (!added.length && errors.length) {
+    showToast('⚠ Worker indisponible — basculement GitHub Actions');
+    lbcSetStep(1, 8, '⚙️ Basculement GitHub Actions…');
+    _importViaGHActions(urls, S.settings.github_token);
+    return;
+  }
+
+  lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
+  await saveToGH();
+  render(); renderSidebarBriefing();
+  lbcShowResult(true,
+    `✅ ${added.length} véhicule(s) importé(s)` +
+    (errors.length ? ` · ⚠ ${errors.length} erreur(s): ${errors.map(e => e.split(': ')[1]).join(', ')}` : '')
+  );
+}
+
+function _importViaGHActions(urls, token) {
+  const repo = S.settings.github_repo || 'AlexGuichard/crm-kanban';
+  const btn = document.getElementById('lbcImportBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Lancement…'; }
   _lbcStartTime = Date.now();
   const dispatchTime = _lbcStartTime;
+  lbcSetStep(1, 8, `⏳ Déclenchement pour ${urls.length} annonce(s)…`);
 
-  try {
-    const resp = await fetch(
-      `https://api.github.com/repos/${repo}/actions/workflows/lbc_import.yml/dispatches`,
-      {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ref: 'main', inputs: { lbc_urls: validUrls.join('\n') } })
-      }
-    );
-
+  fetch(
+    `https://api.github.com/repos/${repo}/actions/workflows/lbc_import.yml/dispatches`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref: 'main', inputs: { lbc_urls: urls.join('\n') } })
+    }
+  ).then(async resp => {
     if (resp.status === 204) {
-      lbcSetStep(1, 12, `✅ Workflow lancé — scraping de ${validUrls.length} annonce(s)…`);
-      // Démarre le polling
+      lbcSetStep(1, 12, `✅ Workflow lancé — scraping de ${urls.length} annonce(s)…`);
       clearTimeout(_lbcPollTimer);
       _lbcPollTimer = setTimeout(() => lbcPollRun(token, repo, dispatchTime), 4000);
     } else {
       const err = await resp.json().catch(() => ({}));
       lbcShowResult(false, `❌ GitHub (${resp.status}): ${err.message || 'Erreur inconnue'}`);
+      const b = document.getElementById('lbcImportBtn');
+      if (b) { b.disabled = false; b.textContent = '🔗 Importer'; b.onclick = triggerLBCImport; }
     }
-  } catch(e) {
-    lbcShowResult(false, `❌ Erreur réseau: ${e.message}`);
-  }
+  }).catch(e => {
+    lbcShowResult(false, `❌ Réseau: ${e.message}`);
+    const b = document.getElementById('lbcImportBtn');
+    if (b) { b.disabled = false; b.textContent = '🔗 Importer'; b.onclick = triggerLBCImport; }
+  });
 }
 
 function toggleDarkMode(on) {
@@ -4983,6 +5044,7 @@ function toggleDarkMode(on) {
 async function openSettings() {
   document.getElementById('sToken').value = S.settings.github_token || '';
   document.getElementById('sRepo').value = S.settings.github_repo||'';
+  document.getElementById('sWorkerUrl').value = S.settings.worker_url || '';
   document.getElementById('sEmail').value = S.settings.email||'';
   const ak = await secureGet('anthropic_key');
   document.getElementById('sAnthropicKey').value = ak||'';
@@ -4998,6 +5060,7 @@ async function saveSettings() {
   const token = document.getElementById('sToken').value.trim();
   if (token) { S.settings.github_token = token; await secureSet('gh_token', token); }
   S.settings.github_repo = document.getElementById('sRepo').value.trim();
+  S.settings.worker_url = document.getElementById('sWorkerUrl').value.trim();
   S.settings.email = document.getElementById('sEmail').value.trim();
   S.settings.reminder_days = Number(document.getElementById('sReminder').value)||3;
   S.settings.show_archive = document.getElementById('sArchive').checked;
