@@ -2045,7 +2045,7 @@ let pendingTransportId = null;
 let activeSS = 'a_contacter'; // active sourcing sub-stage tab
 let searchQ = '';
 let boardView = localStorage.getItem('boardView') || 'liste';
-let listSortField = 'updated_at';
+let listSortField = 'created_at'; // par défaut : plus récemment ajouté en haut
 let listSortDir = -1;
 let ghSha = null;
 let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
@@ -2602,8 +2602,12 @@ function setBoardView(v) {
 }
 
 function sortList(field) {
-  if (listSortField === field) listSortDir *= -1;
-  else { listSortField = field; listSortDir = -1; }
+  if (listSortField === field) {
+    if (listSortDir === -1) { listSortDir = 1; }           // desc → asc
+    else { listSortField = 'created_at'; listSortDir = -1; } // asc → reset (défaut)
+  } else {
+    listSortField = field; listSortDir = -1; // nouvelle colonne → desc
+  }
   renderBoardList();
 }
 
@@ -2622,6 +2626,8 @@ function renderBoardList() {
     } else if (listSortField === 'updated_at') {
       va = a.updated_at || (a.historique && a.historique.length ? a.historique[a.historique.length-1].date : (a.created_at||''));
       vb = b.updated_at || (b.historique && b.historique.length ? b.historique[b.historique.length-1].date : (b.created_at||''));
+    } else if (listSortField === 'created_at') {
+      va = a.created_at || ''; vb = b.created_at || '';
     } else if (listSortField === 'prix') {
       va = Number(a.prix_negocie || a.prix_demande) || 0;
       vb = Number(b.prix_negocie || b.prix_demande) || 0;
@@ -2641,7 +2647,8 @@ function renderBoardList() {
   const sh = (field, label) => {
     const on = listSortField === field;
     const arrow = on ? (listSortDir === -1 ? '↓' : '↑') : '↕';
-    return `<th onclick="sortList('${field}')">${label}<span class="vt-sort${on?' on':''}">${arrow}</span></th>`;
+    const title = on ? (listSortDir === -1 ? 'Trié décroissant — cliquer pour croissant' : 'Trié croissant — cliquer pour réinitialiser') : 'Cliquer pour trier';
+    return `<th onclick="sortList('${field}')" title="${title}" style="cursor:pointer">${label}<span class="vt-sort${on?' on':''}">${arrow}</span></th>`;
   };
 
   const reminderDays = S.settings.reminder_days || 3;
@@ -2695,9 +2702,12 @@ function renderBoardList() {
 
     const isSel = _selectedVehicles.has(v.id);
     const urg = v.priority === 1 ? '#ef4444' : v.priority === 2 ? '#f97316' : '#e2e8f0';
-    return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}">
+    const stale72h = v.column === 'sourcing' && daysSince !== null && daysSince >= 3;
+    const staleRow = stale72h ? 'border-left:3px solid var(--urg-1)' : '';
+    const staleBadge = stale72h ? `<span title="${daysSince}j sans modif" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--urg-1);color:white;font-size:9px;font-weight:800;margin-left:5px;vertical-align:middle;flex-shrink:0">!</span>` : '';
+    return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}${staleRow?';'+staleRow:''}">
       <td onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
-      <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong></td>
+      <td style="white-space:nowrap"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${staleBadge}</td>
       <td>${colHtml}</td>
       <td>${price ? fmtN(price) : '—'}</td>
       <td style="color:var(--text-muted)">${v.annee || '—'}</td>
@@ -2722,7 +2732,7 @@ function renderBoardList() {
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
     <thead><tr>
       <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} data-ids='${JSON.stringify(vehicles.map(v=>v.id))}' onchange="toggleAllVehicles(this.checked,JSON.parse(this.dataset.ids))"></th>
-      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('annee','Année')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>📞 Téléphone</th><th>📧 Email</th><th>Dernière action</th>
+      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('annee','Année')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>📞 Téléphone</th><th>📧 Email</th>${sh('updated_at','Dernière action')}
     </tr></thead>
     <tbody>${rows || '<tr><td colspan="11" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
   </table></div>`;
@@ -2761,6 +2771,13 @@ function openStagePopover(event, vehicleId) {
       onmouseout="this.style.background='${isConfirmed?'rgba(22,163,74,0.1)':'transparent'}'"
       onclick="confirmVehicleInline('${vehicleId}')">
       <span class="stage-popover-check">${isConfirmed?'✓':''}</span>✅ Confirmé
+    </div>
+    <div class="stage-popover-item"
+      style="color:#e8294a;background:transparent;font-weight:700;margin-top:1px"
+      onmouseover="this.style.background='rgba(232,41,74,0.08)'"
+      onmouseout="this.style.background='transparent'"
+      onclick="cancelVehicleInline('${vehicleId}')">
+      <span class="stage-popover-check"></span>❌ Annulé
     </div>`;
   pop.innerHTML = stageItems + confirmedItem;
   document.body.appendChild(pop);
@@ -2806,6 +2823,23 @@ function confirmVehicleInline(vehicleId) {
   renderPipelineStrip();
   updatePdBadge();
   showToast('✅ ' + (v.marque||'Véhicule') + ' ' + (v.modele||'') + ' confirmé !');
+}
+
+function cancelVehicleInline(vehicleId) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v) return;
+  closeStagePopover();
+  const name = ((v.marque||'') + ' ' + (v.modele||'')).trim() || 'ce véhicule';
+  if (!confirm('Marquer "' + name + '" comme Deal Perdu ?')) return;
+  v.column = 'deal_perdu';
+  v.sub_stage = null;
+  v.archived_at = today();
+  addHist(v, 'Deal perdu (annulé depuis tableau)');
+  saveToGH();
+  renderBoardList();
+  renderPipelineStrip();
+  updatePdBadge();
+  showToast('❌ ' + name + ' passé en Deal Perdu');
 }
 
 // -------- INLINE CONTACT FIELD --------
