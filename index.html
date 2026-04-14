@@ -3335,9 +3335,23 @@ function renderSidebarBriefing() {
   if (!panels.length) return;
   // Toggle button state
   const btn = document.getElementById('btn-toggle-sidebar');
-  if (btn) btn.style.opacity = _briefingSidebarHidden ? '0.45' : '1';
+  if (btn) { btn.style.opacity = _briefingSidebarHidden ? '0.45' : '1'; btn.title = _briefingSidebarHidden ? 'Afficher le panneau' : 'Masquer le panneau'; }
   // Hide/show panels
-  panels.forEach(p => { p.style.display = _briefingSidebarHidden ? 'none' : ''; });
+  panels.forEach(p => { p.style.setProperty('display', _briefingSidebarHidden ? 'none' : '', 'important'); });
+  // Show/hide "réafficher" ghost placeholder
+  let ghost = document.getElementById('sidebar-show-ghost');
+  if (_briefingSidebarHidden) {
+    if (!ghost) {
+      ghost = document.createElement('div');
+      ghost.id = 'sidebar-show-ghost';
+      ghost.style.cssText = 'width:32px;flex-shrink:0;display:flex;align-items:flex-start;padding-top:14px';
+      ghost.innerHTML = '<button onclick="toggleBriefingSidebar()" style="writing-mode:vertical-rl;text-orientation:mixed;padding:10px 4px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface-2);cursor:pointer;font-size:10px;font-weight:600;color:var(--text-muted);font-family:inherit;white-space:nowrap" title="Afficher le panneau">Panneau ›</button>';
+      const layout = panels[0].parentElement;
+      if (layout) layout.appendChild(ghost);
+    }
+    return;
+  }
+  if (ghost) ghost.remove();
   if (_briefingSidebarHidden) return;
   const panel = panels[0]; // used for early returns below; all panels get same HTML at end
 
@@ -3425,6 +3439,9 @@ function renderSidebarBriefing() {
   ].filter(Boolean).join('') || `<div class="bp-empty">✅ Aucune alerte CRM</div>`;
 
   const html = `
+    <div style="display:flex;justify-content:flex-end;padding:6px 8px 0">
+      <button onclick="toggleBriefingSidebar()" style="display:flex;align-items:center;gap:4px;padding:4px 10px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface-2);cursor:pointer;font-size:11px;font-weight:600;color:var(--text-muted);font-family:inherit" title="Masquer ce panneau">← Masquer</button>
+    </div>
     ${pinnedHTML}
     <div class="bp-card">
       <div class="bp-card-title">🔴 ${urgTitle}</div>
