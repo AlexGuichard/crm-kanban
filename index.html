@@ -587,11 +587,18 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .email-label { font-size:9px;background:var(--primary);color:#fff;border-radius:4px;padding:2px 6px;font-weight:700; }
 .email-label.sans-reponse { background:#e0e7ff;color:#4338ca; }
 
-/* DETAIL */
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.detail-field { background: var(--surface-2); border: 1px solid var(--border-2); border-radius: 10px; padding: 10px 12px; }
-.detail-field label { display: block; font-size: 10.5px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; font-weight: 700; }
-.detail-field value { display: block; font-size: 14px; font-weight: 700; color: var(--primary); }
+/* DETAIL — Option A compact rows */
+.detail-rows { margin: 0; }
+.detail-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); min-height: 34px; }
+.detail-row:last-child { border-bottom: none; }
+.detail-row-label { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; width: 108px; flex-shrink: 0; }
+.detail-row-value { flex: 1; font-size: 13px; color: var(--text); min-width: 0; }
+.detail-row-value input { border: none; background: transparent; font-size: 13px; color: var(--text); width: 100%; padding: 0; font-family: inherit; outline: none; cursor: text; }
+.detail-row-value input:focus { color: var(--accent); }
+.detail-row-value input::placeholder { color: var(--text-muted); opacity: 0.5; }
+.detail-row-value select { border: none; background: transparent; font-size: 13px; color: var(--text); width: 100%; padding: 0; font-family: inherit; outline: none; cursor: pointer; -webkit-appearance: none; }
+.detail-row-value select:focus { color: var(--accent); }
+.detail-section { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 14px 0 2px; }
 .timeline { display: flex; flex-direction: column; gap: 7px; }
 .tl-item { display: flex; gap: 8px; font-size: 12px; align-items: flex-start; }
 .tl-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); margin-top: 4px; flex-shrink: 0; }
@@ -3987,7 +3994,8 @@ function openDetail(id) {
 
   // ---- TAB 0: Détails (photo + info + fournisseur + docs + comments) ----
   const photoHtml = v.photo ? `<div class="drawer-photo"><img src="${esc(v.photo)}" onerror="this.parentElement.style.display='none'"></div>` : '';
-  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:8px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--accent);font-size:13px;font-weight:600">🔗 Voir l'annonce LeBonCoin</a></div>` : '';
+  const sourceLabel = v.source === 'LaCentrale' ? 'LaCentrale' : v.source === 'LeBonCoin' ? 'LeBonCoin' : 'l\'annonce';
+  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:10px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--accent);font-size:13px;font-weight:600">🔗 Voir l'annonce ${sourceLabel}</a></div>` : '';
 
   let dealLostBanner = '';
   if (v.column === 'deal_perdu') {
@@ -3997,39 +4005,31 @@ function openDetail(id) {
     </div>`;
   }
 
-  const _i = (field, val, opts) => inlineInput(v.id, field, val, opts);
-  const infoGridHtml = `
-    <div class="detail-grid">
-      <div class="detail-field"><label>Kilométrage</label>${_i('km', v.km||v.kilometrage||'', {type:'number',placeholder:'45000'})}</div>
-      <div class="detail-field"><label>Carburant</label>
-        <select onchange="saveInlineField('${v.id}','carburant',this.value)" style="border:none;background:transparent;font-size:14px;font-weight:700;color:var(--primary);width:100%;padding:0;font-family:inherit;outline:none;cursor:pointer">
-          ${['Essence','Diesel','Hybride','Électrique','GPL',''].map(c=>'<option'+(c===(v.carburant||'')?' selected':'')+'>'+c+'</option>').join('')}
-        </select>
-      </div>
-      <div class="detail-field"><label>Prix demandé</label>${_i('prix_demande', v.prix_demande||v.prix||'', {type:'number',placeholder:'15000'})}</div>
-      <div class="detail-field"><label>Boîte</label>
-        <select onchange="saveInlineField('${v.id}','boite',this.value)" style="border:none;background:transparent;font-size:14px;font-weight:700;color:var(--primary);width:100%;padding:0;font-family:inherit;outline:none;cursor:pointer">
-          ${['Automatique','Manuelle','Semi-auto',''].map(b=>'<option'+(b===(v.boite||'')?' selected':'')+'>'+b+'</option>').join('')}
-        </select>
-      </div>
-      <div class="detail-field"><label>Prix négocié</label>${_i('prix_negocie', v.prix_negocie||'', {type:'number',placeholder:'—',style:'color:var(--accent)'})}</div>
-      <div class="detail-field"><label>Millésime</label>${_i('annee', v.annee||'', {type:'number',placeholder:'2024'})}</div>
-      <div class="detail-field"><label>Couleur</label>${_i('couleur', v.couleur||'', {placeholder:'Gris'})}</div>
-      <div class="detail-field"><label>Localisation</label>${_i('localisation', v.localisation||'', {placeholder:'Ville'})}</div>
-      <div class="detail-field"><label>VIN</label>${_i('vin', v.vin||'', {placeholder:'VF1…'})}</div>
-      <div class="detail-field"><label>Immat.</label>${_i('immatriculation', v.immatriculation||'', {placeholder:'AB-123-CD'})}</div>
-    </div>`;
+  const _i = (field, val, opts = {}) => inlineInput(v.id, field, val, opts);
+  const _row = (label, content) => `<div class="detail-row"><span class="detail-row-label">${label}</span><span class="detail-row-value">${content}</span></div>`;
+  const _sel = (field, options, current) => `<select onchange="saveInlineField('${v.id}','${field}',this.value)">${options.map(o=>`<option${o===current?' selected':''}>${o}</option>`).join('')}</select>`;
+
+  const infoGridHtml = `<div class="detail-rows">
+    ${_row('Km', _i('km', v.km||v.kilometrage||'', {type:'number',placeholder:'—'}))}
+    ${_row('Prix demandé', _i('prix_demande', v.prix_demande||v.prix||'', {type:'number',placeholder:'—'}))}
+    ${_row('Prix négocié', _i('prix_negocie', v.prix_negocie||'', {type:'number',placeholder:'—',style:'color:var(--accent)'}))}
+    ${_row('Millésime', _i('annee', v.annee||'', {type:'number',placeholder:'—'}))}
+    ${_row('Carburant', _sel('carburant', ['','Essence','Diesel','Hybride','Électrique','GPL'], v.carburant||''))}
+    ${_row('Boîte', _sel('boite', ['','Automatique','Manuelle','Semi-auto'], v.boite||''))}
+    ${_row('Couleur', _i('couleur', v.couleur||'', {placeholder:'—'}))}
+    ${_row('Localisation', _i('localisation', v.localisation||'', {placeholder:'—'}))}
+    ${_row('VIN', _i('vin', v.vin||'', {placeholder:'—'}))}
+    ${_row('Immat.', _i('immatriculation', v.immatriculation||'', {placeholder:'—'}))}
+  </div>`;
 
   const fournisseurHtml = `
-    <div class="drawer-section-title" style="margin-top:14px">🏢 Fournisseur</div>
-    <div class="detail-grid">
-      <div class="detail-field"><label>Nom</label>${_i('fournisseur_nom', v.fournisseur_nom||v.vendeur||'', {placeholder:'Nom du fournisseur'})}</div>
-      <div class="detail-field"><label>Téléphone</label>${_i('fournisseur_tel', v.fournisseur_tel||'', {type:'tel',placeholder:'06…',style:'color:var(--accent)'})}</div>
-      <div class="detail-field" style="grid-column:1/-1"><label>Email</label>${_i('fournisseur_email', v.fournisseur_email||'', {type:'email',placeholder:'contact@…'})}</div>
-      <div style="grid-column:1/-1;margin-top:6px">
-        <button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button>
-      </div>
-    </div>`;
+    <div class="detail-section">Fournisseur</div>
+    <div class="detail-rows">
+      ${_row('Nom', _i('fournisseur_nom', v.fournisseur_nom||v.vendeur||'', {placeholder:'—'}))}
+      ${_row('Téléphone', _i('fournisseur_tel', v.fournisseur_tel||'', {type:'tel',placeholder:'—',style:'color:var(--accent)'}))}
+      ${_row('Email', _i('fournisseur_email', v.fournisseur_email||'', {type:'email',placeholder:'—'}))}
+    </div>
+    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button></div>`;
 
   const docsHtml = showDocs ? `
     <div class="drawer-section-title" style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
@@ -4045,12 +4045,12 @@ function openDetail(id) {
     </div>` : '';
 
   const transportHtml = v.transport_methode ? `
-    <div class="drawer-section-title" style="margin-top:14px">🚛 Transport</div>
-    <div class="detail-grid">
-      <div class="detail-field"><label>Mode</label><value>${v.transport_methode==='camion'?'🚛 Camion':'🚗 Convoyage'}</value></div>
-      <div class="detail-field"><label>Date départ</label><value>${fmtD(v.transport_date)}</value></div>
-    </div>
-    ${v.transport_notes ? `<div style="font-size:13px;margin-top:8px;color:var(--text-muted)">${esc(v.transport_notes)}</div>` : ''}` : '';
+    <div class="detail-section">🚛 Transport</div>
+    <div class="detail-rows">
+      ${_row('Mode', v.transport_methode==='camion'?'🚛 Camion':'🚗 Convoyage')}
+      ${_row('Date départ', fmtD(v.transport_date))}
+      ${v.transport_notes ? _row('Notes', esc(v.transport_notes)) : ''}
+    </div>` : '';
 
   // Comments section (directly in details tab)
   const commentHtml = `
