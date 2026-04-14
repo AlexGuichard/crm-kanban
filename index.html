@@ -1999,11 +1999,12 @@ const SUB_STAGES = [
 ];
 const COLUMNS = [
   { key:'sourcing', label:'📋 Sourcing' },
-  { key:'a_payer', label:'📋 Ajouter au dashboard' },
-  { key:'en_transport', label:'🚛 En Transport' },
-  { key:'livre', label:'✅ Livré' },
+  { key:'a_payer', label:'✅ Confirmé' },
   { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
-  { key:'archive', label:'🗄️ Archive' }
+  { key:'archive', label:'🗄️ Archive' },
+  // Colonnes legacy — non affichées, conservées pour la compatibilité des données existantes
+  { key:'en_transport', label:'🚛 En Transport', hidden:true },
+  { key:'livre', label:'✅ Livré', hidden:true },
 ];
 const TASK_COLS = [
   { key:'a_faire', label:'📝 À faire' },
@@ -2583,6 +2584,7 @@ function renderBoard() {
     window._focusIds = null;
   }
   const cols = COLUMNS.filter(c => {
+    if (c.hidden) return false;
     if (c.key === 'archive') return S.settings.show_archive;
     return true;
   });
@@ -2608,8 +2610,8 @@ function sortList(field) {
 function renderBoardList() {
   const el = document.getElementById('board-list');
   if (!el) return;
-  const COL_LABEL = { sourcing:'Sourcing', a_payer:'✅ Confirmé', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
-  const COL_COLOR = { sourcing:'61,85,240', a_payer:'22,163,74', en_transport:'124,58,237', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
+  const COL_LABEL = { sourcing:'Sourcing', a_payer:'Confirmé', en_transport:'Confirmé', livre:'Confirmé', deal_perdu:'Deal Perdu', archive:'Archive' };
+  const COL_COLOR = { sourcing:'61,85,240', a_payer:'22,163,74', en_transport:'22,163,74', livre:'22,163,74', deal_perdu:'232,41,74', archive:'120,120,120' };
 
   let vehicles = S.vehicles.filter(matchVFiltered);
 
@@ -3154,7 +3156,7 @@ function vehicleCard(v) {
   // === Prochaine action ===
   const NEXT_ACTIONS = {
     sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', attente_retour:'⏳ Attente retour', negociation:'🤝 En négociation' },
-    a_payer:'💳 Attente paiement', en_transport:'🚛 En transport', livre:'✅ Livré'
+    a_payer:'✅ Confirmé — bon de commande à venir',
   };
   // Next action: ne pas afficher si c'est du sourcing (déjà visible via le badge sous-étape)
   let nextAction = '';
@@ -3167,7 +3169,7 @@ function vehicleCard(v) {
 
   // === Rappel inactif ===
   const reminderDays = S.settings.reminder_days || 3;
-  const activeColumns = ['sourcing','a_payer','en_transport','livre'];
+  const activeColumns = ['sourcing','a_payer'];
   let remindHtml = '';
   if (activeColumns.includes(v.column)) {
     const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at);
@@ -3715,7 +3717,7 @@ function renderSidebarBriefing() {
   const pv = _pinnedVehicleId ? S.vehicles.find(v => v.id === _pinnedVehicleId) : null;
   if (pv) {
     const pvPrice = pv.prix_negocie || pv.prix_demande;
-    const COL_LABEL_P = { sourcing:'Sourcing', a_payer:'Dashboard', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
+    const COL_LABEL_P = { sourcing:'Sourcing', a_payer:'Confirmé', en_transport:'Confirmé', livre:'Confirmé', deal_perdu:'Deal Perdu', archive:'Archive' };
     pinnedHTML = `<div class="bp-card" style="border-color:var(--accent);border-width:2px">
       <div class="bp-card-title" style="display:flex;justify-content:space-between;align-items:center">
         <span>📌 Véhicule épinglé</span>
@@ -3879,9 +3881,7 @@ function renderDashboard() {
 
   const kpis = [
     { label:'Total véhicules', value:v.length, sub:'en pipeline' },
-    { label:'À payer', value:byCols.a_payer||0, sub:fmtN(aPayer) },
-    { label:'En transport', value:byCols.en_transport||0, sub:'' },
-    { label:'Livrés', value:byCols.livre||0, sub:'' },
+    { label:'Confirmés', value:byCols.a_payer||0, sub:fmtN(aPayer) },
     { label:'Budget engagé', value:fmtN(totalBudget), sub:'', big:true },
     { label:'Lots actifs', value:S.lots.filter(l=>l.column!=='archive').length, sub:'' },
     { label:'Tâches ouvertes', value:S.tasks.filter(t=>t.column!=='termine').length, sub:'' },
@@ -4548,12 +4548,10 @@ function openDetail(id) {
   let actionHtml = `<div style="display:flex;flex-direction:column;gap:8px">
     <button class="btn btn-ghost" onclick="editVehicle();closeDrawer()">✏️ Modifier le véhicule</button>`;
   if (v.column === 'sourcing')
-    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">📋 Ajouter au dashboard</button>`;
+    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">✅ Confirmer l'achat</button>`;
   if (v.column === 'a_payer')
-    actionHtml += `<button class="btn btn-primary" onclick="openTransportModal('${v.id}');closeDrawer()">🚛 Mettre en transport</button>`;
-  if (v.column === 'en_transport')
-    actionHtml += `<button class="btn btn-primary" onclick="confirmArrival('${v.id}');closeDrawer()">✅ Marquer livré</button>`;
-  if (v.column === 'livre')
+    actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
+  if (v.column === 'en_transport' || v.column === 'livre')
     actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
   if (v.column !== 'deal_perdu' && v.column !== 'archive')
     actionHtml += `<button class="btn btn-ghost" style="color:var(--urg-1);border-color:rgba(232,41,74,0.3)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
