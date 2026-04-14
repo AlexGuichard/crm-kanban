@@ -459,6 +459,23 @@ body.dark-mode .column-deal-perdu .column-header { background: rgba(232,41,74,0.
 .relance-badge-table { display:inline-flex; align-items:center; gap:3px; font-size:9px; font-weight:700; padding:1px 5px; border-radius:4px; background:rgba(232,41,74,0.1); color:var(--urg-1); white-space:nowrap; }
 .stale-warning { color:var(--urg-2); font-weight:700; }
 
+/* INLINE CONTACT INPUTS in table */
+.vt-inline-input { width:100%; border:none; background:transparent; font-size:12px; font-family:inherit; color:var(--text); padding:2px 4px; border-radius:4px; outline:none; transition:background 0.12s,border 0.12s; min-width:90px; }
+.vt-inline-input:hover { background:var(--surface-2); }
+.vt-inline-input:focus { background:var(--accent-light); color:var(--accent); }
+.vt-inline-input::placeholder { color:var(--text-light); font-size:11px; }
+
+/* STAGE BADGE CLICKABLE */
+.vt-stage-btn { cursor:pointer; transition:opacity 0.12s,transform 0.1s; }
+.vt-stage-btn:hover { opacity:0.8; transform:scale(1.04); }
+
+/* STAGE POPOVER */
+.stage-popover { position:fixed; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:4px; box-shadow:var(--shadow-md); z-index:500; min-width:155px; }
+.stage-popover-item { display:flex; align-items:center; gap:7px; padding:7px 11px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; transition:background 0.1s; }
+.stage-popover-item:hover { filter:brightness(0.95); }
+.stage-popover-item.active { font-weight:800; }
+.stage-popover-check { font-size:10px; width:12px; flex-shrink:0; }
+
 /* PIPELINE DAY */
 .pd-scroll { flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:16px; }
 .pd-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; }
@@ -2626,28 +2643,54 @@ function renderBoardList() {
   };
 
   const reminderDays = S.settings.reminder_days || 3;
+
+  // Stage badge colors
+  const STAGE_META = {
+    a_contacter:   { color:'#64748b', bg:'rgba(100,116,139,0.1)' },
+    contacte:      { color:'#0ea5e9', bg:'rgba(14,165,233,0.1)' },
+    attente_retour:{ color:'#f59e0b', bg:'rgba(245,158,11,0.12)' },
+    negociation:   { color:'#8b5cf6', bg:'rgba(139,92,246,0.1)' },
+  };
+
   const rows = vehicles.map(v => {
     const price = v.prix_negocie || v.prix_demande;
     const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at) || '';
     let daysSince = null;
-    if (refDate) {
-      const d = new Date(refDate);
-      daysSince = Math.floor((Date.now() - d.getTime()) / 86400000);
+    if (refDate) daysSince = Math.floor((Date.now() - new Date(refDate).getTime()) / 86400000);
+
+    // Stage badge — colored + clickable for sourcing
+    let colHtml;
+    if (v.column === 'sourcing' && v.sub_stage) {
+      const sm = STAGE_META[v.sub_stage] || { color:'#64748b', bg:'rgba(100,116,139,0.1)' };
+      const label = SUB_STAGES.find(s => s.key === v.sub_stage)?.label || v.sub_stage;
+      colHtml = `<span class="vt-col-badge vt-stage-btn" style="background:${sm.bg};color:${sm.color}" onclick="event.stopPropagation();openStagePopover(event,'${v.id}')" title="Changer l'étape">${label} ▾</span>`;
+    } else {
+      const c = COL_COLOR[v.column] || '120,120,120';
+      const label = COL_LABEL[v.column] || v.column;
+      colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${label}</span>`;
     }
-    const c = COL_COLOR[v.column] || '120,120,120';
-    const stageLabel = v.column === 'sourcing' && v.sub_stage
-      ? (SUB_STAGES.find(s => s.key === v.sub_stage)?.label || COL_LABEL[v.column] || v.column)
-      : (COL_LABEL[v.column] || v.column);
-    const colHtml = `<span class="vt-col-badge" style="background:rgba(${c},0.1);color:rgb(${c})">${stageLabel}</span>`;
-    const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
+
+    // Last column — action + date/time compressed
+    const lastEntry = v.historique && v.historique.length ? v.historique[v.historique.length-1] : null;
+    const lastAct = lastEntry ? lastEntry.action : '';
+    const lastTs = v.updated_at || (lastEntry ? lastEntry.date : '') || '';
+    const lastDateFmt = lastTs ? fmtDs(lastTs.slice(0,10)) : '';
+    const lastTimeFmt = lastTs && lastTs.length > 10 ? lastTs.slice(11,16) : '';
+    const lastActShort = lastAct.length > 28 ? lastAct.slice(0,27)+'…' : lastAct;
     let lastActHtml;
     if (daysSince !== null && daysSince >= 6) {
-      lastActHtml = `<span class="relance-badge-table">🔔 Relancer ×${daysSince}j</span>`;
+      lastActHtml = `<span class="relance-badge-table">🔔 ${daysSince}j</span>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.3">${esc(lastActShort)}</div>
+        ${lastDateFmt?`<div style="font-size:10px;color:var(--text-light)">${lastDateFmt}${lastTimeFmt?' · '+lastTimeFmt:''}</div>`:''}`;
     } else if (daysSince !== null && daysSince >= reminderDays) {
-      lastActHtml = `<span class="stale-warning">⚠ il y a ${daysSince}j</span>`;
+      lastActHtml = `<span class="stale-warning" style="font-size:10px">⚠ ${daysSince}j</span>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.3">${esc(lastActShort)}</div>
+        ${lastDateFmt?`<div style="font-size:10px;color:var(--text-light)">${lastDateFmt}${lastTimeFmt?' · '+lastTimeFmt:''}</div>`:''}`;
     } else {
-      lastActHtml = `<span style="color:var(--text-muted);font-size:11px">${esc(lastAct)}</span>`;
+      lastActHtml = `<div style="font-size:11px;color:var(--text-muted);line-height:1.3">${esc(lastActShort)}</div>
+        ${lastDateFmt?`<div style="font-size:10px;color:var(--text-light);margin-top:1px">${lastDateFmt}${lastTimeFmt?' · '+lastTimeFmt:''}</div>`:''}`;
     }
+
     const isSel = _selectedVehicles.has(v.id);
     const urg = v.priority === 1 ? '#ef4444' : v.priority === 2 ? '#f97316' : '#e2e8f0';
     return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}">
@@ -2658,8 +2701,18 @@ function renderBoardList() {
       <td style="color:var(--text-muted)">${v.annee || '—'}</td>
       <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
       <td style="color:var(--text-muted);font-size:12px">${esc(v.localisation||'—')}</td>
-      <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
-      <td>${lastActHtml}</td>
+      <td style="color:var(--text-muted);font-size:12px">${esc(v.fournisseur_nom||'—')}</td>
+      <td onclick="event.stopPropagation()" style="padding:4px 8px">
+        <input class="vt-inline-input" type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="Téléphone…"
+          onblur="saveVehicleContactField('${v.id}','fournisseur_tel',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()">
+      </td>
+      <td onclick="event.stopPropagation()" style="padding:4px 8px">
+        <input class="vt-inline-input" type="email" value="${esc(v.fournisseur_email||'')}" placeholder="Email…"
+          onblur="saveVehicleContactField('${v.id}','fournisseur_email',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()">
+      </td>
+      <td style="min-width:110px">${lastActHtml}</td>
     </tr>`;
   }).join('');
 
@@ -2667,10 +2720,75 @@ function renderBoardList() {
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
     <thead><tr>
       <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} data-ids='${JSON.stringify(vehicles.map(v=>v.id))}' onchange="toggleAllVehicles(this.checked,JSON.parse(this.dataset.ids))"></th>
-      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('annee','Année')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>Dernière action</th>
+      ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('annee','Année')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>📞 Téléphone</th><th>📧 Email</th><th>Dernière action</th>
     </tr></thead>
-    <tbody>${rows || '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
+    <tbody>${rows || '<tr><td colspan="11" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
   </table></div>`;
+}
+
+// -------- STAGE POPOVER --------
+const _STAGE_META_POP = [
+  { key:'a_contacter',    label:'À contacter',   color:'#64748b', bg:'rgba(100,116,139,0.1)' },
+  { key:'contacte',       label:'Contacté',      color:'#0ea5e9', bg:'rgba(14,165,233,0.1)' },
+  { key:'attente_retour', label:'Attente retour', color:'#f59e0b', bg:'rgba(245,158,11,0.12)' },
+  { key:'negociation',    label:'Négociation',   color:'#8b5cf6', bg:'rgba(139,92,246,0.1)' },
+];
+
+function openStagePopover(event, vehicleId) {
+  closeStagePopover();
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v) return;
+  const pop = document.createElement('div');
+  pop.id = 'stage-popover';
+  pop.className = 'stage-popover';
+  pop.innerHTML = _STAGE_META_POP.map(s => {
+    const isCurrent = v.sub_stage === s.key;
+    return `<div class="stage-popover-item${isCurrent?' active':''}"
+      style="color:${s.color};background:${isCurrent?s.bg:'transparent'}"
+      onmouseover="this.style.background='${s.bg}'"
+      onmouseout="this.style.background='${isCurrent?s.bg:'transparent'}'"
+      onclick="setVehicleStageInline('${vehicleId}','${s.key}')">
+      <span class="stage-popover-check">${isCurrent?'✓':''}</span>${s.label}
+    </div>`;
+  }).join('');
+  document.body.appendChild(pop);
+  const rect = event.currentTarget.getBoundingClientRect();
+  let top = rect.bottom + 4;
+  let left = rect.left;
+  if (left + 160 > window.innerWidth) left = window.innerWidth - 164;
+  if (top + 160 > window.innerHeight) top = rect.top - 164;
+  pop.style.top = top + 'px';
+  pop.style.left = left + 'px';
+  setTimeout(() => document.addEventListener('click', closeStagePopover, { once: true }), 10);
+}
+
+function closeStagePopover() {
+  const p = document.getElementById('stage-popover');
+  if (p) p.remove();
+}
+
+function setVehicleStageInline(vehicleId, stage) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v) return;
+  const prev = SUB_STAGES.find(s => s.key === v.sub_stage)?.label || v.sub_stage || '';
+  const next = SUB_STAGES.find(s => s.key === stage)?.label || stage;
+  v.sub_stage = stage;
+  addHist(v, `Étape : ${prev} → ${next}`);
+  closeStagePopover();
+  saveToGH();
+  renderBoardList();
+  renderPipelineStrip();
+  updatePdBadge();
+}
+
+// -------- INLINE CONTACT FIELD --------
+function saveVehicleContactField(vehicleId, field, value) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v || v[field] === value) return;
+  v[field] = value;
+  const label = field === 'fournisseur_tel' ? 'Téléphone' : 'Email';
+  addHist(v, `${label} mis à jour`);
+  saveToGH();
 }
 
 const sortByRecent = arr => [...arr].sort((a,b) => {
