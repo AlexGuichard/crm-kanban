@@ -2741,8 +2741,8 @@ function openStagePopover(event, vehicleId) {
   const pop = document.createElement('div');
   pop.id = 'stage-popover';
   pop.className = 'stage-popover';
-  pop.innerHTML = _STAGE_META_POP.map(s => {
-    const isCurrent = v.sub_stage === s.key;
+  const stageItems = _STAGE_META_POP.map(s => {
+    const isCurrent = v.column === 'sourcing' && v.sub_stage === s.key;
     return `<div class="stage-popover-item${isCurrent?' active':''}"
       style="color:${s.color};background:${isCurrent?s.bg:'transparent'}"
       onmouseover="this.style.background='${s.bg}'"
@@ -2751,6 +2751,16 @@ function openStagePopover(event, vehicleId) {
       <span class="stage-popover-check">${isCurrent?'✓':''}</span>${s.label}
     </div>`;
   }).join('');
+  const isConfirmed = v.column === 'a_payer';
+  const confirmedItem = `<div style="height:1px;background:var(--border);margin:3px 0"></div>
+    <div class="stage-popover-item${isConfirmed?' active':''}"
+      style="color:#16a34a;background:${isConfirmed?'rgba(22,163,74,0.1)':'transparent'};font-weight:700"
+      onmouseover="this.style.background='rgba(22,163,74,0.1)'"
+      onmouseout="this.style.background='${isConfirmed?'rgba(22,163,74,0.1)':'transparent'}'"
+      onclick="confirmVehicleInline('${vehicleId}')">
+      <span class="stage-popover-check">${isConfirmed?'✓':''}</span>✅ Confirmé
+    </div>`;
+  pop.innerHTML = stageItems + confirmedItem;
   document.body.appendChild(pop);
   const rect = event.currentTarget.getBoundingClientRect();
   let top = rect.bottom + 4;
@@ -2772,6 +2782,7 @@ function setVehicleStageInline(vehicleId, stage) {
   if (!v) return;
   const prev = SUB_STAGES.find(s => s.key === v.sub_stage)?.label || v.sub_stage || '';
   const next = SUB_STAGES.find(s => s.key === stage)?.label || stage;
+  v.column = 'sourcing';
   v.sub_stage = stage;
   addHist(v, `Étape : ${prev} → ${next}`);
   closeStagePopover();
@@ -2779,6 +2790,20 @@ function setVehicleStageInline(vehicleId, stage) {
   renderBoardList();
   renderPipelineStrip();
   updatePdBadge();
+}
+
+function confirmVehicleInline(vehicleId) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v) return;
+  v.column = 'a_payer';
+  v.sub_stage = null;
+  addHist(v, 'Passé en Confirmé');
+  closeStagePopover();
+  saveToGH();
+  renderBoardList();
+  renderPipelineStrip();
+  updatePdBadge();
+  showToast('✅ ' + (v.marque||'Véhicule') + ' ' + (v.modele||'') + ' confirmé !');
 }
 
 // -------- INLINE CONTACT FIELD --------
