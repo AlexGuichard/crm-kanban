@@ -2350,7 +2350,13 @@ function render() {
 
 // -------- BOARD --------
 function renderBoard() {
-  if (boardView === 'liste') { renderBoardList(); return; }
+  if (boardView === 'liste') {
+    document.getElementById('board').style.display = 'none';
+    document.getElementById('board-list').style.display = '';
+    document.getElementById('bvt-list').classList.add('active');
+    document.getElementById('bvt-kanban').classList.remove('active');
+    renderBoardList(); return;
+  }
   if (boardView === 'focus') {
     const todayPrefix = today();
     const focusVehicles = S.vehicles.filter(v => {
@@ -3216,6 +3222,13 @@ function renderTasksList() {
       html += '</div>';
     });
     if (!activeTasks.length) html += '<div class="tl-empty">✨ Aucune tâche active</div>';
+    // Surveiller — toujours visible dans "Toutes"
+    const watchingAll = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
+    if (watchingAll.length) {
+      html += '<div class="tl-group"><div class="tl-group-title" style="color:#f59e0b">👁 À surveiller <span style="background:#fef9c3;color:#a16207;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingAll.length + '</span></div>';
+      watchingAll.forEach(t => { html += renderTaskRow2(t, ''); });
+      html += '</div>';
+    }
 
   } else if (_taskTab === 'watching') {
     const watching = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
