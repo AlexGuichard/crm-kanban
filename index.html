@@ -2705,21 +2705,22 @@ function renderBoardList() {
     const stale72h = v.column === 'sourcing' && daysSince !== null && daysSince >= 3;
     const staleRow = stale72h ? 'border-left:3px solid var(--urg-1)' : '';
     const staleBadge = stale72h ? `<span title="${daysSince}j sans modif" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--urg-1);color:white;font-size:9px;font-weight:800;margin-left:5px;vertical-align:middle;flex-shrink:0">!</span>` : '';
-    return `<tr onclick="openDetail('${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}${staleRow?';'+staleRow:''}">
-      <td onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
-      <td style="white-space:nowrap"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${staleBadge}</td>
+    const noteBadge = v.note ? `<span title="${esc(v.note)}" style="margin-left:5px;font-size:11px;vertical-align:middle;cursor:default;opacity:0.7">💬</span>` : '';
+    return `<tr onclick="openDetail('${v.id}')" ondblclick="openQuickNote(event,'${v.id}')" oncontextmenu="openRowContextMenu(event,'${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}${staleRow?';'+staleRow:''}">
+      <td onclick="event.stopPropagation()" ondblclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
+      <td style="white-space:nowrap"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${staleBadge}${noteBadge}</td>
       <td>${colHtml}</td>
       <td>${price ? fmtN(price) : '—'}</td>
       <td style="color:var(--text-muted)">${v.annee || '—'}</td>
       <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
       <td style="color:var(--text-muted);font-size:12px">${esc(v.localisation||'—')}</td>
       <td style="color:var(--text-muted);font-size:12px">${esc(v.fournisseur_nom||'—')}</td>
-      <td onclick="event.stopPropagation()" style="padding:4px 8px">
+      <td onclick="event.stopPropagation()" ondblclick="event.stopPropagation()" style="padding:4px 8px">
         <input class="vt-inline-input" type="tel" value="${esc(v.fournisseur_tel||'')}" placeholder="Téléphone…"
           onblur="saveVehicleContactField('${v.id}','fournisseur_tel',this.value)"
           onkeydown="if(event.key==='Enter')this.blur()">
       </td>
-      <td onclick="event.stopPropagation()" style="padding:4px 8px">
+      <td onclick="event.stopPropagation()" ondblclick="event.stopPropagation()" style="padding:4px 8px">
         <input class="vt-inline-input" type="email" value="${esc(v.fournisseur_email||'')}" placeholder="Email…"
           onblur="saveVehicleContactField('${v.id}','fournisseur_email',this.value)"
           onkeydown="if(event.key==='Enter')this.blur()">
@@ -2850,6 +2851,127 @@ function saveVehicleContactField(vehicleId, field, value) {
   const label = field === 'fournisseur_tel' ? 'Téléphone' : 'Email';
   addHist(v, `${label} mis à jour`);
   saveToGH();
+}
+
+// -------- QUICK NOTE --------
+let _rowCtxVehicleId = null, _rowCtxX = 0, _rowCtxY = 0;
+
+function openQuickNote(event, vehicleId) {
+  event.preventDefault();
+  event.stopPropagation();
+  closeQuickNote();
+  closeRowCtx();
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'quick-note-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:500;background:transparent';
+  overlay.addEventListener('click', closeQuickNote);
+
+  const box = document.createElement('div');
+  box.id = 'quick-note-box';
+  box.style.cssText = 'position:fixed;background:var(--surface);border:1.5px solid var(--primary);border-radius:10px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);z-index:501;width:280px';
+
+  const title = document.createElement('div');
+  title.style.cssText = 'font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em';
+  title.textContent = `💬 Note rapide — ${v.marque} ${v.modele}`;
+
+  const ta = document.createElement('textarea');
+  ta.id = 'quick-note-ta';
+  ta.style.cssText = 'width:100%;height:72px;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;resize:none;background:var(--bg);color:var(--text);box-sizing:border-box;outline:none';
+  ta.placeholder = 'Note… (Entrée pour sauvegarder, Maj+Entrée pour saut de ligne)';
+  ta.value = v.note || '';
+  ta.addEventListener('click', e => e.stopPropagation());
+  ta.addEventListener('dblclick', e => e.stopPropagation());
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveQuickNote(vehicleId); }
+    if (e.key === 'Escape') { closeQuickNote(); }
+  });
+
+  const btns = document.createElement('div');
+  btns.style.cssText = 'display:flex;gap:6px;margin-top:8px;justify-content:flex-end';
+
+  const btnCancel = document.createElement('button');
+  btnCancel.className = 'btn btn-ghost btn-sm';
+  btnCancel.textContent = 'Annuler';
+  btnCancel.onclick = e => { e.stopPropagation(); closeQuickNote(); };
+
+  const btnSave = document.createElement('button');
+  btnSave.className = 'btn btn-primary btn-sm';
+  btnSave.textContent = 'Sauvegarder';
+  btnSave.onclick = e => { e.stopPropagation(); saveQuickNote(vehicleId); };
+
+  btns.append(btnCancel, btnSave);
+  box.append(title, ta, btns);
+
+  const mx = Math.min(event.clientX, window.innerWidth - 296);
+  const my = Math.min(event.clientY, window.innerHeight - 170);
+  box.style.left = mx + 'px';
+  box.style.top = my + 'px';
+
+  document.body.append(overlay, box);
+  setTimeout(() => { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 30);
+}
+
+function closeQuickNote() {
+  document.getElementById('quick-note-overlay')?.remove();
+  document.getElementById('quick-note-box')?.remove();
+}
+
+function saveQuickNote(vehicleId) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  const ta = document.getElementById('quick-note-ta');
+  if (!v || !ta) return;
+  const text = ta.value.trim();
+  if (text === (v.note || '').trim()) { closeQuickNote(); return; }
+  v.note = text || null;
+  addHist(v, text ? ('Note : ' + text.slice(0, 80)) : 'Note supprimée');
+  saveToGH();
+  closeQuickNote();
+  renderBoardList();
+}
+
+// -------- ROW CONTEXT MENU --------
+function openRowContextMenu(event, vehicleId) {
+  event.preventDefault();
+  event.stopPropagation();
+  closeRowCtx();
+  closeQuickNote();
+  _rowCtxVehicleId = vehicleId;
+  _rowCtxX = event.clientX;
+  _rowCtxY = event.clientY;
+
+  const menu = document.createElement('div');
+  menu.id = 'row-ctx-menu';
+  menu.className = 'ctx-menu';
+  menu.style.display = 'block';
+  menu.innerHTML = `
+    <div class="ctx-item" onclick="openQuickNoteFromCtx()">💬 Note rapide</div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-item" onclick="closeRowCtx();openStagePopover({clientX:_rowCtxX,clientY:_rowCtxY,stopPropagation:()=>{}},'${vehicleId}')">🔄 Changer l'étape</div>
+    <div class="ctx-item" onclick="closeRowCtx();confirmVehicleInline('${vehicleId}')">✅ Confirmer</div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-item danger" onclick="closeRowCtx();cancelVehicleInline('${vehicleId}')">❌ Annulé</div>
+    <div class="ctx-sep"></div>
+    <div class="ctx-item" onclick="closeRowCtx();openDetail('${vehicleId}')">↗ Ouvrir le détail</div>`;
+  menu.addEventListener('click', e => e.stopPropagation());
+
+  document.body.appendChild(menu);
+  const mw = 180, mh = 220;
+  menu.style.left = Math.min(event.clientX, window.innerWidth - mw) + 'px';
+  menu.style.top = Math.min(event.clientY, window.innerHeight - mh) + 'px';
+
+  setTimeout(() => document.addEventListener('click', closeRowCtx, { once: true }), 10);
+}
+
+function closeRowCtx() {
+  document.getElementById('row-ctx-menu')?.remove();
+}
+
+function openQuickNoteFromCtx() {
+  closeRowCtx();
+  openQuickNote({ clientX: _rowCtxX, clientY: _rowCtxY, preventDefault: () => {}, stopPropagation: () => {} }, _rowCtxVehicleId);
 }
 
 const sortByRecent = arr => [...arr].sort((a,b) => {
