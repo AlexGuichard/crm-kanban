@@ -4954,6 +4954,7 @@ async function triggerLBCImport() {
 async function _importViaWorker(urls, workerUrl) {
   lbcSetStep(1, 10, `⏳ Appel du Worker pour ${urls.length} annonce(s)…`);
   const added = [], errors = [];
+  const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
 
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
@@ -4974,11 +4975,11 @@ async function _importViaWorker(urls, workerUrl) {
 
       lbcSetStep(3, 60 + (i / urls.length) * 20, `⚙️ Parse véhicule ${i + 1}…`);
 
-      const existingIds = new Set(S.vehicles.map(v => v.lbc_id).filter(Boolean));
       if (data.lbc_id && existingIds.has(data.lbc_id)) {
         errors.push(`${url}: déjà présent dans le CRM`);
         continue;
       }
+      existingIds.add(data.lbc_id);
       S.vehicles.push(data);
       added.push(`${data.marque} ${data.modele} ${data.annee || '?'} — ${(data.km || 0).toLocaleString()} km`);
     } catch (err) {
