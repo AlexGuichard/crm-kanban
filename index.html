@@ -2473,7 +2473,7 @@ function renderBoardList() {
   const allShown = vehicles.length > 0 && vehicles.every(v => _selectedVehicles.has(v.id));
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
     <thead><tr>
-      <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} onchange="toggleAllVehicles(this.checked,${JSON.stringify(vehicles.map(v=>v.id))})"></th>
+      <th onclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${allShown?'checked':''} data-ids='${JSON.stringify(vehicles.map(v=>v.id))}' onchange="toggleAllVehicles(this.checked,JSON.parse(this.dataset.ids))"></th>
       ${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}${sh('localisation','Localisation')}<th>Fournisseur</th><th>Dernière action</th>
     </tr></thead>
     <tbody>${rows || '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
