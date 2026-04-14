@@ -1930,7 +1930,7 @@ function ghHeaders() {
 
 async function ghGet(path) {
   try {
-    const r = await fetch(GH + path, { headers: ghHeaders() });
+    const r = await ghAbortFetch(GH + path, { headers: ghHeaders() });
     return r.ok ? r.json() : null;
   } catch(e) { return null; }
 }
@@ -5006,12 +5006,11 @@ async function _importViaWorker(urls, workerUrl) {
   }
 
   lbcSetStep(4, 90, '💾 Sauvegarde dans le CRM…');
-  try {
-    await saveToGH();
-  } catch (err) {
-    lbcShowResult(false, `❌ Sauvegarde échouée: ${err.message}`);
-    return;
-  }
+  const saveRace = Promise.race([
+    saveToGH(),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('Timeout GitHub (20s) — données sauvegardées en local')), 20000))
+  ]);
+  try { await saveRace; } catch(e) { showToast('⚠ ' + e.message); }
   render(); renderSidebarBriefing();
   lbcShowResult(true,
     `✅ ${added.length} véhicule(s) importé(s)` +
