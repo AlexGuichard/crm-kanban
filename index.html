@@ -858,8 +858,8 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
     <div class="view-title">Achats</div>
     <div class="view-header-right">
       <div class="tasks-view-toggle">
-        <button class="tvt-btn active" id="bvt-kanban" onclick="setBoardView('kanban')" title="Vue Kanban">⬛ Kanban</button>
-        <button class="tvt-btn" id="bvt-list" onclick="setBoardView('liste')" title="Vue Liste">≡ Liste</button>
+        <button class="tvt-btn" id="bvt-kanban" onclick="setBoardView('focus')" title="Véhicules actifs aujourd'hui">🎯 Focus</button>
+        <button class="tvt-btn active" id="bvt-list" onclick="setBoardView('liste')" title="Tous les véhicules en tableau">≡ Table</button>
       </div>
       <button class="btn btn-primary btn-sm" onclick="openAddVehicle('sourcing')">+ Véhicule</button>
       <button class="btn btn-ghost btn-sm" id="refreshBtn" onclick="manualRefresh()" title="Rafraîchir">⟳</button>
@@ -1098,6 +1098,7 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
         </div>
         <div class="form-group"><label class="form-label">URL annonce</label><input class="form-input" id="vUrl" placeholder="https://…"></div>
       </div>
+      <div class="form-group"><label class="form-label">Localisation (ville / dép.)</label><input class="form-input" id="vLocalisation" placeholder="Paris (75)"></div>
     </div>
 
     <div class="form-section">
@@ -1711,10 +1712,21 @@ let currentDetailId = null;
 let pendingTransportId = null;
 let activeSS = 'a_contacter'; // active sourcing sub-stage tab
 let searchQ = '';
-let boardView = 'kanban';
+let boardView = localStorage.getItem('boardView') || 'liste';
 let listSortField = 'updated_at';
 let listSortDir = -1;
 let ghSha = null;
+let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
+function pinVehicle(id) {
+  _pinnedVehicleId = id;
+  localStorage.setItem('pinnedVehicleId', id);
+  renderSidebarBriefing();
+}
+function unpinVehicle() {
+  _pinnedVehicleId = null;
+  localStorage.removeItem('pinnedVehicleId');
+  renderSidebarBriefing();
+}
 
 // ============================================================
 // UTILS
@@ -1972,6 +1984,22 @@ function render() {
 // -------- BOARD --------
 function renderBoard() {
   if (boardView === 'liste') { renderBoardList(); return; }
+  if (boardView === 'focus') {
+    const todayPrefix = today();
+    const focusVehicles = S.vehicles.filter(v => {
+      const lastDate = v.updated_at
+        ? v.updated_at.slice(0,10)
+        : (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : (v.created_at||''));
+      return lastDate === todayPrefix;
+    });
+    window._focusIds = focusVehicles.length ? new Set(focusVehicles.map(v => v.id)) : null;
+    if (!focusVehicles.length) {
+      document.getElementById('board').innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:14px;padding:60px 40px;text-align:center">🎯 Aucun véhicule actif aujourd'hui</div>`;
+      return;
+    }
+  } else {
+    window._focusIds = null;
+  }
   const cols = COLUMNS.filter(c => {
     if (c.key === 'archive') return S.settings.show_archive;
     return true;
@@ -1981,11 +2009,12 @@ function renderBoard() {
 
 function setBoardView(v) {
   boardView = v;
-  document.getElementById('bvt-kanban').classList.toggle('active', v === 'kanban');
+  localStorage.setItem('boardView', v);
+  document.getElementById('bvt-kanban').classList.toggle('active', v === 'focus');
   document.getElementById('bvt-list').classList.toggle('active', v === 'liste');
-  document.getElementById('board').style.display = v === 'kanban' ? '' : 'none';
+  document.getElementById('board').style.display = v === 'focus' ? '' : 'none';
   document.getElementById('board-list').style.display = v === 'liste' ? '' : 'none';
-  if (v === 'kanban') renderBoard(); else renderBoardList();
+  if (v === 'focus') renderBoard(); else renderBoardList();
 }
 
 function sortList(field) {
@@ -2007,7 +2036,9 @@ function renderBoardList() {
 
   vehicles = [...vehicles].sort((a, b) => {
     let va, vb;
-    if (listSortField === 'updated_at') {
+    if (listSortField === 'localisation') {
+      va = (a.localisation||'').toLowerCase(); vb = (b.localisation||'').toLowerCase();
+    } else if (listSortField === 'updated_at') {
       va = a.updated_at || (a.historique && a.historique.length ? a.historique[a.historique.length-1].date : (a.created_at||''));
       vb = b.updated_at || (b.historique && b.historique.length ? b.historique[b.historique.length-1].date : (b.created_at||''));
     } else if (listSortField === 'prix') {
@@ -2053,13 +2084,13 @@ function renderBoardList() {
       <td>${price ? fmtN(price) : '—'}</td>
       <td>${v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '—'}</td>
       <td style="color:var(--text-muted)">${esc(v.fournisseur_nom||'—')}</td>
-      <td${dateCls}>${dateStr}</td>
+      <td style="color:var(--text-muted);font-size:12px">${esc(v.localisation||'—')}</td>
       <td style="color:var(--text-muted);font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(lastAct)}</td>
     </tr>`;
   }).join('');
 
   el.innerHTML = `<div class="list-view-wrap"><table class="vehicle-table">
-    <thead><tr>${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}<th>Fournisseur</th>${sh('updated_at','Activité')}<th>Dernière action</th></tr></thead>
+    <thead><tr>${sh('vehicule','Véhicule')}${sh('colonne','Étape')}${sh('prix','Prix')}${sh('km','Km')}<th>Fournisseur</th>${sh('localisation','Localisation')}<th>Dernière action</th></tr></thead>
     <tbody>${rows || '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Aucun véhicule</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -2071,7 +2102,7 @@ const sortByRecent = arr => [...arr].sort((a,b) => {
 });
 
 function renderCol(col) {
-  const vehicles = sortByRecent(S.vehicles.filter(v => v.column === col.key && matchV(v)));
+  const vehicles = sortByRecent(S.vehicles.filter(v => v.column === col.key && matchV(v) && (!window._focusIds || window._focusIds.has(v.id))));
   const lots = S.lots.filter(l => l.column === col.key && matchL(l));
 
   let bodyHtml;
@@ -2461,6 +2492,7 @@ function vehicleCard(v) {
     style="border-left-color:${borderColor}">
     <div class="card-btn-group">
       <button class="card-icon-btn" onclick="event.stopPropagation();openVehicleReminder('${v.id}')" title="Rappel">🔔</button>
+      <button class="card-icon-btn" onclick="event.stopPropagation();${_pinnedVehicleId===v.id?'unpinVehicle()':'pinVehicle(\''+v.id+'\')'}" title="${_pinnedVehicleId===v.id?'Désépingler':'Épingler en sidebar'}" style="${_pinnedVehicleId===v.id?'background:var(--accent);color:white;border-color:var(--accent)':''}">📌</button>
       <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('vehicle','${v.id}')" title="Déplacer">↔</button>
     </div>
     <div class="card-title" style="padding-right:56px">${hl(v.marque, searchQ)} ${hl(v.modele, searchQ)}</div>
@@ -2541,6 +2573,7 @@ function renderTasksList() {
   const todayStr = today();
 
   const _qp = typeof _quickPriority !== 'undefined' ? _quickPriority : 3;
+  const _qw = typeof _quickWatch !== 'undefined' ? _quickWatch : false;
   let html = `<div style="margin-bottom:14px;display:flex;gap:8px;align-items:flex-end">
     <div style="flex:1;display:flex;flex-direction:column;gap:4px">
       <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;background:var(--surface);overflow:hidden">
@@ -2552,6 +2585,7 @@ function renderTasksList() {
           <button onclick="event.preventDefault();setQuickPrio(1)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===1?'var(--urg-1)':'var(--border)'};background:${_qp===1?'rgba(232,41,74,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🔴</button>
           <button onclick="event.preventDefault();setQuickPrio(3)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===3?'var(--text-muted)':'var(--border)'};background:${_qp===3?'rgba(0,0,0,0.04)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">⚪</button>
           <button onclick="event.preventDefault();setQuickPrio(2)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===2?'var(--urg-2)':'var(--border)'};background:${_qp===2?'rgba(232,122,0,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🟠</button>
+          <button onclick="event.preventDefault();setQuickWatch()" title="Ajouter directement à Surveiller" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qw?'var(--accent)':'var(--border)'};background:${_qw?'rgba(77,101,255,0.12)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">👁️</button>
         </div>
       </div>
       <div id="quickTaskDescWrap" style="display:none">
@@ -2801,8 +2835,31 @@ function renderSidebarBriefing() {
   if (!panels.length) return;
   const panel = panels[0]; // used for early returns below; all panels get same HTML at end
 
-  // --- BLOC 1 : Urgences du jour ---
+  // --- BLOC 0 : Véhicule épinglé ---
   const todayStr = today();
+  let pinnedHTML = '';
+  const pv = _pinnedVehicleId ? S.vehicles.find(v => v.id === _pinnedVehicleId) : null;
+  if (pv) {
+    const pvPrice = pv.prix_negocie || pv.prix_demande;
+    const COL_LABEL_P = { sourcing:'Sourcing', a_payer:'Dashboard', en_transport:'En Transport', livre:'Livré', deal_perdu:'Deal Perdu', archive:'Archive' };
+    pinnedHTML = `<div class="bp-card" style="border-color:var(--accent);border-width:2px">
+      <div class="bp-card-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>📌 Véhicule épinglé</span>
+        <button onclick="unpinVehicle()" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-muted);line-height:1" title="Désépingler">✕</button>
+      </div>
+      <div style="font-weight:700;font-size:14px;color:var(--primary);margin-bottom:4px">${esc(pv.marque)} ${esc(pv.modele)}${pv.annee?' '+pv.annee:''}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+        <span style="font-size:11px;background:rgba(77,101,255,0.1);color:var(--accent);border-radius:5px;padding:2px 7px;font-weight:700">${COL_LABEL_P[pv.column]||pv.column}</span>
+        ${pvPrice?`<span style="font-size:12px;font-weight:700;color:var(--accent)">${fmtN(pvPrice)}</span>`:''}
+      </div>
+      ${pv.fournisseur_nom?`<div style="font-size:12px;color:var(--text-muted);margin-bottom:2px">🏢 ${esc(pv.fournisseur_nom)}</div>`:''}
+      ${pv.fournisseur_tel?`<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">📞 ${esc(pv.fournisseur_tel)}</div>`:''}
+      ${pv.localisation?`<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">📍 ${esc(pv.localisation)}</div>`:''}
+      <button class="btn btn-ghost btn-sm" style="width:100%;font-size:11px;margin-top:4px" onclick="openDetail('${pv.id}')">Ouvrir →</button>
+    </div>`;
+  }
+
+  // --- BLOC 1 : Urgences du jour ---
   const urgent = S.tasks.filter(t => t.column !== 'termine' && t.priority === 1)
     .sort((a,b) => (a.due_date||'9999') < (b.due_date||'9999') ? -1 : 1);
   const overdueTasks = S.tasks.filter(t => t.column !== 'termine' && t.due_date && t.due_date < todayStr);
@@ -2862,6 +2919,7 @@ function renderSidebarBriefing() {
   ].filter(Boolean).join('') || `<div class="bp-empty">✅ Aucune alerte CRM</div>`;
 
   const html = `
+    ${pinnedHTML}
     <div class="bp-card">
       <div class="bp-card-title">🔴 ${urgTitle}</div>
       ${urgHTML}
@@ -3140,7 +3198,7 @@ function editVehicle() {
   const set = (id,val)=>{const el=document.getElementById(id);if(el)el.value=val||'';};
   set('vMarque',v.marque); set('vModele',v.modele); set('vAnnee',v.annee); set('vKm',v.km);
   set('vVin',v.vin); set('vImmat',v.immatriculation); set('vPrixD',v.prix_demande); set('vPrixN',v.prix_negocie);
-  set('vUrl',v.url_annonce); set('vFNom',v.fournisseur_nom); set('vFTel',v.fournisseur_tel);
+  set('vUrl',v.url_annonce); set('vLocalisation',v.localisation); set('vFNom',v.fournisseur_nom); set('vFTel',v.fournisseur_tel);
   set('vFEmail',v.fournisseur_email); set('vComment',v.commentaire);
   document.getElementById('vCarburant').value = v.carburant||'Essence';
   document.getElementById('vBoite').value = v.boite||'Automatique';
@@ -3174,6 +3232,7 @@ function saveVehicle() {
     prix_negocie: document.getElementById('vPrixN').value,
     source: document.getElementById('vSource').value,
     url_annonce: document.getElementById('vUrl').value.trim(),
+    localisation: document.getElementById('vLocalisation').value.trim(),
     fournisseur_nom: document.getElementById('vFNom').value.trim(),
     fournisseur_tel: document.getElementById('vFTel').value.trim(),
     fournisseur_email: document.getElementById('vFEmail').value.trim(),
@@ -3708,6 +3767,11 @@ function setQuickPrio(p) {
   _quickPriority = p;
   renderTasksList();
 }
+let _quickWatch = false;
+function setQuickWatch() {
+  _quickWatch = !_quickWatch;
+  renderTasksList();
+}
 
 function handleQuickPaste(e) {
   const pasted = (e.clipboardData || window.clipboardData).getData('text');
@@ -3753,7 +3817,8 @@ function quickAddTask() {
       else if (line.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
       S.tasks.push({
         id: uid(), title: cleanTitle, description: '', priority,
-        due_date: today(), due_time: '', column: 'a_faire',
+        due_date: today(), due_time: '', column: _quickWatch ? 'en_attente' : 'a_faire',
+        watching_since: _quickWatch ? new Date().toISOString() : null,
         created_at: today(), auto_generated: false,
         linked_vehicle_ids: [], linked_vehicle_id: null,
         last_viewed_at: new Date().toISOString(), reminder: null
@@ -3763,6 +3828,7 @@ function quickAddTask() {
     input.value = '';
     if (descInput) descInput.value = '';
     _quickPriority = 3;
+    _quickWatch = false;
     render(); saveToGH();
     showToast('✅ ' + count + ' tâches ajoutées');
     setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
@@ -3776,7 +3842,8 @@ function quickAddTask() {
   else if (title.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
   S.tasks.push({
     id: uid(), title: cleanTitle, description: desc, priority,
-    due_date: today(), due_time: '', column: 'a_faire',
+    due_date: today(), due_time: '', column: _quickWatch ? 'en_attente' : 'a_faire',
+    watching_since: _quickWatch ? new Date().toISOString() : null,
     created_at: today(), auto_generated: false,
     linked_vehicle_ids: [], linked_vehicle_id: null,
     last_viewed_at: new Date().toISOString(), reminder: null
@@ -3784,6 +3851,7 @@ function quickAddTask() {
   input.value = '';
   if (descInput) descInput.value = '';
   _quickPriority = 3;
+  _quickWatch = false;
   render(); saveToGH();
   showToast('✅ Tâche ajoutée');
   setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
