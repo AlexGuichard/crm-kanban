@@ -3621,6 +3621,8 @@ function renderTasksList() {
 
   const _qp = typeof _quickPriority !== 'undefined' ? _quickPriority : 3;
   const _qw = typeof _quickWatch !== 'undefined' ? _quickWatch : false;
+  const _qd = typeof _quickDueDate !== 'undefined' ? _quickDueDate : '';
+  const _qt = typeof _quickDueTime !== 'undefined' ? _quickDueTime : '';
   let html = `<div style="margin-bottom:14px;display:flex;gap:8px;align-items:flex-end">
     <div style="flex:1;display:flex;flex-direction:column;gap:4px">
       <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;background:var(--surface);overflow:hidden">
@@ -3637,8 +3639,15 @@ function renderTasksList() {
       </div>
       <div id="quickTaskDescWrap" style="display:none">
         <textarea class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)&#10;Ou colle plusieurs lignes : x10 Clio, x5 Polo…" rows="2"
-          style="padding:8px 14px;font-size:12px;border-radius:0 0 10px 10px;border-top:1px dashed var(--border-2);color:var(--text-muted);resize:vertical;min-height:32px;font-family:inherit"
+          style="padding:8px 14px;font-size:12px;border-radius:0;border-top:1px dashed var(--border-2);color:var(--text-muted);resize:vertical;min-height:32px;font-family:inherit"
           onkeydown="if(event.key==='Enter'&&!event.shiftKey){quickAddTask();event.preventDefault()}"></textarea>
+        <div style="display:flex;gap:6px;padding:5px 10px;align-items:center;border-top:1px dashed var(--border-2);border-radius:0 0 10px 10px;background:var(--surface)">
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;user-select:none">📅 Échéance</span>
+          <input type="date" id="quickDueDate" value="${_qd}" onchange="_quickDueDate=this.value"
+            style="flex:1;min-width:0;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
+          <input type="time" id="quickDueTime" value="${_qt}" onchange="_quickDueTime=this.value"
+            style="width:76px;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
+        </div>
       </div>
     </div>
     <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
@@ -5095,6 +5104,8 @@ function setQuickWatch() {
   _quickWatch = !_quickWatch;
   renderTasksList();
 }
+let _quickDueDate = '';
+let _quickDueTime = '';
 
 function handleQuickPaste(e) {
   const pasted = (e.clipboardData || window.clipboardData).getData('text');
@@ -5140,7 +5151,7 @@ function quickAddTask() {
       else if (line.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
       S.tasks.push({
         id: uid(), title: cleanTitle, description: '', priority,
-        due_date: today(), due_time: '', column: _quickWatch ? 'en_attente' : 'a_faire',
+        due_date: _quickDueDate || today(), due_time: _quickDueTime || '', column: _quickWatch ? 'en_attente' : 'a_faire',
         watching_since: _quickWatch ? new Date().toISOString() : null,
         created_at: today(), auto_generated: false,
         linked_vehicle_ids: [], linked_vehicle_id: null,
@@ -5152,6 +5163,8 @@ function quickAddTask() {
     if (descInput) descInput.value = '';
     _quickPriority = 3;
     _quickWatch = false;
+    _quickDueDate = '';
+    _quickDueTime = '';
     render(); saveToGH();
     showToast('✅ ' + count + ' tâches ajoutées');
     setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
@@ -5165,7 +5178,7 @@ function quickAddTask() {
   else if (title.includes('!2')) { priority = 2; cleanTitle = cleanTitle.replace('!2','').trim(); }
   S.tasks.push({
     id: uid(), title: cleanTitle, description: desc, priority,
-    due_date: today(), due_time: '', column: _quickWatch ? 'en_attente' : 'a_faire',
+    due_date: _quickDueDate || today(), due_time: _quickDueTime || '', column: _quickWatch ? 'en_attente' : 'a_faire',
     watching_since: _quickWatch ? new Date().toISOString() : null,
     created_at: today(), auto_generated: false,
     linked_vehicle_ids: [], linked_vehicle_id: null,
@@ -5175,6 +5188,8 @@ function quickAddTask() {
   if (descInput) descInput.value = '';
   _quickPriority = 3;
   _quickWatch = false;
+  _quickDueDate = '';
+  _quickDueTime = '';
   render(); saveToGH();
   showToast('✅ Tâche ajoutée');
   setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
