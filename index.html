@@ -1780,6 +1780,172 @@ body.dark-mode .toggle-switch input:checked + .toggle-slider { background: #4d6a
 
 <script>
 // ============================================================
+// CONSTANTS
+// ============================================================
+const SUB_STAGES = [
+  { key:'a_contacter',   label:'À contacter' },
+  { key:'contacte',      label:'Contacté' },
+  { key:'attente_retour',label:'Attente retour' },
+  { key:'negociation',   label:'Négociation' }
+];
+const COLUMNS = [
+  { key:'sourcing', label:'📋 Sourcing' },
+  { key:'a_payer', label:'✅ Confirmé' },
+  { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
+  { key:'archive', label:'🗄️ Archive' },
+  // Colonnes legacy — non affichées, conservées pour la compatibilité des données existantes
+  { key:'en_transport', label:'🚛 En Transport', hidden:true },
+  { key:'livre', label:'✅ Livré', hidden:true },
+];
+const TASK_COLS = [
+  { key:'a_faire', label:'📝 À faire' },
+  { key:'en_cours', label:'⚡ En cours' },
+  { key:'en_attente', label:'👁️ À surveiller' },
+  { key:'termine', label:'✅ Terminé' }
+];
+const DOCS = [
+  { key:'carte_grise', label:'CG', full:'Carte Grise' },
+  { key:'facture_achat', label:'FA', full:"Facture d'achat" },
+  { key:'certificat_cession', label:'CC', full:'Certificat de cession' }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const S = {
+  vehicles: [],
+  lots: [],
+  tasks: [],
+  settings: {
+    github_token: '',
+    github_repo: 'AlexGuichard/crm-kanban',
+    email: '',
+    reminder_days: 3,
+    show_archive: false,
+    urgency_colors: { urg_1:'#e8294a', urg_2:'#e87a00', urg_3:'#4d65ff', urg_done:'#16a34a' }
+  },
+  briefing: null
+};
+
+let editingVehicleId = null;
+let editingLotId = null;
+let editingTaskId = null;
+const _expandedLotTasks = new Set(); // IDs des tâches-lot dépliées
+let currentDetailId = null;
+let pendingTransportId = null;
+let activeSS = 'a_contacter'; // active sourcing sub-stage tab
+let searchQ = '';
+let boardView = localStorage.getItem('boardView') || 'liste';
+let listSortField = 'created_at'; // par défaut : plus récemment ajouté en haut
+let listSortDir = -1;
+let ghSha = null;
+let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
+let _briefingSidebarHidden = localStorage.getItem('briefingSidebarHidden') === '1';
+let _taskTab = localStorage.getItem('taskTab') || 'today'; // 'today' | 'all' | 'watching'
+let _taskSectionState = JSON.parse(localStorage.getItem('taskSectionState') || '{}'); // {overdue:bool, today:bool, done:bool}
+let _pipeFilter = new Set(); // ex: 'sourcing:a_contacter', 'sourcing:contacte', 'a_payer'
+let _priceFilter = null;     // null | [min, max] en euros
+let _locFilter = '';         // filtre texte sur localisation
+let _selectedVehicles = new Set(); // IDs sélectionnés pour bulk actions
+function pinVehicle(id) {
+  _pinnedVehicleId = id;
+  localStorage.setItem('pinnedVehicleId', id);
+  renderSidebarBriefing();
+}
+function unpinVehicle() {
+  _pinnedVehicleId = null;
+  localStorage.removeItem('pinnedVehicleId');
+  renderSidebarBriefing();
+}
+
+// ============================================================
+// ENCRYPTED STORAGE HELPERS
+// ============================================================
+async function secureGet(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return null;
+  if (raw.startsWith('ENC:')) {
+    if (!Vault.isUnlocked()) return null;
+    try { return await Vault.decrypt(raw.slice(4)); } catch(e) { return null; }
+  }
+  return raw; // Legacy cleartext fallback
+}
+
+async function secureSet(key, value) {
+  if (!Vault.isUnlocked()) { localStorage.setItem(key, value); return; }
+  localStorage.setItem(key, 'ENC:' + await Vault.encrypt(value));
+}
+
+async function secureRemove(key) {
+  localStorage.removeItem(key);
+}
+
+
+// ============================================================
+// UTILS
+// ============================================================
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
+const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
+
+// Répare le double-encodage UTF-8 (mojibake) dans les données chargées depuis GitHub
+function fixMojibake(str) {
+  if (!str || typeof str !== 'string') return str;
+  let current = str;
+  for (let pass = 0; pass < 10; pass++) {
+    if (!/[-ÿ]/.test(current)) break;
+    try {
+      const bytes = new Uint8Array(current.length);
+      for (let i = 0; i < current.length; i++) bytes[i] = current.charCodeAt(i) & 0xFF;
+      const decoded = new TextDecoder('utf-8').decode(bytes);
+      if (decoded.includes('�') || decoded === current) break;
+      current = decoded;
+    } catch (e) { break; }
+  }
+  return current;
+}
+function fixObjMojibake(obj) {
+  if (!obj || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(fixObjMojibake);
+  const out = {};
+  for (const k of Object.keys(obj)) {
+    const v = obj[k];
+    out[k] = typeof v === 'string' ? fixMojibake(v) : fixObjMojibake(v);
+  }
+  return out;
+}
+const fmtN = n => n ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
+const fmtD = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; } catch(e){return s||'—';} };
+const fmtDs = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}) : '—'; } catch(e){return s||'—';} };
+
+const hasMissingDocs = v => !v.documents || DOCS.some(d => !v.documents[d.key]);
+const docsVisible = v => v.column !== 'sourcing';
+const getSS = key => SUB_STAGES.find(s => s.key === key) || SUB_STAGES[0];
+const getSSIdx = key => SUB_STAGES.findIndex(s => s.key === key);
+const urgClass = p => ({1:'urg-1',2:'urg-2',3:'urg-3',done:'urg-done'}[p]||'urg-3');
+
+function addHist(v, action) {
+  if (!v.historique) v.historique = [];
+  v.historique.push({ date: today(), action });
+  v.updated_at = new Date().toISOString();
+}
+
+
+function save() {
+  saveToGH();
+  render();
+}
+
+const MSG = {
+  TASK_DONE: '✅ Tâche terminée',
+  SAVED: '💾 Sauvegardé',
+  DELETED: '🗑️ Supprimé',
+  LINKED: '🔗 Lié',
+  UNLINKED: '🔗 Délié',
+  ERROR_SYNC: '❌ Erreur de synchronisation',
+  COPIED: '📋 Copié',
+};
+// ============================================================
 // CRYPTO MODULE — AES-256-GCM via WebCrypto API
 // ============================================================
 const Vault = (() => {
@@ -1986,134 +2152,6 @@ async function secureSet(key, value) {
 
 async function secureRemove(key) {
   localStorage.removeItem(key);
-}
-
-// ============================================================
-// CONSTANTS
-// ============================================================
-const SUB_STAGES = [
-  { key:'a_contacter',   label:'À contacter' },
-  { key:'contacte',      label:'Contacté' },
-  { key:'attente_retour',label:'Attente retour' },
-  { key:'negociation',   label:'Négociation' }
-];
-const COLUMNS = [
-  { key:'sourcing', label:'📋 Sourcing' },
-  { key:'a_payer', label:'✅ Confirmé' },
-  { key:'deal_perdu', label:'❌ Deal Perdu', small:true },
-  { key:'archive', label:'🗄️ Archive' },
-  // Colonnes legacy — non affichées, conservées pour la compatibilité des données existantes
-  { key:'en_transport', label:'🚛 En Transport', hidden:true },
-  { key:'livre', label:'✅ Livré', hidden:true },
-];
-const TASK_COLS = [
-  { key:'a_faire', label:'📝 À faire' },
-  { key:'en_cours', label:'⚡ En cours' },
-  { key:'en_attente', label:'👁️ À surveiller' },
-  { key:'termine', label:'✅ Terminé' }
-];
-const DOCS = [
-  { key:'carte_grise', label:'CG', full:'Carte Grise' },
-  { key:'facture_achat', label:'FA', full:"Facture d'achat" },
-  { key:'certificat_cession', label:'CC', full:'Certificat de cession' }
-];
-
-// ============================================================
-// STATE
-// ============================================================
-const S = {
-  vehicles: [],
-  lots: [],
-  tasks: [],
-  settings: {
-    github_token: '',
-    github_repo: 'AlexGuichard/crm-kanban',
-    email: '',
-    reminder_days: 3,
-    show_archive: false,
-    urgency_colors: { urg_1:'#e8294a', urg_2:'#e87a00', urg_3:'#4d65ff', urg_done:'#16a34a' }
-  },
-  briefing: null
-};
-
-let editingVehicleId = null;
-let editingLotId = null;
-let editingTaskId = null;
-const _expandedLotTasks = new Set(); // IDs des tâches-lot dépliées
-let currentDetailId = null;
-let pendingTransportId = null;
-let activeSS = 'a_contacter'; // active sourcing sub-stage tab
-let searchQ = '';
-let boardView = localStorage.getItem('boardView') || 'liste';
-let listSortField = 'created_at'; // par défaut : plus récemment ajouté en haut
-let listSortDir = -1;
-let ghSha = null;
-let _pinnedVehicleId = localStorage.getItem('pinnedVehicleId') || null;
-let _briefingSidebarHidden = localStorage.getItem('briefingSidebarHidden') === '1';
-let _taskTab = localStorage.getItem('taskTab') || 'today'; // 'today' | 'all' | 'watching'
-let _taskSectionState = JSON.parse(localStorage.getItem('taskSectionState') || '{}'); // {overdue:bool, today:bool, done:bool}
-let _pipeFilter = new Set(); // ex: 'sourcing:a_contacter', 'sourcing:contacte', 'a_payer'
-let _priceFilter = null;     // null | [min, max] en euros
-let _locFilter = '';         // filtre texte sur localisation
-let _selectedVehicles = new Set(); // IDs sélectionnés pour bulk actions
-function pinVehicle(id) {
-  _pinnedVehicleId = id;
-  localStorage.setItem('pinnedVehicleId', id);
-  renderSidebarBriefing();
-}
-function unpinVehicle() {
-  _pinnedVehicleId = null;
-  localStorage.removeItem('pinnedVehicleId');
-  renderSidebarBriefing();
-}
-
-// ============================================================
-// UTILS
-// ============================================================
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
-const esc = s => s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
-
-// Répare le double-encodage UTF-8 (mojibake) dans les données chargées depuis GitHub
-function fixMojibake(str) {
-  if (!str || typeof str !== 'string') return str;
-  let current = str;
-  for (let pass = 0; pass < 10; pass++) {
-    if (!/[-ÿ]/.test(current)) break;
-    try {
-      const bytes = new Uint8Array(current.length);
-      for (let i = 0; i < current.length; i++) bytes[i] = current.charCodeAt(i) & 0xFF;
-      const decoded = new TextDecoder('utf-8').decode(bytes);
-      if (decoded.includes('�') || decoded === current) break;
-      current = decoded;
-    } catch (e) { break; }
-  }
-  return current;
-}
-function fixObjMojibake(obj) {
-  if (!obj || typeof obj !== 'object') return obj;
-  if (Array.isArray(obj)) return obj.map(fixObjMojibake);
-  const out = {};
-  for (const k of Object.keys(obj)) {
-    const v = obj[k];
-    out[k] = typeof v === 'string' ? fixMojibake(v) : fixObjMojibake(v);
-  }
-  return out;
-}
-const fmtN = n => n ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
-const fmtD = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}) : '—'; } catch(e){return s||'—';} };
-const fmtDs = s => { try { return s ? new Date(s).toLocaleDateString('fr-FR',{day:'2-digit',month:'short'}) : '—'; } catch(e){return s||'—';} };
-
-const hasMissingDocs = v => !v.documents || DOCS.some(d => !v.documents[d.key]);
-const docsVisible = v => v.column !== 'sourcing';
-const getSS = key => SUB_STAGES.find(s => s.key === key) || SUB_STAGES[0];
-const getSSIdx = key => SUB_STAGES.findIndex(s => s.key === key);
-const urgClass = p => ({1:'urg-1',2:'urg-2',3:'urg-3',done:'urg-done'}[p]||'urg-3');
-
-function addHist(v, action) {
-  if (!v.historique) v.historique = [];
-  v.historique.push({ date: today(), action });
-  v.updated_at = new Date().toISOString();
 }
 
 // ============================================================
@@ -2513,7 +2551,7 @@ function bulkMoveVehicles(stageKey) {
   });
   const count = _selectedVehicles.size;
   _selectedVehicles.clear();
-  render(); saveToGH();
+  save();
   showToast(`✅ ${count} véhicule${count>1?'s':''} déplacé${count>1?'s':''}`);
 }
 
@@ -2528,7 +2566,7 @@ function bulkDealLost() {
     addHist(v, 'Deal perdu (bulk)');
   });
   _selectedVehicles.clear();
-  render(); saveToGH();
+  save();
   showToast(`❌ ${n} deal${n>1?'s':''} perdu${n>1?'s':''}`);
 }
 
@@ -2710,7 +2748,7 @@ function renderBoardList() {
     if (notesList.length) {
       const lastThree = [...notesList].reverse().slice(0, 3).map(n => '• ' + n.text.slice(0, 60) + (n.text.length > 60 ? '…' : '')).join('\n');
       const count = notesList.length > 1 ? ' ' + notesList.length : '';
-      noteBadge = `<span title="${esc(lastThree)}" style="margin-left:5px;font-size:11px;vertical-align:middle;cursor:default;opacity:0.85">💬${count}</span>`;
+      noteBadge = `<span title="${esc(lastThree)}" style="margin-left:6px;font-size:14px;vertical-align:middle;cursor:help;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:3px;background:rgba(0,0,0,0.05)" onmouseenter="this.style.background='rgba(0,0,0,0.12)'" onmouseleave="this.style.background='rgba(0,0,0,0.05)'">💬${count}</span>`;
     }
     return `<tr onclick="openDetail('${v.id}')" ondblclick="openQuickNote(event,'${v.id}')" oncontextmenu="openRowContextMenu(event,'${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}${staleRow?';'+staleRow:''}">
       <td onclick="event.stopPropagation()" ondblclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
@@ -3161,6 +3199,454 @@ function renderCol(col) {
 
 function setActiveSS(ss) { activeSS = ss; renderBoard(); }
 
+// -------- TASKS VIEW TOGGLE --------
+let tasksViewMode = localStorage.getItem('tasksViewMode') || 'kanban';
+function setTaskTab(tab) {
+  _taskTab = tab;
+  localStorage.setItem('taskTab', tab);
+  ['today','all','watching'].forEach(t => {
+    const btn = document.getElementById('ttab-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+  });
+  renderTasksList();
+  renderTasksStatsStrip();
+}
+
+function renderTasksStatsStrip() {
+  const el = document.getElementById('tasks-stats-strip');
+  if (!el) return;
+  const todayStr = today();
+  const activeTasks = S.tasks.filter(t => t.column !== 'termine');
+  const overdue = activeTasks.filter(t => t.column !== 'en_attente' && t.due_date && t.due_date < todayStr).length;
+  const todayCount = activeTasks.filter(t => t.column !== 'en_attente' && (!t.due_date || t.due_date === todayStr)).length;
+  const watching = activeTasks.filter(t => t.column === 'en_attente').length;
+  const done = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr)).length;
+  el.innerHTML = `<div class="tasks-stats-strip">
+    <div class="tss-item${overdue?' tss-bad':''}" onclick="setTaskTab('today')" title="Voir les tâches en retard">
+      <div class="tss-num">${overdue}</div><div class="tss-lbl">En retard</div>
+    </div>
+    <div class="tss-item" onclick="setTaskTab('today')" title="Voir les tâches d'aujourd'hui">
+      <div class="tss-num">${todayCount}</div><div class="tss-lbl">Aujourd'hui</div>
+    </div>
+    <div class="tss-item" onclick="setTaskTab('watching')" title="Voir les tâches à surveiller">
+      <div class="tss-num">${watching}</div><div class="tss-lbl">À surveiller</div>
+    </div>
+    <div class="tss-item${done>0?' tss-good':''}" title="Terminées aujourd'hui">
+      <div class="tss-num">${done}</div><div class="tss-lbl">Terminées</div>
+    </div>
+  </div>`;
+}
+
+function setTasksView(mode) {
+  tasksViewMode = mode;
+  localStorage.setItem('tasksViewMode', mode);
+  document.getElementById('tasksBoard').style.display = mode === 'kanban' ? '' : 'none';
+  document.getElementById('tasksList').style.display  = mode === 'list'   ? '' : 'none';
+  document.getElementById('tvt-kanban').classList.toggle('active', mode === 'kanban');
+  document.getElementById('tvt-list').classList.toggle('active', mode === 'list');
+  if (mode === 'list') renderTasksList();
+}
+function initTasksViewMode() {
+  const btn = document.getElementById('tvt-' + tasksViewMode);
+  if (btn) { btn.classList.add('active'); document.getElementById('tvt-' + (tasksViewMode === 'kanban' ? 'list' : 'kanban')).classList.remove('active'); }
+  setTasksView(tasksViewMode);
+  setTaskTab(_taskTab);
+  renderTasksStatsStrip();
+}
+
+// -------- TASKS LIST VIEW --------
+const PRIORITY_GROUPS = [
+  { prio: 1, label: '🔴 Urgences', cls: 'urg-1' },
+  { prio: 2, label: '🟠 Priorité normale', cls: 'urg-2' },
+  { prio: 3, label: '🔵 Faible priorité', cls: 'urg-3' },
+  { prio: null, label: '⚪ Sans priorité', cls: '' },
+];
+const ACTIVE_TASK_COLS = ['a_faire','en_cours','en_attente'];
+const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'À surveiller' };
+
+// Helper: parser target count depuis le titre (ex: "x5 e-208" → 5)
+function parseTargetCount(title) {
+  const m = (title||'').match(/^x(\d+)\s/i);
+  return m ? parseInt(m[1]) : 0;
+}
+
+// Couleurs statut véhicule pour tâches-lot
+const COL_STATUS_COLOR = {sourcing:'#f59e0b',a_payer:'#4f6ef7',en_transport:'#7c3aed',livre:'#16a34a',deal_perdu:'#e8294a',archive:'#999'};
+const COL_STATUS_LABEL = {sourcing:'Sourcing',a_payer:'Dashboard',en_transport:'Transport',livre:'Livré',deal_perdu:'Perdu',archive:'Archive'};
+
+// ---- Helper: HTML du quick-add ----
+function buildTasksQuickAddHtml() {
+  const _qp = typeof _quickPriority !== 'undefined' ? _quickPriority : 3;
+  const _qw = typeof _quickWatch !== 'undefined' ? _quickWatch : false;
+  const _qd = typeof _quickDueDate !== 'undefined' ? _quickDueDate : '';
+  const _qt = typeof _quickDueTime !== 'undefined' ? _quickDueTime : '';
+  return `<div style="margin-bottom:14px;display:flex;gap:8px;align-items:flex-end">
+    <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+      <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;background:var(--surface);overflow:hidden">
+        <input class="form-input" id="quickTaskInput" placeholder="Titre de la tâche…"
+          style="flex:1;padding:10px 14px;font-size:14px;border:none;outline:none;background:none"
+          onkeydown="if(event.key==='Enter'){document.getElementById('quickTaskDesc').focus();event.preventDefault()}" onfocus="document.getElementById('quickTaskDescWrap').style.display=''"
+          onpaste="handleQuickPaste(event)">
+        <div style="display:flex;gap:2px;padding:4px 8px;flex-shrink:0" title="Priorité">
+          <button onclick="event.preventDefault();setQuickPrio(1)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===1?'var(--urg-1)':'var(--border)'};background:${_qp===1?'rgba(232,41,74,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🔴</button>
+          <button onclick="event.preventDefault();setQuickPrio(3)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===3?'var(--text-muted)':'var(--border)'};background:${_qp===3?'rgba(0,0,0,0.04)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">⚪</button>
+          <button onclick="event.preventDefault();setQuickPrio(2)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===2?'var(--urg-2)':'var(--border)'};background:${_qp===2?'rgba(232,122,0,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🟠</button>
+          <button onclick="event.preventDefault();setQuickWatch()" title="Ajouter directement à Surveiller" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qw?'var(--accent)':'var(--border)'};background:${_qw?'rgba(77,101,255,0.12)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">👁️</button>
+        </div>
+      </div>
+      <div id="quickTaskDescWrap" style="display:none">
+        <textarea class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)&#10;Ou colle plusieurs lignes : x10 Clio, x5 Polo…" rows="2"
+          style="padding:8px 14px;font-size:12px;border-radius:0;border-top:1px dashed var(--border-2);color:var(--text-muted);resize:vertical;min-height:32px;font-family:inherit"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){quickAddTask();event.preventDefault()}"></textarea>
+        <div style="display:flex;gap:6px;padding:5px 10px;align-items:center;border-top:1px dashed var(--border-2);border-radius:0 0 10px 10px;background:var(--surface)">
+          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;user-select:none">📅 Échéance</span>
+          <input type="date" id="quickDueDate" value="${_qd}" onchange="_quickDueDate=this.value"
+            style="flex:1;min-width:0;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
+          <input type="time" id="quickDueTime" value="${_qt}" onchange="_quickDueTime=this.value"
+            style="width:76px;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
+  </div>`;
+}
+
+// ---- Helper: barre bulk actions ----
+function buildTasksBulkBarHtml() {
+  if (_selectedTasks.size === 0) return '';
+  return '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;margin-bottom:10px;background:var(--accent-light);border:1px solid rgba(79,110,247,0.2);border-radius:10px">'
+    + '<span style="font-size:13px;font-weight:700;color:var(--accent)">' + _selectedTasks.size + ' sélectionnée' + (_selectedTasks.size>1?'s':'') + '</span>'
+    + '<button class="btn btn-primary btn-sm" onclick="bulkComplete()" style="margin-left:8px">✅ Terminer</button>'
+    + '<button class="btn btn-ghost btn-sm" onclick="bulkWatch()">👁️ Surveiller</button>'
+    + '<button class="btn btn-ghost btn-sm" onclick="bulkDelete()" style="color:var(--urg-1);border-color:rgba(232,41,74,0.2)">🗑️ Supprimer</button>'
+    + '<button class="btn btn-ghost btn-sm" onclick="clearTaskSel()" style="margin-left:auto">✕ Désélectionner</button>'
+    + '</div>';
+}
+
+// ---- Helper: panneau lot expanded ----
+function renderTaskRowLotExpand(t, vIds) {
+  let html = '<div class="tl-lot-expand" onclick="event.stopPropagation()">';
+  if (vIds.length === 0) {
+    html += '<div style="font-size:11px;color:var(--text-muted);padding:4px 0;font-style:italic">Aucun véhicule lié — utilise la recherche ci-dessous</div>';
+  } else {
+    vIds.forEach(vid => {
+      const v = S.vehicles.find(x=>x.id===vid);
+      if (!v) return;
+      const sc = COL_STATUS_COLOR[v.column] || '#999';
+      const sl = COL_STATUS_LABEL[v.column] || v.column;
+      html += '<div class="tl-lot-vehicle" onclick="openDetail(\'' + esc(vid) + '\')">'
+        + '<div class="lot-v-status" style="background:' + sc + '" title="' + esc(sl) + '"></div>'
+        + '<div class="lot-v-info">'
+        + '<span class="lot-v-name">' + esc(v.marque) + ' ' + esc(v.modele) + '</span>'
+        + '<span class="lot-v-meta">' + (v.km ? fmtN(v.km).replace(' €','') + ' km' : '') + '</span>'
+        + '<span class="lot-v-meta">' + esc(v.fournisseur_nom||'') + '</span>'
+        + '<span class="lot-v-price">' + (v.prix_demande ? fmtN(v.prix_demande) : '') + '</span>'
+        + '</div>'
+        + '<span style="font-size:10px;color:var(--text-muted);padding:2px 6px;border-radius:6px;background:var(--surface);border:1px solid var(--border)">' + esc(sl) + '</span>'
+        + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();unlinkVehicleFromTask(\'' + esc(t.id) + '\',\'' + esc(vid) + '\')" title="Délier" style="font-size:10px;padding:2px 6px;color:var(--text-muted)">✕</button>'
+        + '</div>';
+    });
+  }
+  html += '<div class="tl-lot-link-wrap">'
+    + '<input placeholder="🔍 Rechercher un véhicule à lier…" oninput="filterLotLink(this,\'' + esc(t.id) + '\')" onfocus="filterLotLink(this,\'' + esc(t.id) + '\')">'
+    + '</div>'
+    + '<div class="tl-lot-link-results" id="lotLinkResults_' + t.id + '"></div>';
+  return html + '</div>';
+}
+
+// ---- Helper: ligne de tâche (ancien design) ----
+function renderTaskRow(t, cls, todayStr) {
+  const overdue = t.due_date && t.due_date < todayStr;
+  const isMatch = searchQ && matchT(t);
+  const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+  const targetCount = parseTargetCount(t.title);
+  const isLot = targetCount > 0 || vIds.length > 0;
+  const isExpanded = _expandedLotTasks.has(t.id);
+
+  let vBadges = '';
+  if (!isLot) {
+    vBadges = vIds.map(vid => {
+      const v = S.vehicles.find(x=>x.id===vid);
+      return v ? '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : '';
+    }).filter(Boolean).join('');
+  }
+
+  let lotBadge = '';
+  if (isLot) {
+    const linked = vIds.length;
+    const isComplete = targetCount > 0 && linked >= targetCount;
+    lotBadge = '<span class="tl-lot-badge' + (isComplete?' complete':'') + '" onclick="event.stopPropagation();toggleLotExpand(\'' + t.id + '\')" title="Cliquer pour voir les véhicules">'
+      + '🚗 ' + linked + (targetCount ? '/' + targetCount : '')
+      + (isComplete ? ' ✓' : '')
+      + ' <span style="font-size:9px;margin-left:2px">' + (isExpanded ? '▲' : '▼') + '</span>'
+      + '</span>';
+  }
+
+  const viewDays = t.last_viewed_at ? Math.floor((Date.now()-new Date(t.last_viewed_at).getTime())/86400000) : 999;
+  const viewWarn = viewDays >= 5 ? '<span class="tag tag-orange" title="Pas consultée depuis ' + viewDays + 'j">👁️ ' + viewDays + 'j</span>' : '';
+  const reminderBadge = t.reminder ? '<span class="tag" title="Rappel configuré">🔔</span>' : '';
+  let watchBadge = '';
+  if (t.column === 'en_attente' && t.watching_since) {
+    const wDays = Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000);
+    if (wDays >= 5) watchBadge = '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
+    else if (wDays >= 1) watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
+    else watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis aujourd\'hui</span>';
+  }
+  const isSel = _selectedTasks.has(t.id);
+  let rowHtml = '<div class="tl-row ' + (cls||'') + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center' + (isExpanded ? ';border-radius:8px 8px 0 0;margin-bottom:0' : '') + '">'
+    + '<input type="checkbox" ' + (isSel?'checked ':'') + 'onclick="event.stopPropagation();toggleTaskSel(\'' + t.id + '\')" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">'
+    + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
+    + '<div class="tl-content">'
+    + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
+    + (t.description ? '<div class="tl-desc">' + hl(t.description, searchQ) + '</div>' : '')
+    + '<div class="tl-tags" style="margin-top:5px">'
+    + (t.due_date ? '<span class="tag ' + (overdue?'tag-red':'') + '">' + (overdue?'⚠️ ':'') + fmtDs(t.due_date) + (t.due_time?' · '+t.due_time:'') + '</span>' : '')
+    + lotBadge + vBadges + watchBadge + viewWarn + reminderBadge
+    + '</div></div>'
+    + '<button class="btn btn-ghost btn-sm" onclick="completeTask(\'' + t.id + '\',event)" title="Shift+clic = terminé direct" style="flex-shrink:0;padding:6px 10px;font-size:16px;border-radius:8px">☐</button>'
+    + '</div>';
+
+  if (isLot && isExpanded) rowHtml += renderTaskRowLotExpand(t, vIds);
+  return rowHtml;
+}
+
+// ---- Helper: ligne de tâche (nouveau design temporal) ----
+function renderTaskRow2(t, extraCls) {
+  const todayStr = today();
+  const overdue = t.column !== 'en_attente' && t.due_date && t.due_date < todayStr;
+  const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
+  const targetCount = parseTargetCount(t.title);
+  const linked = vIds.length;
+  const isLot = targetCount > 0;
+  const lotComplete = isLot && linked >= targetCount;
+  const urg = t.priority === 1 ? '#ef4444' : t.priority === 2 ? '#f97316' : '#e2e8f0';
+
+  let metaBadges = '';
+  if (t.due_date) {
+    const dueCls = overdue ? ' tag-red' : '';
+    metaBadges += '<span class="tag' + dueCls + '">' + (overdue ? '⚠️ ' : '🕐 ') + fmtDs(t.due_date) + (t.due_time ? ' · ' + t.due_time : '') + '</span>';
+  }
+  if (!isLot && vIds.length) {
+    vIds.forEach(vid => {
+      const v = S.vehicles.find(x => x.id === vid);
+      if (v) metaBadges += '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>';
+    });
+  }
+  if (t.column === 'en_attente' && t.watching_since) {
+    const wDays = Math.floor((Date.now() - new Date(t.watching_since).getTime()) / 86400000);
+    if (wDays >= 5) metaBadges += '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
+    else if (wDays >= 1) metaBadges += '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
+  }
+
+  let lotHtml = '';
+  if (isLot) {
+    const pct = Math.min(100, Math.round(linked / targetCount * 100));
+    const badgeCls = linked === 0 ? 'lot-badge-empty' : linked >= targetCount ? 'lot-badge-complete' : 'lot-badge-partial';
+    const badgeTxt = linked >= targetCount ? '🎯 ' + linked + '/' + targetCount + ' — Prêt !' : '🚗 ' + linked + '/' + targetCount + ' véhicules';
+    lotHtml = '<div class="lot-progress-wrap">'
+      + '<span class="lot-badge ' + badgeCls + '">' + badgeTxt + '</span>'
+      + '<div class="lot-progress-track" style="margin-top:5px"><div class="lot-progress-fill' + (lotComplete ? ' done' : '') + '" style="width:' + pct + '%"></div></div>'
+      + (!lotComplete ? '<button class="lot-link-btn" onclick="event.stopPropagation();toggleLotExpand(\'' + t.id + '\')">+ Lier des véhicules</button>' : '')
+      + (lotComplete ? '<button class="lot-cta" onclick="event.stopPropagation();confirmLotToDashboard(\'' + t.id + '\')">🏁 Ajouter les ' + linked + ' véhicules au Dashboard → confirmer</button>' : '')
+      + '</div>';
+  }
+
+  const rowCls = 'tl-row2' + (overdue ? ' overdue' : (t.column === 'en_attente' ? ' watching' : '')) + (lotComplete ? ' lot-complete' : '') + (extraCls ? ' ' + extraCls : '');
+  return '<div id="trow_' + t.id + '" class="' + rowCls + '" onclick="openEditTask(\'' + t.id + '\')">'
+    + '<div class="tl-complete-circle" onclick="event.stopPropagation();completeTaskAnimated(\'' + t.id + '\')"></div>'
+    + '<div class="tl-row2-urg" style="background:' + urg + '"></div>'
+    + '<div class="tl-row2-body">'
+    + '<div class="tl-row2-title">' + hl(t.title, searchQ) + '</div>'
+    + (t.description ? '<div class="tl-row2-desc">' + esc(t.description) + '</div>' : '')
+    + (metaBadges ? '<div class="tl-row2-meta">' + metaBadges + '</div>' : '')
+    + lotHtml
+    + '</div>'
+    + '</div>';
+}
+
+// ---- Helper: section collapsible ----
+function renderTaskSection(id, lbl, lblCls, cntCls, tasks, defaultOpen, emptyMsg) {
+  const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : defaultOpen;
+  const togCls = open ? '' : ' closed';
+  return '<div class="ts-section">'
+    + '<div class="ts-section-hdr" onclick="toggleTaskSection(\'' + id + '\')">'
+    + '<span class="ts-section-lbl ' + lblCls + '">' + lbl + '</span>'
+    + '<span class="ts-section-count ' + cntCls + '">' + tasks.length + '</span>'
+    + '<span class="ts-toggle' + togCls + '">▾</span>'
+    + '</div>'
+    + '<div class="ts-body' + (open ? '' : ' hidden') + '" id="ts-body-' + id + '">'
+    + (tasks.length ? tasks.map(t => renderTaskRow2(t)).join('') : '<div style="padding:6px 0 8px;font-size:12px;color:var(--text-muted);font-style:italic">' + emptyMsg + '</div>')
+    + '</div></div>';
+}
+
+// ---- Helper: HTML du contenu selon l'onglet actif ----
+function buildTasksTabHtml() {
+  const todayStr = today();
+  let html = '';
+  if (_taskTab === 'today') {
+    const activeTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
+    const overdueT = activeTasks.filter(t => t.due_date && t.due_date < todayStr);
+    const todayT = activeTasks.filter(t => !t.due_date || t.due_date === todayStr);
+    const doneTodayT = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr));
+    html += renderTaskSection('overdue', '⚠ En retard', 'tsl-overdue', 'tsc-overdue', overdueT, true, 'Aucune tâche en retard 🎉');
+    html += renderTaskSection('today', '● Aujourd\'hui', 'tsl-today', 'tsc-today', todayT, true, 'Aucune tâche pour aujourd\'hui');
+    if (doneTodayT.length > 0) html += renderTaskSection('donetoday', '✅ Terminées aujourd\'hui', 'tsl-done', 'tsc-done', doneTodayT, false, '');
+  } else if (_taskTab === 'all') {
+    const activeTasks = S.tasks.filter(t => t.column !== 'termine' && t.column !== 'en_attente' && matchT(t));
+    PRIORITY_GROUPS.forEach(g => {
+      const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
+      if (!group.length) return;
+      group.sort((a, b) => ((a.due_date||'9999') + (a.due_time||'99:99')).localeCompare((b.due_date||'9999') + (b.due_time||'99:99')));
+      html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
+      group.forEach(t => { html += renderTaskRow2(t, g.cls); });
+      html += '</div>';
+    });
+    if (!activeTasks.length) html += '<div class="tl-empty">✨ Aucune tâche active</div>';
+    const watchingAll = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
+    if (watchingAll.length) {
+      html += '<div class="tl-group"><div class="tl-group-title" style="color:#f59e0b">👁 À surveiller <span style="background:#fef9c3;color:#a16207;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingAll.length + '</span></div>';
+      watchingAll.forEach(t => { html += renderTaskRow2(t, ''); });
+      html += '</div>';
+    }
+  } else if (_taskTab === 'watching') {
+    const watching = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
+    if (watching.length) {
+      watching.forEach(t => { html += renderTaskRow2(t, ''); });
+    } else {
+      html += '<div class="tl-empty">👁️ Aucune tâche à surveiller</div>';
+    }
+  }
+  return html;
+}
+
+function renderTasksList() {
+  const el = document.getElementById('tasksList');
+  if (!el) return;
+  // Sauvegarder les inputs en cours de saisie avant re-render
+  const _savedInputs = {};
+  ['quickTaskInput','quickTaskDesc','scratchpad'].forEach(id => {
+    const inp = document.getElementById(id);
+    if (inp) { _savedInputs[id] = inp.value; if (document.activeElement === inp) _savedInputs._focus = id; }
+  });
+  const _descVisible = document.getElementById('quickTaskDescWrap');
+  const _descWasVisible = _descVisible && _descVisible.style.display !== 'none';
+  const todoTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
+  const watchingTasks = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
+  const doneTasks = S.tasks.filter(t => t.column === 'termine');
+
+  let html = buildTasksQuickAddHtml();
+  html += buildTasksBulkBarHtml();
+
+  if (!todoTasks.length && !watchingTasks.length && !doneTasks.length) {
+    el.innerHTML = html + '<div class="tl-empty">✨ Aucune tâche</div>';
+    return;
+  }
+
+  html += buildTasksTabHtml();
+
+  el.innerHTML = html;
+  // Restaurer les inputs après re-render
+  Object.keys(_savedInputs).forEach(id => {
+    if (id === '_focus') return;
+    const inp = document.getElementById(id);
+    if (inp && _savedInputs[id]) inp.value = _savedInputs[id];
+  });
+  if (_descWasVisible) { const dw = document.getElementById('quickTaskDescWrap'); if (dw) dw.style.display = ''; }
+  if (_savedInputs._focus) { const f = document.getElementById(_savedInputs._focus); if (f) f.focus(); }
+}
+
+function toggleTaskSection(id) {
+  const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : true;
+  _taskSectionState[id] = !open;
+  localStorage.setItem('taskSectionState', JSON.stringify(_taskSectionState));
+  const body = document.getElementById('ts-body-' + id);
+  if (body) body.classList.toggle('hidden', open);
+  const hdr = body && body.previousElementSibling;
+  if (hdr) { const tog = hdr.querySelector('.ts-toggle'); if (tog) tog.classList.toggle('closed', open); }
+}
+
+function completeTaskAnimated(id) {
+  const row = document.getElementById('trow_' + id);
+  if (row) {
+    row.classList.add('tl-completing');
+    setTimeout(() => completeTask(id), 400);
+  } else {
+    completeTask(id);
+  }
+}
+
+function confirmLotToDashboard(taskId) {
+  const t = S.tasks.find(x => x.id === taskId);
+  if (!t) return;
+  const vIds = t.linked_vehicle_ids || [];
+  if (!confirm('Ces ' + vIds.length + ' véhicules vont passer en Confirmé. La tâche sera terminée.')) return;
+  vIds.forEach(vid => {
+    const v = S.vehicles.find(x => x.id === vid);
+    if (!v) return;
+    v.column = 'a_payer';
+    v.sub_stage = null;
+    addHist(v, 'Passé en Confirmé via tâche lot');
+  });
+  t.column = 'termine';
+  t.completed_at = today();
+  save();
+  showToast('🏁 ' + vIds.length + ' véhicules ajoutés au Dashboard');
+}
+
+// -------- TASKS BOARD --------
+function renderTasksBoard() {
+  document.getElementById('tasksBoard').innerHTML = TASK_COLS.map(col => {
+    const tasks = S.tasks.filter(t => t.column === col.key && matchT(t))
+      .sort((a,b) => {
+        const todayStr = today();
+        const aOver = a.due_date && a.due_date < todayStr ? 1 : 0;
+        const bOver = b.due_date && b.due_date < todayStr ? 1 : 0;
+        if (bOver !== aOver) return bOver - aOver;
+        return (a.priority||3) - (b.priority||3);
+      });
+    return `<div class="column">
+      <div class="column-header">
+        <span class="col-title">${col.label}</span>
+        <span class="col-count">${tasks.length}</span>
+      </div>
+      <div class="column-body" ondragover="onDOver(event)" ondrop="onDropTask(event,'${col.key}')">
+        ${tasks.map(t => taskCard(t)).join('')}
+        ${tasks.length === 0 ? emptyState('✨','Vide') : ''}
+      </div>
+      <div class="col-add"><button onclick="openAddTask('${col.key}')">+ Tâche</button></div>
+    </div>`;
+  }).join('');
+}
+
+function taskCard(t) {
+  const urg = urgClass(t.priority);
+  const overdue = t.due_date && t.due_date < today() && t.column !== 'termine';
+  const isMatch = searchQ && matchT(t);
+  return `<div class="card task-card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
+    ondragstart="dStart(event,'task','${t.id}')" ondragend="dEnd(event)"
+    ontouchstart="tStart(event,'task','${t.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
+    onclick="openEditTask('${t.id}')"
+    oncontextmenu="openCtx(event,'task','${t.id}')">
+    <div class="card-btn-group">
+      <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('task','${t.id}')" title="Déplacer vers…">↔</button>
+      <button class="card-icon-btn" onclick="event.stopPropagation();shareTask('${t.id}')" title="Envoyer vers Rappels">📲</button>
+    </div>
+    <div class="card-title" style="padding-right:56px">${t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : ''}${hl(t.title, searchQ)}</div>
+    ${t.description ? `<div class="card-sub" style="margin-top:3px">${hl(t.description.slice(0,70), searchQ)}${t.description.length>70?'…':''}</div>` : ''}
+    <div class="tags" style="margin-top:6px">
+      ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time ? ' · ' + t.due_time : ''}</span>` : ''}
+      ${(t.linked_vehicle_ids||[]).map(vid=>{const v=S.vehicles.find(x=>x.id===vid);return v?'<span class="tag tag-blue">🚗 '+esc(v.marque)+' '+esc(v.modele)+'</span>':''}).filter(Boolean).join('')}
+      ${!(t.linked_vehicle_ids||[]).length && t.linked_vehicle_id ? '<span class="tag tag-blue">🚗 Lié véh.</span>' : ''}
+    </div>
+  </div>`;
+}
+
+function toggleBriefingSidebar() {
+  _briefingSidebarHidden = !_briefingSidebarHidden;
+  localStorage.setItem('briefingSidebarHidden', _briefingSidebarHidden ? '1' : '0');
+  renderSidebarBriefing();
+}
+
 // ============================================================
 // EMAILS VIEW
 // ============================================================
@@ -3349,15 +3835,112 @@ function onDropSS(event, ssKey) {
   v.sub_stage = ssKey;
   addHist(v, `Sourcing : ${prev} → ${ssKey}`);
   activeSS = ssKey;
-  render();
-  saveToGH();
+  save();
+}
+
+// ---- Helpers pour vehicleCard ----
+const _VC_SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', attente_retour:'#0891b2', negociation:'var(--urg-2)' };
+const _VC_SS_BADGE  = {
+  a_contacter:    { label:'À contacter',    color:'var(--text-muted)', bg:'var(--bg)' },
+  contacte:       { label:'Contacté',       color:'#3d55f0',           bg:'rgba(61,85,240,0.09)' },
+  attente_retour: { label:'Attente retour', color:'#0891b2',           bg:'rgba(8,145,178,0.1)' },
+  negociation:    { label:'Négociation',    color:'#d97706',           bg:'rgba(217,119,6,0.1)' }
+};
+
+function vehicleCardFreshness(v) {
+  if (v.updated_at) {
+    const d = new Date(v.updated_at);
+    const now = new Date();
+    const day = String(d.getDate()).padStart(2,'0');
+    const mo = String(d.getMonth()+1).padStart(2,'0');
+    const h = String(d.getHours()).padStart(2,'0');
+    const mi = String(d.getMinutes()).padStart(2,'0');
+    const dDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const nDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const calDays = Math.round((nDate - dDate) / 86400000);
+    const cls = calDays === 0 ? ' fresh' : calDays >= 5 ? ' stale' : '';
+    let txt;
+    if (calDays === 0) txt = `${h}:${mi}`;
+    else if (calDays === 1) txt = `Hier ${h}:${mi}`;
+    else if (calDays < 7) txt = `il y a ${calDays}j`;
+    else txt = `${day}/${mo}`;
+    return `<span class="freshness-badge${cls}" title="${day}/${mo}/${d.getFullYear()} ${h}:${mi}">↻ ${txt}</span>`;
+  }
+  const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
+  if (lastDate) {
+    const d2 = new Date(lastDate);
+    const now2 = new Date();
+    const dDate2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
+    const nDate2 = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
+    const calDays2 = Math.round((nDate2 - dDate2) / 86400000);
+    const cls = calDays2 === 0 ? ' fresh' : calDays2 >= 5 ? ' stale' : '';
+    const txt = calDays2 === 0 ? "Aujourd'hui" : calDays2 === 1 ? 'Hier' : `il y a ${calDays2}j`;
+    return `<span class="freshness-badge${cls}">${txt}</span>`;
+  }
+  return '';
+}
+
+function vehicleCardMeta(v, ssBadgeInfo) {
+  const price = v.prix_negocie || v.prix_demande;
+  const ssKey = v.sub_stage || 'a_contacter';
+  const metaParts = [v.annee, v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '', v.carburant].filter(Boolean);
+  const metaHtml = metaParts.length ? `<div class="card-meta">${metaParts.join(' · ')}</div>` : '';
+  const conc = v.concessionnaire || v.vendeur || '';
+  const concHtml = conc ? `<div class="card-concession">${hl(esc(conc), searchQ)}</div>` : '';
+  const ssBadgeHtml = ssBadgeInfo
+    ? `<span class="ss-badge" style="background:${ssBadgeInfo.bg};color:${ssBadgeInfo.color}">${ssBadgeInfo.label}</span>`
+    : '';
+  const NEXT_ACTIONS = {
+    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', attente_retour:'⏳ Attente retour', negociation:'🤝 En négociation' },
+    a_payer:'✅ Confirmé — bon de commande à venir',
+  };
+  let nextAction = '';
+  if (v.column !== 'sourcing' && NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
+  const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
+  const showDocs = docsVisible(v);
+  const missD = hasMissingDocs(v);
+  const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
+    ? `<div class="doc-warn">⚠️ Docs manquants</div>` : '';
+  const reminderDays = S.settings.reminder_days || 3;
+  let remindHtml = '';
+  if (['sourcing','a_payer'].includes(v.column)) {
+    const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at);
+    if (refDate) {
+      const inactiveDays = Math.floor((Date.now() - new Date(refDate).getTime()) / 86400000);
+      if (inactiveDays >= reminderDays) remindHtml = `<div class="remind-badge">⏰ Relancer · ${inactiveDays}j</div>`;
+    }
+  }
+  const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
+  const ssLabel = ssBadgeInfo ? ssBadgeInfo.label.toLowerCase() : '';
+  const lastActRedundant = lastAct && ssLabel && lastAct.toLowerCase().includes(ssLabel);
+  const lastActionHtml = lastAct && !lastActRedundant ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
+  let vReminderHtml = '';
+  if (v.reminder_at) {
+    const rDate = new Date(v.reminder_at);
+    const overdue = rDate <= new Date();
+    const rDay = String(rDate.getDate()).padStart(2,'0');
+    const rMo = String(rDate.getMonth()+1).padStart(2,'0');
+    const rH = String(rDate.getHours()).padStart(2,'0');
+    const rMi = String(rDate.getMinutes()).padStart(2,'0');
+    vReminderHtml = overdue
+      ? `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:700;color:var(--urg-1);background:rgba(232,41,74,0.08);padding:3px 7px;border-radius:5px">❗ Rappel échu ${rDay}/${rMo} ${rH}:${rMi}</div>`
+      : `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:5px">🔔 ${rDay}/${rMo} ${rH}:${rMi}</div>`;
+  }
+  return { price, metaHtml, concHtml, ssBadgeHtml, nextActionHtml, docWarn, remindHtml, lastActionHtml, vReminderHtml };
+}
+
+function vehicleCardActions(v) {
+  if (v.column === 'a_payer')
+    return `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
+  if (v.column === 'en_transport')
+    return `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
+  if (v.column === 'livre')
+    return `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
+  return '';
 }
 
 function vehicleCard(v) {
   const urg = urgClass(v.priority);
-  const price = v.prix_negocie || v.prix_demande;
-  const showDocs = docsVisible(v);
-  const missD = hasMissingDocs(v);
   const isMatch = searchQ && matchV(v);
   const dragAttrs = `draggable="true"
     ondragstart="dStart(event,'vehicle','${v.id}')" ondragend="dEnd(event)"
@@ -3366,6 +3949,7 @@ function vehicleCard(v) {
 
   // === DEAL PERDU : carte minimaliste ===
   if (v.column === 'deal_perdu') {
+    const price = v.prix_negocie || v.prix_demande;
     return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
       style="border-left-color:var(--urg-1);opacity:0.75">
       <div class="card-btn-group">
@@ -3380,122 +3964,12 @@ function vehicleCard(v) {
     </div>`;
   }
 
-  // === Bordure gauche colorée par sous-étape ===
-  const SS_COLORS = { a_contacter:'var(--border)', contacte:'var(--accent)', attente_retour:'#0891b2', negociation:'var(--urg-2)' };
-  const SS_BADGE  = {
-    a_contacter:    { label:'À contacter',    color:'var(--text-muted)', bg:'var(--bg)' },
-    contacte:       { label:'Contacté',       color:'#3d55f0',           bg:'rgba(61,85,240,0.09)' },
-    attente_retour: { label:'Attente retour', color:'#0891b2',           bg:'rgba(8,145,178,0.1)' },
-    negociation:    { label:'Négociation',    color:'#d97706',           bg:'rgba(217,119,6,0.1)' }
-  };
   const ssKey = v.sub_stage || 'a_contacter';
-  const borderColor = v.column === 'sourcing' ? (SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
-
-  // === Fraîcheur ===
-  let freshnessHtml = '';
-  if (v.updated_at) {
-    const d = new Date(v.updated_at);
-    const now = new Date();
-    const day = String(d.getDate()).padStart(2,'0');
-    const mo = String(d.getMonth()+1).padStart(2,'0');
-    const h = String(d.getHours()).padStart(2,'0');
-    const mi = String(d.getMinutes()).padStart(2,'0');
-    // Comparaison par date calendaire (pas par durée)
-    const dDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const nDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const calDays = Math.round((nDate - dDate) / 86400000);
-    const cls = calDays === 0 ? ' fresh' : calDays >= 5 ? ' stale' : '';
-    let txt;
-    if (calDays === 0) txt = `${h}:${mi}`;
-    else if (calDays === 1) txt = `Hier ${h}:${mi}`;
-    else if (calDays < 7) txt = `il y a ${calDays}j`;
-    else txt = `${day}/${mo}`;
-    freshnessHtml = `<span class="freshness-badge${cls}" title="${day}/${mo}/${d.getFullYear()} ${h}:${mi}">↻ ${txt}</span>`;
-  } else {
-    const lastDate = v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at;
-    if (lastDate) {
-      const d2 = new Date(lastDate);
-      const now2 = new Date();
-      const dDate2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
-      const nDate2 = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
-      const calDays2 = Math.round((nDate2 - dDate2) / 86400000);
-      const cls = calDays2 === 0 ? ' fresh' : calDays2 >= 5 ? ' stale' : '';
-      const txt = calDays2 === 0 ? "Aujourd'hui" : calDays2 === 1 ? 'Hier' : `il y a ${calDays2}j`;
-      freshnessHtml = `<span class="freshness-badge${cls}">${txt}</span>`;
-    }
-  }
-
-  // === Méta (1 ligne) ===
-  const metaParts = [v.annee, v.km ? Number(v.km).toLocaleString('fr-FR')+' km' : '', v.carburant].filter(Boolean);
-  const metaHtml = metaParts.length ? `<div class="card-meta">${metaParts.join(' · ')}</div>` : '';
-
-  // === Concession ===
-  const conc = v.concessionnaire || v.vendeur || '';
-  const concHtml = conc ? `<div class="card-concession">${hl(esc(conc), searchQ)}</div>` : '';
-
-  // === Badge sous-étape (sourcing) ===
-  const ssBadgeInfo = v.column === 'sourcing' ? (SS_BADGE[ssKey] || SS_BADGE.a_contacter) : null;
-  const ssBadgeHtml = ssBadgeInfo
-    ? `<span class="ss-badge" style="background:${ssBadgeInfo.bg};color:${ssBadgeInfo.color}">${ssBadgeInfo.label}</span>`
-    : '';
-
-  // === Prochaine action ===
-  const NEXT_ACTIONS = {
-    sourcing: { a_contacter:'📞 À contacter', contacte:'💬 En discussion', attente_retour:'⏳ Attente retour', negociation:'🤝 En négociation' },
-    a_payer:'✅ Confirmé — bon de commande à venir',
-  };
-  // Next action: ne pas afficher si c'est du sourcing (déjà visible via le badge sous-étape)
-  let nextAction = '';
-  if (v.column !== 'sourcing' && NEXT_ACTIONS[v.column]) nextAction = NEXT_ACTIONS[v.column];
-  const nextActionHtml = nextAction ? `<div class="next-action">${nextAction}</div>` : '';
-
-  // === Docs warning ===
-  const docWarn = showDocs && missD && v.column !== 'sourcing' && v.column !== 'archive'
-    ? `<div class="doc-warn">⚠️ Docs manquants</div>` : '';
-
-  // === Rappel inactif ===
-  const reminderDays = S.settings.reminder_days || 3;
-  const activeColumns = ['sourcing','a_payer'];
-  let remindHtml = '';
-  if (activeColumns.includes(v.column)) {
-    const refDate = v.updated_at || (v.historique && v.historique.length ? v.historique[v.historique.length-1].date : v.created_at);
-    if (refDate) {
-      const inactiveDays = Math.floor((Date.now() - new Date(refDate).getTime()) / 86400000);
-      if (inactiveDays >= reminderDays) remindHtml = `<div class="remind-badge">⏰ Relancer · ${inactiveDays}j</div>`;
-    }
-  }
-
-  // === Dernière action historique (masquée si redondante avec le sous-stade) ===
-  const lastAct = v.historique && v.historique.length ? v.historique[v.historique.length-1].action : '';
-  const ssLabel = ssBadgeInfo ? ssBadgeInfo.label.toLowerCase() : '';
-  const lastActRedundant = lastAct && ssLabel && lastAct.toLowerCase().includes(ssLabel);
-  const lastActionHtml = lastAct && !lastActRedundant ? `<div class="card-last-action">↳ ${esc(lastAct)}</div>` : '';
-
-  // === Rappel véhicule ===
-  let vReminderHtml = '';
-  if (v.reminder_at) {
-    const rDate = new Date(v.reminder_at);
-    const now = new Date();
-    const overdue = rDate <= now;
-    const rDay = String(rDate.getDate()).padStart(2,'0');
-    const rMo = String(rDate.getMonth()+1).padStart(2,'0');
-    const rH = String(rDate.getHours()).padStart(2,'0');
-    const rMi = String(rDate.getMinutes()).padStart(2,'0');
-    if (overdue) {
-      vReminderHtml = `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:700;color:var(--urg-1);background:rgba(232,41,74,0.08);padding:3px 7px;border-radius:5px">❗ Rappel échu ${rDay}/${rMo} ${rH}:${rMi}</div>`;
-    } else {
-      vReminderHtml = `<div style="display:flex;align-items:center;gap:4px;margin-top:5px;font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-light);padding:3px 7px;border-radius:5px">🔔 ${rDay}/${rMo} ${rH}:${rMi}</div>`;
-    }
-  }
-
-  // === Bouton action rapide ===
-  let actions = '';
-  if (v.column === 'a_payer')
-    actions = `<button class="btn btn-primary btn-sm" onclick="openTransportModal('${v.id}',event)">🚛 Transport</button>`;
-  else if (v.column === 'en_transport')
-    actions = `<button class="btn btn-primary btn-sm" onclick="confirmArrival('${v.id}',event)">✅ Livré</button>`;
-  else if (v.column === 'livre')
-    actions = `<button class="btn btn-ghost btn-sm" onclick="archiveV('${v.id}',event)">🗄️ Archiver</button>`;
+  const borderColor = v.column === 'sourcing' ? (_VC_SS_COLORS[ssKey] || 'var(--border)') : 'var(--border)';
+  const ssBadgeInfo = v.column === 'sourcing' ? (_VC_SS_BADGE[ssKey] || _VC_SS_BADGE.a_contacter) : null;
+  const freshnessHtml = vehicleCardFreshness(v);
+  const { price, metaHtml, concHtml, ssBadgeHtml, nextActionHtml, docWarn, remindHtml, lastActionHtml, vReminderHtml } = vehicleCardMeta(v, ssBadgeInfo);
+  const actions = vehicleCardActions(v);
 
   return `<div class="card ${urg}${isMatch?' search-match':''}" ${dragAttrs}
     style="border-left-color:${borderColor}">
@@ -3533,452 +4007,6 @@ function lotCard(l) {
   </div>`;
 }
 
-// -------- TASKS VIEW TOGGLE --------
-let tasksViewMode = localStorage.getItem('tasksViewMode') || 'kanban';
-function setTaskTab(tab) {
-  _taskTab = tab;
-  localStorage.setItem('taskTab', tab);
-  ['today','all','watching'].forEach(t => {
-    const btn = document.getElementById('ttab-' + t);
-    if (btn) btn.classList.toggle('active', t === tab);
-  });
-  renderTasksList();
-  renderTasksStatsStrip();
-}
-
-function renderTasksStatsStrip() {
-  const el = document.getElementById('tasks-stats-strip');
-  if (!el) return;
-  const todayStr = today();
-  const activeTasks = S.tasks.filter(t => t.column !== 'termine');
-  const overdue = activeTasks.filter(t => t.column !== 'en_attente' && t.due_date && t.due_date < todayStr).length;
-  const todayCount = activeTasks.filter(t => t.column !== 'en_attente' && (!t.due_date || t.due_date === todayStr)).length;
-  const watching = activeTasks.filter(t => t.column === 'en_attente').length;
-  const done = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr)).length;
-  el.innerHTML = `<div class="tasks-stats-strip">
-    <div class="tss-item${overdue?' tss-bad':''}" onclick="setTaskTab('today')" title="Voir les tâches en retard">
-      <div class="tss-num">${overdue}</div><div class="tss-lbl">En retard</div>
-    </div>
-    <div class="tss-item" onclick="setTaskTab('today')" title="Voir les tâches d'aujourd'hui">
-      <div class="tss-num">${todayCount}</div><div class="tss-lbl">Aujourd'hui</div>
-    </div>
-    <div class="tss-item" onclick="setTaskTab('watching')" title="Voir les tâches à surveiller">
-      <div class="tss-num">${watching}</div><div class="tss-lbl">À surveiller</div>
-    </div>
-    <div class="tss-item${done>0?' tss-good':''}" title="Terminées aujourd'hui">
-      <div class="tss-num">${done}</div><div class="tss-lbl">Terminées</div>
-    </div>
-  </div>`;
-}
-
-function setTasksView(mode) {
-  tasksViewMode = mode;
-  localStorage.setItem('tasksViewMode', mode);
-  document.getElementById('tasksBoard').style.display = mode === 'kanban' ? '' : 'none';
-  document.getElementById('tasksList').style.display  = mode === 'list'   ? '' : 'none';
-  document.getElementById('tvt-kanban').classList.toggle('active', mode === 'kanban');
-  document.getElementById('tvt-list').classList.toggle('active', mode === 'list');
-  if (mode === 'list') renderTasksList();
-}
-function initTasksViewMode() {
-  const btn = document.getElementById('tvt-' + tasksViewMode);
-  if (btn) { btn.classList.add('active'); document.getElementById('tvt-' + (tasksViewMode === 'kanban' ? 'list' : 'kanban')).classList.remove('active'); }
-  setTasksView(tasksViewMode);
-  setTaskTab(_taskTab);
-  renderTasksStatsStrip();
-}
-
-// -------- TASKS LIST VIEW --------
-const PRIORITY_GROUPS = [
-  { prio: 1, label: '🔴 Urgences', cls: 'urg-1' },
-  { prio: 2, label: '🟠 Priorité normale', cls: 'urg-2' },
-  { prio: 3, label: '🔵 Faible priorité', cls: 'urg-3' },
-  { prio: null, label: '⚪ Sans priorité', cls: '' },
-];
-const ACTIVE_TASK_COLS = ['a_faire','en_cours','en_attente'];
-const COL_LABEL = { a_faire:'À faire', en_cours:'En cours', en_attente:'À surveiller' };
-
-function renderTasksList() {
-  const el = document.getElementById('tasksList');
-  if (!el) return;
-  // Sauvegarder les inputs en cours de saisie avant re-render
-  const _savedInputs = {};
-  ['quickTaskInput','quickTaskDesc','scratchpad'].forEach(id => {
-    const inp = document.getElementById(id);
-    if (inp) { _savedInputs[id] = inp.value; if (document.activeElement === inp) _savedInputs._focus = id; }
-  });
-  const _descVisible = document.getElementById('quickTaskDescWrap');
-  const _descWasVisible = _descVisible && _descVisible.style.display !== 'none';
-  // Sauvegarder l'état d'ouverture des sections collapsibles
-  const _watchOpen = document.getElementById('watchList');
-  const _watchWasOpen = _watchOpen && _watchOpen.style.display !== 'none';
-  const _archiveOpen = document.getElementById('archiveTasks');
-  const _archiveWasOpen = _archiveOpen && _archiveOpen.style.display !== 'none';
-  const todoTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
-  const watchingTasks = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
-  const doneTasks = S.tasks.filter(t => t.column === 'termine');
-  const todayStr = today();
-
-  const _qp = typeof _quickPriority !== 'undefined' ? _quickPriority : 3;
-  const _qw = typeof _quickWatch !== 'undefined' ? _quickWatch : false;
-  const _qd = typeof _quickDueDate !== 'undefined' ? _quickDueDate : '';
-  const _qt = typeof _quickDueTime !== 'undefined' ? _quickDueTime : '';
-  let html = `<div style="margin-bottom:14px;display:flex;gap:8px;align-items:flex-end">
-    <div style="flex:1;display:flex;flex-direction:column;gap:4px">
-      <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--border);border-bottom:none;border-radius:10px 10px 0 0;background:var(--surface);overflow:hidden">
-        <input class="form-input" id="quickTaskInput" placeholder="Titre de la tâche…"
-          style="flex:1;padding:10px 14px;font-size:14px;border:none;outline:none;background:none"
-          onkeydown="if(event.key==='Enter'){document.getElementById('quickTaskDesc').focus();event.preventDefault()}" onfocus="document.getElementById('quickTaskDescWrap').style.display=''"
-          onpaste="handleQuickPaste(event)">
-        <div style="display:flex;gap:2px;padding:4px 8px;flex-shrink:0" title="Priorité">
-          <button onclick="event.preventDefault();setQuickPrio(1)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===1?'var(--urg-1)':'var(--border)'};background:${_qp===1?'rgba(232,41,74,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🔴</button>
-          <button onclick="event.preventDefault();setQuickPrio(3)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===3?'var(--text-muted)':'var(--border)'};background:${_qp===3?'rgba(0,0,0,0.04)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">⚪</button>
-          <button onclick="event.preventDefault();setQuickPrio(2)" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qp===2?'var(--urg-2)':'var(--border)'};background:${_qp===2?'rgba(232,122,0,0.08)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">🟠</button>
-          <button onclick="event.preventDefault();setQuickWatch()" title="Ajouter directement à Surveiller" style="width:28px;height:28px;border-radius:6px;border:2px solid ${_qw?'var(--accent)':'var(--border)'};background:${_qw?'rgba(77,101,255,0.12)':'var(--surface-2)'};cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.12s">👁️</button>
-        </div>
-      </div>
-      <div id="quickTaskDescWrap" style="display:none">
-        <textarea class="form-input" id="quickTaskDesc" placeholder="Détail / description (Entrée pour valider)&#10;Ou colle plusieurs lignes : x10 Clio, x5 Polo…" rows="2"
-          style="padding:8px 14px;font-size:12px;border-radius:0;border-top:1px dashed var(--border-2);color:var(--text-muted);resize:vertical;min-height:32px;font-family:inherit"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){quickAddTask();event.preventDefault()}"></textarea>
-        <div style="display:flex;gap:6px;padding:5px 10px;align-items:center;border-top:1px dashed var(--border-2);border-radius:0 0 10px 10px;background:var(--surface)">
-          <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;user-select:none">📅 Échéance</span>
-          <input type="date" id="quickDueDate" value="${_qd}" onchange="_quickDueDate=this.value"
-            style="flex:1;min-width:0;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
-          <input type="time" id="quickDueTime" value="${_qt}" onchange="_quickDueTime=this.value"
-            style="width:76px;padding:3px 6px;border:1px solid var(--border);border-radius:5px;font-size:12px;background:var(--bg);color:var(--text);font-family:inherit">
-        </div>
-      </div>
-    </div>
-    <button class="btn btn-primary" onclick="quickAddTask()" style="border-radius:10px;padding:10px 16px;height:42px">+</button>
-  </div>`;
-
-  // Barre d'actions groupées si sélection
-  if (_selectedTasks.size > 0) {
-    html += '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;margin-bottom:10px;background:var(--accent-light);border:1px solid rgba(79,110,247,0.2);border-radius:10px">'
-      + '<span style="font-size:13px;font-weight:700;color:var(--accent)">' + _selectedTasks.size + ' sélectionnée' + (_selectedTasks.size>1?'s':'') + '</span>'
-      + '<button class="btn btn-primary btn-sm" onclick="bulkComplete()" style="margin-left:8px">✅ Terminer</button>'
-      + '<button class="btn btn-ghost btn-sm" onclick="bulkWatch()">👁️ Surveiller</button>'
-      + '<button class="btn btn-ghost btn-sm" onclick="bulkDelete()" style="color:var(--urg-1);border-color:rgba(232,41,74,0.2)">🗑️ Supprimer</button>'
-      + '<button class="btn btn-ghost btn-sm" onclick="clearTaskSel()" style="margin-left:auto">✕ Désélectionner</button>'
-      + '</div>';
-  }
-
-  if (!todoTasks.length && !watchingTasks.length && !doneTasks.length) {
-    el.innerHTML = html + '<div class="tl-empty">✨ Aucune tâche</div>';
-    return;
-  }
-
-  // Helper: parser target count depuis le titre (ex: "x5 e-208" → 5)
-  function parseTargetCount(title) {
-    const m = (title||'').match(/^x(\d+)\s/i);
-    return m ? parseInt(m[1]) : 0;
-  }
-  // Couleur statut véhicule
-  const COL_STATUS_COLOR = {sourcing:'#f59e0b',a_payer:'#4f6ef7',en_transport:'#7c3aed',livre:'#16a34a',deal_perdu:'#e8294a',archive:'#999'};
-  const COL_STATUS_LABEL = {sourcing:'Sourcing',a_payer:'Dashboard',en_transport:'Transport',livre:'Livré',deal_perdu:'Perdu',archive:'Archive'};
-
-  // Helper pour rendre une ligne de tâche
-  function renderTaskRow(t, cls) {
-    const overdue = t.due_date && t.due_date < todayStr;
-    const isMatch = searchQ && matchT(t);
-    const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
-    const targetCount = parseTargetCount(t.title);
-    const isLot = targetCount > 0 || vIds.length > 0;
-    const isExpanded = _expandedLotTasks.has(t.id);
-
-    // Badges véhicules (mode simple si pas tâche-lot)
-    let vBadges = '';
-    if (!isLot) {
-      vBadges = vIds.map(vid => {
-        const v = S.vehicles.find(x=>x.id===vid);
-        return v ? '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>' : '';
-      }).filter(Boolean).join('');
-    }
-
-    // Badge lot (compteur x/n)
-    let lotBadge = '';
-    if (isLot) {
-      const linked = vIds.length;
-      const target = targetCount || linked;
-      const isComplete = targetCount > 0 && linked >= targetCount;
-      lotBadge = '<span class="tl-lot-badge' + (isComplete?' complete':'') + '" onclick="event.stopPropagation();toggleLotExpand(\'' + t.id + '\')" title="Cliquer pour voir les véhicules">'
-        + '🚗 ' + linked + (targetCount ? '/' + targetCount : '')
-        + (isComplete ? ' ✓' : '')
-        + ' <span style="font-size:9px;margin-left:2px">' + (isExpanded ? '▲' : '▼') + '</span>'
-        + '</span>';
-    }
-
-    const viewDays = t.last_viewed_at ? Math.floor((Date.now()-new Date(t.last_viewed_at).getTime())/86400000) : 999;
-    const viewWarn = viewDays >= 5 ? '<span class="tag tag-orange" title="Pas consultée depuis ' + viewDays + 'j">👁️ ' + viewDays + 'j</span>' : '';
-    const reminderBadge = t.reminder ? '<span class="tag" title="Rappel configuré">🔔</span>' : '';
-    // Watching badge
-    let watchBadge = '';
-    if (t.column === 'en_attente' && t.watching_since) {
-      const wDays = Math.floor((Date.now()-new Date(t.watching_since).getTime())/86400000);
-      if (wDays >= 5) watchBadge = '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
-      else if (wDays >= 1) watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
-      else watchBadge = '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis aujourd\'hui</span>';
-    }
-    const isSel = _selectedTasks.has(t.id);
-    let rowHtml = '<div class="tl-row ' + (cls||'') + (isMatch ? ' search-match' : '') + '" onclick="openEditTask(\'' + t.id + '\')" style="align-items:center' + (isExpanded ? ';border-radius:8px 8px 0 0;margin-bottom:0' : '') + '">'
-      + '<input type="checkbox" ' + (isSel?'checked ':'') + 'onclick="event.stopPropagation();toggleTaskSel(\'' + t.id + '\')" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex-shrink:0">'
-      + '<span class="tl-col-badge tl-col-' + t.column + '">' + (COL_LABEL[t.column]||t.column) + '</span>'
-      + '<div class="tl-content">'
-      + '<div class="tl-title">' + (t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : '') + hl(t.title, searchQ) + '</div>'
-      + (t.description ? '<div class="tl-desc">' + hl(t.description, searchQ) + '</div>' : '')
-      + '<div class="tl-tags" style="margin-top:5px">'
-      + (t.due_date ? '<span class="tag ' + (overdue?'tag-red':'') + '">' + (overdue?'⚠️ ':'') + fmtDs(t.due_date) + (t.due_time?' · '+t.due_time:'') + '</span>' : '')
-      + lotBadge + vBadges + watchBadge + viewWarn + reminderBadge
-      + '</div></div>'
-      + '<button class="btn btn-ghost btn-sm" onclick="completeTask(\'' + t.id + '\',event)" title="Shift+clic = terminé direct" style="flex-shrink:0;padding:6px 10px;font-size:16px;border-radius:8px">☐</button>'
-      + '</div>';
-
-    // Expanded lot panel
-    if (isLot && isExpanded) {
-      rowHtml += '<div class="tl-lot-expand" onclick="event.stopPropagation()">';
-      if (vIds.length === 0) {
-        rowHtml += '<div style="font-size:11px;color:var(--text-muted);padding:4px 0;font-style:italic">Aucun véhicule lié — utilise la recherche ci-dessous</div>';
-      } else {
-        vIds.forEach(vid => {
-          const v = S.vehicles.find(x=>x.id===vid);
-          if (!v) return;
-          const sc = COL_STATUS_COLOR[v.column] || '#999';
-          const sl = COL_STATUS_LABEL[v.column] || v.column;
-          rowHtml += '<div class="tl-lot-vehicle" onclick="openDetail(\'' + esc(vid) + '\')">'
-            + '<div class="lot-v-status" style="background:' + sc + '" title="' + esc(sl) + '"></div>'
-            + '<div class="lot-v-info">'
-            + '<span class="lot-v-name">' + esc(v.marque) + ' ' + esc(v.modele) + '</span>'
-            + '<span class="lot-v-meta">' + (v.km ? fmtN(v.km).replace(' €','') + ' km' : '') + '</span>'
-            + '<span class="lot-v-meta">' + esc(v.fournisseur_nom||'') + '</span>'
-            + '<span class="lot-v-price">' + (v.prix_demande ? fmtN(v.prix_demande) : '') + '</span>'
-            + '</div>'
-            + '<span style="font-size:10px;color:var(--text-muted);padding:2px 6px;border-radius:6px;background:var(--surface);border:1px solid var(--border)">' + esc(sl) + '</span>'
-            + '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();unlinkVehicleFromTask(\'' + esc(t.id) + '\',\'' + esc(vid) + '\')" title="Délier" style="font-size:10px;padding:2px 6px;color:var(--text-muted)">✕</button>'
-            + '</div>';
-        });
-      }
-      // Recherche pour lier un véhicule
-      rowHtml += '<div class="tl-lot-link-wrap">'
-        + '<input placeholder="🔍 Rechercher un véhicule à lier…" oninput="filterLotLink(this,\'' + esc(t.id) + '\')" onfocus="filterLotLink(this,\'' + esc(t.id) + '\')">'
-        + '</div>'
-        + '<div class="tl-lot-link-results" id="lotLinkResults_' + t.id + '"></div>';
-      rowHtml += '</div>';
-    }
-
-    return rowHtml;
-  }
-
-  // ---- Helper renderTaskRow2 : nouveau design temporal ----
-  function renderTaskRow2(t, extraCls) {
-    const overdue = t.column !== 'en_attente' && t.due_date && t.due_date < todayStr;
-    const vIds = t.linked_vehicle_ids || (t.linked_vehicle_id ? [t.linked_vehicle_id] : []);
-    const targetCount = parseTargetCount(t.title);
-    const linked = vIds.length;
-    const isLot = targetCount > 0;
-    const lotComplete = isLot && linked >= targetCount;
-    const urg = t.priority === 1 ? '#ef4444' : t.priority === 2 ? '#f97316' : '#e2e8f0';
-
-    // Badges véhicules
-    let metaBadges = '';
-    if (t.due_date) {
-      const dueCls = overdue ? ' tag-red' : '';
-      metaBadges += '<span class="tag' + dueCls + '">' + (overdue ? '⚠️ ' : '🕐 ') + fmtDs(t.due_date) + (t.due_time ? ' · ' + t.due_time : '') + '</span>';
-    }
-    if (!isLot && vIds.length) {
-      vIds.forEach(vid => {
-        const v = S.vehicles.find(x => x.id === vid);
-        if (v) metaBadges += '<span class="tag tag-blue" onclick="event.stopPropagation();openDetail(\'' + vid + '\')">🚗 ' + esc(v.marque) + ' ' + esc(v.modele) + '</span>';
-      });
-    }
-    if (t.column === 'en_attente' && t.watching_since) {
-      const wDays = Math.floor((Date.now() - new Date(t.watching_since).getTime()) / 86400000);
-      if (wDays >= 5) metaBadges += '<span class="tag tag-orange" style="font-weight:700">⚠️ Relancer ? (' + wDays + 'j)</span>';
-      else if (wDays >= 1) metaBadges += '<span class="tag" style="background:rgba(8,145,178,0.1);color:#0891b2">👁️ Depuis ' + wDays + 'j</span>';
-    }
-
-    // Lot badge + progress
-    let lotHtml = '';
-    if (isLot) {
-      const pct = Math.min(100, Math.round(linked / targetCount * 100));
-      const badgeCls = linked === 0 ? 'lot-badge-empty' : linked >= targetCount ? 'lot-badge-complete' : 'lot-badge-partial';
-      const badgeTxt = linked >= targetCount ? '🎯 ' + linked + '/' + targetCount + ' — Prêt !' : '🚗 ' + linked + '/' + targetCount + ' véhicules';
-      lotHtml = '<div class="lot-progress-wrap">'
-        + '<span class="lot-badge ' + badgeCls + '">' + badgeTxt + '</span>'
-        + '<div class="lot-progress-track" style="margin-top:5px"><div class="lot-progress-fill' + (lotComplete ? ' done' : '') + '" style="width:' + pct + '%"></div></div>'
-        + (!lotComplete ? '<button class="lot-link-btn" onclick="event.stopPropagation();toggleLotExpand(\'' + t.id + '\')">+ Lier des véhicules</button>' : '')
-        + (lotComplete ? '<button class="lot-cta" onclick="event.stopPropagation();confirmLotToDashboard(\'' + t.id + '\')">🏁 Ajouter les ' + linked + ' véhicules au Dashboard → confirmer</button>' : '')
-        + '</div>';
-    }
-
-    const rowCls = 'tl-row2' + (overdue ? ' overdue' : (t.column === 'en_attente' ? ' watching' : '')) + (lotComplete ? ' lot-complete' : '') + (extraCls ? ' ' + extraCls : '');
-    return '<div id="trow_' + t.id + '" class="' + rowCls + '" onclick="openEditTask(\'' + t.id + '\')">'
-      + '<div class="tl-complete-circle" onclick="event.stopPropagation();completeTaskAnimated(\'' + t.id + '\')"></div>'
-      + '<div class="tl-row2-urg" style="background:' + urg + '"></div>'
-      + '<div class="tl-row2-body">'
-      + '<div class="tl-row2-title">' + hl(t.title, searchQ) + '</div>'
-      + (t.description ? '<div class="tl-row2-desc">' + esc(t.description) + '</div>' : '')
-      + (metaBadges ? '<div class="tl-row2-meta">' + metaBadges + '</div>' : '')
-      + lotHtml
-      + '</div>'
-      + '</div>';
-  }
-
-  // ---- Sections par tab ----
-  if (_taskTab === 'today') {
-    const activeTasks = S.tasks.filter(t => (t.column === 'a_faire' || t.column === 'en_cours') && matchT(t));
-    const overdueT = activeTasks.filter(t => t.due_date && t.due_date < todayStr);
-    const todayT = activeTasks.filter(t => !t.due_date || t.due_date === todayStr);
-    const doneTodayT = S.tasks.filter(t => t.column === 'termine' && t.completed_at && t.completed_at.startsWith(todayStr));
-
-    function renderSection(id, lbl, lblCls, cntCls, tasks, defaultOpen, emptyMsg) {
-      const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : defaultOpen;
-      const togCls = open ? '' : ' closed';
-      return '<div class="ts-section">'
-        + '<div class="ts-section-hdr" onclick="toggleTaskSection(\'' + id + '\')">'
-        + '<span class="ts-section-lbl ' + lblCls + '">' + lbl + '</span>'
-        + '<span class="ts-section-count ' + cntCls + '">' + tasks.length + '</span>'
-        + '<span class="ts-toggle' + togCls + '">▾</span>'
-        + '</div>'
-        + '<div class="ts-body' + (open ? '' : ' hidden') + '" id="ts-body-' + id + '">'
-        + (tasks.length ? tasks.map(t => renderTaskRow2(t)).join('') : '<div style="padding:6px 0 8px;font-size:12px;color:var(--text-muted);font-style:italic">' + emptyMsg + '</div>')
-        + '</div></div>';
-    }
-
-    html += renderSection('overdue', '⚠ En retard', 'tsl-overdue', 'tsc-overdue', overdueT, true, 'Aucune tâche en retard 🎉');
-    html += renderSection('today', '● Aujourd\'hui', 'tsl-today', 'tsc-today', todayT, true, 'Aucune tâche pour aujourd\'hui');
-    if (doneTodayT.length > 0) html += renderSection('donetoday', '✅ Terminées aujourd\'hui', 'tsl-done', 'tsc-done', doneTodayT, false, '');
-
-  } else if (_taskTab === 'all') {
-    const activeTasks = S.tasks.filter(t => t.column !== 'termine' && t.column !== 'en_attente' && matchT(t));
-    PRIORITY_GROUPS.forEach(g => {
-      const group = activeTasks.filter(t => (g.prio === null ? !t.priority : t.priority === g.prio));
-      if (!group.length) return;
-      group.sort((a, b) => ((a.due_date||'9999') + (a.due_time||'99:99')).localeCompare((b.due_date||'9999') + (b.due_time||'99:99')));
-      html += '<div class="tl-group"><div class="tl-group-title">' + g.label + ' <span style="background:var(--bg);padding:1px 6px;border-radius:10px;font-size:10px">' + group.length + '</span></div>';
-      group.forEach(t => { html += renderTaskRow2(t, g.cls); });
-      html += '</div>';
-    });
-    if (!activeTasks.length) html += '<div class="tl-empty">✨ Aucune tâche active</div>';
-    // Surveiller — toujours visible dans "Toutes"
-    const watchingAll = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
-    if (watchingAll.length) {
-      html += '<div class="tl-group"><div class="tl-group-title" style="color:#f59e0b">👁 À surveiller <span style="background:#fef9c3;color:#a16207;padding:1px 6px;border-radius:10px;font-size:10px">' + watchingAll.length + '</span></div>';
-      watchingAll.forEach(t => { html += renderTaskRow2(t, ''); });
-      html += '</div>';
-    }
-
-  } else if (_taskTab === 'watching') {
-    const watching = S.tasks.filter(t => t.column === 'en_attente' && matchT(t));
-    if (watching.length) {
-      watching.forEach(t => { html += renderTaskRow2(t, ''); });
-    } else {
-      html += '<div class="tl-empty">👁️ Aucune tâche à surveiller</div>';
-    }
-  }
-
-  el.innerHTML = html;
-  // Restaurer les inputs après re-render
-  Object.keys(_savedInputs).forEach(id => {
-    if (id === '_focus') return;
-    const inp = document.getElementById(id);
-    if (inp && _savedInputs[id]) inp.value = _savedInputs[id];
-  });
-  if (_descWasVisible) { const dw = document.getElementById('quickTaskDescWrap'); if (dw) dw.style.display = ''; }
-  if (_savedInputs._focus) { const f = document.getElementById(_savedInputs._focus); if (f) f.focus(); }
-}
-
-function toggleTaskSection(id) {
-  const open = _taskSectionState[id] !== undefined ? _taskSectionState[id] : true;
-  _taskSectionState[id] = !open;
-  localStorage.setItem('taskSectionState', JSON.stringify(_taskSectionState));
-  const body = document.getElementById('ts-body-' + id);
-  if (body) body.classList.toggle('hidden', open);
-  const hdr = body && body.previousElementSibling;
-  if (hdr) { const tog = hdr.querySelector('.ts-toggle'); if (tog) tog.classList.toggle('closed', open); }
-}
-
-function completeTaskAnimated(id) {
-  const row = document.getElementById('trow_' + id);
-  if (row) {
-    row.classList.add('tl-completing');
-    setTimeout(() => completeTask(id), 400);
-  } else {
-    completeTask(id);
-  }
-}
-
-function confirmLotToDashboard(taskId) {
-  const t = S.tasks.find(x => x.id === taskId);
-  if (!t) return;
-  const vIds = t.linked_vehicle_ids || [];
-  if (!confirm('Ces ' + vIds.length + ' véhicules vont passer en Confirmé. La tâche sera terminée.')) return;
-  vIds.forEach(vid => {
-    const v = S.vehicles.find(x => x.id === vid);
-    if (!v) return;
-    v.column = 'a_payer';
-    v.sub_stage = null;
-    addHist(v, 'Passé en Confirmé via tâche lot');
-  });
-  t.column = 'termine';
-  t.completed_at = today();
-  render(); saveToGH();
-  showToast('🏁 ' + vIds.length + ' véhicules ajoutés au Dashboard');
-}
-
-// -------- TASKS BOARD --------
-function renderTasksBoard() {
-  document.getElementById('tasksBoard').innerHTML = TASK_COLS.map(col => {
-    const tasks = S.tasks.filter(t => t.column === col.key && matchT(t))
-      .sort((a,b) => {
-        const todayStr = today();
-        const aOver = a.due_date && a.due_date < todayStr ? 1 : 0;
-        const bOver = b.due_date && b.due_date < todayStr ? 1 : 0;
-        if (bOver !== aOver) return bOver - aOver;
-        return (a.priority||3) - (b.priority||3);
-      });
-    return `<div class="column">
-      <div class="column-header">
-        <span class="col-title">${col.label}</span>
-        <span class="col-count">${tasks.length}</span>
-      </div>
-      <div class="column-body" ondragover="onDOver(event)" ondrop="onDropTask(event,'${col.key}')">
-        ${tasks.map(t => taskCard(t)).join('')}
-        ${tasks.length === 0 ? emptyState('✨','Vide') : ''}
-      </div>
-      <div class="col-add"><button onclick="openAddTask('${col.key}')">+ Tâche</button></div>
-    </div>`;
-  }).join('');
-}
-
-function taskCard(t) {
-  const urg = urgClass(t.priority);
-  const overdue = t.due_date && t.due_date < today() && t.column !== 'termine';
-  const isMatch = searchQ && matchT(t);
-  return `<div class="card task-card ${urg}${isMatch ? ' search-match' : ''}" draggable="true"
-    ondragstart="dStart(event,'task','${t.id}')" ondragend="dEnd(event)"
-    ontouchstart="tStart(event,'task','${t.id}')" ontouchend="tEnd(event)" ontouchmove="tMove(event)"
-    onclick="openEditTask('${t.id}')"
-    oncontextmenu="openCtx(event,'task','${t.id}')">
-    <div class="card-btn-group">
-      <button class="card-icon-btn" onclick="event.stopPropagation();openMoveSheet('task','${t.id}')" title="Déplacer vers…">↔</button>
-      <button class="card-icon-btn" onclick="event.stopPropagation();shareTask('${t.id}')" title="Envoyer vers Rappels">📲</button>
-    </div>
-    <div class="card-title" style="padding-right:56px">${t.auto_generated && !t.title.startsWith('🤖') ? '🤖 ' : ''}${hl(t.title, searchQ)}</div>
-    ${t.description ? `<div class="card-sub" style="margin-top:3px">${hl(t.description.slice(0,70), searchQ)}${t.description.length>70?'…':''}</div>` : ''}
-    <div class="tags" style="margin-top:6px">
-      ${t.due_date ? `<span class="tag ${overdue?'tag-red':''}">${overdue?'⚠️ ':''}${fmtDs(t.due_date)}${t.due_time ? ' · ' + t.due_time : ''}</span>` : ''}
-      ${(t.linked_vehicle_ids||[]).map(vid=>{const v=S.vehicles.find(x=>x.id===vid);return v?'<span class="tag tag-blue">🚗 '+esc(v.marque)+' '+esc(v.modele)+'</span>':''}).filter(Boolean).join('')}
-      ${!(t.linked_vehicle_ids||[]).length && t.linked_vehicle_id ? '<span class="tag tag-blue">🚗 Lié véh.</span>' : ''}
-    </div>
-  </div>`;
-}
-
-function toggleBriefingSidebar() {
-  _briefingSidebarHidden = !_briefingSidebarHidden;
-  localStorage.setItem('briefingSidebarHidden', _briefingSidebarHidden ? '1' : '0');
-  renderSidebarBriefing();
-}
 
 // -------- SIDEBAR BRIEFING --------
 function renderSidebarBriefing() {
@@ -4589,8 +4617,7 @@ function saveVehicle() {
   }
 
   closeModal('ovVehicle');
-  render();
-  saveToGH();
+  save();
 }
 
 function deleteVehicle(id) {
@@ -4599,18 +4626,17 @@ function deleteVehicle(id) {
   if (!removed) return;
   S.vehicles = S.vehicles.filter(v=>v.id!==id);
   closeDrawer();
-  render(); saveToGH();
+  save();
   showUndoToast('Véhicule supprimé', () => {
     S.vehicles.push(removed);
-    render(); saveToGH();
+    save();
     showToast('↩️ Véhicule restauré');
   });
 }
 
 function deleteVehicleFast(id) {
   S.vehicles = S.vehicles.filter(v=>v.id!==id);
-  render();
-  saveToGH();
+  save();
 }
 
 // ============================================================
@@ -4639,7 +4665,7 @@ function moveToAPayer(id, event) {
   v.column = 'a_payer'; v.sub_stage = null;
   addHist(v, 'Passé en À Payer');
   createDocsTask(v); // auto-tâche dès le paiement si docs manquants
-  render(); saveToGH();
+  save();
 }
 
 function openTransportModal(id, event) {
@@ -4662,7 +4688,7 @@ function confirmTransport() {
   v.column = 'en_transport';
   addHist(v, `Mis en transport (${v.transport_methode === 'camion' ? 'Camion' : 'Convoyage'})`);
   closeModal('ovTransport');
-  render(); saveToGH();
+  save();
 }
 
 function confirmArrival(id, event) {
@@ -4673,7 +4699,7 @@ function confirmArrival(id, event) {
   v.column = 'livre'; v.date_livraison = today();
   addHist(v, 'Livraison confirmée');
   createDocsTask(v); // re-crée la tâche si elle a été clôturée entre temps
-  render(); saveToGH();
+  save();
 }
 
 function archiveV(id, event) {
@@ -4681,7 +4707,7 @@ function archiveV(id, event) {
   const v = S.vehicles.find(x=>x.id===id);
   if (!v) return;
   v.column = 'archive'; addHist(v,'Archivé');
-  render(); saveToGH();
+  save();
 }
 
 let _dealLostId = null;
@@ -4700,8 +4726,129 @@ function confirmDealLost() {
   v.deal_lost_reason = reason || null;
   addHist(v, `Deal perdu${reason ? ' — ' + reason : ''}`);
   closeModal('ovDealPerdu');
-  render(); saveToGH();
+  save();
   showToast('❌ Deal marqué comme perdu');
+}
+
+// ============================================================
+// VEHICLE DETAIL — PANNEAUX
+// ============================================================
+function renderDetailPane0(v) {
+  const showDocs = docsVisible(v);
+  const missD = hasMissingDocs(v);
+  const _i = (field, val, opts = {}) => inlineInput(v.id, field, val, opts);
+  const _row = (label, content) => `<div class="detail-row"><span class="detail-row-label">${label}</span><span class="detail-row-value">${content}</span></div>`;
+  const _sel = (field, options, current) => `<select onchange="saveInlineField('${v.id}','${field}',this.value)">${options.map(o=>`<option${o===current?' selected':''}>${o}</option>`).join('')}</select>`;
+
+  const photoHtml = v.photo ? `<div class="drawer-photo"><img src="${esc(v.photo)}" onerror="this.parentElement.style.display='none'"></div>` : '';
+  const sourceLabel = v.source === 'LaCentrale' ? 'LaCentrale' : v.source === 'LeBonCoin' ? 'LeBonCoin' : 'l\'annonce';
+  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:10px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--accent);font-size:13px;font-weight:600">🔗 Voir l'annonce ${sourceLabel}</a></div>` : '';
+  let dealLostBanner = '';
+  if (v.column === 'deal_perdu') {
+    dealLostBanner = `<div style="background:rgba(232,41,74,0.06);border:1px solid rgba(232,41,74,0.2);border-radius:10px;padding:12px;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--urg-1);margin-bottom:4px">❌ DEAL PERDU</div>
+      <div style="font-size:13px;color:var(--text)">${v.deal_lost_reason ? esc(v.deal_lost_reason) : '<em style="color:var(--text-muted)">Raison non précisée</em>'}</div>
+    </div>`;
+  }
+  const infoGridHtml = `<div class="detail-rows">
+    ${_row('Km', _i('km', v.km||v.kilometrage||'', {type:'number',placeholder:'—'}))}
+    ${_row('Prix demandé', _i('prix_demande', v.prix_demande||v.prix||'', {type:'number',placeholder:'—'}))}
+    ${_row('Prix négocié', _i('prix_negocie', v.prix_negocie||'', {type:'number',placeholder:'—',style:'color:var(--accent)'}))}
+    ${_row('Millésime', _i('annee', v.annee||'', {type:'number',placeholder:'—'}))}
+    ${_row('Carburant', _sel('carburant', ['','Essence','Diesel','Hybride','Électrique','GPL'], v.carburant||''))}
+    ${_row('Boîte', _sel('boite', ['','Automatique','Manuelle','Semi-auto'], v.boite||''))}
+    ${_row('Couleur', _i('couleur', v.couleur||'', {placeholder:'—'}))}
+    ${_row('Localisation', _i('localisation', v.localisation||'', {placeholder:'—'}))}
+    ${_row('VIN', _i('vin', v.vin||'', {placeholder:'—'}))}
+    ${_row('Immat.', _i('immatriculation', v.immatriculation||'', {placeholder:'—'}))}
+  </div>`;
+  const fournisseurHtml = `
+    <div class="detail-section">Fournisseur</div>
+    <div class="detail-rows">
+      ${_row('Nom', _i('fournisseur_nom', v.fournisseur_nom||v.vendeur||'', {placeholder:'—'}))}
+      ${_row('Téléphone', _i('fournisseur_tel', v.fournisseur_tel||'', {type:'tel',placeholder:'—',style:'color:var(--accent)'}))}
+      ${_row('Email', _i('fournisseur_email', v.fournisseur_email||'', {type:'email',placeholder:'—'}))}
+    </div>
+    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button></div>`;
+  const docsHtml = showDocs ? `
+    <div class="drawer-section-title" style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
+      <span>📄 Documents ${missD ? '<span style="color:var(--urg-2)">⚠️</span>' : '<span style="color:var(--urg-done)">✅</span>'}</span>
+      <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="sendDocsEmail('${v.id}')">📧</button>
+    </div>
+    <div class="doc-checklist">
+      ${DOCS.map(d=>`
+        <div class="doc-item ${v.documents&&v.documents[d.key]?'checked':''}" onclick="toggleDoc('${v.id}','${d.key}')">
+          <div class="doc-checkbox">${v.documents&&v.documents[d.key]?'✓':''}</div>
+          <span class="doc-label">${d.full}</span>
+        </div>`).join('')}
+    </div>` : '';
+  const transportHtml = v.transport_methode ? `
+    <div class="detail-section">🚛 Transport</div>
+    <div class="detail-rows">
+      ${_row('Mode', v.transport_methode==='camion'?'🚛 Camion':'🚗 Convoyage')}
+      ${_row('Date départ', fmtD(v.transport_date))}
+      ${v.transport_notes ? _row('Notes', esc(v.transport_notes)) : ''}
+    </div>` : '';
+  const commentHtml = `
+    <div class="drawer-section-title" style="margin-top:14px">💬 Commentaires</div>
+    <div id="commentList_${v.id}">${buildCommentListHTML(v)}</div>
+    <div style="display:flex;gap:6px;margin-top:8px">
+      <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
+        style="flex:1;padding:7px 10px;font-size:13px"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
+      <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+</button>
+    </div>`;
+  document.getElementById('dpane-0').innerHTML =
+    dealLostBanner + photoHtml + annonceLinkHtml + infoGridHtml + fournisseurHtml + docsHtml + transportHtml + commentHtml;
+}
+
+function renderDetailPane1(v) {
+  const _histEntries = (v.historique || []).map(h => ({ ts: h.date, type: 'hist', text: h.action }));
+  const _noteEntries = (v.notes || []).map(n => ({ ts: n.created_at, type: 'note', text: n.text }));
+  const _allEntries = [..._histEntries, ..._noteEntries].sort((a, b) => b.ts > a.ts ? 1 : -1);
+  const histHtml = _allEntries.length
+    ? `<div class="timeline">${_allEntries.map((e, i) => {
+        const dotStyle = i > 2 ? 'background:var(--border)' : (e.type === 'note' ? 'background:var(--primary)' : '');
+        if (e.type === 'note') {
+          return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><span style="font-size:10px;font-weight:700;background:rgba(77,101,255,0.1);color:var(--primary);padding:1px 6px;border-radius:4px;margin-right:5px">💬 Note</span><strong>${fmtNoteTs(e.ts)}</strong><div style="margin-top:3px;font-size:13px">${esc(e.text)}</div></div></div>`;
+        }
+        return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><strong>${e.ts}</strong> — ${esc(e.text)}</div></div>`;
+      }).join('')}</div>`
+    : '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Aucun historique</div>';
+  document.getElementById('dpane-1').innerHTML = histHtml;
+}
+
+function renderDetailPane2(v) {
+  const linkedTasks = S.tasks.filter(t => (t.linked_vehicle_ids||[]).includes(v.id) || t.linked_vehicle_id===v.id);
+  const tasksHtml = linkedTasks.length
+    ? linkedTasks.map(t=>{
+        const isDone = t.column === 'termine';
+        const isLate = t.due_date && t.due_date < today() && !isDone;
+        return `<div style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);cursor:pointer" onclick="openEditTask('${t.id}')">
+          <div style="width:18px;height:18px;border:2px solid ${isDone?'var(--urg-done)':'var(--border)'};border-radius:50%;flex-shrink:0;${isDone?'background:var(--urg-done);display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:800':''}}">${isDone?'✓':''}</div>
+          <div style="flex:1;font-size:13px;font-weight:500;${isDone?'text-decoration:line-through;color:var(--text-light)':''}">${esc(t.title)}</div>
+          ${t.due_date ? `<div style="font-size:11px;font-weight:700;color:${isLate?'var(--urg-1)':'var(--text-muted)'}">${fmtDs(t.due_date)}</div>` : ''}
+        </div>`;
+      }).join('')
+    : '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Aucune tâche liée</div>';
+  document.getElementById('dpane-2').innerHTML = tasksHtml +
+    `<button class="btn btn-ghost btn-sm" style="margin-top:6px;width:100%" onclick="openAddTask();closeDrawer()">+ Ajouter une tâche</button>`;
+}
+
+function renderDetailPane3(v) {
+  let actionHtml = `<div style="display:flex;flex-direction:column;gap:8px">
+    <button class="btn btn-ghost" onclick="editVehicle();closeDrawer()">✏️ Modifier le véhicule</button>`;
+  if (v.column === 'sourcing')
+    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">✅ Confirmer l'achat</button>`;
+  if (v.column === 'a_payer')
+    actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
+  if (v.column === 'en_transport' || v.column === 'livre')
+    actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
+  if (v.column !== 'deal_perdu' && v.column !== 'archive')
+    actionHtml += `<button class="btn btn-ghost" style="color:var(--urg-1);border-color:rgba(232,41,74,0.3)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
+  actionHtml += `<button class="btn btn-danger" style="margin-top:8px" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
+  actionHtml += `</div>`;
+  document.getElementById('dpane-3').innerHTML = actionHtml;
 }
 
 // ============================================================
@@ -4712,8 +4859,6 @@ function openDetail(id) {
   if (!v) return;
   currentDetailId = id;
 
-  const showDocs = docsVisible(v);
-  const missD = hasMissingDocs(v);
   const price = v.prix_negocie || v.prix_demande || v.prix;
 
   // ---- Drawer header ----
@@ -4741,127 +4886,11 @@ function openDetail(id) {
   }
   document.getElementById('drawerFreshness').innerHTML = freshHtml;
 
-  // ---- TAB 0: Détails (photo + info + fournisseur + docs + comments) ----
-  const photoHtml = v.photo ? `<div class="drawer-photo"><img src="${esc(v.photo)}" onerror="this.parentElement.style.display='none'"></div>` : '';
-  const sourceLabel = v.source === 'LaCentrale' ? 'LaCentrale' : v.source === 'LeBonCoin' ? 'LeBonCoin' : 'l\'annonce';
-  const annonceLinkHtml = v.url_annonce ? `<div style="margin-bottom:10px"><a href="${esc(v.url_annonce)}" target="_blank" style="color:var(--accent);font-size:13px;font-weight:600">🔗 Voir l'annonce ${sourceLabel}</a></div>` : '';
+  renderDetailPane0(v);
+  renderDetailPane1(v);
+  renderDetailPane2(v);
+  renderDetailPane3(v);
 
-  let dealLostBanner = '';
-  if (v.column === 'deal_perdu') {
-    dealLostBanner = `<div style="background:rgba(232,41,74,0.06);border:1px solid rgba(232,41,74,0.2);border-radius:10px;padding:12px;margin-bottom:8px">
-      <div style="font-size:11px;font-weight:700;color:var(--urg-1);margin-bottom:4px">❌ DEAL PERDU</div>
-      <div style="font-size:13px;color:var(--text)">${v.deal_lost_reason ? esc(v.deal_lost_reason) : '<em style="color:var(--text-muted)">Raison non précisée</em>'}</div>
-    </div>`;
-  }
-
-  const _i = (field, val, opts = {}) => inlineInput(v.id, field, val, opts);
-  const _row = (label, content) => `<div class="detail-row"><span class="detail-row-label">${label}</span><span class="detail-row-value">${content}</span></div>`;
-  const _sel = (field, options, current) => `<select onchange="saveInlineField('${v.id}','${field}',this.value)">${options.map(o=>`<option${o===current?' selected':''}>${o}</option>`).join('')}</select>`;
-
-  const infoGridHtml = `<div class="detail-rows">
-    ${_row('Km', _i('km', v.km||v.kilometrage||'', {type:'number',placeholder:'—'}))}
-    ${_row('Prix demandé', _i('prix_demande', v.prix_demande||v.prix||'', {type:'number',placeholder:'—'}))}
-    ${_row('Prix négocié', _i('prix_negocie', v.prix_negocie||'', {type:'number',placeholder:'—',style:'color:var(--accent)'}))}
-    ${_row('Millésime', _i('annee', v.annee||'', {type:'number',placeholder:'—'}))}
-    ${_row('Carburant', _sel('carburant', ['','Essence','Diesel','Hybride','Électrique','GPL'], v.carburant||''))}
-    ${_row('Boîte', _sel('boite', ['','Automatique','Manuelle','Semi-auto'], v.boite||''))}
-    ${_row('Couleur', _i('couleur', v.couleur||'', {placeholder:'—'}))}
-    ${_row('Localisation', _i('localisation', v.localisation||'', {placeholder:'—'}))}
-    ${_row('VIN', _i('vin', v.vin||'', {placeholder:'—'}))}
-    ${_row('Immat.', _i('immatriculation', v.immatriculation||'', {placeholder:'—'}))}
-  </div>`;
-
-  const fournisseurHtml = `
-    <div class="detail-section">Fournisseur</div>
-    <div class="detail-rows">
-      ${_row('Nom', _i('fournisseur_nom', v.fournisseur_nom||v.vendeur||'', {placeholder:'—'}))}
-      ${_row('Téléphone', _i('fournisseur_tel', v.fournisseur_tel||'', {type:'tel',placeholder:'—',style:'color:var(--accent)'}))}
-      ${_row('Email', _i('fournisseur_email', v.fournisseur_email||'', {type:'email',placeholder:'—'}))}
-    </div>
-    <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" onclick="sendDocsEmail('${v.id}')">📧 Demander les documents</button></div>`;
-
-  const docsHtml = showDocs ? `
-    <div class="drawer-section-title" style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
-      <span>📄 Documents ${missD ? '<span style="color:var(--urg-2)">⚠️</span>' : '<span style="color:var(--urg-done)">✅</span>'}</span>
-      <button class="btn btn-ghost btn-sm" style="font-size:11px" onclick="sendDocsEmail('${v.id}')">📧</button>
-    </div>
-    <div class="doc-checklist">
-      ${DOCS.map(d=>`
-        <div class="doc-item ${v.documents&&v.documents[d.key]?'checked':''}" onclick="toggleDoc('${v.id}','${d.key}')">
-          <div class="doc-checkbox">${v.documents&&v.documents[d.key]?'✓':''}</div>
-          <span class="doc-label">${d.full}</span>
-        </div>`).join('')}
-    </div>` : '';
-
-  const transportHtml = v.transport_methode ? `
-    <div class="detail-section">🚛 Transport</div>
-    <div class="detail-rows">
-      ${_row('Mode', v.transport_methode==='camion'?'🚛 Camion':'🚗 Convoyage')}
-      ${_row('Date départ', fmtD(v.transport_date))}
-      ${v.transport_notes ? _row('Notes', esc(v.transport_notes)) : ''}
-    </div>` : '';
-
-  // Comments section (directly in details tab)
-  const commentHtml = `
-    <div class="drawer-section-title" style="margin-top:14px">💬 Commentaires</div>
-    <div id="commentList_${v.id}">${buildCommentListHTML(v)}</div>
-    <div style="display:flex;gap:6px;margin-top:8px">
-      <input id="newCommentInput_${v.id}" class="form-input" placeholder="Nouvelle note…"
-        style="flex:1;padding:7px 10px;font-size:13px"
-        onkeydown="if(event.key==='Enter'&&!event.shiftKey){addComment('${v.id}');event.preventDefault()}">
-      <button class="btn btn-primary btn-sm" onclick="addComment('${v.id}')">+</button>
-    </div>`;
-
-  document.getElementById('dpane-0').innerHTML =
-    dealLostBanner + photoHtml + annonceLinkHtml + infoGridHtml + fournisseurHtml + docsHtml + transportHtml + commentHtml;
-
-  // ---- TAB 1: Historique + Notes ----
-  const _histEntries = (v.historique || []).map(h => ({ ts: h.date, type: 'hist', text: h.action }));
-  const _noteEntries = (v.notes || []).map(n => ({ ts: n.created_at, type: 'note', text: n.text }));
-  const _allEntries = [..._histEntries, ..._noteEntries].sort((a, b) => b.ts > a.ts ? 1 : -1);
-  const histHtml = _allEntries.length
-    ? `<div class="timeline">${_allEntries.map((e, i) => {
-        const dotStyle = i > 2 ? 'background:var(--border)' : (e.type === 'note' ? 'background:var(--primary)' : '');
-        if (e.type === 'note') {
-          return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><span style="font-size:10px;font-weight:700;background:rgba(77,101,255,0.1);color:var(--primary);padding:1px 6px;border-radius:4px;margin-right:5px">💬 Note</span><strong>${fmtNoteTs(e.ts)}</strong><div style="margin-top:3px;font-size:13px">${esc(e.text)}</div></div></div>`;
-        }
-        return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><strong>${e.ts}</strong> — ${esc(e.text)}</div></div>`;
-      }).join('')}</div>`
-    : '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Aucun historique</div>';
-  document.getElementById('dpane-1').innerHTML = histHtml;
-
-  // ---- TAB 2: Tâches liées ----
-  const linkedTasks = S.tasks.filter(t => (t.linked_vehicle_ids||[]).includes(v.id) || t.linked_vehicle_id===v.id);
-  const tasksHtml = linkedTasks.length
-    ? linkedTasks.map(t=>{
-        const isDone = t.column === 'termine';
-        const isLate = t.due_date && t.due_date < today() && !isDone;
-        return `<div style="display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);cursor:pointer" onclick="openEditTask('${t.id}')">
-          <div style="width:18px;height:18px;border:2px solid ${isDone?'var(--urg-done)':'var(--border)'};border-radius:50%;flex-shrink:0;${isDone?'background:var(--urg-done);display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:800':''}}">${isDone?'✓':''}</div>
-          <div style="flex:1;font-size:13px;font-weight:500;${isDone?'text-decoration:line-through;color:var(--text-light)':''}">${esc(t.title)}</div>
-          ${t.due_date ? `<div style="font-size:11px;font-weight:700;color:${isLate?'var(--urg-1)':'var(--text-muted)'}">${fmtDs(t.due_date)}</div>` : ''}
-        </div>`;
-      }).join('')
-    : '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Aucune tâche liée</div>';
-  document.getElementById('dpane-2').innerHTML = tasksHtml +
-    `<button class="btn btn-ghost btn-sm" style="margin-top:6px;width:100%" onclick="openAddTask();closeDrawer()">+ Ajouter une tâche</button>`;
-
-  // ---- TAB 3: Actions ----
-  let actionHtml = `<div style="display:flex;flex-direction:column;gap:8px">
-    <button class="btn btn-ghost" onclick="editVehicle();closeDrawer()">✏️ Modifier le véhicule</button>`;
-  if (v.column === 'sourcing')
-    actionHtml += `<button class="btn btn-primary" onclick="moveToAPayer('${v.id}');closeDrawer()">✅ Confirmer l'achat</button>`;
-  if (v.column === 'a_payer')
-    actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
-  if (v.column === 'en_transport' || v.column === 'livre')
-    actionHtml += `<button class="btn btn-ghost" onclick="archiveV('${v.id}');closeDrawer()">🗄️ Archiver</button>`;
-  if (v.column !== 'deal_perdu' && v.column !== 'archive')
-    actionHtml += `<button class="btn btn-ghost" style="color:var(--urg-1);border-color:rgba(232,41,74,0.3)" onclick="openDealLost('${v.id}')">❌ Deal perdu</button>`;
-  actionHtml += `<button class="btn btn-danger" style="margin-top:8px" onclick="deleteVehicle('${v.id}')">🗑️ Supprimer</button>`;
-  actionHtml += `</div>`;
-  document.getElementById('dpane-3').innerHTML = actionHtml;
-
-  // Reset to first tab and open drawer
   switchDrawerTab(0);
   document.getElementById('drawerOverlay').classList.add('open');
   document.getElementById('vehicleDrawer').classList.add('open');
@@ -4884,8 +4913,7 @@ function toggleDoc(vehicleId, docKey) {
   v.documents[docKey] = !v.documents[docKey];
   addHist(v, `Document "${DOCS.find(d=>d.key===docKey)?.full||docKey}" ${v.documents[docKey]?'reçu ✓':'retiré'}`);
   openDetail(vehicleId); // refresh detail
-  render();
-  saveToGH();
+  save();
 }
 
 // ============================================================
@@ -4917,7 +4945,7 @@ function saveLot() {
   } else {
     S.lots.push({ id:uid(), column:'sourcing', sub_stage:'a_contacter', created_at:today(), ...data });
   }
-  closeModal('ovLot'); render(); saveToGH();
+  closeModal('ovLot'); save();
 }
 
 function openLotDetail(id) {
@@ -4939,7 +4967,7 @@ function openLotDetail(id) {
 function deleteLot(id) {
   if (!confirm('Supprimer ce lot ?')) return;
   S.lots = S.lots.filter(l=>l.id!==id);
-  render(); saveToGH();
+  save();
 }
 
 // ============================================================
@@ -5009,7 +5037,7 @@ function saveTask() {
     if (data.column === 'en_attente') newTask.watching_since = new Date().toISOString();
     S.tasks.push(newTask);
   }
-  closeModal('ovTask'); render(); saveToGH();
+  closeModal('ovTask'); save();
 }
 
 function deleteTask(id) {
@@ -5018,10 +5046,10 @@ function deleteTask(id) {
   if (!removed) return;
   S.tasks = S.tasks.filter(t=>t.id!==id);
   closeModal('ovTask');
-  render(); saveToGH();
+  save();
   showUndoToast('Tâche supprimée', () => {
     S.tasks.push(removed);
-    render(); saveToGH();
+    save();
     showToast('↩️ Tâche restaurée');
   });
 }
@@ -5038,13 +5066,13 @@ function completeTask(id, e) {
     t.column = 'termine';
     t.completed_at = new Date().toISOString();
     showToast('✅ Tâche terminée');
-    render(); saveToGH();
+    save();
   } else {
     if (confirm('Marquer cette tâche comme terminée ?')) {
       t.column = 'termine';
       t.completed_at = new Date().toISOString();
       showToast('✅ Tâche terminée');
-      render(); saveToGH();
+      save();
     }
   }
 }
@@ -5073,7 +5101,7 @@ function bulkComplete() {
   });
   showToast('✅ ' + _selectedTasks.size + ' tâche(s) terminée(s)');
   _selectedTasks.clear();
-  render(); saveToGH();
+  save();
 }
 
 function bulkWatch() {
@@ -5083,7 +5111,7 @@ function bulkWatch() {
   });
   showToast('👁️ ' + _selectedTasks.size + ' tâche(s) en surveillance');
   _selectedTasks.clear();
-  render(); saveToGH();
+  save();
 }
 
 function bulkDelete() {
@@ -5091,7 +5119,7 @@ function bulkDelete() {
   S.tasks = S.tasks.filter(t => !_selectedTasks.has(t.id));
   showToast('🗑️ ' + _selectedTasks.size + ' tâche(s) supprimée(s)');
   _selectedTasks.clear();
-  render(); saveToGH();
+  save();
 }
 
 let _quickPriority = 3;
@@ -5165,7 +5193,7 @@ function quickAddTask() {
     _quickWatch = false;
     _quickDueDate = '';
     _quickDueTime = '';
-    render(); saveToGH();
+    save();
     showToast('✅ ' + count + ' tâches ajoutées');
     setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
     return;
@@ -5190,7 +5218,7 @@ function quickAddTask() {
   _quickWatch = false;
   _quickDueDate = '';
   _quickDueTime = '';
-  render(); saveToGH();
+  save();
   showToast('✅ Tâche ajoutée');
   setTimeout(() => { const i = document.getElementById('quickTaskInput'); if (i) i.focus(); }, 100);
 }
@@ -5419,7 +5447,7 @@ async function runImgImport() {
       created++;
     }
 
-    render(); saveToGH();
+    save();
     st.style.color = 'var(--urg-done)';
     st.textContent = `✅ ${created} tâche(s) créée(s) !`;
     btn.textContent = '✅ Créées';
@@ -6124,7 +6152,7 @@ function onDrop(event, colKey) {
   v.sub_stage = colKey === 'sourcing' ? 'a_contacter' : null;
   addHist(v, `Déplacé: ${prev} → ${colKey}`);
   if (colKey === 'a_payer' || colKey === 'livre') createDocsTask(v);
-  render(); saveToGH();
+  save();
 }
 
 function onDropTask(event, colKey) {
@@ -6139,7 +6167,7 @@ function onDropTask(event, colKey) {
   if (colKey === 'en_attente' && !t.watching_since) t.watching_since = new Date().toISOString();
   if (colKey !== 'en_attente') t.watching_since = null;
   if (colKey === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
-  render(); saveToGH();
+  save();
 }
 
 function dEnd(event) {
@@ -6198,7 +6226,7 @@ function execMove(colKey) {
       if (colKey === 'en_attente' && !t.watching_since) t.watching_since = new Date().toISOString();
       if (colKey !== 'en_attente') t.watching_since = null;
       if (colKey === 'termine' && !t.completed_at) t.completed_at = new Date().toISOString();
-      render(); saveToGH();
+      save();
     }
     return;
   }
@@ -6214,7 +6242,7 @@ function execMove(colKey) {
   v.sub_stage = colKey === 'sourcing' ? 'a_contacter' : null;
   addHist(v, `Déplacé: ${prev} → ${colKey}`);
   if (colKey === 'a_payer' || colKey === 'livre') createDocsTask(v);
-  render(); saveToGH();
+  save();
 }
 
 // ============================================================
@@ -6263,7 +6291,7 @@ function moveDialog(id) {
   v.column = target;
   v.sub_stage = target === 'sourcing' ? 'a_contacter' : null;
   addHist(v, `Déplacé: ${prev} → ${target}`);
-  render(); saveToGH();
+  save();
 }
 
 document.addEventListener('click', e => { if (!e.target.closest('#ctxMenu')) hideCtx(); });
@@ -6481,7 +6509,7 @@ function doUndo() {
   S.vehicles = snapshot.vehicles;
   S.tasks = snapshot.tasks;
   S.lots = snapshot.lots;
-  render(); saveToGH();
+  save();
   showToast('↩️ Action annulée (' + _undoStack.length + ' restante' + (_undoStack.length>1?'s':'') + ')');
 }
 
@@ -6525,7 +6553,7 @@ function saveVehicleReminder() {
   v.reminder_at = date + 'T' + time + ':00';
   addHist(v, 'Rappel programmé ' + date + ' ' + time);
   closeModal('ovVehicleReminder');
-  renderBoard(); saveToGH();
+  save();
   showToast('🔔 Rappel programmé');
 }
 
@@ -6534,7 +6562,7 @@ function clearVehicleReminder() {
   if (!v) return;
   v.reminder_at = null;
   closeModal('ovVehicleReminder');
-  renderBoard(); saveToGH();
+  save();
   showToast('Rappel supprimé');
 }
 
