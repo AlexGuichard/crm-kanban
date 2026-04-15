@@ -2301,7 +2301,7 @@ function onSearch() {
   searchQ = document.getElementById('searchInput').value.toLowerCase();
   render();
 }
-const matchV = v => !searchQ || [v.marque,v.modele,v.fournisseur_nom,v.vendeur,v.vin,v.immatriculation,v.source,v.carburant,v.couleur,v.notes].some(s=>s&&s.toLowerCase().includes(searchQ));
+const matchV = v => !searchQ || [v.marque,v.modele,v.fournisseur_nom,v.vendeur,v.vin,v.immatriculation,v.source,v.carburant,v.couleur,...(v.notes||[]).map(n=>n.text)].some(s=>s&&s.toLowerCase().includes(searchQ));
 const matchL = l => !searchQ || [l.nom,l.fournisseur,l.description].some(s=>s&&s.toLowerCase().includes(searchQ));
 const matchT = t => !searchQ || [t.title,t.description].some(s=>s&&s.toLowerCase().includes(searchQ));
 function matchVFiltered(v) {
@@ -2705,7 +2705,13 @@ function renderBoardList() {
     const stale72h = v.column === 'sourcing' && daysSince !== null && daysSince >= 3;
     const staleRow = stale72h ? 'border-left:3px solid var(--urg-1)' : '';
     const staleBadge = stale72h ? `<span title="${daysSince}j sans modif" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--urg-1);color:white;font-size:9px;font-weight:800;margin-left:5px;vertical-align:middle;flex-shrink:0">!</span>` : '';
-    const noteBadge = v.note ? `<span title="${esc(v.note)}" style="margin-left:5px;font-size:11px;vertical-align:middle;cursor:default;opacity:0.7">💬</span>` : '';
+    const notesList = v.notes && v.notes.length ? v.notes : [];
+    let noteBadge = '';
+    if (notesList.length) {
+      const lastThree = [...notesList].reverse().slice(0, 3).map(n => '• ' + n.text.slice(0, 60) + (n.text.length > 60 ? '…' : '')).join('\n');
+      const count = notesList.length > 1 ? ' ' + notesList.length : '';
+      noteBadge = `<span title="${esc(lastThree)}" style="margin-left:5px;font-size:11px;vertical-align:middle;cursor:default;opacity:0.85">💬${count}</span>`;
+    }
     return `<tr onclick="openDetail('${v.id}')" ondblclick="openQuickNote(event,'${v.id}')" oncontextmenu="openRowContextMenu(event,'${v.id}')" style="${isSel?'background:rgba(77,101,255,0.04)':''}${staleRow?';'+staleRow:''}">
       <td onclick="event.stopPropagation()" ondblclick="event.stopPropagation()"><input class="vt-check" type="checkbox" ${isSel?'checked':''} onchange="toggleVehicleSelect('${v.id}',this.checked)"></td>
       <td style="white-space:nowrap"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${urg};margin-right:5px;vertical-align:middle"></span><strong>${esc(v.marque)} ${esc(v.modele)}</strong>${staleBadge}${noteBadge}</td>
@@ -2856,6 +2862,74 @@ function saveVehicleContactField(vehicleId, field, value) {
 // -------- QUICK NOTE --------
 let _rowCtxVehicleId = null, _rowCtxX = 0, _rowCtxY = 0;
 
+function fmtNoteTs(isoStr) {
+  const d = new Date(isoStr);
+  const now = new Date();
+  const isToday = d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  const h = String(d.getHours()).padStart(2, '0');
+  const mi = String(d.getMinutes()).padStart(2, '0');
+  if (isToday) return `${h}h${mi}`;
+  const months = ['jan.','fév.','mar.','avr.','mai','jui.','juil.','aoû.','sep.','oct.','nov.','déc.'];
+  return `${d.getDate()} ${months[d.getMonth()]} · ${h}h${mi}`;
+}
+
+function _buildNoteListEl(vehicleId) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  const notes = (v && v.notes) ? [...v.notes].reverse() : [];
+  const listEl = document.createElement('div');
+  listEl.id = 'qn-list';
+  listEl.style.cssText = 'max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;margin-bottom:10px';
+
+  if (!notes.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--text-muted);font-size:12px;padding:8px 0;text-align:center';
+    empty.textContent = 'Aucune note pour ce véhicule';
+    listEl.appendChild(empty);
+    return listEl;
+  }
+
+  notes.forEach(note => {
+    const noteEl = document.createElement('div');
+    noteEl.dataset.noteId = note.id;
+    noteEl.style.cssText = 'background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:6px 8px';
+
+    const meta = document.createElement('div');
+    meta.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:3px';
+
+    const ts = document.createElement('span');
+    ts.style.cssText = 'font-size:10px;color:var(--text-light);font-weight:600';
+    ts.textContent = fmtNoteTs(note.created_at);
+
+    const actions = document.createElement('span');
+    actions.style.cssText = 'display:flex;gap:2px';
+
+    const btnEdit = document.createElement('button');
+    btnEdit.style.cssText = 'background:none;border:none;cursor:pointer;font-size:12px;color:var(--text-muted);padding:1px 3px;line-height:1;border-radius:3px';
+    btnEdit.title = 'Modifier';
+    btnEdit.textContent = '✏️';
+    btnEdit.addEventListener('click', e => { e.stopPropagation(); editNoteInline(vehicleId, note.id); });
+
+    const btnDel = document.createElement('button');
+    btnDel.style.cssText = 'background:none;border:none;cursor:pointer;font-size:14px;color:var(--urg-1);padding:1px 3px;line-height:1;border-radius:3px;font-weight:700';
+    btnDel.title = 'Supprimer';
+    btnDel.textContent = '×';
+    btnDel.addEventListener('click', e => { e.stopPropagation(); deleteNote(vehicleId, note.id); });
+
+    actions.append(btnEdit, btnDel);
+    meta.append(ts, actions);
+
+    const textEl = document.createElement('div');
+    textEl.id = `qn-text-${note.id}`;
+    textEl.style.cssText = 'font-size:13px;color:var(--text);word-break:break-word';
+    textEl.textContent = note.text;
+
+    noteEl.append(meta, textEl);
+    listEl.appendChild(noteEl);
+  });
+
+  return listEl;
+}
+
 function openQuickNote(event, vehicleId) {
   event.preventDefault();
   event.stopPropagation();
@@ -2871,47 +2945,45 @@ function openQuickNote(event, vehicleId) {
 
   const box = document.createElement('div');
   box.id = 'quick-note-box';
-  box.style.cssText = 'position:fixed;background:var(--surface);border:1.5px solid var(--primary);border-radius:10px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);z-index:501;width:280px';
+  box.style.cssText = 'position:fixed;background:var(--surface);border:1.5px solid var(--primary);border-radius:10px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);z-index:501;width:300px';
+  box.addEventListener('click', e => e.stopPropagation());
+  box.addEventListener('dblclick', e => e.stopPropagation());
 
-  const title = document.createElement('div');
-  title.style.cssText = 'font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em';
-  title.textContent = `💬 Note rapide — ${v.marque} ${v.modele}`;
+  const header = document.createElement('div');
+  header.style.cssText = 'font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.04em';
+  header.textContent = `💬 Notes — ${v.marque} ${v.modele}`;
 
-  const ta = document.createElement('textarea');
-  ta.id = 'quick-note-ta';
-  ta.style.cssText = 'width:100%;height:72px;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;resize:none;background:var(--bg);color:var(--text);box-sizing:border-box;outline:none';
-  ta.placeholder = 'Note… (Entrée pour sauvegarder, Maj+Entrée pour saut de ligne)';
-  ta.value = v.note || '';
-  ta.addEventListener('click', e => e.stopPropagation());
-  ta.addEventListener('dblclick', e => e.stopPropagation());
-  ta.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); saveQuickNote(vehicleId); }
+  const listEl = _buildNoteListEl(vehicleId);
+
+  const inputRow = document.createElement('div');
+  inputRow.style.cssText = 'display:flex;gap:6px;align-items:center;border-top:1px solid var(--border);padding-top:10px';
+
+  const inp = document.createElement('input');
+  inp.id = 'qn-input';
+  inp.type = 'text';
+  inp.placeholder = 'Nouvelle note… (Entrée pour ajouter)';
+  inp.style.cssText = 'flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);outline:none;min-width:0';
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addQuickNote(vehicleId); }
     if (e.key === 'Escape') { closeQuickNote(); }
   });
 
-  const btns = document.createElement('div');
-  btns.style.cssText = 'display:flex;gap:6px;margin-top:8px;justify-content:flex-end';
+  const btnAdd = document.createElement('button');
+  btnAdd.className = 'btn btn-primary btn-sm';
+  btnAdd.style.cssText = 'white-space:nowrap;flex-shrink:0';
+  btnAdd.textContent = '+ Ajouter';
+  btnAdd.onclick = () => addQuickNote(vehicleId);
 
-  const btnCancel = document.createElement('button');
-  btnCancel.className = 'btn btn-ghost btn-sm';
-  btnCancel.textContent = 'Annuler';
-  btnCancel.onclick = e => { e.stopPropagation(); closeQuickNote(); };
+  inputRow.append(inp, btnAdd);
+  box.append(header, listEl, inputRow);
 
-  const btnSave = document.createElement('button');
-  btnSave.className = 'btn btn-primary btn-sm';
-  btnSave.textContent = 'Sauvegarder';
-  btnSave.onclick = e => { e.stopPropagation(); saveQuickNote(vehicleId); };
-
-  btns.append(btnCancel, btnSave);
-  box.append(title, ta, btns);
-
-  const mx = Math.min(event.clientX, window.innerWidth - 296);
-  const my = Math.min(event.clientY, window.innerHeight - 170);
+  const mx = Math.min(event.clientX, window.innerWidth - 316);
+  const my = Math.min(event.clientY, window.innerHeight - 300);
   box.style.left = mx + 'px';
-  box.style.top = my + 'px';
+  box.style.top = Math.max(8, my) + 'px';
 
   document.body.append(overlay, box);
-  setTimeout(() => { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }, 30);
+  setTimeout(() => inp.focus(), 30);
 }
 
 function closeQuickNote() {
@@ -2919,16 +2991,74 @@ function closeQuickNote() {
   document.getElementById('quick-note-box')?.remove();
 }
 
-function saveQuickNote(vehicleId) {
+function addQuickNote(vehicleId) {
   const v = S.vehicles.find(x => x.id === vehicleId);
-  const ta = document.getElementById('quick-note-ta');
-  if (!v || !ta) return;
-  const text = ta.value.trim();
-  if (text === (v.note || '').trim()) { closeQuickNote(); return; }
-  v.note = text || null;
-  addHist(v, text ? ('Note : ' + text.slice(0, 80)) : 'Note supprimée');
+  const inp = document.getElementById('qn-input');
+  if (!v || !inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  if (!v.notes) v.notes = [];
+  v.notes.push({ id: crypto.randomUUID(), text, created_at: new Date().toISOString() });
+  v.updated_at = new Date().toISOString();
   saveToGH();
-  closeQuickNote();
+  inp.value = '';
+  const listEl = document.getElementById('qn-list');
+  if (listEl) listEl.replaceWith(_buildNoteListEl(vehicleId));
+  renderBoardList();
+}
+
+function editNoteInline(vehicleId, noteId) {
+  const textEl = document.getElementById(`qn-text-${noteId}`);
+  if (!textEl) return;
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  const note = v && v.notes && v.notes.find(n => n.id === noteId);
+  if (!note) return;
+
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.value = note.text;
+  inp.style.cssText = 'width:100%;padding:4px 6px;border:1px solid var(--primary);border-radius:5px;font-size:13px;font-family:inherit;background:var(--bg);color:var(--text);box-sizing:border-box;outline:none';
+
+  let saved = false;
+  const save = () => {
+    if (saved) return;
+    saved = true;
+    const newText = inp.value.trim();
+    if (newText && newText !== note.text) {
+      note.text = newText;
+      v.updated_at = new Date().toISOString();
+      saveToGH();
+      renderBoardList();
+    }
+    const listEl = document.getElementById('qn-list');
+    if (listEl) listEl.replaceWith(_buildNoteListEl(vehicleId));
+  };
+  const cancel = () => {
+    if (saved) return;
+    saved = true;
+    const listEl = document.getElementById('qn-list');
+    if (listEl) listEl.replaceWith(_buildNoteListEl(vehicleId));
+  };
+
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); save(); }
+    if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+  });
+  inp.addEventListener('blur', save);
+
+  textEl.replaceWith(inp);
+  inp.focus();
+  inp.select();
+}
+
+function deleteNote(vehicleId, noteId) {
+  const v = S.vehicles.find(x => x.id === vehicleId);
+  if (!v || !v.notes) return;
+  v.notes = v.notes.filter(n => n.id !== noteId);
+  v.updated_at = new Date().toISOString();
+  saveToGH();
+  const listEl = document.getElementById('qn-list');
+  if (listEl) listEl.replaceWith(_buildNoteListEl(vehicleId));
   renderBoardList();
 }
 
@@ -4676,11 +4806,18 @@ function openDetail(id) {
   document.getElementById('dpane-0').innerHTML =
     dealLostBanner + photoHtml + annonceLinkHtml + infoGridHtml + fournisseurHtml + docsHtml + transportHtml + commentHtml;
 
-  // ---- TAB 1: Historique ----
-  const histHtml = v.historique && v.historique.length
-    ? `<div class="timeline">${[...v.historique].reverse().map((h,i)=>`
-        <div class="tl-item"><div class="tl-dot" style="${i>2?'background:var(--border)':''}"></div><div class="tl-txt"><strong>${h.date}</strong> — ${esc(h.action)}</div></div>`).join('')}
-      </div>`
+  // ---- TAB 1: Historique + Notes ----
+  const _histEntries = (v.historique || []).map(h => ({ ts: h.date, type: 'hist', text: h.action }));
+  const _noteEntries = (v.notes || []).map(n => ({ ts: n.created_at, type: 'note', text: n.text }));
+  const _allEntries = [..._histEntries, ..._noteEntries].sort((a, b) => b.ts > a.ts ? 1 : -1);
+  const histHtml = _allEntries.length
+    ? `<div class="timeline">${_allEntries.map((e, i) => {
+        const dotStyle = i > 2 ? 'background:var(--border)' : (e.type === 'note' ? 'background:var(--primary)' : '');
+        if (e.type === 'note') {
+          return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><span style="font-size:10px;font-weight:700;background:rgba(77,101,255,0.1);color:var(--primary);padding:1px 6px;border-radius:4px;margin-right:5px">💬 Note</span><strong>${fmtNoteTs(e.ts)}</strong><div style="margin-top:3px;font-size:13px">${esc(e.text)}</div></div></div>`;
+        }
+        return `<div class="tl-item"><div class="tl-dot" style="${dotStyle}"></div><div class="tl-txt"><strong>${e.ts}</strong> — ${esc(e.text)}</div></div>`;
+      }).join('')}</div>`
     : '<div style="color:var(--text-muted);font-size:13px;padding:8px 0">Aucun historique</div>';
   document.getElementById('dpane-1').innerHTML = histHtml;
 
