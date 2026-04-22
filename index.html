@@ -1824,7 +1824,8 @@ const S = {
     show_archive: false,
     urgency_colors: { urg_1:'#e8294a', urg_2:'#e87a00', urg_3:'#4d65ff', urg_done:'#16a34a' }
   },
-  briefing: null
+  briefing: null,
+  morning_briefing: null
 };
 
 let editingVehicleId = null;
@@ -2344,7 +2345,7 @@ const matchL = l => !searchQ || [l.nom,l.fournisseur,l.description].some(s=>s&&s
 const matchT = t => !searchQ || [t.title,t.description].some(s=>s&&s.toLowerCase().includes(searchQ));
 function matchVFiltered(v) {
   // Masquer les colonnes post-dashboard
-  if (!['sourcing','a_payer'].includes(v.column)) return false;
+  if (v.column !== 'sourcing') return false;
   // Recherche texte existante
   if (!matchV(v)) return false;
   // Filtre pipeline strip
@@ -3654,100 +3655,139 @@ let emailFilter = 'all';
 const dismissedEmails = JSON.parse(localStorage.getItem('dismissed_emails') || '[]');
 
 function renderEmailsView() {
-  const b = S.morning_briefing;
+  const briefing = S.morning_briefing;
+  const container = document.getElementById('emailsList');
   const filtersEl = document.getElementById('emailFilters');
-  const listEl = document.getElementById('emailsList');
-  const countEl = document.getElementById('emailCount');
-  if (!filtersEl || !listEl) return;
+  if (!container) return;
 
-  if (!b) {
-    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted);line-height:1.8">
-      <div style="font-size:28px;margin-bottom:8px">📬</div>
-      <div style="font-weight:700;color:var(--text)">Chargement du briefing Gmail…</div>
-      <div style="font-size:12px;margin-top:6px">Les emails se chargent automatiquement.</div>
-      <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="loadBriefing()">⟳ Charger maintenant</button>
-    </div>`;
+  if (filtersEl) filtersEl.innerHTML = '';
+
+  if (!briefing || !briefing.emails || briefing.emails.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:60px 20px;color:var(--text-muted)">
+        <div style="font-size:40px;margin-bottom:16px">📧</div>
+        <div style="font-weight:600;margin-bottom:8px">Aucun briefing disponible</div>
+        <div style="font-size:13px">Lancez la sync Gmail pour démarrer votre morning routine.<br>
+        <code style="font-size:12px;background:#f1f5f9;padding:2px 6px;border-radius:4px">python3 scripts/gmail_sync.py</code></div>
+      </div>`;
     return;
   }
 
-  const allEmails = (b.emails || []).filter(e => !dismissedEmails.includes(e.id));
+  const emails = briefing.emails;
+  const genAt = briefing.generated_at
+    ? new Date(briefing.generated_at).toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'})
+    : '—';
 
-  const filters = [
-    { key:'all',      label:'Tous' },
-    { key:'critical', label:'🔴 Critiques' },
-    { key:'high',     label:'🟠 Importants' },
-    { key:'replied',  label:'✅ Répondus' },
-    { key:'waiting',  label:'⏳ Réponse att.' },
-  ];
-  filtersEl.innerHTML = filters.map(f =>
-    `<button class="email-filter-btn ${emailFilter===f.key?'active':''}" onclick="setEmailFilter('${f.key}')">${f.label}</button>`
-  ).join('');
+  const todayStr = new Date().toLocaleDateString('fr-FR', {day:'numeric',month:'long'});
 
-  let filtered = allEmails;
-  if (emailFilter === 'critical') filtered = allEmails.filter(e => e.priority === 'critical' && !e.replied);
-  else if (emailFilter === 'high') filtered = allEmails.filter(e => e.priority === 'high' && !e.replied);
-  else if (emailFilter === 'replied') filtered = allEmails.filter(e => e.replied);
-  else if (emailFilter === 'waiting') filtered = allEmails.filter(e => e.needs_reply && !e.replied);
-
-  const updatedAt = b.generated_at ? new Date(b.generated_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : '';
-  countEl.textContent = `${filtered.length} email${filtered.length!==1?'s':''} · mis à jour ${updatedAt}`;
-
-  if (!filtered.length) {
-    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email dans cette catégorie</div>`;
-    return;
-  }
-
-  // Séparer : à traiter vs déjà répondus
-  const toHandle = filtered.filter(e => !e.replied);
-  const done     = filtered.filter(e => e.replied);
-
-  const PRIORITY_STYLE = {
-    critical: { icon:'🔴', color:'#dc2626', bg:'#fef2f2', label:'Critique' },
-    high:     { icon:'🟠', color:'#f97316', bg:'#fff7ed', label:'Important' },
-    medium:   { icon:'🟡', color:'#d97706', bg:'#fefce8', label:'Moyen' },
-    low:      { icon:'⚪', color:'#6b7280', bg:'#f3f4f6', label:'Info' },
+  const PRIORITY = {
+    critical: { icon:'🔴', label:'Critique',   color:'#dc2626', bg:'#fef2f2', border:'#fca5a5' },
+    high:     { icon:'🟠', label:'Important',  color:'#f97316', bg:'#fff7ed', border:'#fdba74' },
+    medium:   { icon:'🟡', label:'À noter',    color:'#d97706', bg:'#fefce8', border:'#fde68a' },
   };
 
-  const renderEmail = e => {
-    const ps = PRIORITY_STYLE[e.priority] || PRIORITY_STYLE.low;
-    const senderName = e.from_name || (e.from||'').split('@')[0];
-    const repliedBadge = e.replied
-      ? `<span style="font-size:10px;background:#dcfce7;color:#16a34a;border-radius:20px;padding:2px 8px;font-weight:700">✓ Répondu</span>`
-      : (e.needs_reply
-        ? `<span style="font-size:10px;background:#fff7ed;color:#f97316;border-radius:20px;padding:2px 8px;font-weight:700">⏳ Réponse attendue</span>`
-        : '');
-    const dateDisplay = e.date_display || '';
-    const subj = esc((e.subject||'').slice(0,75));
-    const summary = esc((e.summary||'').slice(0,120));
-    return `<div class="email-row${e.replied?' dismissed':''}" id="email-${esc(e.id||'')}">
-      <div class="email-score" style="background:${ps.bg};color:${ps.color};font-size:11px;width:auto;padding:0 6px">${ps.icon}</div>
-      <div class="email-body">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
-          <span style="font-size:12px;font-weight:700;color:var(--text)">${esc(senderName)}</span>
-          <span style="font-size:11px;color:var(--text-muted)">${dateDisplay}</span>
-          ${repliedBadge}
+  function renderCard(e) {
+    const p = PRIORITY[e.priority] || PRIORITY.medium;
+    const gmailBtn = `<a href="${esc(e.gmail_url)}" target="_blank" rel="noopener"
+      style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;
+             background:#4285F4;color:white;border-radius:6px;font-size:12px;
+             font-weight:600;text-decoration:none;cursor:pointer">
+      📧 Ouvrir Gmail
+    </a>`;
+
+    const actionLine = e.suggested_action
+      ? `<div style="font-size:12px;color:#4f46e5;margin:8px 0 10px;font-style:italic">
+           ⚡ ${esc(e.suggested_action)}
+         </div>`
+      : '<div style="margin-bottom:10px"></div>';
+
+    const labelBadge = e.has_ajouter
+      ? `<span style="font-size:10px;padding:2px 7px;background:#dbeafe;color:#1e40af;border-radius:10px;font-weight:600">+ CRM</span>`
+      : '';
+
+    return `<div class="email-card" data-email-id="${esc(e.id)}"
+      style="background:${p.bg};border:1px solid ${p.border};border-left:4px solid ${p.color};
+             border-radius:10px;padding:14px 16px;margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:700;color:${p.color};text-transform:uppercase;letter-spacing:.4px">
+            ${p.icon} ${p.label}
+          </span>
+          ${labelBadge}
         </div>
-        <div class="email-subject">${subj}</div>
-        ${summary ? `<div class="email-snippet">${summary}</div>` : ''}
-        <div class="email-actions">
-          <a class="btn btn-ghost btn-sm" style="font-size:11px;text-decoration:none"
-            href="mimestream://search?q=${encodeURIComponent((e.subject||'').slice(0,120))}"
-            onclick="event.stopPropagation()">✉️ Ouvrir dans Mimestream</a>
-          ${!e.replied ? `<button class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--urg-done)" onclick="dismissEmail('${esc(e.id||'')}')">✅ Traité</button>` : ''}
-        </div>
+        <span style="font-size:11px;color:#94a3b8;white-space:nowrap;margin-left:8px">${esc(e.date_display||'')}</span>
+      </div>
+      <div style="font-weight:600;font-size:13px;color:#1e293b;margin-bottom:4px">
+        ${esc(e.from_name)} — ${esc(e.subject)}
+      </div>
+      <div style="font-size:12px;color:#475569;margin-bottom:4px">${esc(e.summary||'')}</div>
+      ${actionLine}
+      <div style="display:flex;gap:8px;align-items:center">
+        ${gmailBtn}
+        <button onclick="markEmailTreated('${esc(e.id)}')"
+          style="padding:5px 12px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;
+                 border-radius:6px;font-size:12px;cursor:pointer">
+          ✅ Traité
+        </button>
       </div>
     </div>`;
-  };
+  }
 
-  let html = '';
-  if (toHandle.length) {
-    html += toHandle.map(renderEmail).join('');
+  const criticals = emails.filter(e => e.priority === 'critical' && !e.treated);
+  const highs     = emails.filter(e => e.priority === 'high'     && !e.treated);
+  const mediums   = emails.filter(e => e.priority === 'medium'   && !e.treated);
+  const treated   = emails.filter(e => e.treated);
+
+  function section(title, items) {
+    if (!items.length) return '';
+    return `<div style="margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;
+                  letter-spacing:.6px;margin-bottom:10px">${title} (${items.length})</div>
+      ${items.map(renderCard).join('')}
+    </div>`;
   }
-  if (done.length && emailFilter !== 'waiting' && emailFilter !== 'critical' && emailFilter !== 'high') {
-    html += `<div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);padding:14px 4px 6px">✅ Déjà répondus (${done.length})</div>`;
-    html += done.map(renderEmail).join('');
+
+  const treatedSection = treated.length ? `
+    <details style="margin-top:8px">
+      <summary style="font-size:12px;color:#94a3b8;cursor:pointer;margin-bottom:8px">
+        ✅ Traités (${treated.length})
+      </summary>
+      ${treated.map(e => `
+        <div style="padding:10px 14px;background:#f8fafc;border-radius:8px;margin-bottom:6px;opacity:.6">
+          <span style="font-size:12px;font-weight:500;color:#64748b;text-decoration:line-through">
+            ${esc(e.from_name)} — ${esc(e.subject)}
+          </span>
+        </div>`).join('')}
+    </details>` : '';
+
+  container.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div>
+        <div style="font-size:18px;font-weight:700;color:var(--text)">Morning Routine</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px">
+          ${todayStr} · Synchronisé à ${genAt}
+        </div>
+      </div>
+      <button onclick="loadBriefing && typeof loadBriefing === 'function' ? loadBriefing().then ? loadBriefing().then(renderEmailsView) : (loadBriefing(), renderEmailsView()) : renderEmailsView()"
+        style="padding:6px 12px;background:var(--bg);border:1px solid var(--border);
+               border-radius:8px;font-size:12px;color:var(--text-muted);cursor:pointer">
+        ⟳ Rafraîchir
+      </button>
+    </div>
+    ${section('🔴 Critiques', criticals)}
+    ${section('🟠 Importants', highs)}
+    ${section('🟡 À noter', mediums)}
+    ${treatedSection}
+  `;
+}
+
+function markEmailTreated(emailId) {
+  if (!S.morning_briefing || !S.morning_briefing.emails) return;
+  const email = S.morning_briefing.emails.find(e => e.id === emailId);
+  if (email) {
+    email.treated = true;
+    renderEmailsView();
   }
-  listEl.innerHTML = html || `<div style="text-align:center;padding:40px;color:var(--text-muted)">✅ Aucun email</div>`;
 }
 
 function setEmailFilter(f) { emailFilter = f; renderEmailsView(); }
@@ -6350,7 +6390,23 @@ async function init() {
   }
   S.settings.github_token = token;
   const ok = await loadFromGH();
-  if (ok) { render(); renderSidebarBriefing(); await loadBriefing(); }
+  if (ok) {
+    // Escalade 24h : tâches créées depuis email passent en urgent si > 24h
+    (function escalateEmailTasks() {
+      const now = Date.now();
+      let changed = false;
+      S.tasks.forEach(t => {
+        if (t.source === 'email' && t.priority !== 1 && t.created_at) {
+          if (now - new Date(t.created_at).getTime() > 86400000) {
+            t.priority = 1;
+            changed = true;
+          }
+        }
+      });
+      if (changed) saveToGH();
+    })();
+    render(); renderSidebarBriefing(); await loadBriefing();
+  }
   await _processImportHash();
   // Auto-sync toutes les 30s
   setInterval(async () => {
